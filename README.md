@@ -1,0 +1,139 @@
+# sdata — Semantic Data Ontology
+
+**Deployment-ready mid-level ontology for Product Passports, Circular Economy & Digital Twins.**
+
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
+[![BFO: ISO/IEC 21838-2](https://img.shields.io/badge/BFO-ISO%2FIEC%2021838--2%3A2021-green.svg)](https://www.iso.org/standard/74572.html)
+[![W3C PROV-O](https://img.shields.io/badge/W3C-PROV--O-orange.svg)](https://www.w3.org/TR/prov-o/)
+
+---
+
+## Overview
+
+sdata is a modular ontology suite built on three orthogonal foundations:
+
+| Foundation | Standard | Answers |
+|---|---|---|
+| **BFO** | ISO/IEC 21838-2:2021 | *What exists?* — categorical grounding |
+| **PROV-O** | W3C Recommendation | *Who did what when?* — provenance tracking |
+| **QUDT** | QUDT 3.1 | *How much?* — quantities, units, dimensions |
+
+## Namespace
+
+All IRIs resolve via [w3id.org](https://w3id.org):
+
+```
+@prefix sdata: <https://w3id.org/sdata/core#> .
+```
+
+| Module | IRI | Description |
+|---|---|---|
+| **Core** | `https://w3id.org/sdata/core` | 8 classes, 18 object properties, 12 datatype properties |
+| **Agents** | `https://w3id.org/sdata/agents` | SKOS ConceptScheme for agent types |
+| **Roles** | `https://w3id.org/sdata/roles` | SKOS ConceptScheme for role types |
+| **Identifiers** | `https://w3id.org/sdata/identifiers` | SKOS ConceptScheme for identifier types |
+| **DPP** | `https://w3id.org/sdata/dpp` | Extension for EU Digital Product Passports |
+| **Location** | `https://w3id.org/sdata/location` | Extension for structured addresses |
+
+## Repository Structure
+
+```
+sdata/
+├── sdata-core.ttl              Core ontology (v1.0)
+├── sdata-agents.ttl            SKOS: Agent types
+├── sdata-roles.ttl             SKOS: Role types
+├── sdata-identifiers.ttl       SKOS: Identifier types
+├── sdata-dpp.ttl               Extension: Digital Product Passport
+├── sdata-location.ttl          Extension: Structured addresses
+├── shapes/
+│   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
+│   └── sdata-dpp-shapes.ttl    SHACL shapes for DPP validation
+├── examples/
+│   └── battery-passport.ttl    Example: Battery Passport instance data
+├── .htaccess                   w3id.org redirect rules
+├── LICENSE
+└── README.md
+```
+
+## Core Ontology at a Glance
+
+### 8 Classes
+
+| Class | BFO Superclass | Description |
+|---|---|---|
+| `Agent` | prov:Agent | Entity capable of bearing responsibility |
+| `PhysicalArtifact` | MaterialEntity | Discrete, serializable manufactured object |
+| `Material` | MaterialEntity | Homogeneous, divisible substance |
+| `Site` | Site (Immaterial) | Three-dimensional spatial region |
+| `DigitalArtifact` | GenericallyDependentContinuant | Information entity (CAD, passport, dataset) |
+| `Process` | Process | Occurrent that transforms, transports, or measures |
+| `Role` | Role | Context-dependent, realizable entity |
+| `Identifier` | GenericallyDependentContinuant | Reified, typed identification token |
+
+### Key Design Decisions
+
+- **Flat class hierarchy** — subtype discrimination via SKOS ConceptSchemes, not OWL subclasses
+- **PROV-O via property-mapping** — `generates ⊆ prov:generated`, `consumes ⊆ prov:used`, `wasPerformedBy ⊆ prov:wasAssociatedWith` (no dual inheritance)
+- **consistsOf vs. hasPart** — material constitution vs. structural BOM hierarchy, strictly separated
+- **Agent overlap allowed** — a robot can be both PhysicalArtifact and Agent
+- **xsd:dateTimeStamp** — mandatory timezone for global supply chain interoperability
+- **Identifier as own class** — reified for multi-ID schemes (GTIN + Serial + DID + ECLASS-IRDI)
+
+## Usage
+
+### SPARQL — find all materials in a product
+
+```sparql
+PREFIX sdata: <https://w3id.org/sdata/core#>
+
+SELECT ?product ?material ?materialName WHERE {
+  ?product a sdata:PhysicalArtifact ;
+           sdata:consistsOf ?material .
+  ?material sdata:name ?materialName .
+}
+```
+
+### SPARQL — provenance chain (PROV-O compatible)
+
+```sparql
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?entity ?activity ?agent WHERE {
+  ?activity prov:generated ?entity ;
+            prov:wasAssociatedWith ?agent .
+}
+```
+
+## Versioning
+
+Versions follow semantic versioning. Each release is tagged (`v1.0`, `v1.1`, …).
+
+- **Ontology IRI** (always current): `https://w3id.org/sdata/core`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/1.0`
+
+Import the unversioned IRI to track latest, or the versioned IRI to pin.
+
+## Validation
+
+```bash
+# Validate instance data against SHACL shapes
+pyshacl -s shapes/sdata-core-shapes.ttl -df turtle data.ttl
+```
+
+## Contributing
+
+1. Fork this repository
+2. Create a feature branch
+3. Ensure all SHACL shapes pass
+4. Submit a pull request
+
+## License
+
+[CC0 1.0 — Public Domain](http://creativecommons.org/publicdomain/zero/1.0/)
+
+## References
+
+- [ISO/IEC 21838-2:2021 — Basic Formal Ontology (BFO)](https://www.iso.org/standard/74572.html)
+- [W3C PROV-O](https://www.w3.org/TR/prov-o/)
+- [QUDT Ontologies](http://qudt.org/)
+- [w3id.org Persistent Identifiers](https://w3id.org/)

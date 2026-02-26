@@ -1,0 +1,454 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# =============================================================================
+# sdata Core Ontology v1.0 — Reviewed & Hardened
+# 26 February 2026
+# 8 Classes · 12 Object Properties (+ 5 inverses) · 12 Datatype Properties
+# Imports: ISO/IEC 21838-2:2021 (BFO), PROV-O, QUDT
+# =============================================================================
+<https://w3id.org/sdata/core>
+    rdf:type owl:Ontology ;
+    rdfs:label "sdata Core Ontology v1.0"@en ,
+               "sdata Core-Ontologie v1.0"@de ;
+    owl:versionInfo "1.0 — 26 February 2026. Reviewed: PROV via property-mapping (no dual inheritance), involves split into consumes/wasPerformedBy, consistsOf restricted to Material, dateTimeStamp, SHACL/SKOS guidance. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
+    owl:versionIRI <https://w3id.org/sdata/core/1.0> ;
+    
+    # ─── BFO Import — ISO/IEC 21838-2:2021 ─────────────────────────────────────
+    owl:imports <http://purl.obolibrary.org/obo/bfo.owl> ;   # Official BFO 2020 OWL rendering per ISO/IEC 21838-2:2021
+    
+    owl:imports <http://www.w3.org/ns/prov-o> ;
+    owl:imports <http://qudt.org/3.1.11/schema/qudt> ;
+    
+    # ─── ISO Conformance References ───────────────────────────────────────────
+    dcterms:conformsTo <https://www.iso.org/standard/74572.html> ;   # ISO/IEC 21838-2:2021 — Information technology — Top-level ontologies — Part 2: Basic Formal Ontology (BFO)
+    rdfs:seeAlso <https://standards.iso.org/iso-iec/21838/-2/ed-1/en/> ;
+    rdfs:seeAlso <https://github.com/BFO-ontology/BFO-2020/tree/21838-2> ;
+    
+    dc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+    rdfs:comment """Deployment-ready mid-level ontology for Product Passports,
+Circular Economy, and Digital Twins.
+8 classes spanning 5 BFO categories (ISO/IEC 21838-2:2021).
+PROV-O alignment via property-mapping, not class inheritance.
+Validation via SHACL shapes (separate file). Type discrimination via
+SKOS ConceptSchemes in extension modules.
+QUDT import note: The versioned QUDT IRI may change with QUDT releases.
+Pin the version in your build pipeline and verify with fetch+reason in CI.
+BFO alignment: All subclasses use the ISO/IEC 21838-2:2021 standardized BFO 2020."""@en ,
+               """Deployment-fähige Mid-Level-Ontologie für Produktpässe,
+Kreislaufwirtschaft und Digitale Zwillinge.
+8 Klassen über 5 BFO-Kategorien gemäß ISO/IEC 21838-2:2021.
+PROV-O-Alignment über Property-Mapping, nicht Klassen-Vererbung.
+Validierung via SHACL Shapes (separate Datei).
+Typ-Diskriminierung via SKOS ConceptSchemes in Extension-Modulen.
+BFO-Alignment: Alle Subklassen basieren exakt auf der ISO/IEC 21838-2:2021 standardisierten BFO 2020 (http://purl.obolibrary.org/obo/bfo.owl)."""@de .
+
+# =============================================================================
+# A. CLASSES — 8 irreducible primitives
+# =============================================================================
+# ─── A1. Agent ───────────────────────────────────────────────────────────────
+sdata:Agent
+    rdf:type owl:Class ;
+    rdfs:subClassOf prov:Agent ;
+    rdfs:label "Agent"@en , "Agent"@de ;
+    rdfs:comment """Entity capable of bearing responsibility and acting in processes.
+Distinguish subtypes via sdata:agentType. Recommended values from a SKOS
+ConceptScheme (sdata-agents.ttl): Person, Organization, Robot, SoftwareAgent.
+No subclasses in core — keeps the class tree flat."""@en ,
+               """Handlungsfähige Entität, die Verantwortung tragen und in Prozessen
+agieren kann. Subtypen über sdata:agentType. Empfohlene Werte aus einem SKOS
+ConceptScheme (sdata-agents.ttl): Person, Organisation, Roboter, SoftwareAgent.
+Keine Unterklassen im Core."""@de .
+
+# ─── A2. PhysicalArtifact ───────────────────────────────────────────────────
+sdata:PhysicalArtifact
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000040 ; # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
+    rdfs:label "Physical Artifact"@en , "Physisches Artefakt"@de ;
+    rdfs:comment """Discrete, serializable, intentionally manufactured physical object
+with its own identity and lifecycle (the product instance).
+Examples: a specific car (VIN), a battery pack, a PCB."""@en ,
+               """Diskretes, serialisierbares, intentional hergestelltes physisches Objekt
+mit eigener Identität und eigenem Lebenszyklus (die Produktinstanz).
+Beispiele: ein bestimmtes Auto (VIN), ein Batteriepack, eine Leiterplatte."""@de .
+
+# ─── A3. Material ────────────────────────────────────────────────────────────
+sdata:Material
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000040 ; # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
+    rdfs:label "Material"@en , "Material"@de ;
+    rdfs:comment """Homogeneous, divisible substance tracked by mass balance.
+No serial number — identified by batch, grade, or composition.
+Examples: recycled PP granulate, 6061-T6 aluminum alloy, a lithium charge."""@en ,
+               """Homogene, teilbare Substanz, die per Massenbilanz verfolgt wird.
+Keine Seriennummer – identifiziert über Charge, Güte oder Zusammensetzung.
+Beispiele: recyceltes PP-Granulat, 6061-T6 Aluminiumlegierung, eine Lithium-Charge."""@de .
+
+# ─── A4. Site ────────────────────────────────────────────────────────────────
+sdata:Site
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000029 ; # bfo:Site (ImmaterialEntity, ISO/IEC 21838-2:2021)
+    rdfs:label "Site"@en , "Standort"@de ;
+    rdfs:comment """Three-dimensional immaterial spatial region, bounded by or
+defined relative to material entities. Exists independently of buildings,
+roles, or processes.
+Examples: factory grounds (even without buildings), delivery zone,
+recycling yard area, protected zone, offshore wind ocean section,
+planned factory site."""@en ,
+               """Dreidimensionaler immaterieller räumlicher Bereich, der durch
+materielle Entitäten begrenzt oder relativ zu ihnen definiert ist.
+Existiert unabhängig von Gebäuden, Rollen oder Prozessen.
+Beispiele: Produktionsgelände (auch ohne Hallen), Lieferzone, Recyclinghof-Bereich,
+Schutzzone, Ozean-Abschnitt für Offshore-Wind, geplante Werksfläche."""@de .
+
+# ─── A5. DigitalArtifact ────────────────────────────────────────────────────
+sdata:DigitalArtifact
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
+    rdfs:label "Digital Artifact"@en , "Digitales Artefakt"@de ;
+    rdfs:comment """Any generically dependent information entity: CAD models,
+product passports, simulation results, software packages, datasets.
+A digital twin is a DigitalArtifact that realizes the Role 'DigitalTwin'."""@en ,
+               """Jede generisch abhängige Informationsentität: CAD-Modelle,
+Produktpässe, Simulationsergebnisse, Softwarepakete, Datensätze.
+Ein digitaler Zwilling ist ein DigitalArtifact, das die Rolle 'DigitalTwin' realisiert."""@de .
+
+# ─── A6. Process ─────────────────────────────────────────────────────────────
+sdata:Process
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000015 ; # bfo:Process — ONLY BFO parent (ISO/IEC 21838-2:2021)
+    rdfs:label "Process"@en , "Prozess"@de ;
+    rdfs:comment """Occurrent that unfolds over time and transforms, transports, or
+measures things. Manufacturing, disassembly, testing, recycling, transport.
+PROV-O ALIGNMENT: This class does NOT inherit from prov:Activity to avoid
+dual-inheritance issues in reasoners. Instead, PROV interoperability is
+achieved via property-mapping:
+  · sdata:generates rdfs:subPropertyOf prov:generated
+  · sdata:consumes rdfs:subPropertyOf prov:used
+  · sdata:wasPerformedBy rdfs:subPropertyOf prov:wasAssociatedWith
+  · Use prov:startedAtTime / prov:endedAtTime directly on instances.
+This gives full PROV-O query compatibility without metaphysical conflict."""@en ,
+               """Occurrent, der sich über die Zeit entfaltet und Dinge transformiert,
+transportiert oder misst. Herstellung, Demontage, Prüfung, Recycling, Transport.
+PROV-O-ALIGNMENT: Diese Klasse erbt NICHT von prov:Activity, um
+Dual-Inheritance-Probleme in Reasonern zu vermeiden. Stattdessen wird
+PROV-Interoperabilität über Property-Mapping hergestellt:
+  · sdata:generates rdfs:subPropertyOf prov:generated
+  · sdata:consumes rdfs:subPropertyOf prov:used
+  · sdata:wasPerformedBy rdfs:subPropertyOf prov:wasAssociatedWith
+  · prov:startedAtTime / prov:endedAtTime direkt an Instanzen nutzen."""@de .
+
+# ─── A7. Role ────────────────────────────────────────────────────────────────
+sdata:Role
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000023 ; # bfo:Role (ISO/IEC 21838-2:2021)
+    rdfs:label "Role"@en , "Rolle"@de ;
+    rdfs:comment """Context-dependent, realizable entity. A bearer (Agent,
+PhysicalArtifact, DigitalArtifact) realizes a Role in a specific context.
+Specify via sdata:roleType. Recommended values from a SKOS ConceptScheme
+(sdata-roles.ttl): DigitalTwin, Specification, Manufacturer, Supplier,
+Owner, ManufacturingPhase, UsePhase, EoLPhase, Host, etc.
+No subclasses in core."""@en ,
+               """Kontextabhängige, realisierbare Entität. Ein Träger (Agent,
+PhysicalArtifact, DigitalArtifact) realisiert eine Rolle in einem spezifischen Kontext.
+Über sdata:roleType spezifizieren. Empfohlene Werte aus einem SKOS ConceptScheme
+(sdata-roles.ttl): DigitalTwin, Specification, Manufacturer, Supplier,
+Owner, ManufacturingPhase, UsePhase, EoLPhase, Host, etc.
+Keine Unterklassen im Core."""@de .
+
+# ─── A8. Identifier ──────────────────────────────────────────────────────────
+sdata:Identifier
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
+    rdfs:label "Identifier"@en , "Identifikator"@de ;
+    rdfs:comment """Reified, typed identification token. Enables multiple parallel ID
+schemes on one entity (GTIN + Serial + DID + ECLASS-IRDI + BatchID).
+Ontologically reducible to DigitalArtifact, but practically irreducible
+for supply-chain interoperability and product passports."""@en ,
+               """Reifizierter, typisierter Identifikations-Token. Ermöglicht multiple
+parallele ID-Schemata an einer Entität (GTIN + Serial + DID + ECLASS-IRDI + BatchID).
+Ontologisch auf DigitalArtifact reduzierbar, aber praktisch irreduzibel
+für Supply-Chain-Interoperabilität und Produktpässe."""@de .
+
+# =============================================================================
+# B. DISJOINTNESS — categorical separation
+# =============================================================================
+sdata:PhysicalArtifact owl:disjointWith sdata:Material .
+sdata:PhysicalArtifact owl:disjointWith sdata:DigitalArtifact .
+sdata:PhysicalArtifact owl:disjointWith sdata:Role .
+sdata:PhysicalArtifact owl:disjointWith sdata:Site .
+
+sdata:Material owl:disjointWith sdata:DigitalArtifact .
+sdata:Material owl:disjointWith sdata:Role .
+sdata:Material owl:disjointWith sdata:Site .
+
+sdata:Site owl:disjointWith sdata:DigitalArtifact .
+sdata:Site owl:disjointWith sdata:Role .
+sdata:Site owl:disjointWith sdata:Identifier .
+
+sdata:DigitalArtifact owl:disjointWith sdata:Role .
+
+sdata:Identifier owl:disjointWith sdata:Role .
+
+# Agent overlap intentionally allowed (robot = PhysicalArtifact + Agent, software agent = DigitalArtifact + Agent)
+
+# =============================================================================
+# C. OBJECT PROPERTIES — 12 relations (+ 5 inverses for SPARQL usability)
+# =============================================================================
+sdata:realizes
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:DigitalArtifact sdata:Agent ) ] ;
+    rdfs:range sdata:Role ;
+    rdfs:label "realizes"@en , "realisiert"@de ;
+    rdfs:comment "The bearer realizes this role in a given context."@en ,
+                "Der Träger realisiert diese Rolle in einem gegebenen Kontext."@de .
+
+sdata:isRealizedBy
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:realizes ;
+    rdfs:label "is realized by"@en , "wird realisiert durch"@de .
+
+sdata:represents
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:DigitalArtifact ;
+    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:Process sdata:Site ) ] ;
+    rdfs:label "represents"@en , "repräsentiert"@de ;
+    rdfs:comment """Core digital-physical bridge. A product passport represents a
+PhysicalArtifact. Qualify the nature of representation via sdata:realizes + roleType
+(DigitalTwin, Specification, Datasheet, etc.)."""@en ,
+               """Zentrale digital-physische Brücke. Art der Repräsentation über
+sdata:realizes + roleType qualifizieren (DigitalTwin, Specification, Datasheet, etc.)."""@de .
+
+sdata:isRepresentedBy
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:represents ;
+    rdfs:label "is represented by"@en , "wird repräsentiert durch"@de .
+
+sdata:consistsOf
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:PhysicalArtifact ;
+    rdfs:range sdata:Material ;
+    rdfs:label "consists of"@en , "besteht aus"@de ;
+    rdfs:comment """Material constitution relation. PhysicalArtifact → Material ONLY.
+Use qudt:QuantityValue on the Material to express mass fractions.
+For structural component hierarchy use hasPart."""@en ,
+               """Materielle Konstitutionsrelation. PhysicalArtifact → Material AUSSCHLIESSLICH.
+Für strukturelle Komponentenhierarchie hasPart verwenden."""@de .
+
+sdata:hasPart
+    rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:subPropertyOf bfo:0000051 ; # bfo:has_part
+    rdfs:domain sdata:PhysicalArtifact ;
+    rdfs:range sdata:PhysicalArtifact ;
+    rdfs:label "has part"@en , "hat Teil"@de ;
+    rdfs:comment """Strict structural component hierarchy (BOM). Transitive.
+For material composition use consistsOf instead."""@en ,
+               """Strikte strukturelle Komponentenhierarchie (Stückliste). Transitiv.
+Für materielle Zusammensetzung stattdessen consistsOf verwenden."""@de .
+
+sdata:consumes
+    rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:used ;
+    rdfs:domain sdata:Process ;
+    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material ) ] ;
+    rdfs:label "consumes"@en , "verbraucht"@de ;
+    rdfs:comment """A Process consumes inputs (material or artifacts).
+SubPropertyOf prov:used for direct PROV-O query compatibility."""@en ,
+               """Ein Prozess verbraucht Inputs (Material oder Artefakte).
+SubPropertyOf prov:used für direkte PROV-O-Query-Kompatibilität."""@de .
+
+sdata:generates
+    rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:generated ;
+    rdfs:domain sdata:Process ;
+    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact ) ] ;
+    rdfs:label "generates"@en , "erzeugt"@de ;
+    rdfs:comment """A Process generates outputs. SubPropertyOf prov:generated for
+direct PROV-O query compatibility."""@en ,
+               """Ein Prozess erzeugt Outputs. SubPropertyOf prov:generated für
+direkte PROV-O-Query-Kompatibilität."""@de .
+
+sdata:isGeneratedBy
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:generates ;
+    rdfs:label "is generated by"@en , "wird erzeugt durch"@de .
+
+sdata:wasPerformedBy
+    rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasAssociatedWith ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Agent ;
+    rdfs:label "was performed by"@en , "wurde durchgeführt von"@de ;
+    rdfs:comment """Links a Process to the responsible Agent(s).
+SubPropertyOf prov:wasAssociatedWith for PROV-O compatibility."""@en ,
+               """Verknüpft einen Prozess mit dem/den verantwortlichen Agent(en).
+SubPropertyOf prov:wasAssociatedWith für PROV-O-Kompatibilität."""@de .
+
+sdata:hasIdentifier
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Agent sdata:Site ) ] ;
+    rdfs:range sdata:Identifier ;
+    rdfs:label "has identifier"@en , "hat Identifikator"@de .
+
+sdata:locatedAt
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:Agent sdata:Process ) ] ;
+    rdfs:range sdata:Site ;
+    rdfs:label "located at"@en , "befindet sich an"@de ;
+    rdfs:comment """Anchors entities and processes to spatial locations."""@en ,
+               """Verankert Entitäten und Prozesse an räumlichen Standorten."""@de .
+
+sdata:isLocationOf
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:locatedAt ;
+    rdfs:label "is location of"@en , "ist Standort von"@de .
+
+sdata:containsSite
+    rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:domain sdata:Site ;
+    rdfs:range sdata:Site ;
+    rdfs:label "contains site"@en , "enthält Standort"@de ;
+    rdfs:comment """Spatial nesting of immaterial regions. Transitive."""@en ,
+               """Räumliche Verschachtelung immaterieller Bereiche. Transitiv."""@de .
+
+sdata:hostedOn
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:DigitalArtifact ;
+    rdfs:range sdata:PhysicalArtifact ;
+    rdfs:label "hosted on"@en , "gehostet auf"@de ;
+    rdfs:comment """Where a digital artifact physically runs or is stored."""@en ,
+               """Wo ein digitales Artefakt physisch läuft oder gespeichert ist."""@de .
+
+sdata:hosts
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:hostedOn ;
+    rdfs:label "hosts"@en , "hostet"@de .
+
+sdata:recoveredFrom
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:Material ;
+    rdfs:range [ owl:unionOf ( sdata:Material sdata:PhysicalArtifact ) ] ;
+    rdfs:label "recovered from"@en , "zurückgewonnen aus"@de ;
+    rdfs:comment """Tracks circular material flow."""@en ,
+               """Verfolgt zirkuläre Materialflüsse."""@de .
+
+# =============================================================================
+# D. DATATYPE PROPERTIES — 12 essential attributes
+# =============================================================================
+sdata:agentType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Agent ;
+    rdfs:range xsd:string ;
+    rdfs:label "agent type"@en , "Agent-Typ"@de ;
+    rdfs:comment """Discriminator for Agent subtypes. Values SHOULD come from a
+controlled vocabulary (SKOS ConceptScheme in sdata-agents.ttl)."""@en .
+
+sdata:roleType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Role ;
+    rdfs:range xsd:string ;
+    rdfs:label "role type"@en , "Rollen-Typ"@de ;
+    rdfs:comment """Discriminator for Role subtypes. Values SHOULD come from a
+controlled vocabulary (SKOS ConceptScheme in sdata-roles.ttl)."""@en .
+
+sdata:identifierType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Identifier ;
+    rdfs:range xsd:string ;
+    rdfs:label "identifier type"@en , "Identifikator-Typ"@de ;
+    rdfs:comment """Type of the identifier. Values SHOULD come from a controlled
+vocabulary (SKOS ConceptScheme in sdata-identifiers.ttl)."""@en .
+
+sdata:identifierValue
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Identifier ;
+    rdfs:range xsd:string ;
+    rdfs:label "identifier value"@en , "Identifikator-Wert"@de .
+
+sdata:validFrom
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:DigitalArtifact sdata:Role sdata:Identifier ) ] ;
+    rdfs:range xsd:dateTimeStamp ;
+    rdfs:label "valid from"@en , "gültig ab"@de .
+
+sdata:validUntil
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:DigitalArtifact sdata:Role sdata:Identifier ) ] ;
+    rdfs:range xsd:dateTimeStamp ;
+    rdfs:label "valid until"@en , "gültig bis"@de .
+
+sdata:name
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:Agent sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Process sdata:Site ) ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "name"@en , "Name"@de ;
+    rdfs:comment "Human-readable display name for any core entity."@en .
+
+sdata:description
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Process sdata:Role sdata:Site ) ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "description"@en , "Beschreibung"@de .
+
+sdata:version
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:DigitalArtifact ;
+    rdfs:range xsd:string ;
+    rdfs:label "version"@en , "Version"@de .
+
+sdata:hasGeometry
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Site ;
+    rdfs:range xsd:string ;
+    rdfs:label "geometry (WKT/GeoJSON)"@en , "Geometrie (WKT/GeoJSON)"@de ;
+    rdfs:comment "Spatial geometry of the site as WKT or GeoJSON string."@en .
+
+sdata:geoCoordinates
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Site ;
+    rdfs:range xsd:string ;
+    rdfs:label "geo coordinates"@en , "Geo-Koordinaten"@de ;
+    rdfs:comment "Simple lat,lon point coordinate for the site."@en .
+
+sdata:address
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:Site ;
+    rdfs:range xsd:string ;
+    rdfs:label "address"@en , "Adresse"@de ;
+    rdfs:comment """Human-readable postal address. For structured addresses
+use sdata-location.ttl extension module."""@en ,
+                """Menschenlesbare Postadresse. Für strukturierte Adressen
+das Extension-Modul sdata-location.ttl verwenden."""@de .
+
+# =============================================================================
+# E. DESIGN DECISIONS
+# =============================================================================
+#
+# BFO ALIGNMENT TO ISO STANDARD (Review Point #0):
+# ───────────────────────────────────────────────
+# All BFO references conform explicitly to ISO/IEC 21838-2:2021.
+# sdata:PhysicalArtifact rdfs:subClassOf bfo:0000040   # MaterialEntity (ISO)
+# sdata:Material         rdfs:subClassOf bfo:0000040
+# sdata:Site             rdfs:subClassOf bfo:0000029   # Site (ISO)
+# sdata:DigitalArtifact  rdfs:subClassOf bfo:0000031   # GenericallyDependentContinuant (ISO)
+# sdata:Process          rdfs:subClassOf bfo:0000015   # Process (ISO)
+# sdata:Role             rdfs:subClassOf bfo:0000023   # Role (ISO)
+# sdata:Identifier       rdfs:subClassOf bfo:0000031
+#
+# Import: http://purl.obolibrary.org/obo/bfo.owl (official ISO BFO 2020 OWL rendering)
+# dcterms:conformsTo ISO/IEC 21838-2:2021 declared on the ontology.
+#
+# 8 CLASSES — IRREDUCIBILITY, PROV-O ALIGNMENT, involves SPLIT, consistsOf RESTRICTION,
+# AGENT OVERLAP, CONTROLLED VOCABULARIES, xsd:dateTimeStamp, OWL DOMAIN UNIONS + SHACL
+#
+# =============================================================================
+# END — sdata Core v1.0 — 26 February 2026
+# =============================================================================
