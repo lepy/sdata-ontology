@@ -1,0 +1,72 @@
+# =============================================================================
+# FILE: sdata-agents.ttl
+# Controlled vocabulary for sdata:agentType (minimal)
+# =============================================================================
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix sagents:  <https://w3id.org/sdata/vocab/agents#> .
+
+<https://w3id.org/sdata/vocab/agents>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/core> ;
+    owl:versionInfo "1.0.0 — 26 February 2026" ;
+    rdfs:label "sdata agentType vocabulary"@en ;
+    rdfs:label "sdata agentType Vokabular"@de ;
+    dcterms:description "Controlled vocabulary (SKOS) for sdata:agentType. Minimal set: Person, Organization, Hardware, Software."@en ;
+    dcterms:description "Kontrolliertes Vokabular (SKOS) für sdata:agentType. Minimalmenge: Person, Organisation, Hardware, Software."@de
+.
+
+sagents:AgentTypeScheme
+    a skos:ConceptScheme ;
+    skos:prefLabel "Agent types"@en ;
+    skos:prefLabel "Agent-Typen"@de ;
+    skos:hasTopConcept sagents:Person, sagents:Organization, sagents:Hardware, sagents:Software
+.
+
+sagents:Person
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:topConceptOf sagents:AgentTypeScheme ;
+    skos:prefLabel "Person"@en ;
+    skos:prefLabel "Person"@de ;
+    skos:definition "Human agent."@en ;
+    skos:definition "Menschlicher Agent."@de
+.
+
+sagents:Organization
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:topConceptOf sagents:AgentTypeScheme ;
+    skos:prefLabel "Organization"@en ;
+    skos:prefLabel "Organisation"@de ;
+    skos:definition "Organizational agent (company, institute, lab, authority)."@en ;
+    skos:definition "Organisationaler Agent (Unternehmen, Institut, Labor, Behörde)."@de
+.
+
+sagents:Hardware
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:topConceptOf sagents:AgentTypeScheme ;
+    skos:prefLabel "Hardware"@en ;
+    skos:prefLabel "Hardware"@de ;
+    skos:definition "Physical artifact acting as an agent (machine, robot, vehicle, device)."@en ;
+    skos:definition "Physisches Artefakt, das als Agent auftritt (Maschine, Roboter, Fahrzeug, Gerät)."@de
+.
+
+sagents:Software
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:topConceptOf sagents:AgentTypeScheme ;
+    skos:prefLabel "Software"@en ;
+    skos:prefLabel "Software"@de ;
+    skos:definition "Digital artifact acting as an agent (service, pipeline, model, controller)."@en ;
+    skos:definition "Digitales Artefakt, das als Agent auftritt (Service, Pipeline, Modell, Controller)."@de
+.
