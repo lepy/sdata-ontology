@@ -10,17 +10,17 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # =============================================================================
-# sdata Core Ontology v1.0 — Reviewed & Hardened
-# 26 February 2026
+# sdata Core Ontology v0.1 — Reviewed & Hardened
+# 27 February 2026
 # 8 Classes · 12 Object Properties (+ 5 inverses) · 12 Datatype Properties
 # Imports: vendored BFO, PROV-O, QUDT (offline/autark)
 # =============================================================================
 <https://w3id.org/sdata/core>
     rdf:type owl:Ontology ;
-    rdfs:label "sdata Core Ontology v1.0"@en ,
-               "sdata Core-Ontologie v1.0"@de ;
-    owl:versionInfo "1.0 — 26 February 2026. Reviewed: PROV via property-mapping (no dual inheritance), involves split into consumes/wasPerformedBy, consistsOf restricted to Material, dateTimeStamp, SHACL/SKOS guidance. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
-    owl:versionIRI <https://w3id.org/sdata/core/1.0> ;
+    rdfs:label "sdata Core Ontology v0.1"@en ,
+               "sdata Core-Ontologie v0.1"@de ;
+    owl:versionInfo "0.1.0 — 27 February 2026. Reviewed: PROV via property-mapping (no dual inheritance), involves split into consumes/wasPerformedBy, consistsOf restricted to Material, dateTimeStamp, SHACL/SKOS guidance. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
+    owl:versionIRI <https://w3id.org/sdata/core/0.1> ;
     
     # ─── Local imports (vendored for offline use) ──────────────────────────────
     owl:imports <vendor/ontologies/bfo.ttl> ;      # derived from official BFO 2020 OWL rendering (ISO/IEC 21838-2:2021)
@@ -449,5 +449,5 @@ das Extension-Modul sdata-location.ttl verwenden."""@de .
 # AGENT OVERLAP, CONTROLLED VOCABULARIES, xsd:dateTimeStamp, OWL DOMAIN UNIONS + SHACL
 #
 # =============================================================================
-# END — sdata Core v1.0 — 26 February 2026
+# END — sdata Core v0.1 — 27 February 2026
 # =============================================================================

@@ -21,7 +21,7 @@
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
     owl:imports <https://w3id.org/sdata/processtypes> ;
-    owl:versionInfo "1.0.0 — 27 February 2026" ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
     rdfs:label "sdata Lifecycle flows"@en ;
     rdfs:label "sdata Lebenszyklusflüsse"@de ;
     dcterms:description
@@ -248,5 +248,5 @@ slc:terminalExit
 #       sdata:consumes   ex:D3plot_v1_old .
 #
 # =============================================================================
-# END — sdata-lifecycle.ttl v1.0.0
+# END — sdata-lifecycle.ttl v0.1.0
 # =============================================================================

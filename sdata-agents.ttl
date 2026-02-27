@@ -22,7 +22,7 @@
 <https://w3id.org/sdata/vocab/agents>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "1.1.0 — 27 February 2026" ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
     rdfs:label "sdata agentType vocabulary"@en ;
     rdfs:label "sdata agentType-Vokabular"@de ;
     dcterms:description
@@ -127,7 +127,7 @@ sagents:Solver
     skos:definition "Software that computes a model of a physical or logical system (FEM solver, CFD solver, ML runtime)."@en ;
     skos:definition "Software, die ein Modell eines physischen oder logischen Systems berechnet (FEM-Solver, CFD-Solver, ML-Runtime)."@de ;
     skos:scopeNote "The solver is the *agent* that performs a sdata:Simulation *process*. This disambiguation avoids name collision: sagents:Solver (the software) vs. sdata:Simulation (the run). See sdata-processtypes.ttl design decision D6."@en ;
-    skos:historyNote "Renamed from sagents:Simulation to sagents:Solver in v1.1.0 to avoid ambiguity with the OWL class sdata:Simulation (process run) defined in sdata-processtypes.ttl."@en
+    skos:historyNote "Renamed from sagents:Simulation to sagents:Solver in v0.1.0 to avoid ambiguity with the OWL class sdata:Simulation (process run) defined in sdata-processtypes.ttl."@en
 .
 
 sagents:Service
