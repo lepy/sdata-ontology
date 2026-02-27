@@ -15,6 +15,9 @@ SDATA = Namespace("https://w3id.org/sdata/core#")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
 PROV_AGENT = URIRef("http://www.w3.org/ns/prov#Agent")
 SDATA_AGENT = SDATA.Agent
+SDATA_PHYSICAL_ARTIFACT = SDATA.PhysicalArtifact
+SDATA_DIGITAL_ARTIFACT = SDATA.DigitalArtifact
+BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
 
 
 @dataclass(frozen=True)
@@ -81,6 +84,14 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             nodes[parent] = "prov"
             edges.add(HierarchyEdge(parent=parent, child=SDATA_AGENT))
 
+    for sdata_class in (SDATA_PHYSICAL_ARTIFACT, SDATA_DIGITAL_ARTIFACT):
+        if (sdata_class, RDF.type, OWL.Class) in graph:
+            nodes[sdata_class] = "sdata"
+        for parent in graph.objects(sdata_class, RDFS.subClassOf):
+            if isinstance(parent, URIRef) and str(parent).startswith(BFO_PREFIX):
+                nodes[parent] = "bfo"
+                edges.add(HierarchyEdge(parent=parent, child=sdata_class))
+
     schemes = [
         scheme
         for scheme in graph.subjects(RDF.type, SKOS.ConceptScheme)
@@ -119,6 +130,11 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             )
             if is_top:
                 edges.add(HierarchyEdge(parent=scheme, child=concept))
+
+            if concept == SAGENTS.Hardware and SDATA_PHYSICAL_ARTIFACT in nodes:
+                edges.add(HierarchyEdge(parent=SDATA_PHYSICAL_ARTIFACT, child=concept))
+            if concept == SAGENTS.Software and SDATA_DIGITAL_ARTIFACT in nodes:
+                edges.add(HierarchyEdge(parent=SDATA_DIGITAL_ARTIFACT, child=concept))
 
     model_nodes = tuple(
         HierarchyNode(iri=iri, label=_best_label(graph, iri), kind=kind)
@@ -167,13 +183,17 @@ def build_agraph(model: HierarchyModel):
     )
 
     core_cluster = graph.add_subgraph(
-        name="cluster_core", label="Core context", color="#90B5E8", style="rounded"
+        name="cluster_core", label="Core/PROV context", color="#90B5E8", style="rounded"
+    )
+    bfo_cluster = graph.add_subgraph(
+        name="cluster_bfo", label="BFO context", color="#F3C887", style="rounded"
     )
     agents_cluster = graph.add_subgraph(
         name="cluster_agents", label="sdata-agents vocabulary", color="#9AD9BF", style="rounded"
     )
 
     style_map = {
+        "bfo": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
         "prov": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
         "sdata": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "scheme": {"fillcolor": "#E7FFF6", "color": "#2F855A", "fontcolor": "#1C4532"},
@@ -181,20 +201,29 @@ def build_agraph(model: HierarchyModel):
     }
 
     for node in model.nodes:
-        target = core_cluster if node.kind in {"prov", "sdata"} else agents_cluster
+        if node.kind in {"prov", "sdata"}:
+            target = core_cluster
+        elif node.kind == "bfo":
+            target = bfo_cluster
+        else:
+            target = agents_cluster
         target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
 
     for edge in model.edges:
         attrs = {"label": ""}
         if edge.parent == SDATA_AGENT:
             attrs["label"] = "typed via sdata:agentType"
+        elif edge.parent in {SDATA_PHYSICAL_ARTIFACT, SDATA_DIGITAL_ARTIFACT}:
+            attrs["label"] = "also an"
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
     legend.add_node("legend_sdata", label="sdata:Agent", **style_map["sdata"])
+    legend.add_node("legend_bfo", label="BFO class", **style_map["bfo"])
     legend.add_node("legend_scheme", label="SKOS ConceptScheme", **style_map["scheme"])
     legend.add_node("legend_concept", label="SKOS Concept", **style_map["concept"])
     legend.add_edge("legend_sdata", "legend_scheme", label="typed via sdata:agentType", color="#4A5568")
+    legend.add_edge("legend_bfo", "legend_sdata", label="superclass → subclass", color="#4A5568")
     legend.add_edge("legend_scheme", "legend_concept", label="broader -> narrower", color="#4A5568")
 
     return graph

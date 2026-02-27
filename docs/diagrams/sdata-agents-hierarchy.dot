@@ -27,7 +27,7 @@ digraph "" {
 	];
 	subgraph cluster_core {
 		graph [color="#90B5E8",
-			label="Core context",
+			label="Core/PROV context",
 			style=rounded
 		];
 		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
@@ -38,6 +38,28 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Agent];
+		"https://w3id.org/sdata/core#DigitalArtifact"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Digital Artifact"];
+		"https://w3id.org/sdata/core#PhysicalArtifact"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Physical Artifact"];
+	}
+	subgraph cluster_bfo {
+		graph [color="#F3C887",
+			label="BFO context",
+			style=rounded
+		];
+		"http://purl.obolibrary.org/obo/BFO_0000031"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=BFO_0000031];
+		"http://purl.obolibrary.org/obo/BFO_0000040"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=BFO_0000040];
 	}
 	subgraph cluster_agents {
 		graph [color="#9AD9BF",
@@ -95,14 +117,23 @@ digraph "" {
 			fontcolor="#1C4532",
 			label="SKOS ConceptScheme"];
 		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
+		legend_bfo	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="BFO class"];
+		legend_bfo -> legend_sdata	[label="superclass → subclass"];
 		legend_concept	[color="#2F855A",
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label="SKOS Concept"];
 		legend_scheme -> legend_concept	[label="broader -> narrower"];
 	}
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#DigitalArtifact";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#PhysicalArtifact";
 	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#Agent";
 	"https://w3id.org/sdata/core#Agent" -> "https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[label="typed via sdata:agentType"];
+	"https://w3id.org/sdata/core#DigitalArtifact" -> "https://w3id.org/sdata/vocab/agents#Software"	[label="also an"];
+	"https://w3id.org/sdata/core#PhysicalArtifact" -> "https://w3id.org/sdata/vocab/agents#Hardware"	[label="also an"];
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Hardware";
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Organization";
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Person";
