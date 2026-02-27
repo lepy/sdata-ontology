@@ -26,45 +26,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_information_branch {
-		graph [color="#A9D18E",
-			label="Information process branch",
-			rankdir=TB,
-			style=rounded
-		];
-		"https://w3id.org/sdata/core/InformationCreation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Creation"];
-		"https://w3id.org/sdata/core/InformationDestruction"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Destruction"];
-		"https://w3id.org/sdata/core/InformationObservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Observation"];
-		"https://w3id.org/sdata/core/InformationPreservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Preservation"];
-		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Process"];
-		"https://w3id.org/sdata/core/InformationRecovery"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Recovery"];
-		"https://w3id.org/sdata/core/InformationTransfer"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Transfer"];
-		"https://w3id.org/sdata/core/InformationTransformation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label="Information Transformation"];
-	}
 	subgraph cluster_material_branch {
 		graph [color="#9DC3E6",
 			label="Material process branch",
@@ -87,10 +48,6 @@ digraph "" {
 			fillcolor="#EEF8E7",
 			fontcolor="#2F5D08",
 			label="Material Preservation"];
-		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Process"];
 		"https://w3id.org/sdata/core/MaterialRecovery"	[color="#4F8A10",
 			fillcolor="#EEF8E7",
 			fontcolor="#2F5D08",
@@ -103,6 +60,56 @@ digraph "" {
 			fillcolor="#EEF8E7",
 			fontcolor="#2F5D08",
 			label="Material Transformation"];
+	}
+	subgraph cluster_process_roots {
+		graph [color="#D6D6D6",
+			label="Process roots",
+			rank=source,
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Information Process"];
+		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Material Process"];
+	}
+	subgraph cluster_information_branch {
+		graph [color="#A9D18E",
+			label="Information process branch",
+			rankdir=TB,
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/InformationCreation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Creation"];
+		"https://w3id.org/sdata/core/InformationDestruction"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Destruction"];
+		"https://w3id.org/sdata/core/InformationObservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Observation"];
+		"https://w3id.org/sdata/core/InformationPreservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Preservation"];
+		"https://w3id.org/sdata/core/InformationRecovery"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Recovery"];
+		"https://w3id.org/sdata/core/InformationTransfer"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Transfer"];
+		"https://w3id.org/sdata/core/InformationTransformation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label="Information Transformation"];
 	}
 	"https://w3id.org/sdata/core/InformationCreation" -> "https://w3id.org/sdata/core/InformationTransformation"	[color="#4F8A10",
 		constraint=true,
@@ -123,6 +130,11 @@ digraph "" {
 		penwidth=2.0,
 		style=bold];
 	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationCreation"	[constraint=false];
+	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationCreation"	[color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=80];
 	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationDestruction"	[constraint=false];
 	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationObservation"	[constraint=false];
 	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationPreservation"	[constraint=false];
@@ -196,6 +208,11 @@ digraph "" {
 		label=dual,
 		style=dashed];
 	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialCreation"	[constraint=false];
+	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialCreation"	[color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=80];
 	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialDestruction"	[constraint=false];
 	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialObservation"	[constraint=false];
 	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialPreservation"	[constraint=false];

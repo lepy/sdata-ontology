@@ -207,11 +207,21 @@ def build_agraph(model: Model):
         style="rounded",
         rankdir="TB",
     )
+    root_branch = graph.add_subgraph(
+        name="cluster_process_roots",
+        label="Process roots",
+        color="#D6D6D6",
+        style="rounded",
+        rank="source",
+    )
 
     for node in model.nodes:
         node_id = str(node.iri)
         graph.add_node(node_id, label=node.label, **style_map[node.kind])
         local = node_id.rsplit("/", 1)[-1]
+        if node_id == str(MATERIAL_PROCESS) or node_id == str(INFORMATION_PROCESS):
+            root_branch.add_node(node_id)
+            continue
         if local.startswith("Material"):
             material_branch.add_node(node_id)
         elif local.startswith("Information"):
@@ -251,6 +261,22 @@ def build_agraph(model: Model):
             label="dual",
             constraint="false",
         )
+
+    # Keep the two root classes at the top while branches remain TB in their subgraphs.
+    for root_id, first_child in (
+        (str(INFORMATION_PROCESS), f"{SDATA_SLASH}InformationCreation"),
+        (str(MATERIAL_PROCESS), f"{SDATA_SLASH}MaterialCreation"),
+    ):
+        if root_id in node_ids and first_child in node_ids:
+            graph.add_edge(
+                root_id,
+                first_child,
+                style="invis",
+                color="#FFFFFF",
+                constraint="true",
+                weight="80",
+                minlen="1",
+            )
 
     # Add temporal sequence edges for process subclasses in each branch.
     sequence = [
