@@ -12,11 +12,13 @@ from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL, SKOS
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
-SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
+SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
 PROV_AGENT = URIRef("http://www.w3.org/ns/prov#Agent")
 SDATA_MATERIAL_AGENT = SDATA.MaterialAgent
 SDATA_INFORMATION_AGENT = SDATA.InformationAgent
 BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
+SDATA_HASH = "https://w3id.org/sdata/core#"
+SAGENTS_HASH = "https://w3id.org/sdata/vocab/agents#"
 
 
 @dataclass(frozen=True)
@@ -36,6 +38,27 @@ class HierarchyEdge:
 class HierarchyModel:
     nodes: tuple[HierarchyNode, ...]
     edges: tuple[HierarchyEdge, ...]
+
+
+def _canon_core(iri: URIRef) -> URIRef:
+    text = str(iri)
+    if text.startswith(SDATA_HASH):
+        return URIRef(str(SDATA) + text[len(SDATA_HASH) :])
+    return iri
+
+
+def _core_aliases(iri: URIRef) -> tuple[URIRef, ...]:
+    text = str(iri)
+    if text.startswith(str(SDATA)):
+        return (iri, URIRef(SDATA_HASH + text[len(str(SDATA)) :]))
+    if text.startswith(SDATA_HASH):
+        return (_canon_core(iri), iri)
+    return (iri,)
+
+
+def _is_agents_uri(iri: URIRef) -> bool:
+    text = str(iri)
+    return text.startswith(str(SAGENTS)) or text.startswith(SAGENTS_HASH)
 
 
 def load_graph(core_path: Path, agents_path: Path) -> Graph:
@@ -71,29 +94,54 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
     return str(sorted(labels, key=score)[0])
 
 
+def _infer_side(graph: Graph, concept: URIRef, broader_index: dict[URIRef, set[URIRef]], seen: set[URIRef] | None = None) -> str | None:
+    seen = seen or set()
+    if concept in seen:
+        return None
+    seen.add(concept)
+
+    text_blobs: list[str] = []
+    for pred in (SKOS.definition, SKOS.scopeNote, RDFS.comment):
+        text_blobs.extend(str(v) for v in graph.objects(concept, pred) if isinstance(v, Literal))
+    blob = " ".join(text_blobs)
+    if "MaterialAgent" in blob:
+        return "material"
+    if "InformationAgent" in blob:
+        return "information"
+
+    for broader in broader_index.get(concept, set()):
+        side = _infer_side(graph, broader, broader_index, seen)
+        if side:
+            return side
+    return None
+
+
 def extract_hierarchy(graph: Graph) -> HierarchyModel:
     nodes: dict[URIRef, str] = {}
     edges: set[HierarchyEdge] = set()
 
     agent_roots: list[URIRef] = []
     for sdata_class in (SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT):
-        if (sdata_class, RDF.type, OWL.Class) in graph:
-            nodes[sdata_class] = "sdata"
-            agent_roots.append(sdata_class)
-        for parent in graph.objects(sdata_class, RDFS.subClassOf):
-            if not isinstance(parent, URIRef):
-                continue
-            if parent == PROV_AGENT:
-                nodes[parent] = "prov"
-                edges.add(HierarchyEdge(parent=parent, child=sdata_class))
-            if str(parent).startswith(BFO_PREFIX):
-                nodes[parent] = "bfo"
-                edges.add(HierarchyEdge(parent=parent, child=sdata_class))
+        for alias in _core_aliases(sdata_class):
+            if (alias, RDF.type, OWL.Class) in graph:
+                nodes[sdata_class] = "sdata"
+                if sdata_class not in agent_roots:
+                    agent_roots.append(sdata_class)
+            for parent in graph.objects(alias, RDFS.subClassOf):
+                if not isinstance(parent, URIRef):
+                    continue
+                parent = _canon_core(parent)
+                if parent == PROV_AGENT:
+                    nodes[parent] = "prov"
+                    edges.add(HierarchyEdge(parent=parent, child=sdata_class))
+                if str(parent).startswith(BFO_PREFIX):
+                    nodes[parent] = "bfo"
+                    edges.add(HierarchyEdge(parent=parent, child=sdata_class))
 
     schemes = [
         scheme
         for scheme in graph.subjects(RDF.type, SKOS.ConceptScheme)
-        if isinstance(scheme, URIRef) and str(scheme).startswith(str(SAGENTS))
+        if isinstance(scheme, URIRef) and _is_agents_uri(scheme)
     ]
 
     for scheme in schemes:
@@ -104,18 +152,20 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
         concepts = {
             concept
             for concept in graph.subjects(SKOS.inScheme, scheme)
-            if isinstance(concept, URIRef)
+            if isinstance(concept, URIRef) and _is_agents_uri(concept)
         }
 
         for concept in concepts:
             nodes[concept] = "concept"
 
+        broader_index: dict[URIRef, set[URIRef]] = {}
         for concept in concepts:
             broader_parents = {
                 parent
                 for parent in graph.objects(concept, SKOS.broader)
                 if isinstance(parent, URIRef) and parent in concepts
             }
+            broader_index[concept] = broader_parents
 
             if broader_parents:
                 for parent in broader_parents:
@@ -129,11 +179,10 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             if is_top:
                 edges.add(HierarchyEdge(parent=scheme, child=concept))
 
-            material_concepts = {SAGENTS.Person, SAGENTS.Machine}
-            information_concepts = {SAGENTS.Organization, SAGENTS.Software}
-            if concept in material_concepts and SDATA_MATERIAL_AGENT in nodes:
+            side = _infer_side(graph, concept, broader_index)
+            if side == "material" and SDATA_MATERIAL_AGENT in nodes:
                 edges.add(HierarchyEdge(parent=SDATA_MATERIAL_AGENT, child=concept))
-            if concept in information_concepts and SDATA_INFORMATION_AGENT in nodes:
+            if side == "information" and SDATA_INFORMATION_AGENT in nodes:
                 edges.add(HierarchyEdge(parent=SDATA_INFORMATION_AGENT, child=concept))
 
     model_nodes = tuple(
@@ -217,7 +266,8 @@ def build_agraph(model: HierarchyModel):
     for edge in model.edges:
         attrs = {"label": ""}
         if edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT} and edge.child in {
-            SAGENTS.AgentTypeScheme
+            URIRef(str(SAGENTS) + "AgentTypeScheme"),
+            URIRef(SAGENTS_HASH + "AgentTypeScheme"),
         }:
             attrs["label"] = "typed via sdata:agentType"
         elif edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}:

@@ -12,8 +12,9 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
-@prefix sdata: <https://w3id.org/sdata/core#> .
-@prefix sagents:  <https://w3id.org/sdata/vocab/agents#> .
+@prefix sdata:    <https://w3id.org/sdata/core/> .
+@prefix sagents:  <https://w3id.org/sdata/vocab/agents/> .
+
 
 # =============================================================================
 # Ontology header
@@ -22,14 +23,28 @@
 <https://w3id.org/sdata/vocab/agents>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "0.2.0 — 27 February 2026" ;
-    rdfs:label "sdata agentType vocabulary"@en ;
-    rdfs:label "sdata agentType-Vokabular"@de ;
-    dcterms:description
-        """Controlled vocabulary (SKOS) for sdata:agentType. Mirrors the
-5+5+1 duality: Material agents (Person, Machine) are tangible,
-Information agents (Organization, Solver, Service, DigitalTwin) are
-intangible."""@en .
+    owl:versionInfo "0.3.0 — 27 February 2026" ;
+    rdfs:label "sdata agentType vocabulary"@en ,
+               "sdata agentType-Vokabular"@de ;
+    dcterms:description """Controlled vocabulary (SKOS) for sdata:agentType.
+Two dual pairs plus subtypes:
+
+  Material (tangible)       Information (intangible)
+  ─────────────────────     ───────────────────────────
+  Person                    Organization
+  Hardware                  Software
+    └── Sensor                └── Solver
+    └── Actuator              └── Service
+    └── Processor             └── DigitalTwin
+
+The tangibility test determines the side:
+  'Can you point at it?' → MaterialAgent (Person, Hardware)
+  'Can you NOT point at it?' → InformationAgent (Organization, Software)
+
+A Machine (Zwick Z100, robot arm, production line) is a composite:
+its body is Hardware (MaterialAgent), its control logic is Software
+(InformationAgent). Model both and link via sdata:hostedOn."""@en .
+
 
 # =============================================================================
 # ConceptScheme
@@ -37,55 +52,122 @@ intangible."""@en .
 
 sagents:AgentTypeScheme
     a skos:ConceptScheme ;
-    skos:prefLabel "Agent types"@en ;
-    skos:prefLabel "Agent-Typen"@de ;
+    skos:prefLabel "Agent types"@en ,
+                   "Agent-Typen"@de ;
     skos:hasTopConcept
         sagents:Person ,
-        sagents:Machine ,
+        sagents:Hardware ,
         sagents:Organization ,
-        sagents:Software
-.
+        sagents:Software .
+
 
 # =============================================================================
 # MATERIAL AGENTS — tangible, you can point at them
 # =============================================================================
+
+# ─── Person ──────────────────────────────────────────────────────────────────
 
 sagents:Person
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
     skos:prefLabel "Person"@en , "Person"@de ;
-    skos:definition "Human agent. Instance of sdata:MaterialAgent."@en ;
+    skos:definition """Human agent. Instance of sdata:MaterialAgent.
+Dual of Organization (individual tangible ↔ collective intangible)."""@en ;
     skos:scopeNote "Identify via ORCID (researchers), or name + affiliation."@en .
 
-sagents:Machine
+# ─── Hardware ────────────────────────────────────────────────────────────────
+
+sagents:Hardware
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
-    skos:prefLabel "Machine"@en , "Maschine"@de ;
-    skos:definition "Complex material system with sensors and actuators. Instance of sdata:MaterialAgent."@en ;
+    skos:prefLabel "Hardware"@en , "Hardware"@de ;
+    skos:definition """Tangible technical agent — the physical substrate that
+executes, senses, or actuates. Instance of sdata:MaterialAgent.
+Dual of Software (tangible technical ↔ intangible technical).
+
+A 'Machine' (Zwick Z100, press line, robot arm) is NOT a pure
+Hardware agent — it is a composite of Hardware (body, sensors,
+actuators) and Software (control logic, firmware). Model them
+separately and link via sdata:hostedOn:
+  ex:ZwickZ100_Body    a sdata:MaterialAgent ;   sdata:agentType "Hardware" .
+  ex:ZwickZ100_Firmware a sdata:InformationAgent ; sdata:agentType "Software" ;
+      sdata:hostedOn ex:ZwickZ100_Body ."""@en ;
+    skos:definition """Anfassbarer technischer Agent — das physische Substrat,
+das ausführt, misst oder bewegt. Instanz von sdata:MaterialAgent.
+Dual zu Software (anfassbar technisch ↔ nicht-anfassbar technisch).
+
+Eine 'Maschine' (Zwick Z100, Pressenlinie, Roboterarm) ist KEIN reiner
+Hardware-Agent — sie ist ein Komposit aus Hardware (Körper, Sensoren,
+Aktoren) und Software (Steuerungslogik, Firmware). Separat modellieren
+und via sdata:hostedOn verknüpfen."""@de ;
     skos:scopeNote "Identify via serial number, asset tag, or DPP identifier."@en ;
-    skos:example "Test machine (Zwick Z100), robot arm, production line, sensor."@en .
+    skos:example "Test machine body (Zwick Z100 frame), robot arm chassis, sensor unit, PCB, server rack."@en ;
+    skos:narrower
+        sagents:Sensor ,
+        sagents:Actuator ,
+        sagents:Processor ;
+    skos:historyNote "Renamed from 'Machine' in v0.3.0. Machine was a composite concept conflating Hardware and Software."@en .
+
+sagents:Sensor
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:broader sagents:Hardware ;
+    skos:prefLabel "Sensor"@en , "Sensor"@de ;
+    skos:definition """Hardware component that measures physical quantities.
+Produces raw data (Information) from material phenomena."""@en ;
+    skos:example "Load cell, thermocouple, strain gauge, camera module, LIDAR unit."@en .
+
+sagents:Actuator
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:broader sagents:Hardware ;
+    skos:prefLabel "Actuator"@en , "Aktor"@de ;
+    skos:definition """Hardware component that exerts force or motion on
+material entities. Converts control signals into physical action."""@en ;
+    skos:example "Hydraulic press cylinder, servo motor, gripper, valve."@en .
+
+sagents:Processor
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:broader sagents:Hardware ;
+    skos:prefLabel "Processor"@en , "Prozessor"@de ;
+    skos:definition """Hardware component that executes computation.
+The tangible substrate on which Software runs."""@en ;
+    skos:example "CPU, GPU, FPGA, microcontroller, TPU."@en .
+
 
 # =============================================================================
 # INFORMATION AGENTS — intangible, you cannot point at them
 # =============================================================================
+
+# ─── Organization ────────────────────────────────────────────────────────────
 
 sagents:Organization
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
     skos:prefLabel "Organization"@en , "Organisation"@de ;
-    skos:definition "Social entity constituted by agreements, structures, and roles. Instance of sdata:InformationAgent. Depends on material carriers (people, buildings) but is not identical with any of them."@en ;
+    skos:definition """Social entity constituted by agreements, structures, and roles.
+Instance of sdata:InformationAgent. Depends on material carriers
+(people, buildings) but is not identical with any of them.
+Dual of Person (collective intangible ↔ individual tangible)."""@en ;
     skos:scopeNote "Identify via LEI, DUNS, VAT-ID, or ROR (research orgs)."@en ;
     skos:example "Fraunhofer IWM, BMW Group, DIN e.V."@en .
+
+# ─── Software ────────────────────────────────────────────────────────────────
 
 sagents:Software
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
     skos:prefLabel "Software"@en , "Software"@de ;
-    skos:definition "Executable information entity acting as agent. Instance of sdata:InformationAgent."@en ;
+    skos:definition """Executable information entity acting as agent.
+Instance of sdata:InformationAgent.
+Dual of Hardware (intangible technical ↔ tangible technical).
+Depends on Hardware (Processor) to execute, but is not identical
+with it — the same Software can migrate across Processors."""@en ;
     skos:scopeNote "Identify via URI + version string, or package hash (SHA-256)."@en ;
     skos:narrower
         sagents:Solver ,
@@ -97,16 +179,19 @@ sagents:Solver
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
     skos:prefLabel "Solver"@en , "Solver"@de ;
-    skos:definition "Software that computes a model of a physical or logical system (FEM solver, CFD solver, ML runtime). The solver is the *agent* that performs an Observation process (simulation run)."@en ;
+    skos:definition """Software that computes a model of a physical or logical
+system (FEM solver, CFD solver, ML runtime). The solver is the
+*agent* that performs an Observation process (simulation run)."""@en ;
     skos:example "LS-DYNA R14, Abaqus 2024, OpenFOAM v12, PyTorch Runtime."@en ;
-    skos:historyNote "Renamed from sagents:Simulation in v1.1.0 to avoid ambiguity with the verb class sdata:Observation."@en .
+    skos:historyNote "Renamed from 'Simulation' in v0.2.0 to avoid ambiguity with the verb class sdata:Observation."@en .
 
 sagents:Service
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
     skos:prefLabel "Service"@en , "Dienst"@de ;
-    skos:definition "Persistent software endpoint that transforms, validates, or stores data (API, ETL pipeline, data broker)."@en ;
+    skos:definition """Persistent software endpoint that transforms, validates,
+or stores data (API, ETL pipeline, data broker)."""@en ;
     skos:example "REST API, SPARQL endpoint, CI/CD pipeline, message broker."@en .
 
 sagents:DigitalTwin
@@ -114,23 +199,44 @@ sagents:DigitalTwin
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
     skos:prefLabel "Digital Twin"@en , "Digitaler Zwilling"@de ;
-    skos:definition "Software representation of a material entity that synchronizes state bidirectionally and may act autonomously."@en ;
-    skos:scopeNote "A Digital Twin is both data consumer and producer. References its material counterpart via sdata:hasIdentifier."@en .
+    skos:definition """Software representation of a material entity that
+synchronizes state bidirectionally and may act autonomously."""@en ;
+    skos:scopeNote """A Digital Twin is both data consumer and producer.
+References its material counterpart via sdata:represents."""@en .
+
 
 # =============================================================================
-# MAPPING — agentType value to Core class
+# DUALITY MAP
 # =============================================================================
 #
-# agentType value     Core class              Tangible?
-# ──────────────────  ──────────────────────  ─────────
-# Person              sdata:MaterialAgent      ✓
-# Machine             sdata:MaterialAgent      ✓
-# Organization        sdata:InformationAgent   ✗
-# Software            sdata:InformationAgent   ✗
-#   └── Solver        sdata:InformationAgent   ✗
-#   └── Service       sdata:InformationAgent   ✗
-#   └── DigitalTwin   sdata:InformationAgent   ✗
+# Material (tangible)           Information (intangible)       Duality
+# ───────────────────────────   ─────────────────────────────  ─────────────
+# Person                        Organization                   Human
+#   (individual human)            (collective of humans)
+#
+# Hardware                      Software                       Technical
+#   (tangible substrate)          (intangible logic)
+#   ├── Sensor                    ├── Solver
+#   ├── Actuator                  ├── Service
+#   └── Processor                 └── DigitalTwin
+#
+# COMPOSITE PATTERN — how to model a Machine:
+# ─────────────────────────────────────────────
+#   A Machine = Hardware (body) + Software (logic)
+#
+#   ex:ZwickZ100_Body  a sdata:MaterialAgent ;
+#       sdata:agentType "Hardware" ;
+#       sdata:name "Zwick Z100 — physical frame" .
+#
+#   ex:ZwickZ100_Control  a sdata:InformationAgent ;
+#       sdata:agentType "Software" ;
+#       sdata:name "Zwick testXpert III" ;
+#       sdata:hostedOn ex:ZwickZ100_Body .
+#
+#   ex:TensileTest_42  a sdata:MaterialProcess , sdata:Observation ;
+#       sdata:wasPerformedBy ex:ZwickZ100_Body ;       # Hardware pulls
+#       sdata:wasPerformedBy ex:ZwickZ100_Control .    # Software records
 #
 # =============================================================================
-# END — sdata-agents.ttl v0.2.0
+# END — sdata-agents.ttl v0.3.0
 # =============================================================================

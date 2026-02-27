@@ -1,0 +1,299 @@
+digraph "" {
+	graph [bgcolor="#FAFBFC",
+		fontname=Helvetica,
+		fontsize=20,
+		label="sdata Combined Hierarchy (core + processtypes + agents)",
+		labeljust=c,
+		labelloc=t,
+		nodesep=0.55,
+		overlap=false,
+		pad=0.35,
+		rankdir=TB,
+		ranksep=1.0,
+		splines=true
+	];
+	node [fontname=Helvetica,
+		fontsize=12,
+		label="\N",
+		margin="0.14,0.08",
+		penwidth=1.6,
+		shape=box,
+		style="filled,rounded"
+	];
+	edge [arrowsize=0.8,
+		color="#4A5568",
+		fontname=Helvetica,
+		fontsize=10,
+		penwidth=1.5
+	];
+	subgraph cluster_core {
+		graph [color="#90B5E8",
+			label="sdata-core classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Identifier];
+		"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Information];
+		"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Information Agent"];
+		"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Information Artifact"];
+		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Information Process"];
+		"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Information Site"];
+		"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Material];
+		"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Material Agent"];
+		"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Material Artifact"];
+		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Material Process"];
+		"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Material Site"];
+		"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Role];
+	}
+	subgraph cluster_proc {
+		graph [color="#B6D7A8",
+			label="sdata-processtypes verb classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Creation];
+		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Destruction];
+		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Observation];
+		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Preservation];
+		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Recovery];
+		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transfer];
+		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transformation];
+	}
+	subgraph cluster_agents {
+		graph [color="#9AD9BF",
+			label="sdata-agents vocabulary",
+			style=rounded
+		];
+		"https://w3id.org/sdata/vocab/agents/Actuator"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Actuator];
+		"https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="Digital Twin"];
+		"https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Hardware];
+		"https://w3id.org/sdata/vocab/agents/Organization"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Organization];
+		"https://w3id.org/sdata/vocab/agents/Person"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Person];
+		"https://w3id.org/sdata/vocab/agents/Processor"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Processor];
+		"https://w3id.org/sdata/vocab/agents/Sensor"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Sensor];
+		"https://w3id.org/sdata/vocab/agents/Service"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Service];
+		"https://w3id.org/sdata/vocab/agents/Software"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Software];
+		"https://w3id.org/sdata/vocab/agents/Solver"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Solver];
+		"https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="Agent types"];
+	}
+	subgraph cluster_bfo {
+		graph [color="#F3C887",
+			label="BFO hierarchy",
+			style=rounded
+		];
+		"http://purl.obolibrary.org/obo/BFO_0000001"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=entity];
+		"http://purl.obolibrary.org/obo/BFO_0000002"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=continuant];
+		"http://purl.obolibrary.org/obo/BFO_0000003"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=occurrent];
+		"http://purl.obolibrary.org/obo/BFO_0000004"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="independent continuant"];
+		"http://purl.obolibrary.org/obo/BFO_0000015"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=process];
+		"http://purl.obolibrary.org/obo/BFO_0000017"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="realizable entity"];
+		"http://purl.obolibrary.org/obo/BFO_0000020"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="specifically dependent continuant"];
+		"http://purl.obolibrary.org/obo/BFO_0000023"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=role];
+		"http://purl.obolibrary.org/obo/BFO_0000029"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=site];
+		"http://purl.obolibrary.org/obo/BFO_0000031"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="generically dependent continuant"];
+		"http://purl.obolibrary.org/obo/BFO_0000040"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="material entity"];
+		"http://purl.obolibrary.org/obo/BFO_0000141"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="immaterial entity"];
+	}
+	subgraph cluster_prov {
+		graph [color="#CFE8D6",
+			label="PROV hierarchy",
+			style=rounded
+		];
+		"http://www.w3.org/ns/prov#Agent"	[color="#2F855A",
+			fillcolor="#EAF7EF",
+			fontcolor="#1C4532",
+			label=Agent];
+	}
+	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Actuator"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Processor"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Sensor"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/Service"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/Solver"	[color="#2F855A",
+		label=broader,
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
+		label="top concept",
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Organization"	[color="#2F855A",
+		label="top concept",
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Person"	[color="#2F855A",
+		label="top concept",
+		style=dotted];
+	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Software"	[color="#2F855A",
+		label="top concept",
+		style=dotted];
+	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000002";
+	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000003";
+	"http://purl.obolibrary.org/obo/BFO_0000002" -> "http://purl.obolibrary.org/obo/BFO_0000004";
+	"http://purl.obolibrary.org/obo/BFO_0000002" -> "http://purl.obolibrary.org/obo/BFO_0000020";
+	"http://purl.obolibrary.org/obo/BFO_0000002" -> "http://purl.obolibrary.org/obo/BFO_0000031";
+	"http://purl.obolibrary.org/obo/BFO_0000003" -> "http://purl.obolibrary.org/obo/BFO_0000015";
+	"http://purl.obolibrary.org/obo/BFO_0000004" -> "http://purl.obolibrary.org/obo/BFO_0000040";
+	"http://purl.obolibrary.org/obo/BFO_0000004" -> "http://purl.obolibrary.org/obo/BFO_0000141";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/InformationProcess";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/MaterialProcess";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Creation";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Destruction";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Observation";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Preservation";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Recovery";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Transfer";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/Transformation";
+	"http://purl.obolibrary.org/obo/BFO_0000017" -> "http://purl.obolibrary.org/obo/BFO_0000023";
+	"http://purl.obolibrary.org/obo/BFO_0000020" -> "http://purl.obolibrary.org/obo/BFO_0000017";
+	"http://purl.obolibrary.org/obo/BFO_0000023" -> "https://w3id.org/sdata/core/Role";
+	"http://purl.obolibrary.org/obo/BFO_0000029" -> "https://w3id.org/sdata/core/MaterialSite";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/Identifier";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/Information";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationAgent";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationArtifact";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationSite";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/Material";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/MaterialAgent";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/MaterialArtifact";
+	"http://purl.obolibrary.org/obo/BFO_0000141" -> "http://purl.obolibrary.org/obo/BFO_0000029";
+	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
+		label="typed via sdata:agentType",
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
+		label="typed via sdata:agentType",
+		style=dashed];
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/InformationAgent";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/MaterialAgent";
+}
