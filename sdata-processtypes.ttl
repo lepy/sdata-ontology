@@ -1,0 +1,274 @@
+# =============================================================================
+# FILE: sdata-processtypes.ttl
+# Four OWL subclasses of sdata:Process
+#   Tier 1:  PhysicalProcess, DigitalProcess
+#   Tier 2:  Experiment (⊂ PhysicalProcess), Simulation (⊂ DigitalProcess)
+# =============================================================================
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+@prefix sdata: <https://w3id.org/sdata/core#> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/processtypes>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/core> ;
+    owl:versionInfo "1.0.0 — 27 February 2026" ;
+    rdfs:label "sdata Process-type extension"@en ;
+    rdfs:label "sdata Prozesstyp-Erweiterung"@de ;
+    dcterms:description
+        """Four OWL subclasses of sdata:Process in two tiers.
+Tier 1 splits by operational domain: PhysicalProcess (operates on matter
+in space) vs. DigitalProcess (operates on information on compute).
+Tier 2 specializes by method: Experiment (⊂ PhysicalProcess) and
+Simulation (⊂ DigitalProcess).
+This mirrors the Continuant-side split of MaterialEntity into
+PhysicalArtifact/Material vs. GenericallyDependentContinuant into
+DigitalArtifact/Identifier.
+See design decisions below."""@en ;
+    dcterms:description
+        """Vier OWL-Subklassen von sdata:Process in zwei Stufen.
+Stufe 1 trennt nach Operationsdomäne: PhysicalProcess (operiert auf
+Materie im Raum) vs. DigitalProcess (operiert auf Information auf Compute).
+Stufe 2 spezialisiert nach Methode: Experiment (⊂ PhysicalProcess) und
+Simulation (⊂ DigitalProcess).
+Dies spiegelt die Continuant-seitige Trennung von MaterialEntity in
+PhysicalArtifact/Material vs. GenericallyDependentContinuant in
+DigitalArtifact/Identifier.
+Siehe Design-Entscheidungen unten."""@de
+.
+
+# =============================================================================
+# DESIGN DECISIONS
+# =============================================================================
+#
+# D1. PHYSICAL / DIGITAL SYMMETRY (First-Principle)
+# ──────────────────────────────────────────────────
+# The sdata Core splits Continuants along a fundamental axis:
+#
+#   Continuant (what exists):
+#     MaterialEntity     → PhysicalArtifact, Material
+#     GDC                → DigitalArtifact, Identifier
+#
+# The same axis applies to Occurrents (what happens):
+#
+#   Process (what happens):
+#     PhysicalProcess    — operates on matter in space
+#     DigitalProcess     — operates on information on compute
+#
+# This is more fundamental than the Experiment/Simulation split, which
+# discriminates by *method* (observe/measure vs. compute), not by
+# *operational domain* (physical vs. digital).
+#
+# D2. TIER 1 — OPERATIONAL DOMAIN (PhysicalProcess / DigitalProcess)
+# ──────────────────────────────────────────────────────────────────
+# The I/O signatures are structurally distinct:
+#
+#   PhysicalProcess:
+#     consumes  ≥1 PhysicalArtifact | Material  (operates on matter)
+#     generates PhysicalArtifact | Material | DigitalArtifact (may produce data)
+#     locatedAt ≥1 Site                         (spatially anchored)
+#
+#   DigitalProcess:
+#     consumes  ≥1 DigitalArtifact              (operates on information)
+#     generates ≥1 DigitalArtifact              (pure information output)
+#
+# Key insight: A PhysicalProcess *may* generate DigitalArtifacts (e.g. a
+# tensile test produces measurement data), but it *must* consume physical
+# entities. A DigitalProcess operates entirely in the information domain.
+#
+# D3. TIER 2 — METHOD SPECIALIZATION (Experiment / Simulation)
+# ────────────────────────────────────────────────────────────
+# Within each domain, method-level specialization justifies additional
+# OWL classes because they add further restrictions:
+#
+#   Experiment (⊂ PhysicalProcess):
+#     + generates ≥1 DigitalArtifact  (systematic observation always
+#       produces measurement data — not true for all PhysicalProcesses)
+#
+#   Simulation (⊂ DigitalProcess):
+#     + wasPerformedBy Agent with agentType sagents:Simulation
+#       (distinguishes from generic data transformations)
+#
+# Other process types (Manufacturing, Transport, Maintenance, EndOfLife,
+# DataTransformation, MLTraining) share their parent's signature and
+# remain SKOS-only via sdata:processType. They may be promoted to OWL
+# classes if distinct restrictions emerge.
+#
+# D4. DISJOINTNESS AND OVERLAP
+# ────────────────────────────
+# PhysicalProcess and DigitalProcess are disjoint — a process operates
+# in one primary domain. Cyber-physical workflows are modelled as
+# process chains (PhysicalProcess → DigitalProcess → PhysicalProcess),
+# not as multi-typed instances. This mirrors the disjointness of
+# PhysicalArtifact and DigitalArtifact in the Core.
+#
+# D5. NO DUAL INHERITANCE FROM prov:Activity
+# ──────────────────────────────────────────
+# All four classes inherit only from sdata:Process → bfo:Process.
+# PROV-O query compatibility via property-mapping:
+#
+#   sdata:consumes       rdfs:subPropertyOf  prov:used
+#   sdata:generates      rdfs:subPropertyOf  prov:generated
+#   sdata:wasPerformedBy rdfs:subPropertyOf  prov:wasAssociatedWith
+#
+# prov:Activity carries temporal domain axioms (prov:startedAtTime,
+# prov:endedAtTime, prov:qualifiedUsage) that conflict with BFO's
+# occurrent temporal model. Property-mapping gives full PROV queryability
+# without reasoner conflicts.
+#
+# Contrast with sdata:Agent → prov:Agent: prov:Agent is axiomatically
+# lightweight (no temporal semantics), so class-level inheritance is safe.
+#
+# D6. AGENT vs. PROCESS DISAMBIGUATION
+# ─────────────────────────────────────
+# The agent vocabulary (sdata-agents.ttl) defines sagents:Simulation as
+# an agent type — the *solver software* (LS-DYNA, Abaqus, ML runtime).
+# sdata:Simulation in this file is the *run* — the temporal process.
+#
+#   ex:LSDYNA_R14   a sdata:Agent ;      agentType "Simulation" .
+#   ex:CrashRun_01  a sdata:Simulation ; wasPerformedBy ex:LSDYNA_R14 .
+#
+#   ex:ZwickZ100    a sdata:Agent ;      agentType "Machine" .
+#   ex:Test_42      a sdata:Experiment ; wasPerformedBy ex:ZwickZ100 .
+#
+# =============================================================================
+
+# =============================================================================
+# TIER 1 — PhysicalProcess
+# =============================================================================
+
+sdata:PhysicalProcess
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:consumes ;
+        owl:someValuesFrom [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material ) ]
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:locatedAt ;
+        owl:someValuesFrom sdata:Site
+    ] ;
+    rdfs:label "Physical Process"@en , "Physischer Prozess"@de ;
+    rdfs:comment """Process that operates on matter in physical space.
+Structurally: consumes at least one PhysicalArtifact or Material,
+and is spatially anchored at at least one Site.
+May additionally generate DigitalArtifacts (measurement data, logs).
+Covers manufacturing, testing, transport, maintenance, end-of-life.
+Fine-grained discrimination via sdata:processType (SKOS vocabulary)."""@en ,
+               """Prozess, der auf Materie im physischen Raum operiert.
+Strukturell: verbraucht mindestens ein PhysicalArtifact oder Material
+und ist räumlich an mindestens einem Site verankert.
+Kann zusätzlich DigitalArtifacts erzeugen (Messdaten, Protokolle).
+Umfasst Fertigung, Prüfung, Transport, Wartung, End-of-Life.
+Feingranulare Unterscheidung über sdata:processType (SKOS-Vokabular)."""@de .
+
+# =============================================================================
+# TIER 1 — DigitalProcess
+# =============================================================================
+
+sdata:DigitalProcess
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:consumes ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:label "Digital Process"@en , "Digitaler Prozess"@de ;
+    rdfs:comment """Process that operates entirely in the information domain.
+Structurally: consumes at least one DigitalArtifact and generates at
+least one DigitalArtifact. No physical entity is consumed.
+Covers simulation, data transformation, ML training, ETL pipelines.
+Fine-grained discrimination via sdata:processType (SKOS vocabulary)."""@en ,
+               """Prozess, der vollständig in der Informationsdomäne operiert.
+Strukturell: verbraucht mindestens ein DigitalArtifact und erzeugt
+mindestens ein DigitalArtifact. Keine physische Entität wird verbraucht.
+Umfasst Simulation, Datentransformation, ML-Training, ETL-Pipelines.
+Feingranulare Unterscheidung über sdata:processType (SKOS-Vokabular)."""@de .
+
+# =============================================================================
+# TIER 2 — Experiment (⊂ PhysicalProcess)
+# =============================================================================
+
+sdata:Experiment
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Experiment"@en , "Experiment"@de ;
+    rdfs:comment """PhysicalProcess that systematically observes, measures, or tests
+a physical specimen or system under controlled conditions.
+Adds to PhysicalProcess: generates at least one DigitalArtifact
+(measurement data — systematic observation always produces data).
+Fine-grained discrimination via sdata:processType: TensileTest,
+FatigueTest, HardnessTest, ImpactTest, ChemicalAnalysis, etc."""@en ,
+               """PhysicalProcess, der ein physisches Specimen oder System unter
+kontrollierten Bedingungen systematisch beobachtet, misst oder prüft.
+Ergänzt PhysicalProcess: erzeugt mindestens ein DigitalArtifact
+(Messdaten — systematische Beobachtung produziert immer Daten).
+Feingranulare Unterscheidung über sdata:processType: Zugversuch,
+Ermüdungsversuch, Härteprüfung, Schlagversuch, Chemische Analyse, etc."""@de .
+
+# =============================================================================
+# TIER 2 — Simulation (⊂ DigitalProcess)
+# =============================================================================
+
+sdata:Simulation
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Simulation"@en , "Simulation"@de ;
+    rdfs:comment """DigitalProcess that computes the behavior of a physical or
+logical system using a mathematical model.
+The solver software is an sdata:Agent with agentType sagents:Simulation.
+This class models the simulation *run* (process), not the solver (agent).
+Fine-grained discrimination via sdata:processType: FEMSimulation,
+CFDSimulation, CrashSimulation, FormingSimulation, MLPrediction, etc."""@en ,
+               """DigitalProcess, der das Verhalten eines physischen oder logischen
+Systems mittels mathematischem Modell berechnet.
+Die Solver-Software ist ein sdata:Agent mit agentType sagents:Simulation.
+Diese Klasse modelliert den Simulations-*Lauf* (Prozess), nicht den Solver (Agent).
+Feingranulare Unterscheidung über sdata:processType: FEM-Simulation,
+CFD-Simulation, Crash-Simulation, Umformsimulation, ML-Prädiktion, etc."""@de .
+
+# =============================================================================
+# Disjointness
+# =============================================================================
+
+# Tier 1: operational domain separation
+sdata:PhysicalProcess owl:disjointWith sdata:DigitalProcess .
+
+# Tier 2: follows transitively, but explicit for clarity
+sdata:Experiment owl:disjointWith sdata:Simulation .
+
+# =============================================================================
+# END — sdata-processtypes.ttl v1.0.0
+# =============================================================================
