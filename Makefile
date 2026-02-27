@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents clean
 
 UV ?= uv
 
@@ -47,3 +47,7 @@ viz-hierarchy: check-uv
 # ─── Clean ────────────────────────────────────────────────────────────────────
 clean:
 	rm -rf .venv __pycache__ .pytest_cache dist build site
+
+# ─── Visualize agents hierarchy ─────────────────────────────────────────────
+viz-agents: check-uv
+	$(UV) run python -m src.visualization.agents_hierarchy_plot

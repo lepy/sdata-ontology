@@ -46,7 +46,8 @@ sdata/
 │   ├── examples/
 │   │   └── dpp_01.py           Python example graph builder
 │   └── visualization/
-│       └── class_hierarchy_plot.py
+│       ├── class_hierarchy_plot.py
+│       └── agents_hierarchy_plot.py
 ├── vendor/ontologies/
 │   ├── bfo.ttl                 Vendored BFO ontology (from official ISO BFO 2020 OWL)
 │   ├── prov-o.ttl              Vendored PROV-O ontology
@@ -58,7 +59,9 @@ sdata/
 │   ├── index.md                MkDocs entry page
 │   └── diagrams/
 │       ├── sdata-class-hierarchy.svg
-│       └── sdata-class-hierarchy.png
+│       ├── sdata-class-hierarchy.png
+│       ├── sdata-agents-hierarchy.svg
+│       └── sdata-agents-hierarchy.png
 ├── tests/
 │   ├── test_ontology.py
 │   └── test_hierarchy_plot.py
@@ -168,21 +171,25 @@ make lint
 
 ## Class Hierarchy Visualization
 
-Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`, including the BFO chain from `bfo:Entity` down to the sdata base classes:
+Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`, including BFO and PROV base hierarchies down to the sdata base classes:
 
 ```bash
 make viz-hierarchy
+make viz-agents
 ```
 
 Output files:
 
 - `docs/diagrams/sdata-class-hierarchy.svg`
 - `docs/diagrams/sdata-class-hierarchy.png`
+- `docs/diagrams/sdata-agents-hierarchy.svg`
+- `docs/diagrams/sdata-agents-hierarchy.png`
 
 Direct CLI usage:
 
 ```bash
 uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both
 ```
 
 ## Documentation

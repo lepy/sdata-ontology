@@ -1,0 +1,114 @@
+digraph "" {
+	graph [bgcolor="#FAFBFC",
+		fontname=Helvetica,
+		fontsize=20,
+		label="sdata Agents Hierarchy (sdata:Agent -> SKOS agent types)",
+		labeljust=c,
+		labelloc=t,
+		nodesep=0.55,
+		overlap=false,
+		pad=0.35,
+		rankdir=TB,
+		ranksep=1.0,
+		splines=true
+	];
+	node [fontname=Helvetica,
+		fontsize=12,
+		label="\N",
+		margin="0.14,0.08",
+		penwidth=1.6,
+		shape=box,
+		style="filled,rounded"
+	];
+	edge [arrowsize=0.85,
+		color="#4A5568",
+		fontname=Helvetica,
+		penwidth=1.6
+	];
+	subgraph cluster_core {
+		graph [color="#90B5E8",
+			label="Core context",
+			style=rounded
+		];
+		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=Agent];
+		"https://w3id.org/sdata/core#Agent"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Agent];
+	}
+	subgraph cluster_agents {
+		graph [color="#9AD9BF",
+			label="sdata-agents vocabulary",
+			style=rounded
+		];
+		"https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="Agent types"];
+		"https://w3id.org/sdata/vocab/agents#DigitalTwin"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="Digital Twin"];
+		"https://w3id.org/sdata/vocab/agents#Hardware"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Hardware];
+		"https://w3id.org/sdata/vocab/agents#Machine"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Machine];
+		"https://w3id.org/sdata/vocab/agents#Organization"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Organization];
+		"https://w3id.org/sdata/vocab/agents#Person"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Person];
+		"https://w3id.org/sdata/vocab/agents#Service"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Service];
+		"https://w3id.org/sdata/vocab/agents#Simulation"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Simulation];
+		"https://w3id.org/sdata/vocab/agents#Software"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Software];
+	}
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
+			style=rounded
+		];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata:Agent"];
+		legend_scheme	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="SKOS ConceptScheme"];
+		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
+		legend_concept	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="SKOS Concept"];
+		legend_scheme -> legend_concept	[label="broader -> narrower"];
+	}
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#Agent";
+	"https://w3id.org/sdata/core#Agent" -> "https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[label="typed via sdata:agentType"];
+	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Hardware";
+	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Organization";
+	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Person";
+	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Software";
+	"https://w3id.org/sdata/vocab/agents#Hardware" -> "https://w3id.org/sdata/vocab/agents#Machine";
+	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#DigitalTwin";
+	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Service";
+	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Simulation";
+}
