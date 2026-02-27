@@ -168,7 +168,7 @@ make lint
 
 ## Class Hierarchy Visualization
 
-Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`:
+Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`, including the BFO chain from `bfo:Entity` down to the sdata base classes:
 
 ```bash
 make viz-hierarchy

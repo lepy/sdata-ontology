@@ -6,6 +6,7 @@ from src.visualization.class_hierarchy_plot import extract_hierarchy, load_graph
 
 ROOT = Path(__file__).resolve().parent.parent
 SDATA = Namespace("https://w3id.org/sdata/core#")
+BFO_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000001"
 
 
 def _model():
@@ -44,14 +45,31 @@ def test_extract_adds_bfo_context_nodes():
     bfo_nodes = [node for node in model.nodes if node.kind == "bfo"]
     assert bfo_nodes
     assert any(str(node.iri).startswith("http://purl.obolibrary.org/obo/BFO_") for node in bfo_nodes)
+    assert any(str(node.iri) == BFO_ENTITY for node in bfo_nodes)
 
 
-def test_edges_only_target_sdata_or_bfo():
+def test_edges_only_target_sdata_or_bfo_and_bfo_reaches_entity():
     model = _model()
     kinds = {str(node.iri): node.kind for node in model.nodes}
+    parents_of: dict[str, set[str]] = {}
     for edge in model.edges:
         assert str(edge.child) in kinds
         assert str(edge.parent) in kinds
-        assert kinds[str(edge.child)] == "sdata"
+        assert kinds[str(edge.child)] in {"sdata", "bfo"}
         assert kinds[str(edge.parent)] in {"sdata", "bfo"}
+        parents_of.setdefault(str(edge.child), set()).add(str(edge.parent))
 
+    def reaches_entity(node: str, visited: set[str] | None = None) -> bool:
+        visited = visited or set()
+        if node == BFO_ENTITY:
+            return True
+        if node in visited:
+            return False
+        visited.add(node)
+        return any(reaches_entity(parent, visited) for parent in parents_of.get(node, set()))
+
+    bfo_nodes = [iri for iri, kind in kinds.items() if kind == "bfo"]
+    for node in bfo_nodes:
+        if node == BFO_ENTITY:
+            continue
+        assert reaches_entity(node), f"BFO node {node} does not connect to BFO entity"
