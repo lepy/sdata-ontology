@@ -25,55 +25,100 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
+			style=rounded
+		];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata class"];
+		legend_bfo	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="BFO parent"];
+		legend_bfo -> legend_sdata	[label="superclass → subclass"];
+		legend_prov	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="PROV parent"];
+		legend_prov -> legend_sdata;
+	}
 	subgraph cluster_sdata {
 		graph [color="#90B5E8",
 			label="sdata classes",
 			style=rounded
 		];
+		subgraph cluster_dual_rank_MaterialArtifact {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Artifact"];
+			"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Artifact"];
+		}
+		subgraph cluster_dual_rank_Material {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Information];
+			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Material];
+		}
+		subgraph cluster_dual_rank_MaterialProcess {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Process"];
+			"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Process"];
+		}
+		subgraph cluster_dual_rank_MaterialSite {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Site"];
+			"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Site"];
+		}
+		subgraph cluster_dual_rank_MaterialAgent {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Agent"];
+			"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Agent"];
+		}
 		"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Identifier];
-		"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Information];
-		"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Agent"];
-		"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Artifact"];
-		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Process"];
-		"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Site"];
-		"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Material];
-		"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Agent"];
-		"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Artifact"];
-		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Process"];
-		"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Site"];
 		"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -143,26 +188,36 @@ digraph "" {
 			fontcolor="#1C4532",
 			label=Agent];
 	}
-	subgraph cluster_legend {
-		graph [color="#CBD5E0",
-			label=Legend,
-			style=rounded
-		];
-		legend_sdata	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="sdata class"];
-		legend_bfo	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label="BFO parent"];
-		legend_bfo -> legend_sdata	[label="superclass → subclass"];
-		legend_prov	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="PROV parent"];
-		legend_prov -> legend_sdata;
-	}
+	"https://w3id.org/sdata/core/Material" -> "https://w3id.org/sdata/core/Information"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/core/InformationAgent"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialArtifact" -> "https://w3id.org/sdata/core/InformationArtifact"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/InformationProcess"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialSite" -> "https://w3id.org/sdata/core/InformationSite"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
 	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000002";
 	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000003";
 	"http://purl.obolibrary.org/obo/BFO_0000002" -> "http://purl.obolibrary.org/obo/BFO_0000004";

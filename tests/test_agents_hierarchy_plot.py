@@ -6,7 +6,7 @@ from src.visualization.agents_hierarchy_plot import extract_hierarchy, load_grap
 
 ROOT = Path(__file__).resolve().parent.parent
 SDATA = Namespace("https://w3id.org/sdata/core/")
-SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
+SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
 PROV_AGENT = "http://www.w3.org/ns/prov#Agent"
 BFO_MATERIAL_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000040"
 BFO_GDC = "http://purl.obolibrary.org/obo/BFO_0000031"
@@ -34,8 +34,9 @@ def test_extract_contains_expected_agent_concepts():
     expected = {
         str(SAGENTS.Person),
         str(SAGENTS.Organization),
+        str(SAGENTS.Hardware),
         str(SAGENTS.Software),
-        str(SAGENTS.Machine),
+        str(SAGENTS.Sensor),
         str(SAGENTS.Solver),
         str(SAGENTS.Service),
         str(SAGENTS.DigitalTwin),
@@ -52,7 +53,8 @@ def test_extract_contains_expected_hierarchy_edges():
     assert (BFO_GDC, str(SDATA.InformationAgent)) in edges
     assert (str(SDATA.MaterialAgent), str(SAGENTS.AgentTypeScheme)) in edges
     assert (str(SDATA.InformationAgent), str(SAGENTS.AgentTypeScheme)) in edges
-    assert (str(SDATA.MaterialAgent), str(SAGENTS.Machine)) in edges
+    assert (str(SDATA.MaterialAgent), str(SAGENTS.Person)) in edges
+    assert (str(SDATA.MaterialAgent), str(SAGENTS.Hardware)) in edges
     assert (str(SDATA.InformationAgent), str(SAGENTS.Software)) in edges
-    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Machine)) in edges
+    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Hardware)) in edges
     assert (str(SAGENTS.Software), str(SAGENTS.DigitalTwin)) in edges
