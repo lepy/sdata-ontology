@@ -1,0 +1,116 @@
+# =============================================================================
+# FILE: sdata-vd-interval.ttl
+# ValueDomain extension: IntervalDomain (continuous bounded range)
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/vd-interval>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/quantities> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata ValueDomain: Interval"@en ,
+               "sdata Wertebereich: Intervall"@de ;
+    dcterms:description
+        """Continuous bounded range [min, max] with optional
+open/closed boundary semantics.
+1 Class · 0 Object Properties · 4 Datatype Properties"""@en .
+
+# =============================================================================
+# CLASS
+# =============================================================================
+
+sdata:IntervalDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:ValueDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:minValue ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:maxValue ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Interval Domain"@en ,
+                   "Intervall-Wertebereich"@de ;
+    rdfs:comment   """Continuous range defined by lower and upper bound.
+Default semantics: closed interval [min, max].
+Override via minInclusive / maxInclusive flags.
+
+Examples:
+  [0, 1]       — normalized ratio
+  [20, 1200]   — furnace temperature in °C
+  (0, +∞)      — strictly positive (use +INF for maxValue)"""@en ,
+                   """Kontinuierlicher Bereich definiert durch Unter- und Obergrenze.
+Standard-Semantik: geschlossenes Intervall [min, max]."""@de .
+
+# =============================================================================
+# DATATYPE PROPERTIES
+# =============================================================================
+
+sdata:minValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "minimum value"@en ,
+                   "Minimalwert"@de ;
+    rdfs:comment   "Lower bound of the interval."@en .
+
+sdata:maxValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "maximum value"@en ,
+                   "Maximalwert"@de ;
+    rdfs:comment   "Upper bound of the interval."@en .
+
+sdata:minInclusive
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:boolean ;
+    rdfs:label     "min inclusive"@en ,
+                   "Min inklusiv"@de ;
+    rdfs:comment   "Is the lower bound included? Default: true."@en .
+
+sdata:maxInclusive
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:boolean ;
+    rdfs:label     "max inclusive"@en ,
+                   "Max inklusiv"@de ;
+    rdfs:comment   "Is the upper bound included? Default: true."@en .
+
+# =============================================================================
+# USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ex:dom_unit_interval  a  sdata:IntervalDomain ;
+#     sdata:minValue       "0.0"^^xsd:double ;
+#     sdata:maxValue       "1.0"^^xsd:double ;
+#     sdata:domainDescription "Normalized ratio [0, 1]" .
+#
+# ex:dom_temperature  a  sdata:IntervalDomain ;
+#     sdata:minValue       "20.0"^^xsd:double ;
+#     sdata:maxValue       "1200.0"^^xsd:double ;
+#     sdata:domainDescription "Furnace temperature range in °C" .
+#
+# ex:dom_positive  a  sdata:IntervalDomain ;
+#     sdata:minValue       "0.0"^^xsd:double ;
+#     sdata:minInclusive   "false"^^xsd:boolean ;
+#     sdata:maxValue       "INF"^^xsd:double ;
+#     sdata:domainDescription "Strictly positive reals (0, +∞)" .
+#
+# =============================================================================
+# END — sdata-vd-interval.ttl v0.1.0
+# =============================================================================

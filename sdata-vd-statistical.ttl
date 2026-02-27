@@ -1,0 +1,280 @@
+# =============================================================================
+# FILE: sdata-vd-statistical.ttl
+# ValueDomain extension: StatisticalDomain (probability distributions)
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/vd-statistical>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/quantities> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata ValueDomain: Statistical Distributions"@en ,
+               "sdata Wertebereich: Statistische Verteilungen"@de ;
+    dcterms:description
+        """Probability distributions as value domains. Each distribution
+type is a named class with typed parameters, enabling reasoner
+validation and SPARQL queryability.
+7 Classes · 0 Object Properties · 12 Datatype Properties"""@en .
+
+# =============================================================================
+# ABSTRACT BASE
+# =============================================================================
+
+sdata:StatisticalDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:ValueDomain ;
+    rdfs:label     "Statistical Domain"@en ,
+                   "Statistischer Wertebereich"@de ;
+    rdfs:comment   """Abstract base for probability distributions. Values of the
+associated AttributeQuantityValue are drawn from or described by
+this distribution. Do not instantiate directly — use subclasses."""@en ,
+                   """Abstrakte Basis für Wahrscheinlichkeitsverteilungen.
+Nicht direkt instanziieren — Subklassen verwenden."""@de .
+
+# =============================================================================
+# CONTINUOUS DISTRIBUTIONS
+# =============================================================================
+
+# ─── Normal ──────────────────────────────────────────────────────────────────
+sdata:NormalDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:mu ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:sigma ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Normal Domain"@en ,
+                   "Normalverteilungs-Wertebereich"@de ;
+    rdfs:comment   "Gaussian distribution N(μ, σ²)."@en .
+
+# ─── LogNormal ───────────────────────────────────────────────────────────────
+sdata:LogNormalDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:mu ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:sigma ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Log-Normal Domain"@en ,
+                   "Log-Normalverteilungs-Wertebereich"@de ;
+    rdfs:comment   "Log-normal distribution LogN(μ, σ²). μ and σ are parameters of the underlying normal."@en .
+
+# ─── Uniform ─────────────────────────────────────────────────────────────────
+sdata:UniformDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:lowerBound ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:upperBound ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Uniform Domain"@en ,
+                   "Gleichverteilungs-Wertebereich"@de ;
+    rdfs:comment   "Continuous uniform distribution U(a, b)."@en .
+
+# ─── Weibull ─────────────────────────────────────────────────────────────────
+sdata:WeibullDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:shape ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:scale ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Weibull Domain"@en ,
+                   "Weibull-Wertebereich"@de ;
+    rdfs:comment   "Weibull distribution W(k, λ). k = shape, λ = scale."@en .
+
+# =============================================================================
+# DISCRETE DISTRIBUTIONS
+# =============================================================================
+
+# ─── Poisson ─────────────────────────────────────────────────────────────────
+sdata:PoissonDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:lambda ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Poisson Domain"@en ,
+                   "Poisson-Wertebereich"@de ;
+    rdfs:comment   "Poisson distribution Pois(λ)."@en .
+
+# ─── Binomial ────────────────────────────────────────────────────────────────
+sdata:BinomialDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:StatisticalDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:trials ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:probability ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Binomial Domain"@en ,
+                   "Binomial-Wertebereich"@de ;
+    rdfs:comment   "Binomial distribution B(n, p). n = trials, p = probability."@en .
+
+# =============================================================================
+# DISJOINTNESS — all 6 leaf classes pairwise disjoint
+# =============================================================================
+
+sdata:NormalDomain     owl:disjointWith sdata:LogNormalDomain .
+sdata:NormalDomain     owl:disjointWith sdata:UniformDomain .
+sdata:NormalDomain     owl:disjointWith sdata:WeibullDomain .
+sdata:NormalDomain     owl:disjointWith sdata:PoissonDomain .
+sdata:NormalDomain     owl:disjointWith sdata:BinomialDomain .
+sdata:LogNormalDomain  owl:disjointWith sdata:UniformDomain .
+sdata:LogNormalDomain  owl:disjointWith sdata:WeibullDomain .
+sdata:LogNormalDomain  owl:disjointWith sdata:PoissonDomain .
+sdata:LogNormalDomain  owl:disjointWith sdata:BinomialDomain .
+sdata:UniformDomain    owl:disjointWith sdata:WeibullDomain .
+sdata:UniformDomain    owl:disjointWith sdata:PoissonDomain .
+sdata:UniformDomain    owl:disjointWith sdata:BinomialDomain .
+sdata:WeibullDomain    owl:disjointWith sdata:PoissonDomain .
+sdata:WeibullDomain    owl:disjointWith sdata:BinomialDomain .
+sdata:PoissonDomain    owl:disjointWith sdata:BinomialDomain .
+
+# =============================================================================
+# DATATYPE PROPERTIES — distribution parameters
+# =============================================================================
+
+# ─── Shared: location and scale ──────────────────────────────────────────────
+sdata:mu
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:StatisticalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "mu (μ)"@en ,
+                   "Mu (μ)"@de ;
+    rdfs:comment   "Mean / location parameter."@en .
+
+sdata:sigma
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:StatisticalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "sigma (σ)"@en ,
+                   "Sigma (σ)"@de ;
+    rdfs:comment   "Standard deviation / scale parameter."@en .
+
+# ─── Uniform ─────────────────────────────────────────────────────────────────
+sdata:lowerBound
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:UniformDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "lower bound (a)"@en ,
+                   "Untergrenze (a)"@de .
+
+sdata:upperBound
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:UniformDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "upper bound (b)"@en ,
+                   "Obergrenze (b)"@de .
+
+# ─── Weibull ─────────────────────────────────────────────────────────────────
+sdata:shape
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:WeibullDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "shape (k)"@en ,
+                   "Formparameter (k)"@de .
+
+sdata:scale
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:WeibullDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "scale (λ)"@en ,
+                   "Skalenparameter (λ)"@de .
+
+# ─── Poisson ─────────────────────────────────────────────────────────────────
+sdata:lambda
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:PoissonDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "lambda (λ)"@en ,
+                   "Lambda (λ)"@de ;
+    rdfs:comment   "Expected number of events per interval."@en .
+
+# ─── Binomial ────────────────────────────────────────────────────────────────
+sdata:trials
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:BinomialDomain ;
+    rdfs:range     xsd:nonNegativeInteger ;
+    rdfs:label     "trials (n)"@en ,
+                   "Versuche (n)"@de .
+
+sdata:probability
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:BinomialDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "probability (p)"@en ,
+                   "Wahrscheinlichkeit (p)"@de ;
+    rdfs:comment   "Success probability per trial. Must be in [0, 1]."@en .
+
+# =============================================================================
+# USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ─── Rm ~ N(303, 12²) ───────────────────────────────────
+# ex:dom_Rm_dist  a  sdata:NormalDomain ;
+#     sdata:mu                "303.0"^^xsd:double ;
+#     sdata:sigma             "12.0"^^xsd:double ;
+#     sdata:domainDescription "Tensile strength distribution DC04" .
+#
+# ex:attr_Rm  a  sdata:AttributeQuantityValue ;
+#     sdata:name           "Rm" ;
+#     sdata:dtype          "float" ;
+#     qudt:numericValue    "303.0"^^xsd:double ;
+#     sdata:hasValueDomain ex:dom_Rm_dist .
+#
+# ─── Fatigue life ~ Weibull(2.5, 10000) ─────────────────
+# ex:dom_fatigue  a  sdata:WeibullDomain ;
+#     sdata:shape             "2.5"^^xsd:double ;
+#     sdata:scale             "10000.0"^^xsd:double ;
+#     sdata:domainDescription "Fatigue life distribution" .
+#
+# ─── Defect count ~ Pois(3.2) ───────────────────────────
+# ex:dom_defects  a  sdata:PoissonDomain ;
+#     sdata:lambda            "3.2"^^xsd:double ;
+#     sdata:domainDescription "Surface defects per sheet" .
+#
+# =============================================================================
+# END — sdata-vd-statistical.ttl v0.1.0
+# =============================================================================

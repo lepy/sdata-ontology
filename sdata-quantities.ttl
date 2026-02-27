@@ -1,0 +1,189 @@
+# =============================================================================
+# FILE: sdata-quantities.ttl
+# Core: AttributeQuantityValue + ValueDomain anchor
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix bfo:     <http://purl.obolibrary.org/obo/BFO_> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/quantities>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/core> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata Quantities extension"@en ,
+               "sdata Größen-Erweiterung"@de ;
+    dcterms:description
+        """AttributeQuantityValue — reified attribute descriptor with value,
+unit, datatype, and metadata. Bridges sdata entities to QUDT quantity
+values. ValueDomain — abstract anchor for value space constraints,
+specialized by extension ontologies (interval, enumeration, statistical
+distribution, fuzzy numbers, etc.).
+
+2 Classes · 4 Object Properties · 3 Datatype Properties"""@en .
+
+# =============================================================================
+# CLASSES
+# =============================================================================
+
+# ─── AttributeQuantityValue ──────────────────────────────────────────────────
+sdata:AttributeQuantityValue
+    rdf:type       owl:Class ;
+    rdfs:subClassOf qudt:QuantityValue ;
+    rdfs:label     "Attribute Quantity Value"@en ,
+                   "Attribut-Mengenwert"@de ;
+    rdfs:comment   """Reified attribute descriptor combining schema metadata and
+a concrete value. Describes a single typed field of an InformationArtifact.
+
+Inherited from qudt:QuantityValue:
+  · qudt:numericValue  — the concrete value
+  · qudt:unit          — machine-readable QUDT unit URI
+
+Added by sdata:
+  · sdata:name         — field name (technical key)
+  · rdfs:label         — human-readable name (multilingual)
+  · sdata:description  — explanatory text
+  · sdata:unitSymbol   — human-readable unit string (MPa, %, -)
+  · sdata:dtype        — logical datatype (closed enum)
+  · sdata:hasValueDomain — link to value space constraint"""@en ,
+                   """Reifizierter Attribut-Deskriptor, der Schema-Metadaten und
+einen konkreten Wert vereint. Beschreibt ein einzelnes typisiertes
+Feld eines InformationArtifact."""@de .
+
+# ─── ValueDomain ─────────────────────────────────────────────────────────────
+sdata:ValueDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf bfo:0000031 ;   # bfo:GenericallyDependentContinuant
+    rdfs:label     "Value Domain"@en ,
+                   "Wertebereich"@de ;
+    rdfs:comment   """Abstract value space that constrains an
+AttributeQuantityValue. Open extension point — specialized by
+domain-specific ontologies:
+
+  sdata-vd-interval.ttl     →  IntervalDomain (min, max)
+  sdata-vd-enum.ttl         →  EnumeratedDomain (finite set)
+  sdata-vd-statistical.ttl  →  StatisticalDomain (probability distributions)
+  sdata-vd-fuzzy.ttl        →  FuzzyDomain (fuzzy numbers)
+
+ValueDomain instances are reusable — the same domain can be
+attached to multiple AttributeQuantityValues."""@en ,
+                   """Abstrakter Wertebereich, der einen AttributeQuantityValue
+einschränkt. Offener Erweiterungspunkt — spezialisiert durch
+domänenspezifische Ontologien."""@de .
+
+# =============================================================================
+# DISJOINTNESS
+# =============================================================================
+
+sdata:AttributeQuantityValue  owl:disjointWith sdata:ValueDomain .
+
+# =============================================================================
+# OBJECT PROPERTIES
+# =============================================================================
+
+sdata:hasQuantity
+    rdf:type       owl:ObjectProperty ;
+    rdfs:domain    [ owl:unionOf (
+        sdata:MaterialArtifact
+        sdata:Material
+        sdata:InformationArtifact
+        sdata:Information
+        sdata:MaterialProcess
+        sdata:InformationProcess
+    ) ] ;
+    rdfs:range     sdata:AttributeQuantityValue ;
+    rdfs:label     "has quantity"@en ,
+                   "hat Größe"@de ;
+    rdfs:comment   "Attaches a typed attribute to a sdata entity."@en .
+
+sdata:isQuantityOf
+    rdf:type       owl:ObjectProperty ;
+    owl:inverseOf  sdata:hasQuantity ;
+    rdfs:label     "is quantity of"@en ,
+                   "ist Größe von"@de .
+
+sdata:hasValueDomain
+    rdf:type       owl:ObjectProperty ;
+    rdfs:domain    sdata:AttributeQuantityValue ;
+    rdfs:range     sdata:ValueDomain ;
+    rdfs:label     "has value domain"@en ,
+                   "hat Wertebereich"@de ;
+    rdfs:comment   """Links an attribute to its value space constraint.
+Optional — attributes without a ValueDomain are unconstrained."""@en .
+
+sdata:isValueDomainOf
+    rdf:type       owl:ObjectProperty ;
+    owl:inverseOf  sdata:hasValueDomain ;
+    rdfs:label     "is value domain of"@en ,
+                   "ist Wertebereich von"@de .
+
+# =============================================================================
+# DATATYPE PROPERTIES
+# =============================================================================
+
+sdata:unitSymbol
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:AttributeQuantityValue ;
+    rdfs:range     xsd:string ;
+    rdfs:label     "unit symbol"@en ,
+                   "Einheitensymbol"@de ;
+    rdfs:comment   """Human-readable unit string (MPa, mm, °C, %, -).
+Complements the machine-readable qudt:unit."""@en .
+
+sdata:dtype
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:AttributeQuantityValue ;
+    rdfs:range     [ rdf:type rdfs:Datatype ;
+                     owl:oneOf ( "str" "float" "int" "timestamp" "bool" "uri" ) ] ;
+    rdfs:label     "datatype"@en ,
+                   "Datentyp"@de ;
+    rdfs:comment   """Logical datatype of the attribute value. Closed set:
+  str        — free text (xsd:string)
+  float      — decimal number (xsd:double)
+  int        — integer (xsd:integer)
+  timestamp  — date/time (xsd:dateTimeStamp)
+  bool       — true/false (xsd:boolean)
+  uri        — resolvable identifier (xsd:anyURI)"""@en .
+
+sdata:domainDescription
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:ValueDomain ;
+    rdfs:range     xsd:string ;
+    rdfs:label     "domain description"@en ,
+                   "Wertebereichsbeschreibung"@de ;
+    rdfs:comment   "Human-readable description of the value domain."@en .
+
+# =============================================================================
+# DESIGN DECISIONS
+# =============================================================================
+#
+# D1. AttributeQuantityValue subClassOf qudt:QuantityValue
+#     → inherits qudt:numericValue + qudt:unit for free
+#
+# D2. sdata:name + rdfs:label + sdata:description reused from sdata-core
+#     → no new properties needed for metadata
+#
+# D3. dtype is a closed enum, not xsd:anyURI
+#     → implementation-friendly, reasoner-checkable
+#
+# D4. ValueDomain is abstract — no subclasses in this file
+#     → extension point: import only what you need
+#
+# D5. ValueDomain instances are reusable across attributes
+#     → e.g. one [0,1] interval for all normalized quantities
+#
+# D6. hasQuantity domain spans both Material and Information
+#     → attributes attach to artifacts, substances, and processes
+#
+# =============================================================================
+# END — sdata-quantities.ttl v0.1.0
+# =============================================================================
