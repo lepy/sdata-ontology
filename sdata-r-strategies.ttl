@@ -1,0 +1,386 @@
+# =============================================================================
+# FILE: sdata-r-strategies.ttl
+# R-Strategies (Circular Economy) — SKOS ConceptScheme
+# Maps 10R framework to sdata lifecycle verbs
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix sr:      <https://w3id.org/sdata/r-strategies/> .
+
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/r-strategies>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/core> ;
+    owl:imports <https://w3id.org/sdata/processtypes> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata R-Strategies"@en ,
+               "sdata R-Strategien"@de ;
+    dcterms:description """SKOS ConceptScheme that maps the 10R Circular Economy
+framework (Potting et al. 2017) to sdata lifecycle verbs.
+
+No new classes — R-strategies are vocabulary on existing verbs.
+Use via sdata:processType on process instances.
+
+Circularity gradient (high → low retention of product value):
+  R0 Refuse        — no process (decision not to create)
+  R1 Rethink       — Creation     (smarter design / use)
+  R2 Reduce        — Creation     (less material / data input)
+  ─── product-level strategies ───
+  R3 Reuse         — Transfer     (same artifact, new context)
+  R4 Repair        — Preservation (restore function)
+  R5 Refurbish     — Preservation (restore quality)
+  ─── component-level strategies ───
+  R6 Remanufacture — Transformation (disassemble + rebuild)
+  R7 Repurpose     — Transformation (function change)
+  ─── material-level strategies ───
+  R8 Recycle       — Recovery     (material/data recovery)
+  ─── energy-level / terminal ───
+  R9 Recover       — Destruction  (energy extraction, end of matter)
+
+The dual reading (Material / Information) applies to each strategy."""@en .
+
+
+# =============================================================================
+# A. LINKING PROPERTY
+# =============================================================================
+
+sr:mapsToVerb
+    a owl:ObjectProperty ;
+    rdfs:domain skos:Concept ;
+    rdfs:label "maps to lifecycle verb"@en ,
+               "bildet ab auf Lebenszyklus-Verb"@de ;
+    rdfs:comment """Links an R-strategy concept to the sdata lifecycle verb
+class it specializes. Range is intentionally untyped to allow
+referencing verb classes (sdata:Creation, sdata:Transfer, etc.)."""@en .
+
+sr:circularityRank
+    a owl:DatatypeProperty ;
+    rdfs:domain skos:Concept ;
+    rdfs:range xsd:integer ;
+    rdfs:label "circularity rank"@en ,
+               "Zirkularitätsrang"@de ;
+    rdfs:comment """0 = highest circularity (Refuse), 9 = lowest (Recover energy).
+Lower rank = higher retention of product/material value."""@en .
+
+
+# =============================================================================
+# B. CONCEPT SCHEME
+# =============================================================================
+
+sr:RStrategyScheme
+    a skos:ConceptScheme ;
+    rdfs:label "R-Strategies (Circular Economy)"@en ,
+               "R-Strategien (Kreislaufwirtschaft)"@de ;
+    skos:hasTopConcept
+        sr:R0_Refuse ,
+        sr:R1_Rethink ,
+        sr:R2_Reduce ,
+        sr:R3_Reuse ,
+        sr:R4_Repair ,
+        sr:R5_Refurbish ,
+        sr:R6_Remanufacture ,
+        sr:R7_Repurpose ,
+        sr:R8_Recycle ,
+        sr:R9_Recover ;
+    dcterms:source "Potting et al. (2017): Circular Economy — Measuring Innovation in the Product Chain. PBL Netherlands Environmental Assessment Agency."@en .
+
+
+# =============================================================================
+# C. CONCEPTS — ordered by circularity gradient (high → low)
+# =============================================================================
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DESIGN-LEVEL — prevent creation or create smarter
+# ─────────────────────────────────────────────────────────────────────────────
+
+sr:R0_Refuse
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R0 Refuse"@en ,
+                   "R0 Vermeiden"@de ;
+    skos:definition """Decision not to create — making the product/data redundant.
+No process occurs; the strategy is the absence of Creation.
+Material: don't manufacture the part. Information: don't generate the dataset."""@en ;
+    skos:definition """Entscheidung, nicht zu erzeugen — Produkt/Daten überflüssig machen.
+Kein Prozess findet statt; die Strategie ist die Abwesenheit von Creation.
+Material: Teil nicht herstellen. Information: Datensatz nicht generieren."""@de ;
+    skos:scopeNote "No mapsToVerb — Refuse is the absence of a lifecycle process."@en ;
+    sr:circularityRank 0 .
+
+sr:R1_Rethink
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R1 Rethink"@en ,
+                   "R1 Umdenken"@de ;
+    skos:definition """Design smarter: intensify use, enable sharing, extend lifespan
+through better design decisions during Creation.
+Material: design for disassembly, modular architecture.
+Information: design for reusability, open formats, FAIR principles."""@en ;
+    skos:definition """Intelligenter gestalten: Nutzung intensivieren, Teilen ermöglichen,
+Lebensdauer durch bessere Designentscheidungen in der Creation verlängern.
+Material: Design für Demontage, modulare Architektur.
+Information: Design für Wiederverwendbarkeit, offene Formate, FAIR-Prinzipien."""@de ;
+    sr:mapsToVerb sdata:Creation ;
+    sr:circularityRank 1 .
+
+sr:R2_Reduce
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R2 Reduce"@en ,
+                   "R2 Reduzieren"@de ;
+    skos:definition """Use less material or data input during Creation.
+Material: lightweight design, thinner sheet metal, less raw material.
+Information: data minimization, compressed formats, smaller training sets."""@en ;
+    skos:definition """Weniger Material- oder Dateneinsatz während der Creation.
+Material: Leichtbau, dünneres Blech, weniger Rohmaterial.
+Information: Datenminimierung, komprimierte Formate, kleinere Trainingsdaten."""@de ;
+    sr:mapsToVerb sdata:Creation ;
+    sr:circularityRank 2 .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PRODUCT-LEVEL — extend the life of the whole artifact
+# ─────────────────────────────────────────────────────────────────────────────
+
+sr:R3_Reuse
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R3 Reuse"@en ,
+                   "R3 Wiederverwenden"@de ;
+    skos:definition """Artifact transfers to a new owner or context, unchanged.
+Identity preserved, no transformation needed.
+Material: secondhand sale, donation, hand-me-down.
+Information: dataset shared to new project, model deployed in new context."""@en ;
+    skos:definition """Artefakt wechselt zu neuem Eigentümer oder Kontext, unverändert.
+Identität bleibt erhalten, keine Transformation nötig.
+Material: Gebrauchtverkauf, Spende, Weitergabe.
+Information: Datensatz in neuem Projekt geteilt, Modell in neuem Kontext deployt."""@de ;
+    sr:mapsToVerb sdata:Transfer ;
+    sr:circularityRank 3 .
+
+sr:R4_Repair
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R4 Repair"@en ,
+                   "R4 Reparieren"@de ;
+    skos:definition """Restore function of a defective artifact. Identity preserved.
+Material: fix a dent, replace a broken screen.
+Information: data cleansing, bug fix, corrupt file recovery."""@en ;
+    skos:definition """Funktion eines defekten Artefakts wiederherstellen. Identität bleibt.
+Material: Delle ausbessern, kaputtes Display ersetzen.
+Information: Datenbereinigung, Bugfix, Wiederherstellung korrupter Dateien."""@de ;
+    sr:mapsToVerb sdata:Preservation ;
+    sr:circularityRank 4 .
+
+sr:R5_Refurbish
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R5 Refurbish"@en ,
+                   "R5 Aufarbeiten"@de ;
+    skos:definition """Restore quality to a specified standard. More comprehensive
+than Repair, but identity still preserved.
+Material: engine overhaul, surface recoating, electronics recertification.
+Information: data enrichment, schema migration, model fine-tuning."""@en ;
+    skos:definition """Qualität auf einen definierten Standard wiederherstellen.
+Umfassender als Reparatur, aber Identität bleibt erhalten.
+Material: Motorüberholung, Neubeschichtung, Elektronik-Rezertifizierung.
+Information: Daten-Enrichment, Schema-Migration, Modell-Finetuning."""@de ;
+    sr:mapsToVerb sdata:Preservation ;
+    sr:circularityRank 5 .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# COMPONENT-LEVEL — disassemble and rebuild or repurpose
+# ─────────────────────────────────────────────────────────────────────────────
+
+sr:R6_Remanufacture
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R6 Remanufacture"@en ,
+                   "R6 Refabrizieren"@de ;
+    skos:definition """Disassemble artifact, rebuild to original specification.
+Identity may change — a new artifact emerges from old components.
+Material: engine remanufacturing, toner cartridge remanufacturing.
+Information: retrain ML model from scratch on cleaned historical data,
+rebuild dataset from validated subsets."""@en ;
+    skos:definition """Artefakt zerlegen, nach Originalspezifikation neuaufbauen.
+Identität kann wechseln — ein neues Artefakt entsteht aus alten Komponenten.
+Material: Motor-Remanufacturing, Tonerkartuschen-Remanufacturing.
+Information: ML-Modell von Grund auf mit bereinigten historischen Daten
+neu trainieren, Datensatz aus validierten Teilmengen neuaufbauen."""@de ;
+    sr:mapsToVerb sdata:Transformation ;
+    sr:circularityRank 6 .
+
+sr:R7_Repurpose
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R7 Repurpose"@en ,
+                   "R7 Umnutzen"@de ;
+    skos:definition """Use artifact or components for a different function than
+originally intended. Transformation with function change.
+Material: shipping container → building module, car battery → grid storage.
+Information: NLP model repurposed for code generation,
+crash simulation data repurposed for acoustic analysis."""@en ;
+    skos:definition """Artefakt oder Komponenten für eine andere Funktion als
+ursprünglich vorgesehen nutzen. Transformation mit Funktionswechsel.
+Material: Schiffscontainer → Baumodul, Autobatterie → Netzspeicher.
+Information: NLP-Modell umgenutzt für Codegenerierung,
+Crashsimulationsdaten umgenutzt für Akustikanalyse."""@de ;
+    sr:mapsToVerb sdata:Transformation ;
+    sr:circularityRank 7 .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MATERIAL-LEVEL — recover raw substance
+# ─────────────────────────────────────────────────────────────────────────────
+
+sr:R8_Recycle
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R8 Recycle"@en ,
+                   "R8 Recyceln"@de ;
+    skos:definition """Recover raw material or data from artifact. Artifact identity
+is lost — substance returns to the cycle.
+Material: shred steel, melt aluminum, compost.
+Information: extract features from old dataset, mine logs for training data,
+recover structured data from legacy systems."""@en ;
+    skos:definition """Rohmaterial oder Daten aus Artefakt zurückgewinnen.
+Artefakt-Identität geht verloren — Substanz kehrt in den Kreislauf zurück.
+Material: Stahl schreddern, Aluminium einschmelzen, kompostieren.
+Information: Features aus altem Datensatz extrahieren, Logs für Trainingsdaten
+minen, strukturierte Daten aus Legacy-Systemen rückgewinnen."""@de ;
+    sr:mapsToVerb sdata:Recovery ;
+    sr:circularityRank 8 ;
+    skos:scopeNote """In sdata terms: the process consumes a MaterialArtifact or
+InformationArtifact and generates Material or Information (substance).
+The discrete identity dissolves back into non-discrete substance.
+This is where recoveredFrom (material) and derivedFrom (information)
+track the circular provenance."""@en .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ENERGY-LEVEL — terminal, lowest value retention
+# ─────────────────────────────────────────────────────────────────────────────
+
+sr:R9_Recover
+    a skos:Concept ;
+    skos:inScheme sr:RStrategyScheme ;
+    skos:prefLabel "R9 Recover (Energy)"@en ,
+                   "R9 Energierückgewinnung"@de ;
+    skos:definition """Extract energy from material. Terminal exit from the
+circular lifecycle — matter is destroyed.
+Material: incineration with energy recovery, pyrolysis.
+Information: no direct dual — closest analogy is computational
+resource recovery (freeing GPU/storage after model deletion)."""@en ;
+    skos:definition """Energie aus Material extrahieren. Terminaler Ausgang aus dem
+zirkulären Lebenszyklus — Materie wird zerstört.
+Material: Verbrennung mit Energierückgewinnung, Pyrolyse.
+Information: kein direktes Dual — nächste Analogie ist die Rückgewinnung
+von Rechenressourcen (GPU/Speicher freigeben nach Modelllöschung)."""@de ;
+    sr:mapsToVerb sdata:Destruction ;
+    sr:circularityRank 9 ;
+    skos:scopeNote """R9 maps to Destruction because the material substrate
+is permanently consumed. The energy output is outside the
+material/information lifecycle."""@en .
+
+
+# =============================================================================
+# D. HIERARCHICAL GROUPING (broader/narrower)
+# =============================================================================
+
+sr:DesignLevel
+    a skos:Collection ;
+    skos:prefLabel "Design-level strategies"@en ,
+                   "Design-Ebene Strategien"@de ;
+    skos:member sr:R0_Refuse , sr:R1_Rethink , sr:R2_Reduce .
+
+sr:ProductLevel
+    a skos:Collection ;
+    skos:prefLabel "Product-level strategies"@en ,
+                   "Produkt-Ebene Strategien"@de ;
+    skos:member sr:R3_Reuse , sr:R4_Repair , sr:R5_Refurbish .
+
+sr:ComponentLevel
+    a skos:Collection ;
+    skos:prefLabel "Component-level strategies"@en ,
+                   "Komponenten-Ebene Strategien"@de ;
+    skos:member sr:R6_Remanufacture , sr:R7_Repurpose .
+
+sr:MaterialLevel
+    a skos:Collection ;
+    skos:prefLabel "Material-level strategies"@en ,
+                   "Material-Ebene Strategien"@de ;
+    skos:member sr:R8_Recycle .
+
+sr:EnergyLevel
+    a skos:Collection ;
+    skos:prefLabel "Energy-level strategies"@en ,
+                   "Energie-Ebene Strategien"@de ;
+    skos:member sr:R9_Recover .
+
+
+# =============================================================================
+# E. USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ─── R5 Refurbish — Material ───────────────────────────────────────────
+#
+#   ex:RefurbishEngine_42 a sdata:MaterialProcess , sdata:Preservation ;
+#       sdata:processType  "R5_Refurbish" ;
+#       sdata:consumes     ex:Engine_Old ;
+#       sdata:generates    ex:Engine_Refurbished ;
+#       sdata:wasPerformedBy ex:RemanCenter_Stuttgart .
+#
+# ─── R5 Refurbish — Information ────────────────────────────────────────
+#
+#   ex:EnrichDataset_v3 a sdata:InformationProcess , sdata:Preservation ;
+#       sdata:processType  "R5_Refurbish" ;
+#       sdata:consumes     ex:TrainingData_v2 ;
+#       sdata:generates    ex:TrainingData_v3 ;
+#       sdata:wasPerformedBy ex:DataOps_Team .
+#
+# ─── R8 Recycle — Material (with recoveredFrom) ───────────────────────
+#
+#   ex:ShredSteel_Run_77 a sdata:MaterialProcess , sdata:Recovery ;
+#       sdata:processType  "R8_Recycle" ;
+#       sdata:consumes     ex:BPillar_001 ;           # MaterialArtifact consumed
+#       sdata:generates    ex:RecycledSteel_Batch_77 . # Material generated
+#
+#   ex:RecycledSteel_Batch_77
+#       sdata:recoveredFrom ex:BPillar_001 .           # circular provenance
+#
+# ─── R8 Recycle — Information (with derivedFrom) ──────────────────────
+#
+#   ex:ExtractFeatures_Run a sdata:InformationProcess , sdata:Recovery ;
+#       sdata:processType  "R8_Recycle" ;
+#       sdata:consumes     ex:LegacyDataset_2019 ;    # InformationArtifact consumed
+#       sdata:generates    ex:ExtractedFeatures_Bulk . # Information generated
+#
+#   ex:ExtractedFeatures_Bulk
+#       sdata:derivedFrom  ex:LegacyDataset_2019 .    # circular provenance
+#
+# ─── R3 Reuse — Material ──────────────────────────────────────────────
+#
+#   ex:ResellLaptop a sdata:MaterialProcess , sdata:Transfer ;
+#       sdata:processType  "R3_Reuse" ;
+#       sdata:consumes     ex:Laptop_SN_12345 ;
+#       sdata:generates    ex:Laptop_SN_12345 .        # same artifact!
+#
+# ─── R7 Repurpose — Information ───────────────────────────────────────
+#
+#   ex:RepurposeNLP a sdata:InformationProcess , sdata:Transformation ;
+#       sdata:processType  "R7_Repurpose" ;
+#       sdata:consumes     ex:NLP_Model_v2 ;
+#       sdata:generates    ex:CodeGen_Model_v1 ;
+#       sdata:wasPerformedBy ex:MLOps_Pipeline .
+#
+# =============================================================================
+# END — sdata-r-strategies.ttl v0.1.0
+# =============================================================================

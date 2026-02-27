@@ -1,10 +1,14 @@
 """Parse all TTL files and report triple counts."""
 
+import logging
 from pathlib import Path
 from rdflib import Graph
 
 
 def parse_all():
+    # Vendored ontologies may contain malformed rdf:HTML literals; keep output clean.
+    logging.getLogger("rdflib.term").setLevel(logging.CRITICAL)
+
     root = Path(__file__).resolve().parent.parent
     ttl_files = sorted(root.glob("**/*.ttl"))
 
