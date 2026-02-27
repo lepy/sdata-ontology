@@ -79,16 +79,16 @@ sdata/
 
 | SDATA Class | BFO Superclass | Description |
 |---|---|---|
-| `MaterialArtifact` | MaterialEntity | Discrete physical artifact |
 | `Material` | MaterialEntity | Homogeneous material substance |
-| `MaterialAgent` | MaterialEntity + prov:Agent | Tangible acting entity |
-| `MaterialProcess` | Process | Process in material domain |
-| `MaterialSite` | Site | Spatial location for material domain |
-| `InformationArtifact` | GenericallyDependentContinuant | Discrete information artifact |
 | `Information` | GenericallyDependentContinuant | Homogeneous information substance |
-| `InformationAgent` | GenericallyDependentContinuant + prov:Agent | Intangible acting entity |
+| `MaterialArtifact` | MaterialEntity | Discrete physical artifact |
+| `InformationArtifact` | GenericallyDependentContinuant | Discrete information artifact |
+| `MaterialProcess` | Process | Process in material domain |
 | `InformationProcess` | Process | Process in information domain |
+| `MaterialSite` | Site | Spatial location for material domain |
 | `InformationSite` | GenericallyDependentContinuant | Logical location for information domain |
+| `MaterialAgent` | MaterialEntity + prov:Agent | Tangible acting entity |
+| `InformationAgent` | GenericallyDependentContinuant + prov:Agent | Intangible acting entity |
 | `Role` | Role | Orthogonal context role |
 | `Identifier` | GenericallyDependentContinuant | Orthogonal typed identifier token |
 
