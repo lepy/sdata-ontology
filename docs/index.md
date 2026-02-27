@@ -17,6 +17,12 @@ make test
 make lint
 ```
 
+## Visualize class hierarchy
+
+```bash
+uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
+```
+
 ## Build docs
 
 ```bash
