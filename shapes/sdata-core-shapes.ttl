@@ -1,0 +1,200 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# =============================================================================
+# sdata Core SHACL Shapes v1.0
+# Validation shapes for sdata-core.ttl
+# =============================================================================
+
+# ─── Agent ───────────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/AgentShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Agent ;
+    rdfs:label "Agent Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Agent must have exactly one sdata:name (xsd:string)."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:agentType ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Agent may have at most one sdata:agentType (xsd:string)."@en ;
+    ] .
+
+# ─── PhysicalArtifact ───────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/PhysicalArtifactShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:PhysicalArtifact ;
+    rdfs:label "PhysicalArtifact Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "PhysicalArtifact must have exactly one sdata:name."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:minCount 1 ;
+        sh:class sdata:Identifier ;
+        sh:message "PhysicalArtifact must have at least one sdata:hasIdentifier."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:consistsOf ;
+        sh:class sdata:Material ;
+        sh:message "sdata:consistsOf must point to a sdata:Material."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasPart ;
+        sh:class sdata:PhysicalArtifact ;
+        sh:message "sdata:hasPart must point to a sdata:PhysicalArtifact."@en ;
+    ] .
+
+# ─── Material ────────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/MaterialShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Material ;
+    rdfs:label "Material Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Material must have exactly one sdata:name."@en ;
+    ] .
+
+# ─── Site ────────────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/SiteShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Site ;
+    rdfs:label "Site Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Site must have exactly one sdata:name."@en ;
+    ] .
+
+# ─── DigitalArtifact ────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/DigitalArtifactShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:DigitalArtifact ;
+    rdfs:label "DigitalArtifact Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "DigitalArtifact must have exactly one sdata:name."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:version ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "DigitalArtifact may have at most one sdata:version."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:represents ;
+        sh:message "sdata:represents must point to PhysicalArtifact, Material, Process, or Site."@en ;
+    ] .
+
+# ─── Process ────────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/ProcessShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Process ;
+    rdfs:label "Process Shape"@en ;
+
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Process must have exactly one sdata:name."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:wasPerformedBy ;
+        sh:minCount 1 ;
+        sh:class sdata:Agent ;
+        sh:message "Process must have at least one sdata:wasPerformedBy pointing to an Agent."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:generates ;
+        sh:message "sdata:generates must point to PhysicalArtifact, Material, or DigitalArtifact."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:consumes ;
+        sh:message "sdata:consumes must point to PhysicalArtifact or Material."@en ;
+    ] ;
+
+    sh:property [
+        sh:path prov:startedAtTime ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "prov:startedAtTime must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    sh:property [
+        sh:path prov:endedAtTime ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "prov:endedAtTime must be xsd:dateTimeStamp."@en ;
+    ] .
+
+# ─── Role ────────────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/RoleShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Role ;
+    rdfs:label "Role Shape"@en ;
+
+    sh:property [
+        sh:path sdata:roleType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Role must have exactly one sdata:roleType (xsd:string)."@en ;
+    ] .
+
+# ─── Identifier ──────────────────────────────────────────────────────────────
+<https://w3id.org/sdata/shapes/IdentifierShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Identifier ;
+    rdfs:label "Identifier Shape"@en ;
+
+    sh:property [
+        sh:path sdata:identifierType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Identifier must have exactly one sdata:identifierType."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:identifierValue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "Identifier must have exactly one sdata:identifierValue."@en ;
+    ] .
