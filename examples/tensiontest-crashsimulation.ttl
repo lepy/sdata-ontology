@@ -1,7 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex: <https://example.org/simulation/> .
 
 ex:LaborHalle3
@@ -49,8 +49,16 @@ ex:FE_Mesh_v3
     a sdata:InformationArtifact ;
     sdata:name "FE Mesh v3" ;
     sdata:version "3.0" ;
+    sdata:consistsOf ex:MeshData_v3 ;
     sdata:represents ex:Probe42 ;
     sdata:hostedAt ex:HPCCluster .
+
+ex:MeshData_v3
+    a sdata:Information ;
+    sdata:name "Mesh Data v3" ;
+    sdata:description "Node and element bulk data for crash simulation." ;
+    sdata:hostedAt ex:HPCCluster ;
+    sdata:derivedFrom ex:Messkurve42 .
 
 ex:ZugversuchProbe42
     a sdata:MaterialProcess ;
