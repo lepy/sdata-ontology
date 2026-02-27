@@ -75,7 +75,7 @@ sdata/
 
 ## SDATA Core Ontology at a Glance
 
-### 12 Classes
+### only 12 Classes: 5 + 5 + 2
 
 | SDATA Class | BFO Superclass | Description |
 |---|---|---|
@@ -96,8 +96,8 @@ sdata/
 
 `sdata-core` follows a symmetric dual model:
 
-- **Material side (tangible)**: `MaterialArtifact`, `Material`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
-- **Information side (intangible)**: `InformationArtifact`, `Information`, `InformationAgent`, `InformationProcess`, `InformationSite`
+- **Material side (tangible)**: `Material`, `MaterialArtifact`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
+- **Information side (intangible)**: `Information`, `InformationArtifact`, `InformationAgent`, `InformationProcess`, `InformationSite`
 
 Each material class has a semantic dual on the information side.  
 Two classes are intentionally **orthogonal** (domain-spanning): `Role` and `Identifier`.
