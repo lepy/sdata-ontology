@@ -7,6 +7,7 @@ from src.visualization.class_hierarchy_plot import extract_hierarchy, load_graph
 ROOT = Path(__file__).resolve().parent.parent
 SDATA = Namespace("https://w3id.org/sdata/core#")
 BFO_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000001"
+PROV_AGENT = "http://www.w3.org/ns/prov#Agent"
 
 
 def _model():
@@ -48,15 +49,15 @@ def test_extract_adds_bfo_context_nodes():
     assert any(str(node.iri) == BFO_ENTITY for node in bfo_nodes)
 
 
-def test_edges_only_target_sdata_or_bfo_and_bfo_reaches_entity():
+def test_edges_only_target_sdata_or_external_and_bfo_reaches_entity():
     model = _model()
     kinds = {str(node.iri): node.kind for node in model.nodes}
     parents_of: dict[str, set[str]] = {}
     for edge in model.edges:
         assert str(edge.child) in kinds
         assert str(edge.parent) in kinds
-        assert kinds[str(edge.child)] in {"sdata", "bfo"}
-        assert kinds[str(edge.parent)] in {"sdata", "bfo"}
+        assert kinds[str(edge.child)] in {"sdata", "bfo", "prov"}
+        assert kinds[str(edge.parent)] in {"sdata", "bfo", "prov"}
         parents_of.setdefault(str(edge.child), set()).add(str(edge.parent))
 
     def reaches_entity(node: str, visited: set[str] | None = None) -> bool:
@@ -73,3 +74,16 @@ def test_edges_only_target_sdata_or_bfo_and_bfo_reaches_entity():
         if node == BFO_ENTITY:
             continue
         assert reaches_entity(node), f"BFO node {node} does not connect to BFO entity"
+
+
+def test_agent_chain_includes_prov_agent():
+    model = _model()
+    kinds = {str(node.iri): node.kind for node in model.nodes}
+    assert PROV_AGENT in kinds
+
+    agent_parent_edges = {
+        (str(edge.child), str(edge.parent))
+        for edge in model.edges
+        if str(edge.child) == str(SDATA.Agent)
+    }
+    assert (str(SDATA.Agent), PROV_AGENT) in agent_parent_edges
