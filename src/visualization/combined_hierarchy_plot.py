@@ -300,6 +300,36 @@ def build_agraph(model: Model):
             attrs.update({"style": "dotted", "color": "#2F855A"})
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 
+    # Group and connect dual core class pairs analogous to class_hierarchy_plot.
+    dual_pairs = [
+        (URIRef(SDATA_SLASH + "MaterialArtifact"), URIRef(SDATA_SLASH + "InformationArtifact")),
+        (URIRef(SDATA_SLASH + "Material"), URIRef(SDATA_SLASH + "Information")),
+        (URIRef(SDATA_SLASH + "MaterialAgent"), URIRef(SDATA_SLASH + "InformationAgent")),
+        (URIRef(SDATA_SLASH + "MaterialProcess"), URIRef(SDATA_SLASH + "InformationProcess")),
+        (URIRef(SDATA_SLASH + "MaterialSite"), URIRef(SDATA_SLASH + "InformationSite")),
+    ]
+    node_ids = {str(node.iri) for node in model.nodes}
+    for left, right in dual_pairs:
+        left_id, right_id = str(left), str(right)
+        if left_id in node_ids and right_id in node_ids:
+            pair_rank = core_cluster.add_subgraph(
+                name=f"cluster_combined_dual_rank_{left_id.rsplit('/', 1)[-1]}",
+                rank="same",
+                style="invis",
+            )
+            pair_rank.add_node(left_id)
+            pair_rank.add_node(right_id)
+            graph.add_edge(
+                left_id,
+                right_id,
+                dir="none",
+                style="dashed",
+                color="#6B7280",
+                fontcolor="#6B7280",
+                label="dual",
+                constraint="false",
+            )
+
     return graph
 
 
