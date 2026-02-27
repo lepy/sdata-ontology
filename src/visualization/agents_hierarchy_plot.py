@@ -182,14 +182,17 @@ def build_agraph(model: HierarchyModel):
         fontname="Helvetica",
     )
 
-    core_cluster = graph.add_subgraph(
-        name="cluster_core", label="Core/PROV context", color="#90B5E8", style="rounded"
+    prov_cluster = graph.add_subgraph(
+        name="cluster_prov", label="PROV ontology", color="#F3C887", style="rounded"
     )
     bfo_cluster = graph.add_subgraph(
-        name="cluster_bfo", label="BFO context", color="#F3C887", style="rounded"
+        name="cluster_bfo", label="BFO ontology", color="#F3C887", style="rounded"
+    )
+    core_cluster = graph.add_subgraph(
+        name="cluster_core", label="sdata-core ontology", color="#90B5E8", style="rounded"
     )
     agents_cluster = graph.add_subgraph(
-        name="cluster_agents", label="sdata-agents vocabulary", color="#9AD9BF", style="rounded"
+        name="cluster_agents", label="sdata-agents ontology", color="#9AD9BF", style="rounded"
     )
 
     style_map = {
@@ -201,10 +204,12 @@ def build_agraph(model: HierarchyModel):
     }
 
     for node in model.nodes:
-        if node.kind in {"prov", "sdata"}:
-            target = core_cluster
+        if node.kind == "prov":
+            target = prov_cluster
         elif node.kind == "bfo":
             target = bfo_cluster
+        elif node.kind == "sdata":
+            target = core_cluster
         else:
             target = agents_cluster
         target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
@@ -225,6 +230,15 @@ def build_agraph(model: HierarchyModel):
     legend.add_edge("legend_sdata", "legend_scheme", label="typed via sdata:agentType", color="#4A5568")
     legend.add_edge("legend_bfo", "legend_sdata", label="superclass → subclass", color="#4A5568")
     legend.add_edge("legend_scheme", "legend_concept", label="broader -> narrower", color="#4A5568")
+
+    # Layering hints: top=prov+bfo, then sdata-core, then sdata-agents.
+    prov_cluster.add_node("__anchor_prov", style="invis", width="0", height="0", label="")
+    bfo_cluster.add_node("__anchor_bfo", style="invis", width="0", height="0", label="")
+    core_cluster.add_node("__anchor_core", style="invis", width="0", height="0", label="")
+    agents_cluster.add_node("__anchor_agents", style="invis", width="0", height="0", label="")
+    graph.add_edge("__anchor_prov", "__anchor_core", style="invis", weight="20")
+    graph.add_edge("__anchor_bfo", "__anchor_core", style="invis", weight="20")
+    graph.add_edge("__anchor_core", "__anchor_agents", style="invis", weight="20")
 
     return graph
 
