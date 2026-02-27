@@ -1,0 +1,120 @@
+# =============================================================================
+# FILE: AttributeQuantityValue_sheetthickness.ttl
+# Example: Blechdicke t = 1.2 mm ± 0.1 mm — three ValueDomain interpretations
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix unit:    <http://qudt.org/vocab/unit/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix ex:      <https://example.org/tensile-test/> .
+
+# =============================================================================
+# A. THE ATTRIBUTE — shared across all interpretations
+# =============================================================================
+
+ex:attr_thickness  a  sdata:AttributeQuantityValue ;
+    sdata:name           "t" ;
+    rdfs:label           "Blechdicke"@de ,
+                         "Sheet Thickness"@en ;
+    sdata:description    "Ausgangsblechdicke der Zugprobe vor dem Versuch"@de ,
+                         "Initial sheet thickness of the tensile specimen before testing"@en ;
+    sdata:dtype          "float" ;
+    qudt:numericValue    "1.2"^^xsd:double ;
+    sdata:unitSymbol     "mm" ;
+    qudt:unit            unit:MilliM .
+
+# =============================================================================
+# B. INTERPRETATION 1 — Intervall (harte Toleranz)
+# =============================================================================
+# Kontext: Wareneingangsprüfung, Qualitätskontrolle
+# Aussage: 1.1 ≤ t ≤ 1.3 oder Ausschuss
+
+ex:dom_thickness_interval  a  sdata:IntervalDomain ;
+    sdata:minValue          "1.1"^^xsd:double ;
+    sdata:maxValue          "1.3"^^xsd:double ;
+    sdata:domainDescription "Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen"@de ,
+                            "Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits"@en .
+
+# ─── Anbindung ──────────────────────────────────────────
+# ex:attr_thickness  sdata:hasValueDomain  ex:dom_thickness_interval .
+
+# =============================================================================
+# C. INTERPRETATION 2 — Trapez-Fuzzy (weiche Toleranz)
+# =============================================================================
+# Kontext: Robustheits-Simulation, Sensitivitätsanalyse
+# Aussage: 1.15–1.25 voll akzeptabel, 1.05–1.35 graduell abfallend
+#
+#     μ(x)
+#     1 ·       ┌────────┐
+#       ·      /          \
+#       ·     /            \
+#     0 ·────/──────────────\────
+#          1.05  1.15  1.25  1.35
+
+ex:dom_thickness_fuzzy  a  sdata:TrapezoidalFuzzyDomain ;
+    sdata:fuzzyLeft          "1.05"^^xsd:double ;
+    sdata:fuzzyCoreLeft      "1.15"^^xsd:double ;
+    sdata:fuzzyCoreRight     "1.25"^^xsd:double ;
+    sdata:fuzzyRight         "1.35"^^xsd:double ;
+    sdata:domainDescription  "Blechdicke 1.2 mm — weiche Toleranz für Simulation"@de ,
+                             "Sheet thickness 1.2 mm — soft tolerance for simulation"@en .
+
+# ─── Anbindung ──────────────────────────────────────────
+# ex:attr_thickness  sdata:hasValueDomain  ex:dom_thickness_fuzzy .
+
+# =============================================================================
+# D. INTERPRETATION 3 — Normalverteilung (stochastisch)
+# =============================================================================
+# Kontext: Prozessfähigkeitsanalyse (Cpk), statistische Simulation
+# Aussage: t ~ N(1.2, 0.033²) → ±3σ ≈ ±0.1 mm → Cpk = 1.0
+
+ex:dom_thickness_normal  a  sdata:NormalDomain ;
+    sdata:mu                "1.2"^^xsd:double ;
+    sdata:sigma             "0.033"^^xsd:double ;
+    sdata:domainDescription "Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)"@de ,
+                            "Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)"@en .
+
+# ─── Anbindung ──────────────────────────────────────────
+# ex:attr_thickness  sdata:hasValueDomain  ex:dom_thickness_normal .
+
+# =============================================================================
+# E. KONTEXT-BEISPIELE — welche Anbindung wann
+# =============================================================================
+#
+# ─── Wareneingangsprüfung ────────────────────────────────
+# ex:attr_thickness_QC  a  sdata:AttributeQuantityValue ;
+#     sdata:name           "t" ;
+#     sdata:dtype          "float" ;
+#     qudt:numericValue    "1.18"^^xsd:double ;
+#     sdata:unitSymbol     "mm" ;
+#     qudt:unit            unit:MilliM ;
+#     sdata:hasValueDomain ex:dom_thickness_interval .
+#     # → 1.1 ≤ 1.18 ≤ 1.3 → ✓ bestanden
+#
+# ─── Robustheits-Simulation ─────────────────────────────
+# ex:attr_thickness_sim  a  sdata:AttributeQuantityValue ;
+#     sdata:name           "t" ;
+#     sdata:dtype          "float" ;
+#     qudt:numericValue    "1.28"^^xsd:double ;
+#     sdata:unitSymbol     "mm" ;
+#     qudt:unit            unit:MilliM ;
+#     sdata:hasValueDomain ex:dom_thickness_fuzzy .
+#     # → μ(1.28) ≈ 0.7 → akzeptabel, aber nicht ideal
+#
+# ─── Prozessfähigkeit ───────────────────────────────────
+# ex:attr_thickness_cpk  a  sdata:AttributeQuantityValue ;
+#     sdata:name           "t" ;
+#     sdata:dtype          "float" ;
+#     qudt:numericValue    "1.2"^^xsd:double ;
+#     sdata:unitSymbol     "mm" ;
+#     qudt:unit            unit:MilliM ;
+#     sdata:hasValueDomain ex:dom_thickness_normal .
+#     # → Nominalwert = μ, Streuung via σ beschrieben
+#
+# =============================================================================
+# END — AttributeQuantityValue_sheetthickness.ttl
+# =============================================================================
