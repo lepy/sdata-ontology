@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy clean
 
 UV ?= uv
 
@@ -39,6 +39,10 @@ lint: check-uv
 		$(UV) run python -c "from rdflib import Graph; g = Graph(); g.parse('$$f', format='turtle'); print(f'  ✓ {len(g)} triples')" || exit 1; \
 	done
 	@echo "✓ All files valid Turtle."
+
+# ─── Visualize class hierarchy ───────────────────────────────────────────────
+viz-hierarchy: check-uv
+	$(UV) run python -m src.visualization.class_hierarchy_plot
 
 # ─── Clean ────────────────────────────────────────────────────────────────────
 clean:
