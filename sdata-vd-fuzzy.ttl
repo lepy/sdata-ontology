@@ -1,0 +1,328 @@
+# =============================================================================
+# FILE: sdata-vd-fuzzy.ttl
+# ValueDomain extension: FuzzyDomain (fuzzy numbers)
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/vd-fuzzy>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/quantities> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata ValueDomain: Fuzzy Numbers"@en ,
+               "sdata Wertebereich: Fuzzy-Zahlen"@de ;
+    dcterms:description
+        """Fuzzy numbers as value domains. Membership functions defined
+by characteristic points. Supports triangular, trapezoidal, Gaussian,
+and general L-R fuzzy numbers.
+5 Classes · 0 Object Properties · 9 Datatype Properties"""@en .
+
+# =============================================================================
+# ABSTRACT BASE
+# =============================================================================
+
+sdata:FuzzyDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:ValueDomain ;
+    rdfs:label     "Fuzzy Domain"@en ,
+                   "Fuzzy-Wertebereich"@de ;
+    rdfs:comment   """Abstract base for fuzzy number value domains. The
+AttributeQuantityValue's qudt:numericValue represents the defuzzified
+crisp value (e.g. centroid). The FuzzyDomain describes the underlying
+membership function.
+
+The alpha-cut at α=0 defines the support interval,
+the alpha-cut at α=1 defines the core.
+
+Do not instantiate directly — use subclasses."""@en ,
+                   """Abstrakte Basis für Fuzzy-Zahl-Wertebereiche. Der
+qudt:numericValue des AttributeQuantityValue repräsentiert den
+defuzzifizierten Wert (z.B. Schwerpunkt). Der FuzzyDomain beschreibt
+die zugrundeliegende Zugehörigkeitsfunktion."""@de .
+
+# ─── Shared property: alpha-cut level ───────────────────────────────────────
+sdata:alphaLevel
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:FuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "alpha level (α)"@en ,
+                   "Alpha-Niveau (α)"@de ;
+    rdfs:comment   """Optional: the α-cut level at which the crisp value was
+determined. α ∈ [0, 1]. Default interpretation: α = 1 (core)."""@en .
+
+# =============================================================================
+# TRIANGULAR FUZZY NUMBER — (a, m, b)
+# =============================================================================
+#
+#     μ(x)
+#     1 ·         /\
+#       ·        /  \
+#       ·       /    \
+#     0 ·──────/──────\──────
+#              a   m   b
+#
+
+sdata:TriangularFuzzyDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:FuzzyDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyLeft ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyPeak ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyRight ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Triangular Fuzzy Domain"@en ,
+                   "Dreieckige Fuzzy-Zahl"@de ;
+    rdfs:comment   """Triangular fuzzy number T(a, m, b).
+  a = left foot (μ=0), m = peak (μ=1), b = right foot (μ=0).
+  Constraint: a ≤ m ≤ b.
+  Support: [a, b]. Core: {m}."""@en .
+
+# =============================================================================
+# TRAPEZOIDAL FUZZY NUMBER — (a, b, c, d)
+# =============================================================================
+#
+#     μ(x)
+#     1 ·       ┌──────┐
+#       ·      /        \
+#       ·     /          \
+#     0 ·────/────────────\────
+#            a   b    c    d
+#
+
+sdata:TrapezoidalFuzzyDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:FuzzyDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyLeft ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyCoreLeft ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyCoreRight ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyRight ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Trapezoidal Fuzzy Domain"@en ,
+                   "Trapezförmige Fuzzy-Zahl"@de ;
+    rdfs:comment   """Trapezoidal fuzzy number Trap(a, b, c, d).
+  a = left foot (μ=0), b = core left (μ=1),
+  c = core right (μ=1), d = right foot (μ=0).
+  Constraint: a ≤ b ≤ c ≤ d.
+  Support: [a, d]. Core: [b, c].
+  Degenerates to triangular when b = c."""@en .
+
+# =============================================================================
+# GAUSSIAN FUZZY NUMBER — (c, σ)
+# =============================================================================
+#
+#     μ(x)
+#     1 ·        ___
+#       ·      /     \
+#       ·    /         \
+#     0 ·──/─────────────\──
+#               c
+#           ←─ σ ─→
+#
+
+sdata:GaussianFuzzyDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:FuzzyDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyCenter ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyWidth ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Gaussian Fuzzy Domain"@en ,
+                   "Gaußsche Fuzzy-Zahl"@de ;
+    rdfs:comment   """Gaussian fuzzy number G(c, σ).
+  c = center (μ=1), σ = width parameter.
+  μ(x) = exp(-(x-c)²/(2σ²)).
+  Support: (-∞, +∞). Core: {c}."""@en .
+
+# =============================================================================
+# L-R FUZZY NUMBER — general asymmetric
+# =============================================================================
+
+sdata:LRFuzzyDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:FuzzyDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzyCenter ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzySpreadLeft ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:fuzzySpreadRight ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "L-R Fuzzy Domain"@en ,
+                   "L-R-Fuzzy-Zahl"@de ;
+    rdfs:comment   """General L-R fuzzy number LR(c, αL, αR).
+  c = center, αL = left spread, αR = right spread.
+  L and R reference functions define the membership shape.
+  Triangular and Gaussian are special cases.
+  Specify L/R function types via sdata:fuzzyLeftFunction
+  and sdata:fuzzyRightFunction if non-linear."""@en .
+
+# =============================================================================
+# DISJOINTNESS — all 4 leaf classes pairwise disjoint
+# =============================================================================
+
+sdata:TriangularFuzzyDomain   owl:disjointWith sdata:TrapezoidalFuzzyDomain .
+sdata:TriangularFuzzyDomain   owl:disjointWith sdata:GaussianFuzzyDomain .
+sdata:TriangularFuzzyDomain   owl:disjointWith sdata:LRFuzzyDomain .
+sdata:TrapezoidalFuzzyDomain  owl:disjointWith sdata:GaussianFuzzyDomain .
+sdata:TrapezoidalFuzzyDomain  owl:disjointWith sdata:LRFuzzyDomain .
+sdata:GaussianFuzzyDomain     owl:disjointWith sdata:LRFuzzyDomain .
+
+# =============================================================================
+# DATATYPE PROPERTIES — fuzzy number parameters
+# =============================================================================
+
+# ─── Characteristic points (Triangular + Trapezoidal) ────────────────────────
+sdata:fuzzyLeft
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:FuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "left foot (a)"@en ,
+                   "linker Fuß (a)"@de ;
+    rdfs:comment   "Left support boundary where μ = 0."@en .
+
+sdata:fuzzyRight
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:FuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "right foot (b/d)"@en ,
+                   "rechter Fuß (b/d)"@de ;
+    rdfs:comment   "Right support boundary where μ = 0."@en .
+
+sdata:fuzzyPeak
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:TriangularFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "peak (m)"@en ,
+                   "Spitze (m)"@de ;
+    rdfs:comment   "Peak point where μ = 1 (triangular)."@en .
+
+sdata:fuzzyCoreLeft
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:TrapezoidalFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "core left (b)"@en ,
+                   "Kern links (b)"@de ;
+    rdfs:comment   "Left boundary of the core plateau where μ = 1."@en .
+
+sdata:fuzzyCoreRight
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:TrapezoidalFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "core right (c)"@en ,
+                   "Kern rechts (c)"@de ;
+    rdfs:comment   "Right boundary of the core plateau where μ = 1."@en .
+
+# ─── Gaussian + L-R ──────────────────────────────────────────────────────────
+sdata:fuzzyCenter
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:FuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "center (c)"@en ,
+                   "Zentrum (c)"@de ;
+    rdfs:comment   "Center point where μ = 1."@en .
+
+sdata:fuzzyWidth
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:GaussianFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "width (σ)"@en ,
+                   "Breite (σ)"@de ;
+    rdfs:comment   "Width parameter of the Gaussian membership function."@en .
+
+sdata:fuzzySpreadLeft
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:LRFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "left spread (αL)"@en ,
+                   "Linke Spreizung (αL)"@de .
+
+sdata:fuzzySpreadRight
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:LRFuzzyDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "right spread (αR)"@en ,
+                   "Rechte Spreizung (αR)"@de .
+
+# =============================================================================
+# USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ─── "Rm is approximately 300 MPa" — triangular ─────────
+# ex:dom_Rm_fuzzy  a  sdata:TriangularFuzzyDomain ;
+#     sdata:fuzzyLeft          "285.0"^^xsd:double ;
+#     sdata:fuzzyPeak          "303.0"^^xsd:double ;
+#     sdata:fuzzyRight         "320.0"^^xsd:double ;
+#     sdata:domainDescription  "Approximate tensile strength DC04" .
+#
+# ex:attr_Rm  a  sdata:AttributeQuantityValue ;
+#     sdata:name           "Rm" ;
+#     sdata:dtype          "float" ;
+#     qudt:numericValue    "303.0"^^xsd:double ;
+#     sdata:unitSymbol     "MPa" ;
+#     sdata:hasValueDomain ex:dom_Rm_fuzzy .
+#
+# ─── "Thickness tolerance" — trapezoidal ────────────────
+# ex:dom_thickness_tol  a  sdata:TrapezoidalFuzzyDomain ;
+#     sdata:fuzzyLeft          "0.92"^^xsd:double ;
+#     sdata:fuzzyCoreLeft      "0.98"^^xsd:double ;
+#     sdata:fuzzyCoreRight     "1.02"^^xsd:double ;
+#     sdata:fuzzyRight         "1.08"^^xsd:double ;
+#     sdata:domainDescription  "Sheet thickness tolerance band (mm)" .
+#
+# ─── "Sensor noise" — Gaussian ──────────────────────────
+# ex:dom_sensor_noise  a  sdata:GaussianFuzzyDomain ;
+#     sdata:fuzzyCenter        "0.0"^^xsd:double ;
+#     sdata:fuzzyWidth         "0.5"^^xsd:double ;
+#     sdata:domainDescription  "Sensor measurement noise model" .
+#
+# =============================================================================
+# END — sdata-vd-fuzzy.ttl v0.1.0
+# =============================================================================
