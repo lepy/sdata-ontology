@@ -1,6 +1,7 @@
 # =============================================================================
 # FILE: sdata-vd-statistical.ttl
 # ValueDomain extension: StatisticalDomain (probability distributions)
+# with truncation support via composition with IntervalDomain
 # =============================================================================
 
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -17,14 +18,28 @@
 <https://w3id.org/sdata/vd-statistical>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/quantities> ;
-    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    owl:imports <https://w3id.org/sdata/vd-interval> ;
+    owl:versionInfo "0.2.0 — 27 February 2026" ;
     rdfs:label "sdata ValueDomain: Statistical Distributions"@en ,
                "sdata Wertebereich: Statistische Verteilungen"@de ;
     dcterms:description
         """Probability distributions as value domains. Each distribution
-type is a named class with typed parameters, enabling reasoner
-validation and SPARQL queryability.
-7 Classes · 0 Object Properties · 12 Datatype Properties"""@en .
+type is a named class with typed parameters. Any distribution can
+be truncated via sdata:truncatedBy → IntervalDomain (composition,
+not class explosion).
+
+Truncation via composition:
+  NormalDomain + truncatedBy → IntervalDomain[1.1, 1.3]
+  = TruncatedNormal(μ=1.2, σ=0.033, a=1.1, b=1.3)
+
+The IntervalDomain's boundary semantics (open/closed) apply to
+the truncation bounds, enabling all four truncation styles:
+  [a, b]   closed–closed truncation
+  (a, b]   open–closed truncation
+  [a, b)   closed–open truncation
+  (a, b)   open–open truncation
+
+7 Classes · 1 Object Property · 12 Datatype Properties"""@en .
 
 # =============================================================================
 # ABSTRACT BASE
@@ -37,9 +52,42 @@ sdata:StatisticalDomain
                    "Statistischer Wertebereich"@de ;
     rdfs:comment   """Abstract base for probability distributions. Values of the
 associated AttributeQuantityValue are drawn from or described by
-this distribution. Do not instantiate directly — use subclasses."""@en ,
+this distribution.
+
+Truncation: Use sdata:truncatedBy to link to an IntervalDomain.
+The distribution is then restricted to the interval's range,
+with the interval's open/closed boundary semantics applied.
+Without truncatedBy, the distribution has its natural support.
+
+Do not instantiate directly — use subclasses."""@en ,
                    """Abstrakte Basis für Wahrscheinlichkeitsverteilungen.
+Abschneidung via sdata:truncatedBy → IntervalDomain.
 Nicht direkt instanziieren — Subklassen verwenden."""@de .
+
+# =============================================================================
+# TRUNCATION — composition with IntervalDomain
+# =============================================================================
+
+sdata:truncatedBy
+    rdf:type       owl:ObjectProperty ;
+    rdfs:domain    sdata:ValueDomain ;
+    rdfs:range     sdata:IntervalDomain ;
+    rdfs:label     "truncated by"@en ,
+                   "abgeschnitten durch"@de ;
+    rdfs:comment   """Restricts a distribution (or fuzzy number) to an interval.
+The IntervalDomain defines both the truncation bounds and their
+open/closed semantics.
+
+Domain is ValueDomain (not just StatisticalDomain) so that
+FuzzyDomain can also be truncated.
+
+Without this link, the distribution has its natural support:
+  Normal     → (-∞, +∞)
+  LogNormal  → (0, +∞)
+  Weibull    → [0, +∞)
+  Uniform    → [a, b]
+  Poisson    → {0, 1, 2, ...}
+  Binomial   → {0, 1, ..., n}"""@en .
 
 # =============================================================================
 # CONTINUOUS DISTRIBUTIONS
@@ -61,7 +109,8 @@ sdata:NormalDomain
     ] ;
     rdfs:label     "Normal Domain"@en ,
                    "Normalverteilungs-Wertebereich"@de ;
-    rdfs:comment   "Gaussian distribution N(μ, σ²)."@en .
+    rdfs:comment   """Gaussian distribution N(μ, σ²).
+Natural support: (-∞, +∞). Truncate via sdata:truncatedBy."""@en .
 
 # ─── LogNormal ───────────────────────────────────────────────────────────────
 sdata:LogNormalDomain
@@ -79,7 +128,9 @@ sdata:LogNormalDomain
     ] ;
     rdfs:label     "Log-Normal Domain"@en ,
                    "Log-Normalverteilungs-Wertebereich"@de ;
-    rdfs:comment   "Log-normal distribution LogN(μ, σ²). μ and σ are parameters of the underlying normal."@en .
+    rdfs:comment   """Log-normal distribution LogN(μ, σ²).
+μ and σ are parameters of the underlying normal.
+Natural support: (0, +∞). Truncate via sdata:truncatedBy."""@en .
 
 # ─── Uniform ─────────────────────────────────────────────────────────────────
 sdata:UniformDomain
@@ -97,7 +148,8 @@ sdata:UniformDomain
     ] ;
     rdfs:label     "Uniform Domain"@en ,
                    "Gleichverteilungs-Wertebereich"@de ;
-    rdfs:comment   "Continuous uniform distribution U(a, b)."@en .
+    rdfs:comment   """Continuous uniform distribution U(a, b).
+Natural support: [a, b]. Inherently bounded."""@en .
 
 # ─── Weibull ─────────────────────────────────────────────────────────────────
 sdata:WeibullDomain
@@ -115,7 +167,8 @@ sdata:WeibullDomain
     ] ;
     rdfs:label     "Weibull Domain"@en ,
                    "Weibull-Wertebereich"@de ;
-    rdfs:comment   "Weibull distribution W(k, λ). k = shape, λ = scale."@en .
+    rdfs:comment   """Weibull distribution W(k, λ). k = shape, λ = scale.
+Natural support: [0, +∞). Truncate via sdata:truncatedBy."""@en .
 
 # =============================================================================
 # DISCRETE DISTRIBUTIONS
@@ -132,7 +185,8 @@ sdata:PoissonDomain
     ] ;
     rdfs:label     "Poisson Domain"@en ,
                    "Poisson-Wertebereich"@de ;
-    rdfs:comment   "Poisson distribution Pois(λ)."@en .
+    rdfs:comment   """Poisson distribution Pois(λ).
+Natural support: {0, 1, 2, ...}. Truncate via sdata:truncatedBy."""@en .
 
 # ─── Binomial ────────────────────────────────────────────────────────────────
 sdata:BinomialDomain
@@ -150,7 +204,8 @@ sdata:BinomialDomain
     ] ;
     rdfs:label     "Binomial Domain"@en ,
                    "Binomial-Wertebereich"@de ;
-    rdfs:comment   "Binomial distribution B(n, p). n = trials, p = probability."@en .
+    rdfs:comment   """Binomial distribution B(n, p). n = trials, p = probability.
+Natural support: {0, 1, ..., n}. Truncate via sdata:truncatedBy."""@en .
 
 # =============================================================================
 # DISJOINTNESS — all 6 leaf classes pairwise disjoint
@@ -252,29 +307,55 @@ sdata:probability
 # USAGE EXAMPLES (informative)
 # =============================================================================
 #
-# ─── Rm ~ N(303, 12²) ───────────────────────────────────
-# ex:dom_Rm_dist  a  sdata:NormalDomain ;
+# ─── Rm ~ N(303, 12²) — untruncated ─────────────────────
+# ex:dom_Rm_normal  a  sdata:NormalDomain ;
 #     sdata:mu                "303.0"^^xsd:double ;
 #     sdata:sigma             "12.0"^^xsd:double ;
 #     sdata:domainDescription "Tensile strength distribution DC04" .
 #
-# ex:attr_Rm  a  sdata:AttributeQuantityValue ;
-#     sdata:name           "Rm" ;
-#     sdata:dtype          "float" ;
-#     qudt:numericValue    "303.0"^^xsd:double ;
-#     sdata:hasValueDomain ex:dom_Rm_dist .
+# ─── t ~ TruncNorm(1.2, 0.033², [1.1, 1.3]) ────────────
+# ex:dom_t_truncnorm  a  sdata:NormalDomain ;
+#     sdata:mu                "1.2"^^xsd:double ;
+#     sdata:sigma             "0.033"^^xsd:double ;
+#     sdata:truncatedBy       ex:dom_t_bounds ;
+#     sdata:domainDescription "Sheet thickness, truncated normal" .
 #
-# ─── Fatigue life ~ Weibull(2.5, 10000) ─────────────────
+# ex:dom_t_bounds  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:domainDescription "Hard tolerance limits for truncation" .
+#
+# ─── t ~ TruncNorm(1.2, 0.033², (1.1, 1.3]) — open left ─
+# ex:dom_t_bounds_open  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:minInclusive      "false"^^xsd:boolean ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:domainDescription "Truncation bounds, left-open" .
+#
+# ─── Fatigue life ~ TruncWeibull(2.5, 10000, [100, +∞)) ─
 # ex:dom_fatigue  a  sdata:WeibullDomain ;
 #     sdata:shape             "2.5"^^xsd:double ;
 #     sdata:scale             "10000.0"^^xsd:double ;
-#     sdata:domainDescription "Fatigue life distribution" .
+#     sdata:truncatedBy       ex:dom_fatigue_bounds ;
+#     sdata:domainDescription "Fatigue life, truncated Weibull" .
 #
-# ─── Defect count ~ Pois(3.2) ───────────────────────────
+# ex:dom_fatigue_bounds  a  sdata:IntervalDomain ;
+#     sdata:minValue          "100.0"^^xsd:double ;
+#     sdata:maxValue          "INF"^^xsd:double ;
+#     sdata:maxInclusive      "false"^^xsd:boolean ;
+#     sdata:domainDescription "Minimum 100 cycles, no upper bound" .
+#
+# ─── Defect count ~ TruncPoisson(3.2, [0, 10]) ──────────
 # ex:dom_defects  a  sdata:PoissonDomain ;
 #     sdata:lambda            "3.2"^^xsd:double ;
-#     sdata:domainDescription "Surface defects per sheet" .
+#     sdata:truncatedBy       ex:dom_defect_cap ;
+#     sdata:domainDescription "Surface defects, capped at 10" .
+#
+# ex:dom_defect_cap  a  sdata:IntervalDomain ;
+#     sdata:minValue          "0.0"^^xsd:double ;
+#     sdata:maxValue          "10.0"^^xsd:double ;
+#     sdata:domainDescription "Max 10 defects accepted" .
 #
 # =============================================================================
-# END — sdata-vd-statistical.ttl v0.1.0
+# END — sdata-vd-statistical.ttl v0.2.0
 # =============================================================================
