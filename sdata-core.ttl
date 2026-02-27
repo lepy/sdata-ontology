@@ -10,205 +10,339 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
 # =============================================================================
-# sdata Core Ontology v0.1 — Reviewed & Hardened
+# sdata Core Ontology v0.2.0
 # 27 February 2026
-# 8 Classes · 12 Object Properties (+ 5 inverses) · 12 Datatype Properties
+# 11 Classes · 14 Object Properties (+ 6 inverses) · 14 Datatype Properties
 # Imports: vendored BFO, PROV-O, QUDT (offline/autark)
 # =============================================================================
 <https://w3id.org/sdata/core>
     rdf:type owl:Ontology ;
-    rdfs:label "sdata Core Ontology v0.1"@en ,
-               "sdata Core-Ontologie v0.1"@de ;
-    owl:versionInfo "0.1.0 — 27 February 2026. Reviewed: PROV via property-mapping (no dual inheritance), involves split into consumes/wasPerformedBy, consistsOf restricted to Material, dateTimeStamp, SHACL/SKOS guidance. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
-    owl:versionIRI <https://w3id.org/sdata/core/0.1> ;
-    
+    rdfs:label "sdata Core Ontology v0.2.0"@en ,
+               "sdata Core-Ontologie v0.2.0"@de ;
+    owl:versionInfo "0.2.0 — 27 February 2026. Symmetric 5+5+1 design: five Material classes, five Information classes, one orthogonal Role. Every dimension (Artifact, Substance, Agent, Process, Site) has a Material/Information dual. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
+    owl:versionIRI <https://w3id.org/sdata/core/0.2.0> ;
+
     # ─── Local imports (vendored for offline use) ──────────────────────────────
-    owl:imports <vendor/ontologies/bfo.ttl> ;      # derived from official BFO 2020 OWL rendering (ISO/IEC 21838-2:2021)
-    owl:imports <vendor/ontologies/prov-o.ttl> ;   # upstream: http://www.w3.org/ns/prov-o
-    owl:imports <vendor/ontologies/qudt.ttl> ;     # upstream: http://qudt.org/3.1.11/schema/qudt
-    
+    owl:imports <vendor/ontologies/bfo.ttl> ;
+    owl:imports <vendor/ontologies/prov-o.ttl> ;
+    owl:imports <vendor/ontologies/qudt.ttl> ;
+
     # ─── ISO Conformance References ───────────────────────────────────────────
-    dcterms:conformsTo <https://www.iso.org/standard/74572.html> ;   # ISO/IEC 21838-2:2021 — Information technology — Top-level ontologies — Part 2: Basic Formal Ontology (BFO)
+    dcterms:conformsTo <https://www.iso.org/standard/74572.html> ;
     rdfs:seeAlso <https://standards.iso.org/iso-iec/21838/-2/ed-1/en/> ;
     rdfs:seeAlso <https://github.com/BFO-ontology/BFO-2020/tree/21838-2> ;
-    
+
     dc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
     rdfs:comment """Deployment-ready mid-level ontology for Product Passports,
 Circular Economy, and Digital Twins.
-8 classes spanning 5 BFO categories (ISO/IEC 21838-2:2021).
+
+Symmetric 5+5+1 design across two dual domains and one orthogonal class:
+
+  Material (anfassbar / tangible):      Information (nicht anfassbar / intangible):
+  ─────────────────────────────         ──────────────────────────────────────────
+  MaterialArtifact  (diskretes Ding)    InformationArtifact (diskretes Infoding)
+  Material          (homogene Substanz) Identifier          (typisierter Token)
+  MaterialAgent     (handelndes Wer)    InformationAgent    (handelndes Wer)
+  MaterialProcess   (Prozess auf M.)    InformationProcess  (Prozess auf I.)
+  MaterialSite      (räumliches Wo)     InformationSite     (logisches Wo)
+
+  Orthogonal: Role (kontextabhängig, domänenunabhängig)
+
+BFO alignment:
+  Material*      → bfo:MaterialEntity (Artifact, Material, Agent)
+                   bfo:Site via bfo:ImmaterialEntity (MaterialSite)
+                   bfo:Process (MaterialProcess)
+  Information*   → bfo:GenericallyDependentContinuant (Artifact, Identifier,
+                   Agent, Site)
+                   bfo:Process (InformationProcess)
+  Role           → bfo:Role
+
 PROV-O alignment via property-mapping, not class inheritance.
-Validation via SHACL shapes (separate file). Type discrimination via
-SKOS ConceptSchemes in extension modules.
-QUDT import note: The versioned QUDT IRI may change with QUDT releases.
-Pin the version in your build pipeline and verify with fetch+reason in CI.
-BFO alignment: All subclasses use the ISO/IEC 21838-2:2021 standardized BFO 2020."""@en ,
-               """Deployment-fähige Mid-Level-Ontologie für Produktpässe,
-Kreislaufwirtschaft und Digitale Zwillinge.
-8 Klassen über 5 BFO-Kategorien gemäß ISO/IEC 21838-2:2021.
-PROV-O-Alignment über Property-Mapping, nicht Klassen-Vererbung.
-Validierung via SHACL Shapes (separate Datei).
-Typ-Diskriminierung via SKOS ConceptSchemes in Extension-Modulen.
-BFO-Alignment: Alle Subklassen basieren exakt auf der ISO/IEC 21838-2:2021 standardisierten BFO 2020 (http://purl.obolibrary.org/obo/bfo.owl)."""@de .
+Verb classes (Creation, Transformation, etc.) in sdata-processtypes.ttl.
+Validation via SHACL shapes (separate file).
+Type discrimination via SKOS ConceptSchemes in extension modules."""@en .
 
 # =============================================================================
-# A. CLASSES — 8 irreducible primitives
+# A. CLASSES — 11 irreducible primitives (5+5+1)
 # =============================================================================
-# ─── A1. Agent ───────────────────────────────────────────────────────────────
-sdata:Agent
-    rdf:type owl:Class ;
-    rdfs:subClassOf prov:Agent ;
-    rdfs:label "Agent"@en , "Agent"@de ;
-    rdfs:comment """Entity capable of bearing responsibility and acting in processes.
-Distinguish subtypes via sdata:agentType. Recommended values from a SKOS
-ConceptScheme (sdata-agents.ttl): Person, Organization, Robot, SoftwareAgent.
-No subclasses in core — keeps the class tree flat."""@en ,
-               """Handlungsfähige Entität, die Verantwortung tragen und in Prozessen
-agieren kann. Subtypen über sdata:agentType. Empfohlene Werte aus einem SKOS
-ConceptScheme (sdata-agents.ttl): Person, Organisation, Roboter, SoftwareAgent.
-Keine Unterklassen im Core."""@de .
 
-# ─── A2. PhysicalArtifact ───────────────────────────────────────────────────
-sdata:PhysicalArtifact
+# ─────────────────────────────────────────────────────────────────────────────
+# MATERIAL SIDE — tangible, spatially extended
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── A1. MaterialArtifact ────────────────────────────────────────────────────
+sdata:MaterialArtifact
     rdf:type owl:Class ;
     rdfs:subClassOf bfo:0000040 ; # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
-    rdfs:label "Physical Artifact"@en , "Physisches Artefakt"@de ;
-    rdfs:comment """Discrete, serializable, intentionally manufactured physical object
+    rdfs:label "Material Artifact"@en , "Materielles Artefakt"@de ;
+    rdfs:comment """Discrete, serializable, intentionally manufactured object
 with its own identity and lifecycle (the product instance).
+Dual of InformationArtifact.
 Examples: a specific car (VIN), a battery pack, a PCB."""@en ,
-               """Diskretes, serialisierbares, intentional hergestelltes physisches Objekt
+               """Diskretes, serialisierbares, intentional hergestelltes Objekt
 mit eigener Identität und eigenem Lebenszyklus (die Produktinstanz).
+Dual zu InformationArtifact.
 Beispiele: ein bestimmtes Auto (VIN), ein Batteriepack, eine Leiterplatte."""@de .
 
-# ─── A3. Material ────────────────────────────────────────────────────────────
+# ─── A2. Material ────────────────────────────────────────────────────────────
 sdata:Material
     rdf:type owl:Class ;
     rdfs:subClassOf bfo:0000040 ; # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
     rdfs:label "Material"@en , "Material"@de ;
     rdfs:comment """Homogeneous, divisible substance tracked by mass balance.
 No serial number — identified by batch, grade, or composition.
+Dual of Identifier (both are non-discrete, typed tokens).
 Examples: recycled PP granulate, 6061-T6 aluminum alloy, a lithium charge."""@en ,
                """Homogene, teilbare Substanz, die per Massenbilanz verfolgt wird.
 Keine Seriennummer – identifiziert über Charge, Güte oder Zusammensetzung.
+Dual zu Identifier (beides sind nicht-diskrete, typisierte Token).
 Beispiele: recyceltes PP-Granulat, 6061-T6 Aluminiumlegierung, eine Lithium-Charge."""@de .
 
-# ─── A4. Site ────────────────────────────────────────────────────────────────
-sdata:Site
+# ─── A3. MaterialAgent ───────────────────────────────────────────────────────
+sdata:MaterialAgent
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000040 ; # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
+    rdfs:subClassOf prov:Agent ;
+    rdfs:label "Material Agent"@en , "Materieller Agent"@de ;
+    rdfs:comment """Tangible entity capable of bearing responsibility and acting
+in processes. You can point at it.
+Dual of InformationAgent.
+Distinguish subtypes via sdata:agentType (SKOS: Person, Machine).
+Examples: a specific person, a test machine (Zwick Z100), a robot arm."""@en ,
+               """Anfassbare Entität, die Verantwortung tragen und in Prozessen
+agieren kann. Man kann darauf zeigen.
+Dual zu InformationAgent.
+Subtypen über sdata:agentType (SKOS: Person, Machine).
+Beispiele: eine bestimmte Person, eine Prüfmaschine (Zwick Z100), ein Roboterarm."""@de .
+
+# ─── A4. MaterialProcess ────────────────────────────────────────────────────
+sdata:MaterialProcess
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000015 ; # bfo:Process (ISO/IEC 21838-2:2021)
+    rdfs:label "Material Process"@en , "Materieller Prozess"@de ;
+    rdfs:comment """Process that operates on matter — on MaterialArtifacts and/or
+Materials. Spatially anchored at a MaterialSite.
+Dual of InformationProcess.
+PROV-O ALIGNMENT: Does NOT inherit from prov:Activity to avoid
+dual-inheritance issues. PROV interoperability via property-mapping:
+  · sdata:generates rdfs:subPropertyOf prov:generated
+  · sdata:consumes rdfs:subPropertyOf prov:used
+  · sdata:wasPerformedBy rdfs:subPropertyOf prov:wasAssociatedWith
+Combine with Verb classes (sdata-processtypes.ttl) via multi-typing:
+  ex:StampingRun a sdata:MaterialProcess , sdata:Transformation ."""@en ,
+               """Prozess, der auf Materie operiert — auf MaterialArtifacts und/oder
+Materials. Räumlich an einem MaterialSite verankert.
+Dual zu InformationProcess.
+PROV-O-ALIGNMENT: Erbt NICHT von prov:Activity. PROV-Interoperabilität
+über Property-Mapping. Mit Verb-Klassen (sdata-processtypes.ttl) via
+Multi-Typing kombinieren."""@de .
+
+# ─── A5. MaterialSite ───────────────────────────────────────────────────────
+sdata:MaterialSite
     rdf:type owl:Class ;
     rdfs:subClassOf bfo:0000029 ; # bfo:Site (ImmaterialEntity, ISO/IEC 21838-2:2021)
-    rdfs:label "Site"@en , "Standort"@de ;
-    rdfs:comment """Three-dimensional immaterial spatial region, bounded by or
-defined relative to material entities. Exists independently of buildings,
-roles, or processes.
-Examples: factory grounds (even without buildings), delivery zone,
-recycling yard area, protected zone, offshore wind ocean section,
-planned factory site."""@en ,
-               """Dreidimensionaler immaterieller räumlicher Bereich, der durch
-materielle Entitäten begrenzt oder relativ zu ihnen definiert ist.
-Existiert unabhängig von Gebäuden, Rollen oder Prozessen.
-Beispiele: Produktionsgelände (auch ohne Hallen), Lieferzone, Recyclinghof-Bereich,
-Schutzzone, Ozean-Abschnitt für Offshore-Wind, geplante Werksfläche."""@de .
+    rdfs:label "Material Site"@en , "Materieller Standort"@de ;
+    rdfs:comment """Three-dimensional immaterial spatial region where material
+entities exist and material processes occur. Bounded by or defined
+relative to material entities.
+'MaterialSite' means 'site for matter' — the site itself is immaterial
+(per BFO), but it anchors the material domain spatially.
+Dual of InformationSite.
+Examples: factory grounds, delivery zone, recycling yard, lab room."""@en ,
+               """Dreidimensionaler immaterieller räumlicher Bereich, in dem materielle
+Entitäten existieren und materielle Prozesse stattfinden. Begrenzt durch
+oder definiert relativ zu materiellen Entitäten.
+'MaterialSite' bedeutet 'Ort für Materie' — der Ort selbst ist immateriell
+(gemäß BFO), verankert aber die materielle Domäne räumlich.
+Dual zu InformationSite.
+Beispiele: Fabrikgelände, Lieferzone, Recyclinghof, Laborraum."""@de .
 
-# ─── A5. DigitalArtifact ────────────────────────────────────────────────────
-sdata:DigitalArtifact
+# ─────────────────────────────────────────────────────────────────────────────
+# INFORMATION SIDE — intangible, carrier-independent
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── A6. InformationArtifact ────────────────────────────────────────────────
+sdata:InformationArtifact
     rdf:type owl:Class ;
     rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
-    rdfs:label "Digital Artifact"@en , "Digitales Artefakt"@de ;
+    rdfs:label "Information Artifact"@en , "Informationsartefakt"@de ;
     rdfs:comment """Any generically dependent information entity: CAD models,
 product passports, simulation results, software packages, datasets.
-A digital twin is a DigitalArtifact that realizes the Role 'DigitalTwin'."""@en ,
+Exists independently of its carrier (paper, disk, cloud).
+Dual of MaterialArtifact.
+Examples: a CAD model, a product passport, a trained ML model."""@en ,
                """Jede generisch abhängige Informationsentität: CAD-Modelle,
 Produktpässe, Simulationsergebnisse, Softwarepakete, Datensätze.
-Ein digitaler Zwilling ist ein DigitalArtifact, das die Rolle 'DigitalTwin' realisiert."""@de .
+Existiert unabhängig von ihrem Träger (Papier, Disk, Cloud).
+Dual zu MaterialArtifact.
+Beispiele: ein CAD-Modell, ein Produktpass, ein trainiertes ML-Modell."""@de .
 
-# ─── A6. Process ─────────────────────────────────────────────────────────────
-sdata:Process
-    rdf:type owl:Class ;
-    rdfs:subClassOf bfo:0000015 ; # bfo:Process — ONLY BFO parent (ISO/IEC 21838-2:2021)
-    rdfs:label "Process"@en , "Prozess"@de ;
-    rdfs:comment """Occurrent that unfolds over time and transforms, transports, or
-measures things. Manufacturing, disassembly, testing, recycling, transport.
-PROV-O ALIGNMENT: This class does NOT inherit from prov:Activity to avoid
-dual-inheritance issues in reasoners. Instead, PROV interoperability is
-achieved via property-mapping:
-  · sdata:generates rdfs:subPropertyOf prov:generated
-  · sdata:consumes rdfs:subPropertyOf prov:used
-  · sdata:wasPerformedBy rdfs:subPropertyOf prov:wasAssociatedWith
-  · Use prov:startedAtTime / prov:endedAtTime directly on instances.
-This gives full PROV-O query compatibility without metaphysical conflict."""@en ,
-               """Occurrent, der sich über die Zeit entfaltet und Dinge transformiert,
-transportiert oder misst. Herstellung, Demontage, Prüfung, Recycling, Transport.
-PROV-O-ALIGNMENT: Diese Klasse erbt NICHT von prov:Activity, um
-Dual-Inheritance-Probleme in Reasonern zu vermeiden. Stattdessen wird
-PROV-Interoperabilität über Property-Mapping hergestellt:
-  · sdata:generates rdfs:subPropertyOf prov:generated
-  · sdata:consumes rdfs:subPropertyOf prov:used
-  · sdata:wasPerformedBy rdfs:subPropertyOf prov:wasAssociatedWith
-  · prov:startedAtTime / prov:endedAtTime direkt an Instanzen nutzen."""@de .
-
-# ─── A7. Role ────────────────────────────────────────────────────────────────
-sdata:Role
-    rdf:type owl:Class ;
-    rdfs:subClassOf bfo:0000023 ; # bfo:Role (ISO/IEC 21838-2:2021)
-    rdfs:label "Role"@en , "Rolle"@de ;
-    rdfs:comment """Context-dependent, realizable entity. A bearer (Agent,
-PhysicalArtifact, DigitalArtifact) realizes a Role in a specific context.
-Specify via sdata:roleType. Recommended values from a SKOS ConceptScheme
-(sdata-roles.ttl): DigitalTwin, Specification, Manufacturer, Supplier,
-Owner, ManufacturingPhase, UsePhase, EoLPhase, Host, etc.
-No subclasses in core."""@en ,
-               """Kontextabhängige, realisierbare Entität. Ein Träger (Agent,
-PhysicalArtifact, DigitalArtifact) realisiert eine Rolle in einem spezifischen Kontext.
-Über sdata:roleType spezifizieren. Empfohlene Werte aus einem SKOS ConceptScheme
-(sdata-roles.ttl): DigitalTwin, Specification, Manufacturer, Supplier,
-Owner, ManufacturingPhase, UsePhase, EoLPhase, Host, etc.
-Keine Unterklassen im Core."""@de .
-
-# ─── A8. Identifier ──────────────────────────────────────────────────────────
+# ─── A7. Identifier ──────────────────────────────────────────────────────────
 sdata:Identifier
     rdf:type owl:Class ;
     rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
     rdfs:label "Identifier"@en , "Identifikator"@de ;
     rdfs:comment """Reified, typed identification token. Enables multiple parallel ID
 schemes on one entity (GTIN + Serial + DID + ECLASS-IRDI + BatchID).
-Ontologically reducible to DigitalArtifact, but practically irreducible
+Dual of Material (both are non-discrete, typed tokens in their domain).
+Ontologically reducible to InformationArtifact, but practically irreducible
 for supply-chain interoperability and product passports."""@en ,
                """Reifizierter, typisierter Identifikations-Token. Ermöglicht multiple
-parallele ID-Schemata an einer Entität (GTIN + Serial + DID + ECLASS-IRDI + BatchID).
-Ontologisch auf DigitalArtifact reduzierbar, aber praktisch irreduzibel
+parallele ID-Schemata an einer Entität.
+Dual zu Material (beides sind nicht-diskrete, typisierte Token).
+Ontologisch auf InformationArtifact reduzierbar, aber praktisch irreduzibel
 für Supply-Chain-Interoperabilität und Produktpässe."""@de .
 
+# ─── A8. InformationAgent ────────────────────────────────────────────────────
+sdata:InformationAgent
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
+    rdfs:subClassOf prov:Agent ;
+    rdfs:label "Information Agent"@en , "Informationsagent"@de ;
+    rdfs:comment """Intangible entity capable of bearing responsibility and acting
+in processes. You cannot point at it — it depends on carriers but is
+not identical with any of them.
+Dual of MaterialAgent.
+Distinguish subtypes via sdata:agentType (SKOS: Organization, Solver,
+Service, DigitalTwin).
+Examples: an organization (Fraunhofer), a solver (LS-DYNA R14), a bot."""@en ,
+               """Nicht-anfassbare Entität, die Verantwortung tragen und in Prozessen
+agieren kann. Man kann nicht darauf zeigen — sie hängt von Trägern ab,
+ist aber mit keinem identisch.
+Dual zu MaterialAgent.
+Subtypen über sdata:agentType (SKOS: Organisation, Solver, Service,
+DigitalTwin).
+Beispiele: eine Organisation (Fraunhofer), ein Solver (LS-DYNA R14), ein Bot."""@de .
+
+# ─── A9. InformationProcess ─────────────────────────────────────────────────
+sdata:InformationProcess
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000015 ; # bfo:Process (ISO/IEC 21838-2:2021)
+    rdfs:label "Information Process"@en , "Informationsprozess"@de ;
+    rdfs:comment """Process that operates entirely in the information domain —
+on InformationArtifacts and/or Identifiers. Logically anchored at an
+InformationSite.
+Dual of MaterialProcess.
+PROV-O ALIGNMENT: Same property-mapping strategy as MaterialProcess.
+Combine with Verb classes (sdata-processtypes.ttl) via multi-typing:
+  ex:CrashSim_v3 a sdata:InformationProcess , sdata:Observation ."""@en ,
+               """Prozess, der vollständig in der Informationsdomäne operiert —
+auf InformationArtifacts und/oder Identifiers. Logisch an einem
+InformationSite verankert.
+Dual zu MaterialProcess.
+PROV-O-ALIGNMENT: Gleiche Property-Mapping-Strategie wie MaterialProcess.
+Mit Verb-Klassen (sdata-processtypes.ttl) via Multi-Typing kombinieren."""@de .
+
+# ─── A10. InformationSite ───────────────────────────────────────────────────
+sdata:InformationSite
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000031 ; # bfo:GenericallyDependentContinuant (ISO/IEC 21838-2:2021)
+    rdfs:label "Information Site"@en , "Informationsstandort"@de ;
+    rdfs:comment """Logical location where information entities reside and
+information processes execute. Depends on material carriers but is not
+identical with them — the same InformationSite can migrate across servers.
+'InformationSite' means 'site for information'.
+Dual of MaterialSite.
+Bridge to material domain:
+  · hostedOn → MaterialArtifact (the physical server)
+  · locatedAt → MaterialSite (the data center's physical location)
+Examples: cloud region (eu-west-1), REST endpoint, SPARQL endpoint,
+Git repository, namespace, S3 bucket."""@en ,
+               """Logischer Ort, an dem Informationsentitäten existieren und
+Informationsprozesse ausgeführt werden. Hängt von materiellen Trägern ab,
+ist aber nicht mit ihnen identisch — derselbe InformationSite kann über
+Server migrieren.
+'InformationSite' bedeutet 'Ort für Information'.
+Dual zu MaterialSite.
+Brücke zur materiellen Domäne:
+  · hostedOn → MaterialArtifact (der physische Server)
+  · locatedAt → MaterialSite (der physische Standort des Rechenzentrums)
+Beispiele: Cloud-Region (eu-west-1), REST-Endpoint, SPARQL-Endpoint,
+Git-Repository, Namespace, S3-Bucket."""@de .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ORTHOGONAL — domain-independent
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── A11. Role ───────────────────────────────────────────────────────────────
+sdata:Role
+    rdf:type owl:Class ;
+    rdfs:subClassOf bfo:0000023 ; # bfo:Role (ISO/IEC 21838-2:2021)
+    rdfs:label "Role"@en , "Rolle"@de ;
+    rdfs:comment """Context-dependent, realizable entity. A bearer from either
+domain (MaterialArtifact, InformationArtifact, MaterialAgent,
+InformationAgent) realizes a Role in a specific context.
+Orthogonal to the Material/Information duality.
+Specify via sdata:roleType (SKOS ConceptScheme in sdata-roles.ttl)."""@en ,
+               """Kontextabhängige, realisierbare Entität. Ein Träger aus beiden
+Domänen (MaterialArtifact, InformationArtifact, MaterialAgent,
+InformationAgent) realisiert eine Rolle in einem spezifischen Kontext.
+Orthogonal zur Material/Information-Dualität.
+Über sdata:roleType spezifizieren (SKOS ConceptScheme in sdata-roles.ttl)."""@de .
+
 # =============================================================================
-# B. DISJOINTNESS — categorical separation
+# B. DISJOINTNESS
 # =============================================================================
-sdata:PhysicalArtifact owl:disjointWith sdata:Material .
-sdata:PhysicalArtifact owl:disjointWith sdata:DigitalArtifact .
-sdata:PhysicalArtifact owl:disjointWith sdata:Role .
-sdata:PhysicalArtifact owl:disjointWith sdata:Site .
 
-sdata:Material owl:disjointWith sdata:DigitalArtifact .
-sdata:Material owl:disjointWith sdata:Role .
-sdata:Material owl:disjointWith sdata:Site .
+# ─── Material side: mutually disjoint ────────────────────────────────────────
+sdata:MaterialArtifact owl:disjointWith sdata:Material .
+sdata:MaterialArtifact owl:disjointWith sdata:MaterialAgent .
+sdata:MaterialArtifact owl:disjointWith sdata:MaterialSite .
+sdata:Material         owl:disjointWith sdata:MaterialAgent .
+sdata:Material         owl:disjointWith sdata:MaterialSite .
+sdata:MaterialAgent    owl:disjointWith sdata:MaterialSite .
 
-sdata:Site owl:disjointWith sdata:DigitalArtifact .
-sdata:Site owl:disjointWith sdata:Role .
-sdata:Site owl:disjointWith sdata:Identifier .
+# ─── Information side: mutually disjoint ─────────────────────────────────────
+sdata:InformationArtifact owl:disjointWith sdata:Identifier .
+sdata:InformationArtifact owl:disjointWith sdata:InformationAgent .
+sdata:InformationArtifact owl:disjointWith sdata:InformationSite .
+sdata:Identifier          owl:disjointWith sdata:InformationAgent .
+sdata:Identifier          owl:disjointWith sdata:InformationSite .
+sdata:InformationAgent    owl:disjointWith sdata:InformationSite .
 
-sdata:DigitalArtifact owl:disjointWith sdata:Role .
+# ─── Cross-domain: Material ⊥ Information ────────────────────────────────────
+sdata:MaterialArtifact owl:disjointWith sdata:InformationArtifact .
+sdata:MaterialArtifact owl:disjointWith sdata:Identifier .
+sdata:MaterialArtifact owl:disjointWith sdata:InformationAgent .
+sdata:MaterialArtifact owl:disjointWith sdata:InformationSite .
+sdata:Material         owl:disjointWith sdata:InformationArtifact .
+sdata:Material         owl:disjointWith sdata:Identifier .
+sdata:Material         owl:disjointWith sdata:InformationAgent .
+sdata:Material         owl:disjointWith sdata:InformationSite .
+sdata:MaterialAgent    owl:disjointWith sdata:InformationArtifact .
+sdata:MaterialAgent    owl:disjointWith sdata:Identifier .
+sdata:MaterialAgent    owl:disjointWith sdata:InformationAgent .
+sdata:MaterialAgent    owl:disjointWith sdata:InformationSite .
+sdata:MaterialSite     owl:disjointWith sdata:InformationArtifact .
+sdata:MaterialSite     owl:disjointWith sdata:Identifier .
+sdata:MaterialSite     owl:disjointWith sdata:InformationAgent .
+sdata:MaterialSite     owl:disjointWith sdata:InformationSite .
 
-sdata:Identifier owl:disjointWith sdata:Role .
+# ─── Process: Material ⊥ Information ─────────────────────────────────────────
+sdata:MaterialProcess owl:disjointWith sdata:InformationProcess .
 
-# Agent overlap intentionally allowed (robot = PhysicalArtifact + Agent, software agent = DigitalArtifact + Agent)
+# ─── Role: disjoint with all non-Role classes ────────────────────────────────
+sdata:Role owl:disjointWith sdata:MaterialArtifact .
+sdata:Role owl:disjointWith sdata:Material .
+sdata:Role owl:disjointWith sdata:MaterialAgent .
+sdata:Role owl:disjointWith sdata:MaterialSite .
+sdata:Role owl:disjointWith sdata:InformationArtifact .
+sdata:Role owl:disjointWith sdata:Identifier .
+sdata:Role owl:disjointWith sdata:InformationAgent .
+sdata:Role owl:disjointWith sdata:InformationSite .
 
 # =============================================================================
-# C. OBJECT PROPERTIES — 12 relations (+ 5 inverses for SPARQL usability)
+# C. OBJECT PROPERTIES — 14 relations (+ 6 inverses)
 # =============================================================================
+
 sdata:realizes
     rdf:type owl:ObjectProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:DigitalArtifact sdata:Agent ) ] ;
+    rdfs:domain [ owl:unionOf (
+        sdata:MaterialArtifact sdata:InformationArtifact
+        sdata:MaterialAgent sdata:InformationAgent ) ] ;
     rdfs:range sdata:Role ;
     rdfs:label "realizes"@en , "realisiert"@de ;
-    rdfs:comment "The bearer realizes this role in a given context."@en ,
-                "Der Träger realisiert diese Rolle in einem gegebenen Kontext."@de .
+    rdfs:comment "The bearer realizes this role in a given context."@en .
 
 sdata:isRealizedBy
     rdf:type owl:ObjectProperty ;
@@ -217,14 +351,15 @@ sdata:isRealizedBy
 
 sdata:represents
     rdf:type owl:ObjectProperty ;
-    rdfs:domain sdata:DigitalArtifact ;
-    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:Process sdata:Site ) ] ;
+    rdfs:domain sdata:InformationArtifact ;
+    rdfs:range [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material
+        sdata:MaterialProcess sdata:InformationProcess
+        sdata:MaterialSite ) ] ;
     rdfs:label "represents"@en , "repräsentiert"@de ;
-    rdfs:comment """Core digital-physical bridge. A product passport represents a
-PhysicalArtifact. Qualify the nature of representation via sdata:realizes + roleType
-(DigitalTwin, Specification, Datasheet, etc.)."""@en ,
-               """Zentrale digital-physische Brücke. Art der Repräsentation über
-sdata:realizes + roleType qualifizieren (DigitalTwin, Specification, Datasheet, etc.)."""@de .
+    rdfs:comment """Core bridge between information and material domain. A product
+passport represents a MaterialArtifact. Qualify the nature of representation
+via sdata:realizes + roleType (DigitalTwin, Specification, etc.)."""@en .
 
 sdata:isRepresentedBy
     rdf:type owl:ObjectProperty ;
@@ -233,47 +368,37 @@ sdata:isRepresentedBy
 
 sdata:consistsOf
     rdf:type owl:ObjectProperty ;
-    rdfs:domain sdata:PhysicalArtifact ;
+    rdfs:domain sdata:MaterialArtifact ;
     rdfs:range sdata:Material ;
     rdfs:label "consists of"@en , "besteht aus"@de ;
-    rdfs:comment """Material constitution relation. PhysicalArtifact → Material ONLY.
-Use qudt:QuantityValue on the Material to express mass fractions.
-For structural component hierarchy use hasPart."""@en ,
-               """Materielle Konstitutionsrelation. PhysicalArtifact → Material AUSSCHLIESSLICH.
-Für strukturelle Komponentenhierarchie hasPart verwenden."""@de .
+    rdfs:comment """Material constitution. MaterialArtifact → Material ONLY.
+For structural component hierarchy use hasPart."""@en .
 
 sdata:hasPart
     rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
     rdfs:subPropertyOf bfo:0000051 ; # bfo:has_part
-    rdfs:domain sdata:PhysicalArtifact ;
-    rdfs:range sdata:PhysicalArtifact ;
+    rdfs:domain sdata:MaterialArtifact ;
+    rdfs:range sdata:MaterialArtifact ;
     rdfs:label "has part"@en , "hat Teil"@de ;
-    rdfs:comment """Strict structural component hierarchy (BOM). Transitive.
-For material composition use consistsOf instead."""@en ,
-               """Strikte strukturelle Komponentenhierarchie (Stückliste). Transitiv.
-Für materielle Zusammensetzung stattdessen consistsOf verwenden."""@de .
+    rdfs:comment "Strict structural component hierarchy (BOM). Transitive."@en .
 
 sdata:consumes
     rdf:type owl:ObjectProperty ;
     rdfs:subPropertyOf prov:used ;
-    rdfs:domain sdata:Process ;
-    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material ) ] ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:range [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material sdata:InformationArtifact ) ] ;
     rdfs:label "consumes"@en , "verbraucht"@de ;
-    rdfs:comment """A Process consumes inputs (material or artifacts).
-SubPropertyOf prov:used for direct PROV-O query compatibility."""@en ,
-               """Ein Prozess verbraucht Inputs (Material oder Artefakte).
-SubPropertyOf prov:used für direkte PROV-O-Query-Kompatibilität."""@de .
+    rdfs:comment """A process consumes inputs. SubPropertyOf prov:used."""@en .
 
 sdata:generates
     rdf:type owl:ObjectProperty ;
     rdfs:subPropertyOf prov:generated ;
-    rdfs:domain sdata:Process ;
-    rdfs:range [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact ) ] ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:range [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material sdata:InformationArtifact ) ] ;
     rdfs:label "generates"@en , "erzeugt"@de ;
-    rdfs:comment """A Process generates outputs. SubPropertyOf prov:generated for
-direct PROV-O query compatibility."""@en ,
-               """Ein Prozess erzeugt Outputs. SubPropertyOf prov:generated für
-direkte PROV-O-Query-Kompatibilität."""@de .
+    rdfs:comment """A process generates outputs. SubPropertyOf prov:generated."""@en .
 
 sdata:isGeneratedBy
     rdf:type owl:ObjectProperty ;
@@ -283,88 +408,109 @@ sdata:isGeneratedBy
 sdata:wasPerformedBy
     rdf:type owl:ObjectProperty ;
     rdfs:subPropertyOf prov:wasAssociatedWith ;
-    rdfs:domain sdata:Process ;
-    rdfs:range sdata:Agent ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:range [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ] ;
     rdfs:label "was performed by"@en , "wurde durchgeführt von"@de ;
-    rdfs:comment """Links a Process to the responsible Agent(s).
-SubPropertyOf prov:wasAssociatedWith for PROV-O compatibility."""@en ,
-               """Verknüpft einen Prozess mit dem/den verantwortlichen Agent(en).
-SubPropertyOf prov:wasAssociatedWith für PROV-O-Kompatibilität."""@de .
+    rdfs:comment """Links a process to the responsible Agent(s).
+SubPropertyOf prov:wasAssociatedWith for PROV-O compatibility."""@en .
 
 sdata:hasIdentifier
     rdf:type owl:ObjectProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Agent sdata:Site ) ] ;
+    rdfs:domain [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material sdata:InformationArtifact
+        sdata:MaterialAgent sdata:InformationAgent
+        sdata:MaterialSite sdata:InformationSite ) ] ;
     rdfs:range sdata:Identifier ;
     rdfs:label "has identifier"@en , "hat Identifikator"@de .
 
 sdata:locatedAt
     rdf:type owl:ObjectProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:Agent sdata:Process ) ] ;
-    rdfs:range sdata:Site ;
+    rdfs:domain [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material
+        sdata:MaterialAgent sdata:MaterialProcess ) ] ;
+    rdfs:range sdata:MaterialSite ;
     rdfs:label "located at"@en , "befindet sich an"@de ;
-    rdfs:comment """Anchors entities and processes to spatial locations."""@en ,
-               """Verankert Entitäten und Prozesse an räumlichen Standorten."""@de .
+    rdfs:comment """Anchors material entities and material processes to spatial
+locations."""@en .
 
 sdata:isLocationOf
     rdf:type owl:ObjectProperty ;
     owl:inverseOf sdata:locatedAt ;
     rdfs:label "is location of"@en , "ist Standort von"@de .
 
-sdata:containsSite
-    rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
-    rdfs:domain sdata:Site ;
-    rdfs:range sdata:Site ;
-    rdfs:label "contains site"@en , "enthält Standort"@de ;
-    rdfs:comment """Spatial nesting of immaterial regions. Transitive."""@en ,
-               """Räumliche Verschachtelung immaterieller Bereiche. Transitiv."""@de .
+sdata:hostedAt
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (
+        sdata:InformationArtifact sdata:Identifier
+        sdata:InformationAgent sdata:InformationProcess ) ] ;
+    rdfs:range sdata:InformationSite ;
+    rdfs:label "hosted at"@en , "gehostet an"@de ;
+    rdfs:comment """Anchors information entities and information processes to
+logical locations."""@en .
+
+sdata:isHostOf
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:hostedAt ;
+    rdfs:label "is host of"@en , "ist Host von"@de .
 
 sdata:hostedOn
     rdf:type owl:ObjectProperty ;
-    rdfs:domain sdata:DigitalArtifact ;
-    rdfs:range sdata:PhysicalArtifact ;
+    rdfs:domain sdata:InformationSite ;
+    rdfs:range sdata:MaterialArtifact ;
     rdfs:label "hosted on"@en , "gehostet auf"@de ;
-    rdfs:comment """Where a digital artifact physically runs or is stored."""@en ,
-               """Wo ein digitales Artefakt physisch läuft oder gespeichert ist."""@de .
+    rdfs:comment """Bridge: where an InformationSite physically runs. Links the
+logical location to its material carrier (server, device)."""@en .
 
 sdata:hosts
     rdf:type owl:ObjectProperty ;
     owl:inverseOf sdata:hostedOn ;
     rdfs:label "hosts"@en , "hostet"@de .
 
+sdata:containsSite
+    rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialSite sdata:InformationSite ) ] ;
+    rdfs:range [ owl:unionOf ( sdata:MaterialSite sdata:InformationSite ) ] ;
+    rdfs:label "contains site"@en , "enthält Standort"@de ;
+    rdfs:comment """Spatial or logical nesting. Transitive. MaterialSite contains
+MaterialSite, InformationSite contains InformationSite."""@en .
+
 sdata:recoveredFrom
     rdf:type owl:ObjectProperty ;
     rdfs:domain sdata:Material ;
-    rdfs:range [ owl:unionOf ( sdata:Material sdata:PhysicalArtifact ) ] ;
+    rdfs:range [ owl:unionOf ( sdata:Material sdata:MaterialArtifact ) ] ;
     rdfs:label "recovered from"@en , "zurückgewonnen aus"@de ;
-    rdfs:comment """Tracks circular material flow."""@en ,
-               """Verfolgt zirkuläre Materialflüsse."""@de .
+    rdfs:comment "Tracks circular material flow."@en .
 
 # =============================================================================
-# D. DATATYPE PROPERTIES — 12 essential attributes
+# D. DATATYPE PROPERTIES — 14 essential attributes
 # =============================================================================
 sdata:agentType
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain sdata:Agent ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ] ;
     rdfs:range xsd:string ;
     rdfs:label "agent type"@en , "Agent-Typ"@de ;
     rdfs:comment """Discriminator for Agent subtypes. Values SHOULD come from a
 controlled vocabulary (SKOS ConceptScheme in sdata-agents.ttl)."""@en .
 
+sdata:processType
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:range xsd:string ;
+    rdfs:label "process type"@en , "Prozess-Typ"@de ;
+    rdfs:comment """Discriminator for Process subtypes beyond the Verb classes.
+Values SHOULD come from a SKOS ConceptScheme."""@en .
+
 sdata:roleType
     rdf:type owl:DatatypeProperty ;
     rdfs:domain sdata:Role ;
     rdfs:range xsd:string ;
-    rdfs:label "role type"@en , "Rollen-Typ"@de ;
-    rdfs:comment """Discriminator for Role subtypes. Values SHOULD come from a
-controlled vocabulary (SKOS ConceptScheme in sdata-roles.ttl)."""@en .
+    rdfs:label "role type"@en , "Rollen-Typ"@de .
 
 sdata:identifierType
     rdf:type owl:DatatypeProperty ;
     rdfs:domain sdata:Identifier ;
     rdfs:range xsd:string ;
-    rdfs:label "identifier type"@en , "Identifikator-Typ"@de ;
-    rdfs:comment """Type of the identifier. Values SHOULD come from a controlled
-vocabulary (SKOS ConceptScheme in sdata-identifiers.ttl)."""@en .
+    rdfs:label "identifier type"@en , "Identifikator-Typ"@de .
 
 sdata:identifierValue
     rdf:type owl:DatatypeProperty ;
@@ -374,80 +520,102 @@ sdata:identifierValue
 
 sdata:validFrom
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:DigitalArtifact sdata:Role sdata:Identifier ) ] ;
+    rdfs:domain [ owl:unionOf ( sdata:InformationArtifact sdata:Role sdata:Identifier ) ] ;
     rdfs:range xsd:dateTimeStamp ;
     rdfs:label "valid from"@en , "gültig ab"@de .
 
 sdata:validUntil
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:DigitalArtifact sdata:Role sdata:Identifier ) ] ;
+    rdfs:domain [ owl:unionOf ( sdata:InformationArtifact sdata:Role sdata:Identifier ) ] ;
     rdfs:range xsd:dateTimeStamp ;
     rdfs:label "valid until"@en , "gültig bis"@de .
 
 sdata:name
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:Agent sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Process sdata:Site ) ] ;
+    rdfs:domain [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material sdata:MaterialAgent
+        sdata:InformationArtifact sdata:InformationAgent
+        sdata:MaterialProcess sdata:InformationProcess
+        sdata:MaterialSite sdata:InformationSite ) ] ;
     rdfs:range xsd:string ;
-    rdfs:label "name"@en , "Name"@de ;
-    rdfs:comment "Human-readable display name for any core entity."@en .
+    rdfs:label "name"@en , "Name"@de .
 
 sdata:description
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material sdata:DigitalArtifact sdata:Process sdata:Role sdata:Site ) ] ;
+    rdfs:domain [ owl:unionOf (
+        sdata:MaterialArtifact sdata:Material sdata:MaterialAgent
+        sdata:InformationArtifact sdata:InformationAgent
+        sdata:MaterialProcess sdata:InformationProcess
+        sdata:Role sdata:MaterialSite sdata:InformationSite ) ] ;
     rdfs:range xsd:string ;
     rdfs:label "description"@en , "Beschreibung"@de .
 
 sdata:version
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain sdata:DigitalArtifact ;
+    rdfs:domain sdata:InformationArtifact ;
     rdfs:range xsd:string ;
     rdfs:label "version"@en , "Version"@de .
 
 sdata:hasGeometry
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain sdata:Site ;
+    rdfs:domain sdata:MaterialSite ;
     rdfs:range xsd:string ;
-    rdfs:label "geometry (WKT/GeoJSON)"@en , "Geometrie (WKT/GeoJSON)"@de ;
-    rdfs:comment "Spatial geometry of the site as WKT or GeoJSON string."@en .
+    rdfs:label "geometry (WKT/GeoJSON)"@en , "Geometrie (WKT/GeoJSON)"@de .
 
 sdata:geoCoordinates
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain sdata:Site ;
+    rdfs:domain sdata:MaterialSite ;
     rdfs:range xsd:string ;
-    rdfs:label "geo coordinates"@en , "Geo-Koordinaten"@de ;
-    rdfs:comment "Simple lat,lon point coordinate for the site."@en .
+    rdfs:label "geo coordinates"@en , "Geo-Koordinaten"@de .
 
 sdata:address
     rdf:type owl:DatatypeProperty ;
-    rdfs:domain sdata:Site ;
+    rdfs:domain sdata:MaterialSite ;
     rdfs:range xsd:string ;
-    rdfs:label "address"@en , "Adresse"@de ;
-    rdfs:comment """Human-readable postal address. For structured addresses
-use sdata-location.ttl extension module."""@en ,
-                """Menschenlesbare Postadresse. Für strukturierte Adressen
-das Extension-Modul sdata-location.ttl verwenden."""@de .
+    rdfs:label "address"@en , "Adresse"@de .
+
+sdata:endpoint
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain sdata:InformationSite ;
+    rdfs:range xsd:anyURI ;
+    rdfs:label "endpoint"@en , "Endpunkt"@de ;
+    rdfs:comment "URI of the logical location (URL, namespace, bucket path)."@en .
 
 # =============================================================================
 # E. DESIGN DECISIONS
 # =============================================================================
 #
-# BFO ALIGNMENT TO ISO STANDARD (Review Point #0):
-# ───────────────────────────────────────────────
-# All BFO references conform explicitly to ISO/IEC 21838-2:2021.
-# sdata:PhysicalArtifact rdfs:subClassOf bfo:0000040   # MaterialEntity (ISO)
-# sdata:Material         rdfs:subClassOf bfo:0000040
-# sdata:Site             rdfs:subClassOf bfo:0000029   # Site (ISO)
-# sdata:DigitalArtifact  rdfs:subClassOf bfo:0000031   # GenericallyDependentContinuant (ISO)
-# sdata:Process          rdfs:subClassOf bfo:0000015   # Process (ISO)
-# sdata:Role             rdfs:subClassOf bfo:0000023   # Role (ISO)
-# sdata:Identifier       rdfs:subClassOf bfo:0000031
+# SYMMETRIC 5+5+1 DESIGN (v0.2.0):
+# ───────────────────────────────
+# Every dimension of reality has a Material/Information dual:
 #
-# Import: http://purl.obolibrary.org/obo/bfo.owl (official ISO BFO 2020 OWL rendering)
-# dcterms:conformsTo ISO/IEC 21838-2:2021 declared on the ontology.
+#   Dimension   Material (tangible)   Information (intangible)  BFO
+#   ─────────── ───────────────────── ──────────────────────── ─────────
+#   Artifact    MaterialArtifact      InformationArtifact      ME / GDC
+#   Substance   Material              Identifier               ME / GDC
+#   Agent       MaterialAgent         InformationAgent         ME / GDC
+#   Process     MaterialProcess       InformationProcess       Process
+#   Site        MaterialSite          InformationSite          Site / GDC
+#   Context     Role (orthogonal)     Role (orthogonal)        Role
 #
-# 8 CLASSES — IRREDUCIBILITY, PROV-O ALIGNMENT, involves SPLIT, consistsOf RESTRICTION,
-# AGENT OVERLAP, CONTROLLED VOCABULARIES, xsd:dateTimeStamp, OWL DOMAIN UNIONS + SHACL
+# The tangibility test: "Can you point at it?"
+#   Yes → Material side.  No → Information side.
+#
+# PROPERTY DUALITY:
+#   locatedAt → MaterialSite    (where material things are)
+#   hostedAt  → InformationSite (where information things are)
+#   hostedOn  → Bridge: InformationSite runs on MaterialArtifact
+#
+# NO GENERIC AGENT, PROCESS, OR ARTIFACT:
+#   Instances are always typed as Material* or Information*.
+#   This mirrors the complete duality without generic intermediaries.
+#
+# PROV-O ALIGNMENT:
+#   MaterialAgent and InformationAgent both subClassOf prov:Agent.
+#   prov:Agent is axiomatically lightweight — safe for class inheritance.
+#   MaterialProcess and InformationProcess do NOT inherit prov:Activity.
+#   PROV compatibility via property-mapping (consumes/generates/wasPerformedBy).
 #
 # =============================================================================
-# END — sdata Core v0.1 — 27 February 2026
+# END — sdata Core v0.2.0 — 27 February 2026
 # =============================================================================

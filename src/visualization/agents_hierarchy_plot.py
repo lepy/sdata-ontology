@@ -1,4 +1,4 @@
-"""Create a styled agent-type hierarchy plot rooted at sdata:Agent."""
+"""Create a styled agent-type hierarchy plot rooted at sdata agent classes."""
 
 from __future__ import annotations
 
@@ -14,9 +14,8 @@ from rdflib.namespace import OWL, SKOS
 SDATA = Namespace("https://w3id.org/sdata/core#")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
 PROV_AGENT = URIRef("http://www.w3.org/ns/prov#Agent")
-SDATA_AGENT = SDATA.Agent
-SDATA_PHYSICAL_ARTIFACT = SDATA.PhysicalArtifact
-SDATA_DIGITAL_ARTIFACT = SDATA.DigitalArtifact
+SDATA_MATERIAL_AGENT = SDATA.MaterialAgent
+SDATA_INFORMATION_AGENT = SDATA.InformationAgent
 BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
 
 
@@ -76,19 +75,18 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
     nodes: dict[URIRef, str] = {}
     edges: set[HierarchyEdge] = set()
 
-    if (SDATA_AGENT, RDF.type, OWL.Class) in graph:
-        nodes[SDATA_AGENT] = "sdata"
-
-    for parent in graph.objects(SDATA_AGENT, RDFS.subClassOf):
-        if isinstance(parent, URIRef) and parent == PROV_AGENT:
-            nodes[parent] = "prov"
-            edges.add(HierarchyEdge(parent=parent, child=SDATA_AGENT))
-
-    for sdata_class in (SDATA_PHYSICAL_ARTIFACT, SDATA_DIGITAL_ARTIFACT):
+    agent_roots: list[URIRef] = []
+    for sdata_class in (SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT):
         if (sdata_class, RDF.type, OWL.Class) in graph:
             nodes[sdata_class] = "sdata"
+            agent_roots.append(sdata_class)
         for parent in graph.objects(sdata_class, RDFS.subClassOf):
-            if isinstance(parent, URIRef) and str(parent).startswith(BFO_PREFIX):
+            if not isinstance(parent, URIRef):
+                continue
+            if parent == PROV_AGENT:
+                nodes[parent] = "prov"
+                edges.add(HierarchyEdge(parent=parent, child=sdata_class))
+            if str(parent).startswith(BFO_PREFIX):
                 nodes[parent] = "bfo"
                 edges.add(HierarchyEdge(parent=parent, child=sdata_class))
 
@@ -100,8 +98,8 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
 
     for scheme in schemes:
         nodes[scheme] = "scheme"
-        if SDATA_AGENT in nodes:
-            edges.add(HierarchyEdge(parent=SDATA_AGENT, child=scheme))
+        for root in agent_roots:
+            edges.add(HierarchyEdge(parent=root, child=scheme))
 
         concepts = {
             concept
@@ -131,10 +129,12 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             if is_top:
                 edges.add(HierarchyEdge(parent=scheme, child=concept))
 
-            if concept == SAGENTS.Hardware and SDATA_PHYSICAL_ARTIFACT in nodes:
-                edges.add(HierarchyEdge(parent=SDATA_PHYSICAL_ARTIFACT, child=concept))
-            if concept == SAGENTS.Software and SDATA_DIGITAL_ARTIFACT in nodes:
-                edges.add(HierarchyEdge(parent=SDATA_DIGITAL_ARTIFACT, child=concept))
+            material_concepts = {SAGENTS.Person, SAGENTS.Machine}
+            information_concepts = {SAGENTS.Organization, SAGENTS.Software}
+            if concept in material_concepts and SDATA_MATERIAL_AGENT in nodes:
+                edges.add(HierarchyEdge(parent=SDATA_MATERIAL_AGENT, child=concept))
+            if concept in information_concepts and SDATA_INFORMATION_AGENT in nodes:
+                edges.add(HierarchyEdge(parent=SDATA_INFORMATION_AGENT, child=concept))
 
     model_nodes = tuple(
         HierarchyNode(iri=iri, label=_best_label(graph, iri), kind=kind)
@@ -163,7 +163,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Agents Hierarchy (sdata:Agent -> SKOS agent types)",
+        label="sdata Agents Hierarchy (sdata Material/Information agents -> SKOS agent types)",
         labelloc="t",
         labeljust="c",
     )
@@ -216,14 +216,16 @@ def build_agraph(model: HierarchyModel):
 
     for edge in model.edges:
         attrs = {"label": ""}
-        if edge.parent == SDATA_AGENT:
+        if edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT} and edge.child in {
+            SAGENTS.AgentTypeScheme
+        }:
             attrs["label"] = "typed via sdata:agentType"
-        elif edge.parent in {SDATA_PHYSICAL_ARTIFACT, SDATA_DIGITAL_ARTIFACT}:
+        elif edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}:
             attrs["label"] = "also an"
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
-    legend.add_node("legend_sdata", label="sdata:Agent", **style_map["sdata"])
+    legend.add_node("legend_sdata", label="sdata agent class", **style_map["sdata"])
     legend.add_node("legend_bfo", label="BFO class", **style_map["bfo"])
     legend.add_node("legend_scheme", label="SKOS ConceptScheme", **style_map["scheme"])
     legend.add_node("legend_concept", label="SKOS Concept", **style_map["concept"])

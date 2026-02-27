@@ -1,200 +1,165 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix qudt: <http://qudt.org/schema/qudt/> .
-@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix sdata: <https://w3id.org/sdata/core#> .
 @prefix ex: <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Pack Product Passport
-# Demonstrates all 8 sdata classes and key relations
-# Validate with: pyshacl -s shapes/sdata-core-shapes.ttl -df turtle examples/battery-passport.ttl
+# Example: Battery Pack Product Passport (sdata core 0.2.0)
 # =============================================================================
 
-# ─── Agents ──────────────────────────────────────────────────────────────────
-ex:CellChem
-    a sdata:Agent ;
-    sdata:name "CellChem GmbH" ;
-    sdata:agentType "Organization" ;
-    sdata:hasIdentifier ex:CellChem-GLN .
+# Material Agents
+ex:OperatorMueller
+    a sdata:MaterialAgent ;
+    sdata:name "Max Mueller" ;
+    sdata:agentType "Person" ;
+    sdata:locatedAt ex:PackAssembly .
 
-ex:VoltPack
-    a sdata:Agent ;
+ex:ZwickZ100
+    a sdata:MaterialAgent ;
+    sdata:name "Zwick Z100" ;
+    sdata:agentType "Machine" ;
+    sdata:locatedAt ex:PackAssembly .
+
+# Information Agents
+ex:VoltPackAG
+    a sdata:InformationAgent ;
     sdata:name "VoltPack AG" ;
-    sdata:agentType "Organization" .
+    sdata:agentType "Organization" ;
+    sdata:hostedAt ex:DPPBackend .
 
-ex:RecycleX
-    a sdata:Agent ;
-    sdata:name "RecycleX OÜ" ;
-    sdata:agentType "Organization" .
+ex:LSDYNA_R14
+    a sdata:InformationAgent ;
+    sdata:name "LS-DYNA R14" ;
+    sdata:agentType "Solver" ;
+    sdata:hostedAt ex:HPCCluster .
 
-# ─── Sites ───────────────────────────────────────────────────────────────────
-ex:CellFactory
-    a sdata:Site ;
-    sdata:name "CellChem Werk Erfurt" ;
-    sdata:geoCoordinates "50.9787,11.0328" ;
-    sdata:address "Industriestr. 42, 99085 Erfurt, Germany" .
-
+# Material Sites
 ex:PackAssembly
-    a sdata:Site ;
+    a sdata:MaterialSite ;
     sdata:name "VoltPack Montage Dresden" ;
     sdata:geoCoordinates "51.0504,13.7373" ;
     sdata:address "Tesla Str. 19, 01309 Dresden, Germany" ;
-    sdata:containsSite ex:PackAssembly-Hall3 .
+    sdata:containsSite ex:PackAssemblyHall3 .
 
-ex:PackAssembly-Hall3
-    a sdata:Site ;
-    sdata:name "Halle 3 — Endmontage" ;
+ex:PackAssemblyHall3
+    a sdata:MaterialSite ;
+    sdata:name "Halle 3" ;
     sdata:geoCoordinates "51.0506,13.7375" .
 
-ex:RecyclingYard
-    a sdata:Site ;
-    sdata:name "RecycleX Anlage Tallinn" ;
-    sdata:geoCoordinates "59.4370,24.7536" ;
-    sdata:address "Peterburi tee 71, 11415 Tallinn, Estonia" .
+# Information Sites
+ex:DPPBackend
+    a sdata:InformationSite ;
+    sdata:name "DPP Backend" ;
+    sdata:endpoint "https://dpp.voltpack.example/api"^^xsd:anyURI ;
+    sdata:locatedAt ex:PackAssembly ;
+    sdata:hostedOn ex:ServerRack01 .
 
-# ─── Materials ───────────────────────────────────────────────────────────────
-ex:LithiumCarbonate
-    a sdata:Material ;
-    sdata:name "Lithiumcarbonat (Li₂CO₃)" ;
-    sdata:description "Battery-grade, 99.5% purity" ;
-    sdata:hasIdentifier ex:LithiumCarbonate-CAS .
+ex:HPCCluster
+    a sdata:InformationSite ;
+    sdata:name "HPC Cluster" ;
+    sdata:endpoint "https://hpc.voltpack.example"^^xsd:anyURI ;
+    sdata:locatedAt ex:PackAssembly ;
+    sdata:hostedOn ex:ServerRack01 .
 
+# Materials
 ex:NMC811Cathode
     a sdata:Material ;
     sdata:name "NMC 811 Kathodenmaterial" ;
-    sdata:description "LiNi₀.₈Mn₀.₁Co₀.₁O₂" .
+    sdata:description "LiNi0.8Mn0.1Co0.1O2" .
 
 ex:RecycledNickel
     a sdata:Material ;
     sdata:name "Recyceltes Nickelsulfat" ;
-    sdata:description "Aus Altbatterien zurückgewonnen" ;
-    sdata:recoveredFrom ex:BatteryPack-001 .
+    sdata:recoveredFrom ex:BatteryPack001 .
 
-# ─── Identifiers ─────────────────────────────────────────────────────────────
-ex:CellChem-GLN
-    a sdata:Identifier ;
-    sdata:identifierType "GLN" ;
-    sdata:identifierValue "4012345000010" .
-
-ex:LithiumCarbonate-CAS
-    a sdata:Identifier ;
-    sdata:identifierType "CAS" ;
-    sdata:identifierValue "554-13-2" .
-
-ex:BatteryPack-001-Serial
+# Identifiers
+ex:BatteryPack001Serial
     a sdata:Identifier ;
     sdata:identifierType "Serial" ;
     sdata:identifierValue "VP-BAT-2026-000001" ;
     sdata:validFrom "2026-01-15T08:00:00Z"^^xsd:dateTimeStamp .
 
-ex:BatteryPack-001-GTIN
+ex:DPPUriId
     a sdata:Identifier ;
-    sdata:identifierType "GTIN" ;
-    sdata:identifierValue "04012345000027" .
+    sdata:identifierType "URI" ;
+    sdata:identifierValue "urn:voltpack:dpp:VP-BAT-2026-000001" .
 
-ex:BatteryPack-001-DID
-    a sdata:Identifier ;
-    sdata:identifierType "DID" ;
-    sdata:identifierValue "did:web:voltpack.eu:bat:VP-BAT-2026-000001" .
-
-ex:Cell-A01-Serial
-    a sdata:Identifier ;
-    sdata:identifierType "Serial" ;
-    sdata:identifierValue "CC-CELL-2026-A01" .
-
-# ─── Physical Artifacts ──────────────────────────────────────────────────────
-ex:BatteryPack-001
-    a sdata:PhysicalArtifact ;
-    sdata:name "VoltPack 96S Battery Pack" ;
-    sdata:description "96s1p NMC 811 automotive battery pack, 72 kWh" ;
-    sdata:hasIdentifier ex:BatteryPack-001-Serial ,
-                        ex:BatteryPack-001-GTIN ,
-                        ex:BatteryPack-001-DID ;
-    sdata:hasPart ex:Module-M01 ;
-    sdata:consistsOf ex:NMC811Cathode ;
+# Material Artifacts
+ex:ServerRack01
+    a sdata:MaterialArtifact ;
+    sdata:name "Server Rack 01" ;
+    sdata:hasIdentifier ex:DPPUriId ;
     sdata:locatedAt ex:PackAssembly .
 
-ex:Module-M01
-    a sdata:PhysicalArtifact ;
-    sdata:name "Modul M01 (12s1p)" ;
-    sdata:hasIdentifier ex:Cell-A01-Serial ;
-    sdata:hasPart ex:Cell-A01 .
+ex:BatteryPack001
+    a sdata:MaterialArtifact ;
+    sdata:name "VoltPack 96S Battery Pack" ;
+    sdata:description "Automotive battery pack" ;
+    sdata:hasIdentifier ex:BatteryPack001Serial ;
+    sdata:consistsOf ex:NMC811Cathode ;
+    sdata:hasPart ex:ModuleM01 ;
+    sdata:locatedAt ex:PackAssembly .
 
-ex:Cell-A01
-    a sdata:PhysicalArtifact ;
-    sdata:name "Prismatic Cell A01" ;
-    sdata:hasIdentifier ex:Cell-A01-Serial ;
-    sdata:consistsOf ex:NMC811Cathode ,
-                     ex:LithiumCarbonate .
+ex:ModuleM01
+    a sdata:MaterialArtifact ;
+    sdata:name "Module M01" ;
+    sdata:hasIdentifier ex:BatteryPack001Serial ;
+    sdata:locatedAt ex:PackAssemblyHall3 .
 
-# ─── Processes ───────────────────────────────────────────────────────────────
-ex:CellManufacturing
-    a sdata:Process ;
-    sdata:name "Zellherstellung Batch 2026-Q1" ;
-    sdata:wasPerformedBy ex:CellChem ;
-    sdata:consumes ex:NMC811Cathode ,
-                   ex:LithiumCarbonate ;
-    sdata:generates ex:Cell-A01 ;
-    sdata:locatedAt ex:CellFactory ;
-    prov:startedAtTime "2026-01-10T06:00:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-01-12T18:00:00Z"^^xsd:dateTimeStamp .
-
-ex:PackAssemblyProcess
-    a sdata:Process ;
-    sdata:name "Pack-Montage VP-BAT-2026-000001" ;
-    sdata:wasPerformedBy ex:VoltPack ;
-    sdata:consumes ex:Module-M01 ;
-    sdata:generates ex:BatteryPack-001 ;
-    sdata:locatedAt ex:PackAssembly-Hall3 ;
-    prov:startedAtTime "2026-01-15T07:00:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-01-15T15:30:00Z"^^xsd:dateTimeStamp .
-
-ex:RecyclingProcess
-    a sdata:Process ;
-    sdata:name "Hydrometallurgisches Recycling" ;
-    sdata:wasPerformedBy ex:RecycleX ;
-    sdata:consumes ex:BatteryPack-001 ;
-    sdata:generates ex:RecycledNickel ;
-    sdata:locatedAt ex:RecyclingYard .
-
-# ─── Roles ───────────────────────────────────────────────────────────────────
+# Roles
 ex:ManufacturerRole
     a sdata:Role ;
     sdata:roleType "Manufacturer" ;
     sdata:description "Hersteller des Battery Packs" .
 
-ex:DigitalTwinRole
-    a sdata:Role ;
-    sdata:roleType "DigitalTwin" ;
-    sdata:description "Digitaler Zwilling des Battery Packs" .
-
 ex:ProductPassportRole
     a sdata:Role ;
-    sdata:roleType "ProductPassport" ;
-    sdata:description "EU Digital Product Passport" .
+    sdata:roleType "ProductPassport" .
 
-# ─── Role Realizations ──────────────────────────────────────────────────────
-ex:VoltPack sdata:realizes ex:ManufacturerRole .
+# Role realizations
+ex:VoltPackAG sdata:realizes ex:ManufacturerRole .
 
-# ─── Digital Artifacts ───────────────────────────────────────────────────────
-ex:BatteryPassport-001
-    a sdata:DigitalArtifact ;
+# Information Artifacts
+ex:BatteryPassport001
+    a sdata:InformationArtifact ;
     sdata:name "Battery Passport VP-BAT-2026-000001" ;
-    sdata:version "1.0" ;
-    sdata:description "EU Digital Product Passport gemäß Battery Regulation" ;
-    sdata:represents ex:BatteryPack-001 ;
+    sdata:version "0.2.0" ;
+    sdata:description "EU Digital Product Passport" ;
+    sdata:represents ex:BatteryPack001 ;
     sdata:realizes ex:ProductPassportRole ;
+    sdata:hasIdentifier ex:DPPUriId ;
+    sdata:hostedAt ex:DPPBackend ;
     sdata:validFrom "2026-01-15T08:00:00Z"^^xsd:dateTimeStamp .
 
-ex:BatteryTwin-001
-    a sdata:DigitalArtifact ;
-    sdata:name "Digital Twin VP-BAT-2026-000001" ;
-    sdata:version "2.1" ;
-    sdata:represents ex:BatteryPack-001 ;
-    sdata:realizes ex:DigitalTwinRole ;
-    sdata:hostedOn ex:BatteryPack-001 .
+# Material Process
+ex:PackAssemblyProcess
+    a sdata:MaterialProcess ;
+    sdata:name "Pack-Montage VP-BAT-2026-000001" ;
+    sdata:wasPerformedBy ex:OperatorMueller ;
+    sdata:consumes ex:NMC811Cathode ;
+    sdata:generates ex:BatteryPack001 ;
+    sdata:locatedAt ex:PackAssemblyHall3 ;
+    prov:startedAtTime "2026-01-15T07:00:00Z"^^xsd:dateTimeStamp ;
+    prov:endedAtTime "2026-01-15T15:30:00Z"^^xsd:dateTimeStamp .
+
+# Information Process
+ex:CrashSimulationV3
+    a sdata:InformationProcess ;
+    sdata:name "Crash-Simulation v3" ;
+    sdata:wasPerformedBy ex:LSDYNA_R14 ;
+    sdata:consumes ex:BatteryPassport001 ;
+    sdata:generates ex:SimulationReportV3 ;
+    sdata:hostedAt ex:HPCCluster ;
+    prov:startedAtTime "2026-02-25T14:00:00Z"^^xsd:dateTimeStamp ;
+    prov:endedAtTime "2026-02-25T16:00:00Z"^^xsd:dateTimeStamp .
+
+ex:SimulationReportV3
+    a sdata:InformationArtifact ;
+    sdata:name "Simulation Report v3" ;
+    sdata:version "3.0" ;
+    sdata:represents ex:CrashSimulationV3 ;
+    sdata:hostedAt ex:HPCCluster .
 
 # =============================================================================
 # END — Battery Passport Example

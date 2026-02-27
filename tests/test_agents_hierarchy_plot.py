@@ -20,9 +20,8 @@ def _model():
 def test_extract_contains_root_nodes():
     model = _model()
     kinds = {str(node.iri): node.kind for node in model.nodes}
-    assert str(SDATA.Agent) in kinds
-    assert str(SDATA.PhysicalArtifact) in kinds
-    assert str(SDATA.DigitalArtifact) in kinds
+    assert str(SDATA.MaterialAgent) in kinds
+    assert str(SDATA.InformationAgent) in kinds
     assert str(SAGENTS.AgentTypeScheme) in kinds
     assert PROV_AGENT in kinds
     assert BFO_MATERIAL_ENTITY in kinds
@@ -35,10 +34,9 @@ def test_extract_contains_expected_agent_concepts():
     expected = {
         str(SAGENTS.Person),
         str(SAGENTS.Organization),
-        str(SAGENTS.Hardware),
         str(SAGENTS.Software),
         str(SAGENTS.Machine),
-        str(SAGENTS.Simulation),
+        str(SAGENTS.Solver),
         str(SAGENTS.Service),
         str(SAGENTS.DigitalTwin),
     }
@@ -48,12 +46,13 @@ def test_extract_contains_expected_agent_concepts():
 def test_extract_contains_expected_hierarchy_edges():
     model = _model()
     edges = {(str(edge.parent), str(edge.child)) for edge in model.edges}
-    assert (PROV_AGENT, str(SDATA.Agent)) in edges
-    assert (BFO_MATERIAL_ENTITY, str(SDATA.PhysicalArtifact)) in edges
-    assert (BFO_GDC, str(SDATA.DigitalArtifact)) in edges
-    assert (str(SDATA.Agent), str(SAGENTS.AgentTypeScheme)) in edges
-    assert (str(SDATA.PhysicalArtifact), str(SAGENTS.Hardware)) in edges
-    assert (str(SDATA.DigitalArtifact), str(SAGENTS.Software)) in edges
-    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Hardware)) in edges
-    assert (str(SAGENTS.Hardware), str(SAGENTS.Machine)) in edges
+    assert (PROV_AGENT, str(SDATA.MaterialAgent)) in edges
+    assert (PROV_AGENT, str(SDATA.InformationAgent)) in edges
+    assert (BFO_MATERIAL_ENTITY, str(SDATA.MaterialAgent)) in edges
+    assert (BFO_GDC, str(SDATA.InformationAgent)) in edges
+    assert (str(SDATA.MaterialAgent), str(SAGENTS.AgentTypeScheme)) in edges
+    assert (str(SDATA.InformationAgent), str(SAGENTS.AgentTypeScheme)) in edges
+    assert (str(SDATA.MaterialAgent), str(SAGENTS.Machine)) in edges
+    assert (str(SDATA.InformationAgent), str(SAGENTS.Software)) in edges
+    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Machine)) in edges
     assert (str(SAGENTS.Software), str(SAGENTS.DigitalTwin)) in edges

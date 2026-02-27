@@ -38,8 +38,9 @@ def test_turtle_syntax(ttl_file):
 # ─── Core Ontology Structure ─────────────────────────────────────────────────
 
 EXPECTED_CLASSES = [
-    "Agent", "PhysicalArtifact", "Material", "Site",
-    "DigitalArtifact", "Process", "Role", "Identifier",
+    "MaterialArtifact", "Material", "MaterialAgent", "MaterialProcess", "MaterialSite",
+    "InformationArtifact", "Identifier", "InformationAgent", "InformationProcess",
+    "InformationSite", "Role",
 ]
 
 
@@ -55,7 +56,7 @@ EXPECTED_OBJECT_PROPERTIES = [
     "realizes", "isRealizedBy", "represents", "isRepresentedBy",
     "consistsOf", "hasPart", "consumes", "generates", "isGeneratedBy",
     "wasPerformedBy", "hasIdentifier", "locatedAt", "isLocationOf",
-    "containsSite", "hostedOn", "hosts", "recoveredFrom",
+    "hostedAt", "isHostOf", "hostedOn", "hosts", "containsSite", "recoveredFrom",
 ]
 
 
@@ -69,8 +70,9 @@ def test_object_properties_exist(core_graph, prop_name):
 
 EXPECTED_DATATYPE_PROPERTIES = [
     "agentType", "roleType", "identifierType", "identifierValue",
+    "processType",
     "validFrom", "validUntil", "name", "description", "version",
-    "hasGeometry", "geoCoordinates", "address",
+    "hasGeometry", "geoCoordinates", "address", "endpoint",
 ]
 
 
@@ -83,10 +85,10 @@ def test_datatype_properties_exist(core_graph, prop_name):
 
 
 def test_core_class_count(core_graph):
-    """Core must have exactly 8 classes."""
+    """Core must have exactly 11 classes."""
     classes = set(core_graph.subjects(RDF.type, URIRef("http://www.w3.org/2002/07/owl#Class")))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 8, f"Expected 8 classes, found {len(sdata_classes)}: {sdata_classes}"
+    assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}: {sdata_classes}"
 
 
 # ─── SHACL Validation ────────────────────────────────────────────────────────
@@ -112,7 +114,7 @@ def test_shacl_battery_passport():
 # ─── Example Data Completeness ───────────────────────────────────────────────
 
 def test_example_uses_all_classes(example_graph):
-    """Battery passport example should instantiate all 8 core classes."""
+    """Battery passport example should instantiate all 11 core classes."""
     for class_name in EXPECTED_CLASSES:
         uri = SDATA[class_name]
         instances = list(example_graph.subjects(RDF.type, uri))

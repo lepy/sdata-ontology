@@ -1,9 +1,6 @@
 # =============================================================================
 # FILE: sdata-processtypes.ttl
-# 9 OWL subclasses of sdata:Process on two orthogonal axes
-#   Axis 1 (Domain):  PhysicalProcess, DigitalProcess
-#   Axis 2 (Verb):    Creation, Transformation, Transfer, Observation,
-#                     Preservation, Recovery, Destruction
+# 7 OWL Verb classes — orthogonal to MaterialProcess / InformationProcess
 # =============================================================================
 
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -12,6 +9,7 @@
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
 
 @prefix sdata: <https://w3id.org/sdata/core#> .
 
@@ -22,201 +20,53 @@
 <https://w3id.org/sdata/processtypes>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "0.1.0 — 27 February 2026" ;
-    rdfs:label "sdata Process-type extension"@en ;
-    rdfs:label "sdata Prozesstyp-Erweiterung"@de ;
+    owl:versionInfo "0.2.0 — 27 February 2026" ;
+    rdfs:label "sdata Process Verb extension"@en ;
+    rdfs:label "sdata Prozess-Verb-Erweiterung"@de ;
     dcterms:description
-        """9 OWL subclasses of sdata:Process on two orthogonal axes.
-Axis 1 (Domain) answers WHERE a process operates: on matter or on information.
-Axis 2 (Verb) answers WHAT a process does: create, transform, transfer,
-observe, preserve, recover, or destroy.
+        """7 OWL Verb classes, all subClassOf bfo:Process, orthogonal to the
+domain classes MaterialProcess and InformationProcess in sdata Core.
 Instances are multi-typed across both axes:
-  ex:StampingRun  a  sdata:PhysicalProcess , sdata:Transformation .
-  ex:CrashSim_v3  a  sdata:DigitalProcess ,  sdata:Observation .
-This yields 2 × 7 = 14 meaningful combinations from only 9 classes.
-See design decisions below."""@en ;
-    dcterms:description
-        """9 OWL-Subklassen von sdata:Process auf zwei orthogonalen Achsen.
-Achse 1 (Domäne) beantwortet WO ein Prozess operiert: auf Materie oder
-auf Information.
-Achse 2 (Verb) beantwortet WAS ein Prozess tut: erzeugen, transformieren,
-transferieren, beobachten, bewahren, wiederverwerten, vernichten.
-Instanzen werden über beide Achsen multi-typisiert:
-  ex:StampingRun  a  sdata:PhysicalProcess , sdata:Transformation .
-  ex:CrashSim_v3  a  sdata:DigitalProcess ,  sdata:Observation .
-Dies ergibt 2 × 7 = 14 sinnvolle Kombinationen aus nur 9 Klassen.
-Siehe Design-Entscheidungen unten."""@de
-.
+  ex:StampingRun  a  sdata:MaterialProcess ,     sdata:Transformation .
+  ex:CrashSim_v3  a  sdata:InformationProcess ,  sdata:Observation .
+This yields 2 × 7 = 14 meaningful combinations from 9 total classes."""@en .
 
 # =============================================================================
 # DESIGN DECISIONS
 # =============================================================================
 #
-# D1. ORTHOGONALITY (First-Principle)
-# ────────────────────────────────────
-# Previous iterations modelled domain-specific process types hierarchically:
-#   PhysicalProcess → Experiment, Manufacturing, Transport, ...
-#   DigitalProcess  → Simulation, Transformation, Training, ...
+# D1. ORTHOGONALITY
+#   Axis 1 (Domain): MaterialProcess | InformationProcess  [sdata Core]
+#   Axis 2 (Verb):   Creation | Transformation | ...       [this file]
 #
-# This failed the pairing test: "Experiment" (messen) and "Simulation"
-# (berechnen) used different verbs for the same function (observe).
-# "Manufacturing" (formen) and "Transformation" (umwandeln) were different
-# names for the same verb (transform).
+# D2. THE 7 UNIVERSAL VERBS — domain-independent
 #
-# The root cause: domain and verb are ORTHOGONAL dimensions, not
-# hierarchical. A process answers two independent questions:
-#   (1) WHERE does it operate?  → PhysicalProcess | DigitalProcess
-#   (2) WHAT does it do?        → Creation | Transformation | ...
+#   Verb             DE              EN         Material              Information
+#   ─────────────────────────────────────────────────────────────────────────────
+#   Creation         erzeugen        create     Mine ore              Generate data
+#   Transformation   transformieren  transform  Stamp sheet metal     Convert format
+#   Transfer         transferieren   transfer   Ship by truck         Upload to server
+#   Observation      beobachten      observe    Tensile test          Simulation run
+#   Preservation     bewahren        preserve   Repair machine        Archive dataset
+#   Recovery         wiederverwerten recover    Recycle product       Train model
+#   Destruction      vernichten      destroy    Dispose to landfill   Delete file
 #
-# Multi-typing expresses the combination naturally:
-#   ex:TensileTest  a  sdata:PhysicalProcess , sdata:Observation .
-#   ex:CrashSim     a  sdata:DigitalProcess ,  sdata:Observation .
+# D3. VERB COMPLETENESS — any process reduces to one of these seven:
+#   Assembly → Transformation       Validation → Observation
+#   Rendering → Transformation      Encryption → Transformation
+#   Refurbishment → Preservation    ML Training → Recovery
 #
-# Benefits:
-#   · 9 classes instead of 16+ — simpler ontology
-#   · Uniform verbs — no forced pairing of different concepts
-#   · Extensible — new domain (BiologicalProcess) adds 1 class, not 7
-#   · Combinatoric — 2 × 7 = 14 combinations emerge without coding them
+# D4. BFO PARENT — all 7 subClassOf bfo:Process directly (not Material/Info)
 #
-# D2. THE 7 UNIVERSAL VERBS
-# ─────────────────────────
-# Each verb passes the domain-independence test: it applies identically
-# to physical and digital entities.
+# D5. DISJOINTNESS — within verb axis: all 7 mutually disjoint (21 pairs)
+#     Across axes: NO disjointness — intersections are the whole point
 #
-#   Verb             DE              EN          Physical            Digital
-#   ─────────────────────────────────────────────────────────────────────────
-#   Creation         erzeugen        create      Mine ore            Generate data
-#   Transformation   transformieren  transform   Stamp sheet metal   Convert format
-#   Transfer         transferieren   transfer    Ship by truck       Upload to server
-#   Observation      beobachten      observe     Tensile test        Simulation run
-#   Preservation     bewahren        preserve    Repair machine      Archive dataset
-#   Recovery         wiederverwerten recover     Recycle product     Train model from data
-#   Destruction      vernichten      destroy     Dispose to landfill Delete file
-#
-# D3. VERB COMPLETENESS — LIFECYCLE COVERAGE
-# ───────────────────────────────────────────
-# The 7 verbs cover the full lifecycle of any entity:
-#   Creation      — bring into existence
-#   Transformation — change form, preserve substance
-#   Transfer      — change location, preserve identity
-#   Observation   — extract information without altering
-#   Preservation  — maintain state against decay
-#   Recovery      — derive new entity from spent entity
-#   Destruction   — remove from existence
-#
-# Any process verb not listed reduces to one of these seven.
-# Examples:
-#   Assembly     → Transformation (components → product)
-#   Validation   → Observation (inspect digital artifact)
-#   Rendering    → Transformation (abstract data → visual)
-#   Refurbishment → Preservation (restore to working state)
-#   Encryption   → Transformation (plaintext → ciphertext)
-#
-# D4. AXIS 1 — DOMAIN RESTRICTIONS
-# ─────────────────────────────────
-# PhysicalProcess:
-#   consumes  ≥1 PhysicalArtifact | Material  (operates on matter)
-#   locatedAt ≥1 Site                         (spatially anchored)
-#
-# DigitalProcess:
-#   consumes  ≥1 DigitalArtifact              (operates on information)
-#   generates ≥1 DigitalArtifact              (information output)
-#
-# D5. AXIS 2 — VERB RESTRICTIONS
-# ───────────────────────────────
-# Each verb adds characteristic I/O constraints:
-#
-#   Creation:       generates ≥1 entity (source process, minimal input)
-#   Transformation: consumes ≥1, generates ≥1 (form changes, substance preserved)
-#   Transfer:       consumes ≥1 (entity changes location, not form)
-#   Observation:    generates ≥1 DigitalArtifact (always yields data)
-#   Preservation:   consumes ≥1 (entity maintained, not transformed)
-#   Recovery:       consumes ≥1, generates ≥1 (spent → new, category may change)
-#   Destruction:    consumes ≥1 (terminal, entity ceases to exist)
-#
-# D6. DISJOINTNESS STRATEGY
-# ─────────────────────────
-# Within each axis: mutually disjoint.
-#   PhysicalProcess ⊥ DigitalProcess
-#   Creation ⊥ Transformation ⊥ Transfer ⊥ ... (all pairs)
-#
-# Across axes: NO disjointness — that's the whole point.
-#   (PhysicalProcess ∩ Transformation) is a valid, non-empty class.
-#
-# D7. NO DUAL INHERITANCE FROM prov:Activity
-# ──────────────────────────────────────────
-# All classes inherit only from sdata:Process → bfo:Process.
-# PROV-O query compatibility via property-mapping:
-#   sdata:consumes       rdfs:subPropertyOf  prov:used
-#   sdata:generates      rdfs:subPropertyOf  prov:generated
-#   sdata:wasPerformedBy rdfs:subPropertyOf  prov:wasAssociatedWith
-#
-# D8. AGENT vs. PROCESS DISAMBIGUATION
-# ─────────────────────────────────────
-# The agent vocabulary (sdata-agents.ttl v0.1.0) defines sagents:Solver
-# as an agent type — the *solver software*. A simulation run is:
-#   ex:CrashSim  a  sdata:DigitalProcess , sdata:Observation ;
-#                sdata:wasPerformedBy ex:LSDYNA_R14 .
-# The solver is the Agent, the run is the Process.
-#
-# =============================================================================
-
-# =============================================================================
-# AXIS 1 — Domain
-# =============================================================================
-
-# ─── PhysicalProcess ─────────────────────────────────────────────────────────
-sdata:PhysicalProcess
-    rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
-    rdfs:subClassOf [
-        rdf:type owl:Restriction ;
-        owl:onProperty sdata:consumes ;
-        owl:someValuesFrom [ owl:unionOf ( sdata:PhysicalArtifact sdata:Material ) ]
-    ] ;
-    rdfs:subClassOf [
-        rdf:type owl:Restriction ;
-        owl:onProperty sdata:locatedAt ;
-        owl:someValuesFrom sdata:Site
-    ] ;
-    rdfs:label "Physical Process"@en , "Physischer Prozess"@de ;
-    rdfs:comment """Process that operates on matter in physical space.
-Axis 1 (Domain): WHERE does this process operate? — On matter.
-Combine with Axis 2 (Verb) via multi-typing."""@en ,
-               """Prozess, der auf Materie im physischen Raum operiert.
-Achse 1 (Domäne): WO operiert dieser Prozess? — Auf Materie.
-Mit Achse 2 (Verb) via Multi-Typing kombinieren."""@de .
-
-# ─── DigitalProcess ──────────────────────────────────────────────────────────
-sdata:DigitalProcess
-    rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
-    rdfs:subClassOf [
-        rdf:type owl:Restriction ;
-        owl:onProperty sdata:consumes ;
-        owl:someValuesFrom sdata:DigitalArtifact
-    ] ;
-    rdfs:subClassOf [
-        rdf:type owl:Restriction ;
-        owl:onProperty sdata:generates ;
-        owl:someValuesFrom sdata:DigitalArtifact
-    ] ;
-    rdfs:label "Digital Process"@en , "Digitaler Prozess"@de ;
-    rdfs:comment """Process that operates entirely in the information domain.
-Axis 1 (Domain): WHERE does this process operate? — On information.
-Combine with Axis 2 (Verb) via multi-typing."""@en ,
-               """Prozess, der vollständig in der Informationsdomäne operiert.
-Achse 1 (Domäne): WO operiert dieser Prozess? — Auf Information.
-Mit Achse 2 (Verb) via Multi-Typing kombinieren."""@de .
-
-# =============================================================================
-# AXIS 2 — Verb
 # =============================================================================
 
 # ─── Creation ────────────────────────────────────────────────────────────────
 sdata:Creation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:generates ;
@@ -225,22 +75,24 @@ sdata:Creation
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Creation"@en , "Erzeugung"@de ;
     rdfs:comment """Process that brings a new entity into existence.
-Verb: erzeugen / create. Source process — entry point into the system.
-Physical: mining, harvesting, refining raw ore.
-Digital: data generation, CAD authoring, synthetic data creation."""@en ,
+Source process — entry point into the system.
+Verb: erzeugen / create.
+Material: mining, harvesting, refining raw ore.
+Information: data generation, CAD authoring, synthetic data creation."""@en ,
                """Prozess, der eine neue Entität ins Dasein bringt.
-Verb: erzeugen / create. Quellprozess — Einstiegspunkt ins System.
-Physisch: Bergbau, Ernte, Roherzaufbereitung.
-Digital: Datenerzeugung, CAD-Authoring, synthetische Datenerstellung."""@de .
+Quellprozess — Einstiegspunkt ins System.
+Verb: erzeugen / create.
+Material: Bergbau, Ernte, Roherzaufbereitung.
+Information: Datenerzeugung, CAD-Authoring, synthetische Datenerstellung."""@de .
 
 # ─── Transformation ──────────────────────────────────────────────────────────
 sdata:Transformation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:consumes ;
@@ -254,24 +106,26 @@ sdata:Transformation
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Transformation"@en , "Transformation"@de ;
-    rdfs:comment """Process that changes the form of an entity while preserving
-its substance. Input and output are of comparable scale.
+    rdfs:comment """Process that changes the state of an entity.
+Consumes input, generates output. What is preserved depends on the
+depth of transformation (form, structure, composition).
 Verb: transformieren / transform.
-Physical: forming, machining, joining, assembly, heat treatment.
-Digital: ETL, format conversion, schema migration, rendering."""@en ,
-               """Prozess, der die Form einer Entität ändert, während ihre Substanz
-erhalten bleibt. Ein- und Ausgabe sind von vergleichbarem Umfang.
+Material: forming, machining, joining, assembly, heat treatment, chemical reaction.
+Information: ETL, format conversion, schema migration, rendering, encryption."""@en ,
+               """Prozess, der den Zustand einer Entität ändert.
+Verbraucht Input, erzeugt Output. Was erhalten bleibt, hängt von der
+Tiefe der Transformation ab (Form, Struktur, Zusammensetzung).
 Verb: transformieren / transform.
-Physisch: Umformung, Zerspanen, Fügen, Montage, Wärmebehandlung.
-Digital: ETL, Formatkonvertierung, Schema-Migration, Rendering."""@de .
+Material: Umformung, Zerspanen, Fügen, Montage, Wärmebehandlung, chemische Reaktion.
+Information: ETL, Formatkonvertierung, Schema-Migration, Rendering, Verschlüsselung."""@de .
 
 # ─── Transfer ────────────────────────────────────────────────────────────────
 sdata:Transfer
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:consumes ;
@@ -280,52 +134,50 @@ sdata:Transfer
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Transfer"@en , "Transfer"@de ;
     rdfs:comment """Process that changes the location of an entity without altering
 its form or substance. Identity is preserved.
 Verb: transferieren / transfer.
-Physical: shipping, trucking, conveyor transport.
-Digital: file upload, data replication, API transmission."""@en ,
+Material: shipping, trucking, conveyor transport.
+Information: file upload, data replication, API transmission."""@en ,
                """Prozess, der den Ort einer Entität ändert, ohne ihre Form oder
 Substanz zu verändern. Identität bleibt erhalten.
 Verb: transferieren / transfer.
-Physisch: Versand, LKW-Transport, Förderbandtransport.
-Digital: Dateiupload, Datenreplikation, API-Übertragung."""@de .
+Material: Versand, LKW-Transport, Förderbandtransport.
+Information: Dateiupload, Datenreplikation, API-Übertragung."""@de .
 
 # ─── Observation ─────────────────────────────────────────────────────────────
 sdata:Observation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:generates ;
-        owl:someValuesFrom sdata:DigitalArtifact
+        owl:someValuesFrom sdata:InformationArtifact
     ] ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Observation"@en , "Beobachtung"@de ;
     rdfs:comment """Process that extracts information from an entity without
-altering it. Always generates at least one DigitalArtifact (data).
-Verb: beobachten / observe.
-Physical: tensile test, hardness test, chemical analysis, NDT.
-Digital: simulation run, validation check, data quality audit.
-Cross-cutting: can attach at any lifecycle stage."""@en ,
+altering it. Always generates at least one InformationArtifact (data).
+Verb: beobachten / observe. Cross-cutting — can attach at any lifecycle stage.
+Material: tensile test, hardness test, chemical analysis, NDT.
+Information: simulation run, validation check, data quality audit."""@en ,
                """Prozess, der Information aus einer Entität extrahiert, ohne sie
-zu verändern. Erzeugt immer mindestens ein DigitalArtifact (Daten).
-Verb: beobachten / observe.
-Physisch: Zugversuch, Härteprüfung, chemische Analyse, ZfP.
-Digital: Simulationslauf, Validierungsprüfung, Datenqualitäts-Audit.
-Querschnittlich: kann an jedem Lebenszykluspunkt andocken."""@de .
+zu verändern. Erzeugt immer mindestens ein InformationArtifact (Daten).
+Verb: beobachten / observe. Querschnittlich — dockt an jeder Stufe an.
+Material: Zugversuch, Härteprüfung, chemische Analyse, ZfP.
+Information: Simulationslauf, Validierungsprüfung, Datenqualitäts-Audit."""@de .
 
 # ─── Preservation ────────────────────────────────────────────────────────────
 sdata:Preservation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:consumes ;
@@ -334,24 +186,24 @@ sdata:Preservation
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Preservation"@en , "Bewahrung"@de ;
     rdfs:comment """Process that maintains or restores the state of an entity
 against decay, degradation, or obsolescence.
 Verb: bewahren / preserve.
-Physical: maintenance, repair, refurbishment, remanufacturing.
-Digital: archival, backup, migration to new storage, version pinning."""@en ,
+Material: maintenance, repair, refurbishment, remanufacturing.
+Information: archival, backup, migration to new storage, version pinning."""@en ,
                """Prozess, der den Zustand einer Entität gegen Verfall, Degradation
 oder Obsoleszenz erhält oder wiederherstellt.
 Verb: bewahren / preserve.
-Physisch: Wartung, Reparatur, Aufarbeitung, Remanufacturing.
-Digital: Archivierung, Backup, Migration auf neuen Speicher, Version-Pinning."""@de .
+Material: Wartung, Reparatur, Aufarbeitung, Remanufacturing.
+Information: Archivierung, Backup, Migration auf neuen Speicher, Version-Pinning."""@de .
 
 # ─── Recovery ────────────────────────────────────────────────────────────────
 sdata:Recovery
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:consumes ;
@@ -365,27 +217,27 @@ sdata:Recovery
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Recovery"@en , "Rückgewinnung"@de ;
     rdfs:comment """Process that derives a categorically new entity from a spent
 or exhausted entity. The input's lifecycle ends, a new one begins.
 Verb: wiederverwerten / recover.
-Physical: recycling, material recovery, composting, smelting scrap.
-Digital: ML training (data → model), knowledge extraction, distillation.
+Material: recycling, material recovery, composting, smelting scrap.
+Information: ML training (data → model), knowledge extraction, distillation.
 Closes the lifecycle loop: Recovery output feeds back into Creation."""@en ,
                """Prozess, der aus einer verbrauchten oder erschöpften Entität eine
 kategorisch neue Entität ableitet. Der Lebenszyklus des Inputs endet,
 ein neuer beginnt.
 Verb: wiederverwerten / recover.
-Physisch: Recycling, Materialrückgewinnung, Kompostierung, Schrottschmelze.
-Digital: ML-Training (Daten → Modell), Wissensextraktion, Destillation.
+Material: Recycling, Materialrückgewinnung, Kompostierung, Schrottschmelze.
+Information: ML-Training (Daten → Modell), Wissensextraktion, Destillation.
 Schließt den Lebenszykluskreis: Recovery-Output fließt zurück in Creation."""@de .
 
 # ─── Destruction ─────────────────────────────────────────────────────────────
 sdata:Destruction
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Process ;
+    rdfs:subClassOf bfo:0000015 ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:consumes ;
@@ -394,74 +246,68 @@ sdata:Destruction
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:wasPerformedBy ;
-        owl:someValuesFrom sdata:Agent
+        owl:someValuesFrom [ owl:unionOf ( sdata:MaterialAgent sdata:InformationAgent ) ]
     ] ;
     rdfs:label "Destruction"@en , "Vernichtung"@de ;
     rdfs:comment """Process that permanently removes an entity from existence.
 Terminal — no output of the same category. May generate audit logs.
 Verb: vernichten / destroy.
-Physical: disposal, incineration, landfill.
-Digital: file deletion, data purging, secure erasure."""@en ,
+Material: disposal, incineration, landfill.
+Information: file deletion, data purging, secure erasure."""@en ,
                """Prozess, der eine Entität permanent aus der Existenz entfernt.
 Terminal — kein Output derselben Kategorie. Kann Audit-Logs erzeugen.
 Verb: vernichten / destroy.
-Physisch: Entsorgung, Verbrennung, Deponie.
-Digital: Dateilöschung, Datenbereinigung, sichere Löschung."""@de .
+Material: Entsorgung, Verbrennung, Deponie.
+Information: Dateilöschung, Datenbereinigung, sichere Löschung."""@de .
 
 # =============================================================================
-# DISJOINTNESS — within each axis, not across
+# DISJOINTNESS — within verb axis only (21 pairs)
 # =============================================================================
 
-# Axis 1: Domain — mutually exclusive
-sdata:PhysicalProcess owl:disjointWith sdata:DigitalProcess .
-
-# Axis 2: Verb — mutually exclusive (7 choose 2 = 21 pairs)
-sdata:Creation      owl:disjointWith sdata:Transformation .
-sdata:Creation      owl:disjointWith sdata:Transfer .
-sdata:Creation      owl:disjointWith sdata:Observation .
-sdata:Creation      owl:disjointWith sdata:Preservation .
-sdata:Creation      owl:disjointWith sdata:Recovery .
-sdata:Creation      owl:disjointWith sdata:Destruction .
+sdata:Creation       owl:disjointWith sdata:Transformation .
+sdata:Creation       owl:disjointWith sdata:Transfer .
+sdata:Creation       owl:disjointWith sdata:Observation .
+sdata:Creation       owl:disjointWith sdata:Preservation .
+sdata:Creation       owl:disjointWith sdata:Recovery .
+sdata:Creation       owl:disjointWith sdata:Destruction .
 sdata:Transformation owl:disjointWith sdata:Transfer .
 sdata:Transformation owl:disjointWith sdata:Observation .
 sdata:Transformation owl:disjointWith sdata:Preservation .
 sdata:Transformation owl:disjointWith sdata:Recovery .
 sdata:Transformation owl:disjointWith sdata:Destruction .
-sdata:Transfer      owl:disjointWith sdata:Observation .
-sdata:Transfer      owl:disjointWith sdata:Preservation .
-sdata:Transfer      owl:disjointWith sdata:Recovery .
-sdata:Transfer      owl:disjointWith sdata:Destruction .
-sdata:Observation   owl:disjointWith sdata:Preservation .
-sdata:Observation   owl:disjointWith sdata:Recovery .
-sdata:Observation   owl:disjointWith sdata:Destruction .
-sdata:Preservation  owl:disjointWith sdata:Recovery .
-sdata:Preservation  owl:disjointWith sdata:Destruction .
-sdata:Recovery      owl:disjointWith sdata:Destruction .
+sdata:Transfer       owl:disjointWith sdata:Observation .
+sdata:Transfer       owl:disjointWith sdata:Preservation .
+sdata:Transfer       owl:disjointWith sdata:Recovery .
+sdata:Transfer       owl:disjointWith sdata:Destruction .
+sdata:Observation    owl:disjointWith sdata:Preservation .
+sdata:Observation    owl:disjointWith sdata:Recovery .
+sdata:Observation    owl:disjointWith sdata:Destruction .
+sdata:Preservation   owl:disjointWith sdata:Recovery .
+sdata:Preservation   owl:disjointWith sdata:Destruction .
+sdata:Recovery       owl:disjointWith sdata:Destruction .
 
 # =============================================================================
 # USAGE EXAMPLES (informative)
 # =============================================================================
 #
-# Physical × Verb combinations:
+# Material × Verb:
+#   ex:MiningDC04     a  sdata:MaterialProcess ,     sdata:Creation .
+#   ex:StampingRun    a  sdata:MaterialProcess ,     sdata:Transformation .
+#   ex:ShipToOEM      a  sdata:MaterialProcess ,     sdata:Transfer .
+#   ex:TensileTest42  a  sdata:MaterialProcess ,     sdata:Observation .
+#   ex:RepairGearbox  a  sdata:MaterialProcess ,     sdata:Preservation .
+#   ex:RecyclePP      a  sdata:MaterialProcess ,     sdata:Recovery .
+#   ex:LandfillWaste  a  sdata:MaterialProcess ,     sdata:Destruction .
 #
-#   ex:MiningDC04     a  sdata:PhysicalProcess , sdata:Creation .
-#   ex:StampingRun    a  sdata:PhysicalProcess , sdata:Transformation .
-#   ex:ShipToOEM      a  sdata:PhysicalProcess , sdata:Transfer .
-#   ex:TensileTest42  a  sdata:PhysicalProcess , sdata:Observation .
-#   ex:RepairGearbox  a  sdata:PhysicalProcess , sdata:Preservation .
-#   ex:RecyclePP      a  sdata:PhysicalProcess , sdata:Recovery .
-#   ex:LandfillWaste  a  sdata:PhysicalProcess , sdata:Destruction .
-#
-# Digital × Verb combinations:
-#
-#   ex:MeshGen_v1     a  sdata:DigitalProcess , sdata:Creation .
-#   ex:ETL_Job_42     a  sdata:DigitalProcess , sdata:Transformation .
-#   ex:UploadToCloud  a  sdata:DigitalProcess , sdata:Transfer .
-#   ex:CrashSim_v3    a  sdata:DigitalProcess , sdata:Observation .
-#   ex:ArchiveDataset a  sdata:DigitalProcess , sdata:Preservation .
-#   ex:TrainModel_v2  a  sdata:DigitalProcess , sdata:Recovery .
-#   ex:PurgeOldLogs   a  sdata:DigitalProcess , sdata:Destruction .
+# Information × Verb:
+#   ex:MeshGen_v1     a  sdata:InformationProcess ,  sdata:Creation .
+#   ex:ETL_Job_42     a  sdata:InformationProcess ,  sdata:Transformation .
+#   ex:UploadToCloud  a  sdata:InformationProcess ,  sdata:Transfer .
+#   ex:CrashSim_v3    a  sdata:InformationProcess ,  sdata:Observation .
+#   ex:ArchiveDataset a  sdata:InformationProcess ,  sdata:Preservation .
+#   ex:TrainModel_v2  a  sdata:InformationProcess ,  sdata:Recovery .
+#   ex:PurgeOldLogs   a  sdata:InformationProcess ,  sdata:Destruction .
 #
 # =============================================================================
-# END — sdata-processtypes.ttl v0.1.0
+# END — sdata-processtypes.ttl v0.2.0
 # =============================================================================

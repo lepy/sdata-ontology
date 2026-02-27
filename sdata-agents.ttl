@@ -1,7 +1,7 @@
 # =============================================================================
 # FILE: sdata-agents.ttl
 # Controlled vocabulary for sdata:agentType
-# Minimal, DPP- and Digital-Twin-ready
+# Aligned with MaterialAgent / InformationAgent duality
 # =============================================================================
 
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -22,14 +22,14 @@
 <https://w3id.org/sdata/vocab/agents>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    owl:versionInfo "0.2.0 — 27 February 2026" ;
     rdfs:label "sdata agentType vocabulary"@en ;
     rdfs:label "sdata agentType-Vokabular"@de ;
     dcterms:description
-        "Controlled vocabulary (SKOS) for sdata:agentType. Four top concepts: Person, Organization, Hardware, Software. Narrower concepts for Hardware and Software cover Digital Twin and DPP scenarios."@en ;
-    dcterms:description
-        "Kontrolliertes Vokabular (SKOS) für sdata:agentType. Vier Top-Konzepte: Person, Organisation, Hardware, Software. Engere Konzepte für Hardware und Software decken Digital-Twin- und DPP-Szenarien ab."@de
-.
+        """Controlled vocabulary (SKOS) for sdata:agentType. Mirrors the
+5+5+1 duality: Material agents (Person, Machine) are tangible,
+Information agents (Organization, Solver, Service, DigitalTwin) are
+intangible."""@en .
 
 # =============================================================================
 # ConceptScheme
@@ -41,112 +41,96 @@ sagents:AgentTypeScheme
     skos:prefLabel "Agent-Typen"@de ;
     skos:hasTopConcept
         sagents:Person ,
+        sagents:Machine ,
         sagents:Organization ,
-        sagents:Hardware ,
         sagents:Software
 .
 
 # =============================================================================
-# Top concepts
+# MATERIAL AGENTS — tangible, you can point at them
 # =============================================================================
 
 sagents:Person
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
-    skos:prefLabel "Person"@en ;
-    skos:prefLabel "Person"@de ;
-    skos:definition "Human agent."@en ;
-    skos:definition "Menschlicher Agent."@de ;
-    skos:scopeNote "Identify via ORCID (researchers), or name + affiliation."@en
-.
+    skos:prefLabel "Person"@en , "Person"@de ;
+    skos:definition "Human agent. Instance of sdata:MaterialAgent."@en ;
+    skos:scopeNote "Identify via ORCID (researchers), or name + affiliation."@en .
+
+sagents:Machine
+    a skos:Concept ;
+    skos:inScheme sagents:AgentTypeScheme ;
+    skos:topConceptOf sagents:AgentTypeScheme ;
+    skos:prefLabel "Machine"@en , "Maschine"@de ;
+    skos:definition "Complex material system with sensors and actuators. Instance of sdata:MaterialAgent."@en ;
+    skos:scopeNote "Identify via serial number, asset tag, or DPP identifier."@en ;
+    skos:example "Test machine (Zwick Z100), robot arm, production line, sensor."@en .
+
+# =============================================================================
+# INFORMATION AGENTS — intangible, you cannot point at them
+# =============================================================================
 
 sagents:Organization
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
-    skos:prefLabel "Organization"@en ;
-    skos:prefLabel "Organisation"@de ;
-    skos:definition "Organizational agent (company, institute, lab, authority)."@en ;
-    skos:definition "Organisationaler Agent (Unternehmen, Institut, Labor, Behörde)."@de ;
-    skos:scopeNote "Identify via LEI, DUNS, VAT-ID, or ROR (research orgs)."@en
-.
-
-sagents:Hardware
-    a skos:Concept ;
-    skos:inScheme sagents:AgentTypeScheme ;
-    skos:topConceptOf sagents:AgentTypeScheme ;
-    skos:prefLabel "Hardware"@en ;
-    skos:prefLabel "Hardware"@de ;
-    skos:definition "Physical artifact acting as agent (machine, device, sensor)."@en ;
-    skos:definition "Physisches Artefakt als Agent (Maschine, Gerät, Sensor)."@de ;
-    skos:scopeNote "Identify via serial number, asset tag, or DPP identifier."@en ;
-    skos:narrower
-        sagents:Machine
-.
+    skos:prefLabel "Organization"@en , "Organisation"@de ;
+    skos:definition "Social entity constituted by agreements, structures, and roles. Instance of sdata:InformationAgent. Depends on material carriers (people, buildings) but is not identical with any of them."@en ;
+    skos:scopeNote "Identify via LEI, DUNS, VAT-ID, or ROR (research orgs)."@en ;
+    skos:example "Fraunhofer IWM, BMW Group, DIN e.V."@en .
 
 sagents:Software
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:topConceptOf sagents:AgentTypeScheme ;
-    skos:prefLabel "Software"@en ;
-    skos:prefLabel "Software"@de ;
-    skos:definition "Digital artifact acting as agent (service, pipeline, model)."@en ;
-    skos:definition "Digitales Artefakt als Agent (Service, Pipeline, Modell)."@de ;
+    skos:prefLabel "Software"@en , "Software"@de ;
+    skos:definition "Executable information entity acting as agent. Instance of sdata:InformationAgent."@en ;
     skos:scopeNote "Identify via URI + version string, or package hash (SHA-256)."@en ;
     skos:narrower
         sagents:Solver ,
         sagents:Service ,
-        sagents:DigitalTwin
-.
-
-# =============================================================================
-# Hardware — narrower
-# =============================================================================
-
-sagents:Machine
-    a skos:Concept ;
-    skos:inScheme sagents:AgentTypeScheme ;
-    skos:broader sagents:Hardware ;
-    skos:prefLabel "Machine"@en ;
-    skos:prefLabel "Maschine"@de ;
-    skos:definition "Complex physical system combining sensors and actuators (test machine, robot, vehicle, production line)."@en ;
-    skos:definition "Komplexes physisches System aus Sensoren und Aktoren (Prüfmaschine, Roboter, Fahrzeug, Fertigungslinie)."@de
-.
-
-# =============================================================================
-# Software — narrower
-# =============================================================================
+        sagents:DigitalTwin .
 
 sagents:Solver
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
-    skos:prefLabel "Solver"@en ;
-    skos:prefLabel "Solver"@de ;
-    skos:definition "Software that computes a model of a physical or logical system (FEM solver, CFD solver, ML runtime)."@en ;
-    skos:definition "Software, die ein Modell eines physischen oder logischen Systems berechnet (FEM-Solver, CFD-Solver, ML-Runtime)."@de ;
-    skos:scopeNote "The solver is the *agent* that performs a sdata:Simulation *process*. This disambiguation avoids name collision: sagents:Solver (the software) vs. sdata:Simulation (the run). See sdata-processtypes.ttl design decision D6."@en ;
-    skos:historyNote "Renamed from sagents:Simulation to sagents:Solver in v0.1.0 to avoid ambiguity with the OWL class sdata:Simulation (process run) defined in sdata-processtypes.ttl."@en
-.
+    skos:prefLabel "Solver"@en , "Solver"@de ;
+    skos:definition "Software that computes a model of a physical or logical system (FEM solver, CFD solver, ML runtime). The solver is the *agent* that performs an Observation process (simulation run)."@en ;
+    skos:example "LS-DYNA R14, Abaqus 2024, OpenFOAM v12, PyTorch Runtime."@en ;
+    skos:historyNote "Renamed from sagents:Simulation in v1.1.0 to avoid ambiguity with the verb class sdata:Observation."@en .
 
 sagents:Service
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
-    skos:prefLabel "Service"@en ;
-    skos:prefLabel "Dienst"@de ;
+    skos:prefLabel "Service"@en , "Dienst"@de ;
     skos:definition "Persistent software endpoint that transforms, validates, or stores data (API, ETL pipeline, data broker)."@en ;
-    skos:definition "Dauerhafter Software-Endpunkt, der Daten transformiert, validiert oder speichert (API, ETL-Pipeline, Datenbroker)."@de
-.
+    skos:example "REST API, SPARQL endpoint, CI/CD pipeline, message broker."@en .
 
 sagents:DigitalTwin
     a skos:Concept ;
     skos:inScheme sagents:AgentTypeScheme ;
     skos:broader sagents:Software ;
-    skos:prefLabel "Digital Twin"@en ;
-    skos:prefLabel "Digitaler Zwilling"@de ;
-    skos:definition "Software representation of a physical entity that synchronizes state bidirectionally and may act autonomously."@en ;
-    skos:definition "Software-Repräsentation einer physischen Entität, die Zustand bidirektional synchronisiert und autonom handeln kann."@de ;
-    skos:scopeNote "A Digital Twin is both data consumer and data producer. It typically references the physical asset it mirrors via sdata:uuid or DPP identifier."@en
-.
+    skos:prefLabel "Digital Twin"@en , "Digitaler Zwilling"@de ;
+    skos:definition "Software representation of a material entity that synchronizes state bidirectionally and may act autonomously."@en ;
+    skos:scopeNote "A Digital Twin is both data consumer and producer. References its material counterpart via sdata:hasIdentifier."@en .
+
+# =============================================================================
+# MAPPING — agentType value to Core class
+# =============================================================================
+#
+# agentType value     Core class              Tangible?
+# ──────────────────  ──────────────────────  ─────────
+# Person              sdata:MaterialAgent      ✓
+# Machine             sdata:MaterialAgent      ✓
+# Organization        sdata:InformationAgent   ✗
+# Software            sdata:InformationAgent   ✗
+#   └── Solver        sdata:InformationAgent   ✗
+#   └── Service       sdata:InformationAgent   ✗
+#   └── DigitalTwin   sdata:InformationAgent   ✗
+#
+# =============================================================================
+# END — sdata-agents.ttl v0.2.0
+# =============================================================================
