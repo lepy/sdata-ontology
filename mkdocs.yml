@@ -1,0 +1,7 @@
+site_name: sdata Ontology
+site_description: Semantic Data Ontology for Product Passports, Circular Economy and Digital Twins
+repo_url: https://github.com/lepy/sdata-ontology
+theme:
+  name: material
+nav:
+  - Home: index.md

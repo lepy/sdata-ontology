@@ -30,10 +30,7 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 |---|---|---|
 | **Core** | `https://w3id.org/sdata/core` | 8 classes, 18 object properties, 12 datatype properties |
 | **Agents** | `https://w3id.org/sdata/agents` | SKOS ConceptScheme for agent types |
-| **Roles** | `https://w3id.org/sdata/roles` | SKOS ConceptScheme for role types |
-| **Identifiers** | `https://w3id.org/sdata/identifiers` | SKOS ConceptScheme for identifier types |
-| **DPP** | `https://w3id.org/sdata/dpp` | Extension for EU Digital Product Passports |
-| **Location** | `https://w3id.org/sdata/location` | Extension for structured addresses |
+| **Core Shapes** | `https://w3id.org/sdata/core/shapes` | SHACL constraints for core data validation |
 
 ## Repository Structure
 
@@ -41,16 +38,15 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 sdata/
 ├── sdata-core.ttl              Core ontology (v1.0)
 ├── sdata-agents.ttl            SKOS: Agent types
-├── sdata-roles.ttl             SKOS: Role types
-├── sdata-identifiers.ttl       SKOS: Identifier types
-├── sdata-dpp.ttl               Extension: Digital Product Passport
-├── sdata-location.ttl          Extension: Structured addresses
 ├── shapes/
 │   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
-│   └── sdata-dpp-shapes.ttl    SHACL shapes for DPP validation
 ├── examples/
 │   └── battery-passport.ttl    Example: Battery Passport instance data
-├── .htaccess                   w3id.org redirect rules
+├── src/examples/
+│   └── dpp_01.py               Python example graph builder
+├── docs/
+│   └── index.md                MkDocs entry page
+├── mkdocs.yml                  MkDocs site configuration
 ├── LICENSE
 └── README.md
 ```
@@ -118,6 +114,41 @@ Import the unversioned IRI to track latest, or the versioned IRI to pin.
 ```bash
 # Validate instance data against SHACL shapes
 pyshacl -s shapes/sdata-core-shapes.ttl -df turtle data.ttl
+```
+
+## Development Setup
+
+### Prerequisites
+
+- Python 3.12+
+- `uv` (recommended): https://docs.astral.sh/uv/getting-started/installation/
+
+### Install dependencies
+
+```bash
+# Recommended
+make setup
+
+# Alternative (without uv)
+make setup-pip
+
+# Optional: install documentation dependencies
+make setup-docs
+```
+
+### Run checks
+
+```bash
+make validate
+make test
+make lint
+```
+
+## Documentation
+
+```bash
+# Build static docs site with MkDocs
+uv run mkdocs build
 ```
 
 ## Contributing

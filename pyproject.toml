@@ -19,9 +19,21 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/lepy/sdata-ontology"
-Documentation = "https://github.com/lepy/sdata-ontology/tree/main/docs"
+Documentation = "https://github.com/lepy/sdata-ontology/blob/main/docs/index.md"
 Repository = "https://github.com/lepy/sdata-ontology"
 Issues = "https://github.com/lepy/sdata-ontology/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pyshacl>=0.26",
+    "rdflib>=7.0",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+]
 
 [dependency-groups]
 dev = [
@@ -35,8 +47,26 @@ docs = [
     "mkdocs-material>=9.5",
 ]
 
+[tool.hatch.build]
+include = [
+    "src/examples/**/*.py",
+    "*.ttl",
+    "shapes/*.ttl",
+    "examples/*.ttl",
+    "README.md",
+    "LICENSE",
+    "docs/**/*.md",
+    "mkdocs.yml",
+]
+
 [tool.hatch.build.targets.wheel]
-packages = []
+packages = ["src/examples"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"sdata-core.ttl" = "share/sdata-ontology/sdata-core.ttl"
+"sdata-agents.ttl" = "share/sdata-ontology/sdata-agents.ttl"
+"shapes/sdata-core-shapes.ttl" = "share/sdata-ontology/shapes/sdata-core-shapes.ttl"
+"examples/battery-passport.ttl" = "share/sdata-ontology/examples/battery-passport.ttl"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
