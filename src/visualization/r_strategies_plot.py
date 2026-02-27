@@ -12,6 +12,7 @@ from rdflib.namespace import SKOS
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SR = Namespace("https://w3id.org/sdata/r-strategies/")
+ENERGY_LEVEL = URIRef("https://w3id.org/sdata/r-strategies/EnergyLevel")
 
 MAPS_TO_VERB = SR.mapsToVerb
 CIRCULARITY_RANK = SR.circularityRank
@@ -22,6 +23,7 @@ class Node:
     iri: URIRef
     label: str
     kind: str  # "scheme" | "collection" | "concept" | "verb"
+    rank: int | None = None
 
 
 @dataclass(frozen=True)
@@ -29,7 +31,7 @@ class Edge:
     source: URIRef
     target: URIRef
     label: str
-    kind: str  # "top" | "member" | "maps"
+    kind: str  # "top" | "member" | "maps" | "rank" | "verb_seq"
 
 
 @dataclass(frozen=True)
@@ -88,11 +90,12 @@ def extract_model(graph: Graph) -> Model:
         ]
         for concept in top_concepts:
             rank_values = [o for o in graph.objects(concept, CIRCULARITY_RANK) if isinstance(o, Literal)]
+            rank_num = int(rank_values[0]) if rank_values else None
             rank_suffix = ""
-            if rank_values:
-                rank_suffix = f" [rank {rank_values[0]}]"
+            if rank_num is not None:
+                rank_suffix = f" [rank {rank_num}]"
             label = f"{_best_label(graph, concept)}{rank_suffix}"
-            nodes[concept] = Node(iri=concept, label=label, kind="concept")
+            nodes[concept] = Node(iri=concept, label=label, kind="concept", rank=rank_num)
             edges.add(Edge(source=scheme, target=concept, label="top concept", kind="top"))
 
     collections = [
@@ -107,9 +110,13 @@ def extract_model(graph: Graph) -> Model:
                 continue
             if member not in nodes:
                 rank_values = [o for o in graph.objects(member, CIRCULARITY_RANK) if isinstance(o, Literal)]
-                rank_suffix = f" [rank {rank_values[0]}]" if rank_values else ""
+                rank_num = int(rank_values[0]) if rank_values else None
+                rank_suffix = f" [rank {rank_num}]" if rank_num is not None else ""
                 nodes[member] = Node(
-                    iri=member, label=f"{_best_label(graph, member)}{rank_suffix}", kind="concept"
+                    iri=member,
+                    label=f"{_best_label(graph, member)}{rank_suffix}",
+                    kind="concept",
+                    rank=rank_num,
                 )
             edges.add(Edge(source=coll, target=member, label="member", kind="member"))
 
@@ -121,9 +128,13 @@ def extract_model(graph: Graph) -> Model:
     for concept in concepts:
         if concept not in nodes:
             rank_values = [o for o in graph.objects(concept, CIRCULARITY_RANK) if isinstance(o, Literal)]
-            rank_suffix = f" [rank {rank_values[0]}]" if rank_values else ""
+            rank_num = int(rank_values[0]) if rank_values else None
+            rank_suffix = f" [rank {rank_num}]" if rank_num is not None else ""
             nodes[concept] = Node(
-                iri=concept, label=f"{_best_label(graph, concept)}{rank_suffix}", kind="concept"
+                iri=concept,
+                label=f"{_best_label(graph, concept)}{rank_suffix}",
+                kind="concept",
+                rank=rank_num,
             )
         for verb in graph.objects(concept, MAPS_TO_VERB):
             if not isinstance(verb, URIRef):
@@ -131,6 +142,45 @@ def extract_model(graph: Graph) -> Model:
             if verb not in nodes:
                 nodes[verb] = Node(iri=verb, label=_best_label(graph, verb), kind="verb")
             edges.add(Edge(source=concept, target=verb, label="mapsToVerb", kind="maps"))
+
+    # Synthetic grouping node for the terminal energy level (R9).
+    if SR.MaterialLevel in nodes and SR.R9_Recover in nodes:
+        nodes[ENERGY_LEVEL] = Node(
+            iri=ENERGY_LEVEL,
+            label="Energy-level strategies",
+            kind="collection",
+        )
+        edges.add(Edge(source=ENERGY_LEVEL, target=SR.R9_Recover, label="member", kind="member"))
+
+    # Lifecycle verb sequence edges (temporal order).
+    verb_chain = [
+        SDATA.Creation,
+        SDATA.Transformation,
+        SDATA.Transfer,
+        SDATA.Preservation,
+        SDATA.Recovery,
+    ]
+    for source, target in zip(verb_chain, verb_chain[1:]):
+        if source in nodes and target in nodes:
+            edges.add(Edge(source=source, target=target, label="follows", kind="verb_seq"))
+    if SDATA.Recovery in nodes and SDATA.Destruction in nodes:
+        edges.add(Edge(source=SDATA.Recovery, target=SDATA.Destruction, label="terminal", kind="verb_seq"))
+
+    # Explicit rank chain: rank0 -> rank1 -> ... -> rank9
+    concepts_by_rank: dict[int, URIRef] = {}
+    for node in nodes.values():
+        if node.kind == "concept" and node.rank is not None:
+            concepts_by_rank[node.rank] = node.iri
+    for rank in range(0, 9):
+        if rank in concepts_by_rank and (rank + 1) in concepts_by_rank:
+            edges.add(
+                Edge(
+                    source=concepts_by_rank[rank],
+                    target=concepts_by_rank[rank + 1],
+                    label="next rank",
+                    kind="rank",
+                )
+            )
 
     return Model(
         nodes=tuple(sorted(nodes.values(), key=lambda n: str(n.iri))),
@@ -149,7 +199,7 @@ def build_agraph(model: Model):
     graph = pgv.AGraph(strict=False, directed=True)
     graph.graph_attr.update(
         bgcolor="#FAFBFC",
-        rankdir="LR",
+        rankdir="TB",
         splines="true",
         overlap="false",
         pad="0.35",
@@ -187,6 +237,8 @@ def build_agraph(model: Model):
         "top": {"color": "#2B6CB0", "style": "solid"},
         "member": {"color": "#2F855A", "style": "dotted"},
         "maps": {"color": "#805AD5", "style": "dashed"},
+        "rank": {"color": "#C53030", "style": "bold"},
+        "verb_seq": {"color": "#1F2937", "style": "solid"},
     }
 
     scheme_cluster = graph.add_subgraph(
@@ -201,6 +253,8 @@ def build_agraph(model: Model):
     verb_cluster = graph.add_subgraph(
         name="cluster_verbs", label="Lifecycle Verbs", color="#C3A7F2", style="rounded"
     )
+    for cluster in (scheme_cluster, group_cluster, concept_cluster, verb_cluster):
+        cluster.graph_attr.update(rankdir="TB")
 
     for node in model.nodes:
         attrs = style_map[node.kind]
@@ -218,6 +272,47 @@ def build_agraph(model: Model):
         attrs = edge_style[edge.kind].copy()
         attrs["label"] = edge.label
         graph.add_edge(str(edge.source), str(edge.target), **attrs)
+
+    # Force Level Groups top-down order.
+    group_order = [
+        SR.DesignLevel,
+        SR.ProductLevel,
+        SR.ComponentLevel,
+        SR.MaterialLevel,
+        ENERGY_LEVEL,
+    ]
+    present_groups = [g for g in group_order if any(n.iri == g and n.kind == "collection" for n in model.nodes)]
+    for current, nxt in zip(present_groups, present_groups[1:]):
+        graph.add_edge(
+            str(current),
+            str(nxt),
+            color="#0F766E",
+            style="solid",
+            penwidth="1.8",
+            label="decreasing value retention",
+            weight="80",
+            constraint="true",
+        )
+
+    # Force concept ordering by circularity rank: 0 at top, 9 at bottom.
+    concept_nodes = [node for node in model.nodes if node.kind == "concept" and node.rank is not None]
+    for node in concept_nodes:
+        rank_subgraph = graph.add_subgraph(
+            name=f"cluster_rank_{node.rank}_{str(node.iri).rsplit('/', 1)[-1]}",
+            rank="same",
+            style="invis",
+        )
+        rank_subgraph.add_node(str(node.iri))
+
+    sorted_concepts = sorted(concept_nodes, key=lambda n: (n.rank, str(n.iri)))
+    for current, nxt in zip(sorted_concepts, sorted_concepts[1:]):
+        graph.add_edge(
+            str(current.iri),
+            str(nxt.iri),
+            style="invis",
+            weight="50",
+            constraint="true",
+        )
 
     return graph
 
