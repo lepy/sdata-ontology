@@ -14,6 +14,7 @@ from rdflib.namespace import OWL
 
 SDATA = Namespace("https://w3id.org/sdata/core#")
 BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
+BFO_ENTITY = URIRef("http://purl.obolibrary.org/obo/BFO_0000001")
 
 
 @dataclass(frozen=True)
@@ -69,8 +70,16 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
     return str(sorted(labels, key=score)[0])
 
 
+def _bfo_parents(graph: Graph, node: URIRef) -> list[URIRef]:
+    return [
+        parent
+        for parent in graph.objects(node, RDFS.subClassOf)
+        if isinstance(parent, URIRef) and str(parent).startswith(BFO_PREFIX)
+    ]
+
+
 def extract_hierarchy(graph: Graph) -> HierarchyModel:
-    """Extract sdata classes plus direct BFO parents from graph."""
+    """Extract sdata classes plus BFO hierarchy up to BFO entity."""
     sdata_classes = {
         cls
         for cls in graph.subjects(RDF.type, OWL.Class)
@@ -82,14 +91,30 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
 
     for child in sdata_classes:
         for parent in graph.objects(child, RDFS.subClassOf):
-            if not isinstance(parent, URIRef):
+            if isinstance(parent, URIRef) and parent in sdata_classes:
+                edges.add(HierarchyEdge(child=child, parent=parent))
+
+        seeds = _bfo_parents(graph, child)
+        for seed in seeds:
+            bfo_classes.add(seed)
+            edges.add(HierarchyEdge(child=child, parent=seed))
+
+        stack = list(seeds)
+        visited: set[URIRef] = set()
+        while stack:
+            current = stack.pop()
+            if current in visited:
                 continue
-            parent_str = str(parent)
-            if parent in sdata_classes:
-                edges.add(HierarchyEdge(child=child, parent=parent))
-            elif parent_str.startswith(BFO_PREFIX):
+            visited.add(current)
+
+            parents = _bfo_parents(graph, current)
+            for parent in parents:
                 bfo_classes.add(parent)
-                edges.add(HierarchyEdge(child=child, parent=parent))
+                edges.add(HierarchyEdge(child=current, parent=parent))
+                stack.append(parent)
+
+    if bfo_classes:
+        bfo_classes.add(BFO_ENTITY)
 
     nodes: list[HierarchyNode] = []
     for cls in sorted(sdata_classes, key=str):
@@ -123,7 +148,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Class Hierarchy (with direct BFO parents)",
+        label="sdata Class Hierarchy (BFO entity -> BFO hierarchy -> sdata classes)",
         labelloc="t",
         labeljust="c",
     )
@@ -146,7 +171,7 @@ def build_agraph(model: HierarchyModel):
         name="cluster_sdata", label="sdata classes", color="#90B5E8", style="rounded"
     )
     bfo_cluster = graph.add_subgraph(
-        name="cluster_bfo_context", label="BFO context", color="#F3C887", style="rounded"
+        name="cluster_bfo_context", label="BFO hierarchy", color="#F3C887", style="rounded"
     )
 
     style_map = {
@@ -159,8 +184,9 @@ def build_agraph(model: HierarchyModel):
         target = sdata_cluster if node.kind == "sdata" else bfo_cluster
         target.add_node(str(node.iri), label=node.label, **attrs)
 
+    # Render top-down as superclass -> subclass so BFO entity stays at the top.
     for edge in model.edges:
-        graph.add_edge(str(edge.child), str(edge.parent), label="")
+        graph.add_edge(str(edge.parent), str(edge.child), label="")
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
     legend.add_node(
@@ -177,18 +203,17 @@ def build_agraph(model: HierarchyModel):
         color="#B7791F",
         fontcolor="#7B341E",
     )
-    legend.add_edge("legend_sdata", "legend_bfo", label="rdfs:subClassOf", color="#4A5568")
+    legend.add_edge("legend_bfo", "legend_sdata", label="superclass → subclass", color="#4A5568")
 
     return graph
 
 
 def render(graph, out_svg: Path | None, out_png: Path | None, layout: str, dpi: int) -> None:
     """Render graph as SVG and/or PNG."""
-    graph.layout(prog=layout)
     if out_svg:
-        graph.draw(out_svg, format="svg")
+        graph.draw(out_svg, format="svg", prog=layout)
     if out_png:
-        graph.draw(out_png, format="png", args=f"-Gdpi={dpi}")
+        graph.draw(out_png, format="png", prog=layout, args=f"-Gdpi={dpi}")
 
 
 def _default_vendor_files(vendor_dir: Path) -> list[Path]:
