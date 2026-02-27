@@ -38,6 +38,7 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 sdata/
 ├── sdata-core.ttl              Core ontology (v0.3.0)
 ├── sdata-agents.ttl            SKOS: Agent types
+├── sdata-*.ttl
 ├── shapes/
 │   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
 ├── examples/
@@ -47,7 +48,7 @@ sdata/
 │   │   └── dpp_01.py           Python example graph builder
 │   └── visualization/
 │       ├── class_hierarchy_plot.py
-│       └── agents_hierarchy_plot.py
+│       └── ...
 ├── vendor/ontologies/
 │   ├── bfo.ttl                 Vendored BFO ontology (from official ISO BFO 2020 OWL)
 │   ├── prov-o.ttl              Vendored PROV-O ontology
@@ -57,14 +58,10 @@ sdata/
 │   └── skos.ttl                Vendored QUDT dependency
 ├── docs/
 │   ├── index.md                MkDocs entry page
-│   └── diagrams/
-│       ├── sdata-class-hierarchy.svg
-│       ├── sdata-class-hierarchy.png
-│       ├── sdata-agents-hierarchy.svg
-│       └── sdata-agents-hierarchy.png
+│   └── ...
 ├── tests/
 │   ├── test_ontology.py
-│   └── test_hierarchy_plot.py
+│   └── ...
 ├── mkdocs.yml                  MkDocs site configuration
 ├── uv.lock                     Locked dependency graph for uv
 ├── LICENSE
