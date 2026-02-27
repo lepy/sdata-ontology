@@ -3,19 +3,37 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
 # =============================================================================
 # sdata Core SHACL Shapes v1.0
-# Validation shapes for sdata-core.ttl
+# Comprehensive validation shapes for sdata-core.ttl
+#
+# Validates:
+#   - Required / optional properties per class
+#   - Cardinality constraints (min/max)
+#   - Datatype constraints (xsd:string, xsd:dateTimeStamp)
+#   - Range constraints via sh:class and sh:or (union ranges)
+#   - Cross-property constraints (validFrom < validUntil, start < end)
+#   - Disjointness enforcement via sh:not
+#   - Pattern validation (geoCoordinates)
+#   - Non-empty string enforcement (identifierValue)
+#
+# Usage:
+#   pyshacl -s shapes/sdata-core-shapes.ttl -df turtle data.ttl
 # =============================================================================
 
-# ─── Agent ───────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# A1. Agent
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/AgentShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Agent ;
-    rdfs:label "Agent Shape"@en ;
+    rdfs:label "Agent Shape"@en , "Agent-Shape"@de ;
+    rdfs:comment "Validates sdata:Agent instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
@@ -24,19 +42,43 @@
         sh:message "Agent must have exactly one sdata:name (xsd:string)."@en ;
     ] ;
 
+    # ── Optional ──
     sh:property [
         sh:path sdata:agentType ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "Agent may have at most one sdata:agentType (xsd:string)."@en ;
+    ] ;
+
+    # ── Relations ──
+    sh:property [
+        sh:path sdata:realizes ;
+        sh:class sdata:Role ;
+        sh:message "sdata:realizes from Agent must point to a Role."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:class sdata:Identifier ;
+        sh:message "sdata:hasIdentifier from Agent must point to an Identifier."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:locatedAt ;
+        sh:class sdata:Site ;
+        sh:message "sdata:locatedAt from Agent must point to a Site."@en ;
     ] .
 
-# ─── PhysicalArtifact ───────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# A2. PhysicalArtifact
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/PhysicalArtifactShape>
     a sh:NodeShape ;
     sh:targetClass sdata:PhysicalArtifact ;
-    rdfs:label "PhysicalArtifact Shape"@en ;
+    rdfs:label "PhysicalArtifact Shape"@en , "PhysicalArtifact-Shape"@de ;
+    rdfs:comment "Validates sdata:PhysicalArtifact instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
@@ -49,55 +91,179 @@
         sh:path sdata:hasIdentifier ;
         sh:minCount 1 ;
         sh:class sdata:Identifier ;
-        sh:message "PhysicalArtifact must have at least one sdata:hasIdentifier."@en ;
+        sh:message "PhysicalArtifact must have at least one Identifier."@en ;
     ] ;
 
+    # ── Optional ──
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "sdata:description must be xsd:string."@en ;
+    ] ;
+
+    # ── Structural relations ──
     sh:property [
         sh:path sdata:consistsOf ;
         sh:class sdata:Material ;
-        sh:message "sdata:consistsOf must point to a sdata:Material."@en ;
+        sh:message "sdata:consistsOf must point to a Material (not PhysicalArtifact)."@en ;
     ] ;
 
     sh:property [
         sh:path sdata:hasPart ;
         sh:class sdata:PhysicalArtifact ;
-        sh:message "sdata:hasPart must point to a sdata:PhysicalArtifact."@en ;
-    ] .
+        sh:message "sdata:hasPart must point to a PhysicalArtifact."@en ;
+    ] ;
 
-# ─── Material ────────────────────────────────────────────────────────────────
+    sh:property [
+        sh:path sdata:locatedAt ;
+        sh:class sdata:Site ;
+        sh:message "sdata:locatedAt must point to a Site."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:realizes ;
+        sh:class sdata:Role ;
+        sh:message "sdata:realizes from PhysicalArtifact must point to a Role."@en ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:Material ] ;
+    sh:not [ sh:class sdata:DigitalArtifact ] ;
+    sh:not [ sh:class sdata:Role ] ;
+    sh:not [ sh:class sdata:Site ] .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A3. Material
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/MaterialShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Material ;
-    rdfs:label "Material Shape"@en ;
+    rdfs:label "Material Shape"@en , "Material-Shape"@de ;
+    rdfs:comment "Validates sdata:Material instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "Material must have exactly one sdata:name."@en ;
-    ] .
+    ] ;
 
-# ─── Site ────────────────────────────────────────────────────────────────────
+    # ── Optional ──
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "sdata:description must be xsd:string."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:class sdata:Identifier ;
+        sh:message "sdata:hasIdentifier must point to an Identifier."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:locatedAt ;
+        sh:class sdata:Site ;
+        sh:message "sdata:locatedAt must point to a Site."@en ;
+    ] ;
+
+    # ── recoveredFrom: range = Material | PhysicalArtifact ──
+    sh:property [
+        sh:path sdata:recoveredFrom ;
+        sh:or (
+            [ sh:class sdata:Material ]
+            [ sh:class sdata:PhysicalArtifact ]
+        ) ;
+        sh:message "sdata:recoveredFrom must point to a Material or PhysicalArtifact."@en ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:PhysicalArtifact ] ;
+    sh:not [ sh:class sdata:DigitalArtifact ] ;
+    sh:not [ sh:class sdata:Role ] ;
+    sh:not [ sh:class sdata:Site ] .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A4. Site
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/SiteShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Site ;
-    rdfs:label "Site Shape"@en ;
+    rdfs:label "Site Shape"@en , "Standort-Shape"@de ;
+    rdfs:comment "Validates sdata:Site instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "Site must have exactly one sdata:name."@en ;
-    ] .
+    ] ;
 
-# ─── DigitalArtifact ────────────────────────────────────────────────────────
+    # ── Optional geo properties ──
+    sh:property [
+        sh:path sdata:geoCoordinates ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^-?\\d+\\.?\\d*,-?\\d+\\.?\\d*$" ;
+        sh:message "sdata:geoCoordinates must be 'lat,lon' format (e.g. '51.0504,13.7373')."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasGeometry ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "sdata:hasGeometry must be xsd:string (WKT or GeoJSON)."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:address ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message "sdata:address must be xsd:string."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+
+    # ── Relations ──
+    sh:property [
+        sh:path sdata:containsSite ;
+        sh:class sdata:Site ;
+        sh:message "sdata:containsSite must point to a Site."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:class sdata:Identifier ;
+        sh:message "sdata:hasIdentifier must point to an Identifier."@en ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:PhysicalArtifact ] ;
+    sh:not [ sh:class sdata:Material ] ;
+    sh:not [ sh:class sdata:DigitalArtifact ] ;
+    sh:not [ sh:class sdata:Role ] ;
+    sh:not [ sh:class sdata:Identifier ] .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A5. DigitalArtifact
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/DigitalArtifactShape>
     a sh:NodeShape ;
     sh:targetClass sdata:DigitalArtifact ;
-    rdfs:label "DigitalArtifact Shape"@en ;
+    rdfs:label "DigitalArtifact Shape"@en , "DigitalArtifact-Shape"@de ;
+    rdfs:comment "Validates sdata:DigitalArtifact instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
@@ -106,24 +272,94 @@
         sh:message "DigitalArtifact must have exactly one sdata:name."@en ;
     ] ;
 
+    # ── Optional ──
     sh:property [
         sh:path sdata:version ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:message "DigitalArtifact may have at most one sdata:version."@en ;
+        sh:message "sdata:version must be xsd:string, at most one."@en ;
     ] ;
 
     sh:property [
-        sh:path sdata:represents ;
-        sh:message "sdata:represents must point to PhysicalArtifact, Material, Process, or Site."@en ;
-    ] .
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
 
-# ─── Process ────────────────────────────────────────────────────────────────
+    # ── represents: range = PA | Material | Process | Site ──
+    sh:property [
+        sh:path sdata:represents ;
+        sh:or (
+            [ sh:class sdata:PhysicalArtifact ]
+            [ sh:class sdata:Material ]
+            [ sh:class sdata:Process ]
+            [ sh:class sdata:Site ]
+        ) ;
+        sh:message "sdata:represents must point to PhysicalArtifact, Material, Process, or Site."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:realizes ;
+        sh:class sdata:Role ;
+        sh:message "sdata:realizes must point to a Role."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hostedOn ;
+        sh:class sdata:PhysicalArtifact ;
+        sh:message "sdata:hostedOn must point to a PhysicalArtifact."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:class sdata:Identifier ;
+        sh:message "sdata:hasIdentifier must point to an Identifier."@en ;
+    ] ;
+
+    # ── Validity period ──
+    sh:property [
+        sh:path sdata:validFrom ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validFrom must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:validUntil ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validUntil must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    # ── validFrom < validUntil ──
+    sh:sparql [
+        sh:message "sdata:validFrom must be before sdata:validUntil."@en ;
+        sh:prefixes <https://w3id.org/sdata/core> ;
+        sh:select """
+            PREFIX sdata: <https://w3id.org/sdata/core#>
+            SELECT $this WHERE {
+                $this sdata:validFrom ?from .
+                $this sdata:validUntil ?until .
+                FILTER (?from >= ?until)
+            }
+        """ ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:PhysicalArtifact ] ;
+    sh:not [ sh:class sdata:Material ] ;
+    sh:not [ sh:class sdata:Role ] .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A6. Process
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/ProcessShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Process ;
-    rdfs:label "Process Shape"@en ;
+    rdfs:label "Process Shape"@en , "Prozess-Shape"@de ;
+    rdfs:comment "Validates sdata:Process instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:name ;
         sh:minCount 1 ;
@@ -139,16 +375,41 @@
         sh:message "Process must have at least one sdata:wasPerformedBy pointing to an Agent."@en ;
     ] ;
 
+    # ── Optional ──
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+
+    # ── consumes: range = PA | Material ──
+    sh:property [
+        sh:path sdata:consumes ;
+        sh:or (
+            [ sh:class sdata:PhysicalArtifact ]
+            [ sh:class sdata:Material ]
+        ) ;
+        sh:message "sdata:consumes must point to PhysicalArtifact or Material."@en ;
+    ] ;
+
+    # ── generates: range = PA | Material | DA ──
     sh:property [
         sh:path sdata:generates ;
+        sh:or (
+            [ sh:class sdata:PhysicalArtifact ]
+            [ sh:class sdata:Material ]
+            [ sh:class sdata:DigitalArtifact ]
+        ) ;
         sh:message "sdata:generates must point to PhysicalArtifact, Material, or DigitalArtifact."@en ;
     ] ;
 
     sh:property [
-        sh:path sdata:consumes ;
-        sh:message "sdata:consumes must point to PhysicalArtifact or Material."@en ;
+        sh:path sdata:locatedAt ;
+        sh:class sdata:Site ;
+        sh:message "sdata:locatedAt must point to a Site."@en ;
     ] ;
 
+    # ── PROV-O time properties ──
     sh:property [
         sh:path prov:startedAtTime ;
         sh:maxCount 1 ;
@@ -161,28 +422,92 @@
         sh:maxCount 1 ;
         sh:datatype xsd:dateTimeStamp ;
         sh:message "prov:endedAtTime must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    # ── startedAtTime < endedAtTime ──
+    sh:sparql [
+        sh:message "prov:startedAtTime must be before prov:endedAtTime."@en ;
+        sh:prefixes <https://w3id.org/sdata/core> ;
+        sh:select """
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this WHERE {
+                $this prov:startedAtTime ?start .
+                $this prov:endedAtTime ?end .
+                FILTER (?start >= ?end)
+            }
+        """ ;
     ] .
 
-# ─── Role ────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────────
+# A7. Role
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/RoleShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Role ;
-    rdfs:label "Role Shape"@en ;
+    rdfs:label "Role Shape"@en , "Rollen-Shape"@de ;
+    rdfs:comment "Validates sdata:Role instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:roleType ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:message "Role must have exactly one sdata:roleType (xsd:string)."@en ;
-    ] .
+    ] ;
 
-# ─── Identifier ──────────────────────────────────────────────────────────────
+    # ── Optional ──
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:validFrom ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validFrom on Role must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:validUntil ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validUntil on Role must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    # ── validFrom < validUntil ──
+    sh:sparql [
+        sh:message "sdata:validFrom must be before sdata:validUntil on Role."@en ;
+        sh:prefixes <https://w3id.org/sdata/core> ;
+        sh:select """
+            PREFIX sdata: <https://w3id.org/sdata/core#>
+            SELECT $this WHERE {
+                $this sdata:validFrom ?from .
+                $this sdata:validUntil ?until .
+                FILTER (?from >= ?until)
+            }
+        """ ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:PhysicalArtifact ] ;
+    sh:not [ sh:class sdata:Material ] ;
+    sh:not [ sh:class sdata:DigitalArtifact ] ;
+    sh:not [ sh:class sdata:Site ] ;
+    sh:not [ sh:class sdata:Identifier ] .
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A8. Identifier
+# ─────────────────────────────────────────────────────────────────────────────
 <https://w3id.org/sdata/shapes/IdentifierShape>
     a sh:NodeShape ;
     sh:targetClass sdata:Identifier ;
-    rdfs:label "Identifier Shape"@en ;
+    rdfs:label "Identifier Shape"@en , "Identifikator-Shape"@de ;
+    rdfs:comment "Validates sdata:Identifier instances."@en ;
 
+    # ── Required ──
     sh:property [
         sh:path sdata:identifierType ;
         sh:minCount 1 ;
@@ -196,5 +521,43 @@
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:message "Identifier must have exactly one sdata:identifierValue."@en ;
-    ] .
+        sh:minLength 1 ;
+        sh:message "Identifier must have exactly one non-empty sdata:identifierValue."@en ;
+    ] ;
+
+    # ── Optional validity period ──
+    sh:property [
+        sh:path sdata:validFrom ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validFrom on Identifier must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    sh:property [
+        sh:path sdata:validUntil ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTimeStamp ;
+        sh:message "sdata:validUntil on Identifier must be xsd:dateTimeStamp."@en ;
+    ] ;
+
+    # ── validFrom < validUntil ──
+    sh:sparql [
+        sh:message "sdata:validFrom must be before sdata:validUntil on Identifier."@en ;
+        sh:prefixes <https://w3id.org/sdata/core> ;
+        sh:select """
+            PREFIX sdata: <https://w3id.org/sdata/core#>
+            SELECT $this WHERE {
+                $this sdata:validFrom ?from .
+                $this sdata:validUntil ?until .
+                FILTER (?from >= ?until)
+            }
+        """ ;
+    ] ;
+
+    # ── Disjointness ──
+    sh:not [ sh:class sdata:Role ] ;
+    sh:not [ sh:class sdata:Site ] .
+
+# =============================================================================
+# END — sdata Core SHACL Shapes v1.0
+# =============================================================================
