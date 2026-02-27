@@ -25,15 +25,43 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_core {
-		graph [color="#90B5E8",
-			label="Core/PROV context",
+	subgraph cluster_prov {
+		graph [color="#F3C887",
+			label="PROV ontology",
 			style=rounded
 		];
 		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
 			fillcolor="#FFF4E5",
 			fontcolor="#7B341E",
 			label=Agent];
+		__anchor_prov	[height=0,
+			label="",
+			style=invis,
+			width=0];
+	}
+	subgraph cluster_bfo {
+		graph [color="#F3C887",
+			label="BFO ontology",
+			style=rounded
+		];
+		"http://purl.obolibrary.org/obo/BFO_0000031"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=BFO_0000031];
+		"http://purl.obolibrary.org/obo/BFO_0000040"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=BFO_0000040];
+		__anchor_bfo	[height=0,
+			label="",
+			style=invis,
+			width=0];
+	}
+	subgraph cluster_core {
+		graph [color="#90B5E8",
+			label="sdata-core ontology",
+			style=rounded
+		];
 		"https://w3id.org/sdata/core#Agent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -46,24 +74,14 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Physical Artifact"];
-	}
-	subgraph cluster_bfo {
-		graph [color="#F3C887",
-			label="BFO context",
-			style=rounded
-		];
-		"http://purl.obolibrary.org/obo/BFO_0000031"	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label=BFO_0000031];
-		"http://purl.obolibrary.org/obo/BFO_0000040"	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label=BFO_0000040];
+		__anchor_core	[height=0,
+			label="",
+			style=invis,
+			width=0];
 	}
 	subgraph cluster_agents {
 		graph [color="#9AD9BF",
-			label="sdata-agents vocabulary",
+			label="sdata-agents ontology",
 			style=rounded
 		];
 		"https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[color="#2F855A",
@@ -102,6 +120,10 @@ digraph "" {
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label=Software];
+		__anchor_agents	[height=0,
+			label="",
+			style=invis,
+			width=0];
 	}
 	subgraph cluster_legend {
 		graph [color="#CBD5E0",
@@ -142,4 +164,10 @@ digraph "" {
 	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#DigitalTwin";
 	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Service";
 	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Simulation";
+	__anchor_prov -> __anchor_core	[style=invis,
+		weight=20];
+	__anchor_bfo -> __anchor_core	[style=invis,
+		weight=20];
+	__anchor_core -> __anchor_agents	[style=invis,
+		weight=20];
 }
