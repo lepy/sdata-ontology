@@ -90,6 +90,16 @@ sdata/
 | `Role` | Role | Orthogonal context role |
 | `Identifier` | GenericallyDependentContinuant | Orthogonal typed identifier token |
 
+### Dual Principle
+
+`sdata-core` follows a symmetric dual model:
+
+- **Material side (tangible)**: `MaterialArtifact`, `Material`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
+- **Information side (intangible)**: `InformationArtifact`, `Information`, `InformationAgent`, `InformationProcess`, `InformationSite`
+
+Each material class has a semantic dual on the information side.  
+Two classes are intentionally **orthogonal** (domain-spanning): `Role` and `Identifier`.
+
 ### Key Design Decisions
 
 - **Flat class hierarchy** — subtype discrimination via SKOS ConceptSchemes, not OWL subclasses
@@ -188,6 +198,8 @@ Output files:
 - `docs/diagrams/sdata-class-hierarchy.png`
 - `docs/diagrams/sdata-agents-hierarchy.svg`
 - `docs/diagrams/sdata-agents-hierarchy.png`
+
+![sdata class hierarchy](docs/diagrams/sdata-class-hierarchy.png)
 
 Direct CLI usage:
 
