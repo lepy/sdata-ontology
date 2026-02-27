@@ -25,72 +25,56 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_legend {
-		graph [color="#CBD5E0",
-			label=Legend,
-			style=rounded
-		];
-		legend_sdata	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="sdata class"];
-		legend_bfo	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label="BFO parent"];
-		legend_bfo -> legend_sdata	[label="superclass → subclass"];
-		legend_prov	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="PROV parent"];
-		legend_prov -> legend_sdata;
-	}
 	subgraph cluster_sdata {
 		graph [color="#90B5E8",
 			label="sdata classes",
 			style=rounded
 		];
-		"https://w3id.org/sdata/core#Identifier"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Identifier];
-		"https://w3id.org/sdata/core#InformationAgent"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Information];
+		"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Information Agent"];
-		"https://w3id.org/sdata/core#InformationArtifact"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Information Artifact"];
-		"https://w3id.org/sdata/core#InformationProcess"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Information Process"];
-		"https://w3id.org/sdata/core#InformationSite"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Information Site"];
-		"https://w3id.org/sdata/core#Material"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Material];
-		"https://w3id.org/sdata/core#MaterialAgent"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Material Agent"];
-		"https://w3id.org/sdata/core#MaterialArtifact"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Material Artifact"];
-		"https://w3id.org/sdata/core#MaterialProcess"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Material Process"];
-		"https://w3id.org/sdata/core#MaterialSite"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Material Site"];
-		"https://w3id.org/sdata/core#Role"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Role];
@@ -159,6 +143,26 @@ digraph "" {
 			fontcolor="#1C4532",
 			label=Agent];
 	}
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
+			style=rounded
+		];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata class"];
+		legend_bfo	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="BFO parent"];
+		legend_bfo -> legend_sdata	[label="superclass → subclass"];
+		legend_prov	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="PROV parent"];
+		legend_prov -> legend_sdata;
+	}
 	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000002";
 	"http://purl.obolibrary.org/obo/BFO_0000001" -> "http://purl.obolibrary.org/obo/BFO_0000003";
 	"http://purl.obolibrary.org/obo/BFO_0000002" -> "http://purl.obolibrary.org/obo/BFO_0000004";
@@ -167,20 +171,21 @@ digraph "" {
 	"http://purl.obolibrary.org/obo/BFO_0000003" -> "http://purl.obolibrary.org/obo/BFO_0000015";
 	"http://purl.obolibrary.org/obo/BFO_0000004" -> "http://purl.obolibrary.org/obo/BFO_0000040";
 	"http://purl.obolibrary.org/obo/BFO_0000004" -> "http://purl.obolibrary.org/obo/BFO_0000141";
-	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core#InformationProcess";
-	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core#MaterialProcess";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/InformationProcess";
+	"http://purl.obolibrary.org/obo/BFO_0000015" -> "https://w3id.org/sdata/core/MaterialProcess";
 	"http://purl.obolibrary.org/obo/BFO_0000017" -> "http://purl.obolibrary.org/obo/BFO_0000023";
 	"http://purl.obolibrary.org/obo/BFO_0000020" -> "http://purl.obolibrary.org/obo/BFO_0000017";
-	"http://purl.obolibrary.org/obo/BFO_0000023" -> "https://w3id.org/sdata/core#Role";
-	"http://purl.obolibrary.org/obo/BFO_0000029" -> "https://w3id.org/sdata/core#MaterialSite";
-	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#Identifier";
-	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#InformationAgent";
-	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#InformationArtifact";
-	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#InformationSite";
-	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#Material";
-	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#MaterialAgent";
-	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#MaterialArtifact";
+	"http://purl.obolibrary.org/obo/BFO_0000023" -> "https://w3id.org/sdata/core/Role";
+	"http://purl.obolibrary.org/obo/BFO_0000029" -> "https://w3id.org/sdata/core/MaterialSite";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/Identifier";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/Information";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationAgent";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationArtifact";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationSite";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/Material";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/MaterialAgent";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/MaterialArtifact";
 	"http://purl.obolibrary.org/obo/BFO_0000141" -> "http://purl.obolibrary.org/obo/BFO_0000029";
-	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#InformationAgent";
-	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#MaterialAgent";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/InformationAgent";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/MaterialAgent";
 }

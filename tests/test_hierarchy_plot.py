@@ -5,7 +5,7 @@ from rdflib import Namespace
 from src.visualization.class_hierarchy_plot import extract_hierarchy, load_graph
 
 ROOT = Path(__file__).resolve().parent.parent
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 BFO_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000001"
 PROV_AGENT = "http://www.w3.org/ns/prov#Agent"
 
@@ -35,6 +35,7 @@ def test_extract_contains_all_expected_sdata_classes():
         str(SDATA.MaterialProcess),
         str(SDATA.MaterialSite),
         str(SDATA.InformationArtifact),
+        str(SDATA.Information),
         str(SDATA.Role),
         str(SDATA.Identifier),
         str(SDATA.InformationAgent),

@@ -1,11 +1,11 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex: <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Pack Product Passport (sdata core 0.2.0)
+# Example: Battery Pack Product Passport (sdata core 0.3.0)
 # =============================================================================
 
 # Material Agents
@@ -73,6 +73,14 @@ ex:RecycledNickel
     sdata:name "Recyceltes Nickelsulfat" ;
     sdata:recoveredFrom ex:BatteryPack001 .
 
+# Information (non-discrete info substance)
+ex:SensorRawData
+    a sdata:Information ;
+    sdata:name "Raw Sensor Data Stream" ;
+    sdata:description "High-frequency vibration telemetry stream." ;
+    sdata:hostedAt ex:HPCCluster ;
+    sdata:derivedFrom ex:BatteryPassport001 .
+
 # Identifiers
 ex:BatteryPack001Serial
     a sdata:Identifier ;
@@ -124,9 +132,10 @@ ex:VoltPackAG sdata:realizes ex:ManufacturerRole .
 ex:BatteryPassport001
     a sdata:InformationArtifact ;
     sdata:name "Battery Passport VP-BAT-2026-000001" ;
-    sdata:version "0.2.0" ;
+    sdata:version "0.3.0" ;
     sdata:description "EU Digital Product Passport" ;
     sdata:represents ex:BatteryPack001 ;
+    sdata:consistsOf ex:SensorRawData ;
     sdata:realizes ex:ProductPassportRole ;
     sdata:hasIdentifier ex:DPPUriId ;
     sdata:hostedAt ex:DPPBackend ;
