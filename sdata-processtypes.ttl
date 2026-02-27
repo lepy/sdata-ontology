@@ -130,11 +130,13 @@ Siehe Design-Entscheidungen unten."""@de
 #
 # D6. AGENT vs. PROCESS DISAMBIGUATION
 # ─────────────────────────────────────
-# The agent vocabulary (sdata-agents.ttl) defines sagents:Simulation as
-# an agent type — the *solver software* (LS-DYNA, Abaqus, ML runtime).
+# The agent vocabulary (sdata-agents.ttl v1.1.0) defines sagents:Solver
+# as an agent type — the *solver software* (LS-DYNA, Abaqus, ML runtime).
 # sdata:Simulation in this file is the *run* — the temporal process.
+# sagents:Solver was renamed from sagents:Simulation in v1.1.0 to
+# eliminate the name collision (see skos:historyNote on sagents:Solver).
 #
-#   ex:LSDYNA_R14   a sdata:Agent ;      agentType "Simulation" .
+#   ex:LSDYNA_R14   a sdata:Agent ;      agentType "Solver" .
 #   ex:CrashRun_01  a sdata:Simulation ; wasPerformedBy ex:LSDYNA_R14 .
 #
 #   ex:ZwickZ100    a sdata:Agent ;      agentType "Machine" .
