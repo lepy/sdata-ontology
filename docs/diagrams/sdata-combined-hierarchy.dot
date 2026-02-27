@@ -31,50 +31,75 @@ digraph "" {
 			label="sdata-core classes",
 			style=rounded
 		];
+		subgraph cluster_combined_dual_rank_MaterialArtifact {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Artifact"];
+			"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Artifact"];
+		}
+		subgraph cluster_combined_dual_rank_Material {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Information];
+			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Material];
+		}
+		subgraph cluster_combined_dual_rank_MaterialAgent {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Agent"];
+			"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Agent"];
+		}
+		subgraph cluster_combined_dual_rank_MaterialProcess {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Process"];
+			"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Process"];
+		}
+		subgraph cluster_combined_dual_rank_MaterialSite {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Site"];
+			"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Site"];
+		}
 		"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Identifier];
-		"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Information];
-		"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Agent"];
-		"https://w3id.org/sdata/core/InformationArtifact"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Artifact"];
-		"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Process"];
-		"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Information Site"];
-		"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Material];
-		"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Agent"];
-		"https://w3id.org/sdata/core/MaterialArtifact"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Artifact"];
-		"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Process"];
-		"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Site"];
 		"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -291,8 +316,38 @@ digraph "" {
 	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
 		label="typed via sdata:agentType",
 		style=dashed];
+	"https://w3id.org/sdata/core/Material" -> "https://w3id.org/sdata/core/Information"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
 	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
 		label="typed via sdata:agentType",
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/core/InformationAgent"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialArtifact" -> "https://w3id.org/sdata/core/InformationArtifact"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/InformationProcess"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
+		style=dashed];
+	"https://w3id.org/sdata/core/MaterialSite" -> "https://w3id.org/sdata/core/InformationSite"	[color="#6B7280",
+		constraint=false,
+		dir=none,
+		fontcolor="#6B7280",
+		label=dual,
 		style=dashed];
 	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/InformationAgent";
 	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/MaterialAgent";
