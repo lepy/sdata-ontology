@@ -44,6 +44,13 @@ sdata/
 │   └── battery-passport.ttl    Example: Battery Passport instance data
 ├── src/examples/
 │   └── dpp_01.py               Python example graph builder
+├── vendor/ontologies/
+│   ├── bfo.ttl                 Vendored BFO ontology (from official ISO BFO 2020 OWL)
+│   ├── prov-o.ttl              Vendored PROV-O ontology
+│   ├── qudt.ttl                Vendored QUDT ontology
+│   ├── dtype.ttl               Vendored QUDT dependency
+│   ├── vaem.ttl                Vendored QUDT dependency
+│   └── skos.ttl                Vendored QUDT dependency
 ├── docs/
 │   └── index.md                MkDocs entry page
 ├── mkdocs.yml                  MkDocs site configuration
@@ -116,6 +123,11 @@ Import the unversioned IRI to track latest, or the versioned IRI to pin.
 pyshacl -s shapes/sdata-core-shapes.ttl -df turtle data.ttl
 ```
 
+## Offline / Autark Imports
+
+The core ontology imports are vendored in `vendor/ontologies/` so the repository is usable offline without fetching BFO/PROV-O/QUDT from the web.  
+All runtime imports are in Turtle (`*.ttl`), including BFO.
+
 ## Development Setup
 
 ### Prerequisites
@@ -142,6 +154,25 @@ make setup-docs
 make validate
 make test
 make lint
+```
+
+## Class Hierarchy Visualization
+
+Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`:
+
+```bash
+make viz-hierarchy
+```
+
+Output files:
+
+- `docs/diagrams/sdata-class-hierarchy.svg`
+- `docs/diagrams/sdata-class-hierarchy.png`
+
+Direct CLI usage:
+
+```bash
+uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
 ```
 
 ## Documentation

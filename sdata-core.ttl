@@ -13,7 +13,7 @@
 # sdata Core Ontology v1.0 — Reviewed & Hardened
 # 26 February 2026
 # 8 Classes · 12 Object Properties (+ 5 inverses) · 12 Datatype Properties
-# Imports: ISO/IEC 21838-2:2021 (BFO), PROV-O, QUDT
+# Imports: vendored BFO, PROV-O, QUDT (offline/autark)
 # =============================================================================
 <https://w3id.org/sdata/core>
     rdf:type owl:Ontology ;
@@ -22,11 +22,10 @@
     owl:versionInfo "1.0 — 26 February 2026. Reviewed: PROV via property-mapping (no dual inheritance), involves split into consumes/wasPerformedBy, consistsOf restricted to Material, dateTimeStamp, SHACL/SKOS guidance. Explicit conformance to ISO/IEC 21838-2:2021 (BFO)."@en ;
     owl:versionIRI <https://w3id.org/sdata/core/1.0> ;
     
-    # ─── BFO Import — ISO/IEC 21838-2:2021 ─────────────────────────────────────
-    owl:imports <http://purl.obolibrary.org/obo/bfo.owl> ;   # Official BFO 2020 OWL rendering per ISO/IEC 21838-2:2021
-    
-    owl:imports <http://www.w3.org/ns/prov-o> ;
-    owl:imports <http://qudt.org/3.1.11/schema/qudt> ;
+    # ─── Local imports (vendored for offline use) ──────────────────────────────
+    owl:imports <vendor/ontologies/bfo.ttl> ;      # derived from official BFO 2020 OWL rendering (ISO/IEC 21838-2:2021)
+    owl:imports <vendor/ontologies/prov-o.ttl> ;   # upstream: http://www.w3.org/ns/prov-o
+    owl:imports <vendor/ontologies/qudt.ttl> ;     # upstream: http://qudt.org/3.1.11/schema/qudt
     
     # ─── ISO Conformance References ───────────────────────────────────────────
     dcterms:conformsTo <https://www.iso.org/standard/74572.html> ;   # ISO/IEC 21838-2:2021 — Information technology — Top-level ontologies — Part 2: Basic Formal Ontology (BFO)
