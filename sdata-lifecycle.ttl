@@ -1,0 +1,265 @@
+# =============================================================================
+# FILE: sdata-lifecycle.ttl
+# Lifecycle flow definitions for physical and digital process chains
+# =============================================================================
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix slc:   <https://w3id.org/sdata/lifecycle#> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/lifecycle>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/core> ;
+    owl:imports <https://w3id.org/sdata/processtypes> ;
+    owl:versionInfo "1.0.0 — 27 February 2026" ;
+    rdfs:label "sdata Lifecycle flows"@en ;
+    rdfs:label "sdata Lebenszyklusflüsse"@de ;
+    dcterms:description
+        """Defines two canonical lifecycle flows as ordered collections:
+a circular physical lifecycle and a linear digital lifecycle.
+Each flow specifies the typical sequence of process types.
+Cross-cutting process types (Experiment, Rendering) can attach
+at any point in their respective lifecycle.
+Instance-level chaining uses sdata:precedes / sdata:follows on
+concrete sdata:Process instances."""@en ;
+    dcterms:description
+        """Definiert zwei kanonische Lebenszyklusflüsse als geordnete Sammlungen:
+einen zirkulären physischen Lebenszyklus und einen linearen digitalen
+Lebenszyklus. Jeder Fluss spezifiziert die typische Reihenfolge der
+Prozesstypen. Querschnittliche Prozesstypen (Experiment, Rendering)
+können an jedem Punkt ihres jeweiligen Lebenszyklus andocken.
+Instanz-Level-Verkettung nutzt sdata:precedes / sdata:follows auf
+konkreten sdata:Process-Instanzen."""@de
+.
+
+# =============================================================================
+# DESIGN DECISIONS
+# =============================================================================
+#
+# D1. TWO LEVELS OF SEQUENCING
+# ────────────────────────────
+# Schema level (this file):
+#   slc:typicallyFollowedBy links process *classes* to express the
+#   canonical lifecycle pattern. This is descriptive, not prescriptive.
+#
+# Instance level (user data):
+#   sdata:precedes / sdata:follows links concrete process *instances*
+#   to record actual execution order. This is prescriptive provenance.
+#
+# D2. CIRCULAR vs. LINEAR
+# ───────────────────────
+# Physical lifecycle is circular:
+#   Recycling → Extraction (closing the loop via sdata:recoveredFrom)
+#
+# Digital lifecycle is linear:
+#   Generation → ... → Validation (no canonical loop,
+#   though feedback loops exist in practice via instance-level chaining)
+#
+# D3. CROSS-CUTTING PROCESS TYPES
+# ───────────────────────────────
+# Experiment (physical) and Rendering (digital) are observational —
+# they do not transform their domain but produce data about it.
+# They can attach at any lifecycle stage via sdata:precedes/follows
+# on instances. They are NOT part of the sequential chain.
+#
+# =============================================================================
+
+# =============================================================================
+# Object Properties — schema-level sequencing
+# =============================================================================
+
+slc:typicallyFollowedBy
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain owl:Class ;
+    rdfs:range owl:Class ;
+    rdfs:label "typically followed by"@en , "typischerweise gefolgt von"@de ;
+    rdfs:comment """Schema-level relation between process classes expressing
+canonical lifecycle order. Descriptive, not prescriptive.
+For instance-level sequencing use sdata:precedes / sdata:follows."""@en ,
+               """Schema-Level-Relation zwischen Prozessklassen, die die kanonische
+Lebenszyklusreihenfolge ausdrückt. Deskriptiv, nicht präskriptiv.
+Für Instanz-Level-Verkettung sdata:precedes / sdata:follows verwenden."""@de .
+
+# =============================================================================
+# Object Properties — instance-level chaining
+# =============================================================================
+
+sdata:precedes
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
+    rdfs:label "precedes"@en , "geht voraus"@de ;
+    rdfs:comment """Instance-level: this process directly precedes another in an
+actual execution chain. The output of this process is the input of the next."""@en ,
+               """Instanz-Level: dieser Prozess geht einem anderen in einer
+tatsächlichen Ausführungskette direkt voraus. Der Output dieses Prozesses
+ist der Input des nächsten."""@de .
+
+sdata:follows
+    rdf:type owl:ObjectProperty ;
+    owl:inverseOf sdata:precedes ;
+    rdfs:label "follows"@en , "folgt auf"@de ;
+    rdfs:comment "Inverse of sdata:precedes."@en ,
+               "Inverse von sdata:precedes."@de .
+
+# =============================================================================
+# Object Property — cross-cutting attachment
+# =============================================================================
+
+sdata:observes
+    rdf:type owl:ObjectProperty ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
+    rdfs:label "observes"@en , "beobachtet"@de ;
+    rdfs:comment """Links a cross-cutting process (Experiment, Rendering) to the
+lifecycle process it observes. The observing process does not transform
+the domain but produces data about the observed process or its outputs."""@en ,
+               """Verknüpft einen querschnittlichen Prozess (Experiment, Rendering)
+mit dem Lebenszyklusprozess, den er beobachtet. Der beobachtende Prozess
+transformiert die Domäne nicht, sondern erzeugt Daten über den beobachteten
+Prozess oder dessen Outputs."""@de .
+
+# =============================================================================
+# Physical Lifecycle — circular
+# =============================================================================
+#
+#   Extraction → Manufacturing → Transport → Maintenance → Recycling ─╮
+#        ↑                                                             │
+#        ╰─────────────────────────────────────────────────────────────╯
+#
+#   + Experiment (observes any stage)
+#
+# =============================================================================
+
+sdata:Extraction    slc:typicallyFollowedBy sdata:Manufacturing .
+sdata:Manufacturing slc:typicallyFollowedBy sdata:Transport .
+sdata:Transport     slc:typicallyFollowedBy sdata:Maintenance .
+sdata:Maintenance   slc:typicallyFollowedBy sdata:Recycling .
+sdata:Recycling     slc:typicallyFollowedBy sdata:Extraction .   # circular
+
+# =============================================================================
+# Digital Lifecycle — linear
+# =============================================================================
+#
+#   Generation → Transformation → Training → Simulation → Validation
+#
+#   + Rendering (observes any stage)
+#
+# =============================================================================
+
+sdata:Generation     slc:typicallyFollowedBy sdata:Transformation .
+sdata:Transformation slc:typicallyFollowedBy sdata:Training .
+sdata:Training       slc:typicallyFollowedBy sdata:Simulation .
+sdata:Simulation     slc:typicallyFollowedBy sdata:Validation .
+
+# =============================================================================
+# Cross-cutting annotations
+# =============================================================================
+
+sdata:Experiment rdfs:comment
+    """Cross-cutting in physical lifecycle: can observe any stage.
+Not part of the sequential chain. Attach via sdata:observes on instances.
+Example: ex:TensileTest42 sdata:observes ex:FormingRun_07 ."""@en .
+
+sdata:Rendering rdfs:comment
+    """Cross-cutting in digital lifecycle: can observe any stage.
+Not part of the sequential chain. Attach via sdata:observes on instances.
+Example: ex:PostProc_v3 sdata:observes ex:CrashSim_v3 ."""@en .
+
+# =============================================================================
+# Named Lifecycle Individuals (for reference and querying)
+# =============================================================================
+
+slc:PhysicalLifecycle
+    a owl:NamedIndividual ;
+    rdfs:label "Physical Lifecycle"@en , "Physischer Lebenszyklus"@de ;
+    rdfs:comment "Canonical circular lifecycle: Extraction → Manufacturing → Transport → Maintenance → Recycling → Extraction."@en ;
+    slc:hasStage sdata:Extraction , sdata:Manufacturing , sdata:Transport , sdata:Maintenance , sdata:Recycling ;
+    slc:crossCutting sdata:Experiment .
+
+slc:DigitalLifecycle
+    a owl:NamedIndividual ;
+    rdfs:label "Digital Lifecycle"@en , "Digitaler Lebenszyklus"@de ;
+    rdfs:comment "Canonical linear lifecycle: Generation → Transformation → Training → Simulation → Validation."@en ;
+    slc:hasStage sdata:Generation , sdata:Transformation , sdata:Training , sdata:Simulation , sdata:Validation ;
+    slc:crossCutting sdata:Rendering .
+
+# =============================================================================
+# Supporting properties for lifecycle individuals
+# =============================================================================
+
+slc:hasStage
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "has stage"@en , "hat Stufe"@de ;
+    rdfs:comment "Links a lifecycle to its constituent process types."@en .
+
+slc:crossCutting
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "cross-cutting"@en , "querschnittlich"@de ;
+    rdfs:comment "Links a lifecycle to process types that can attach at any stage."@en .
+
+# =============================================================================
+# USAGE EXAMPLE (informative, not normative)
+# =============================================================================
+#
+# Instance-level chaining of a concrete product lifecycle:
+#
+#   ex:MiningDC04     a sdata:Extraction ;
+#       sdata:generates ex:DC04_Charge .
+#
+#   ex:StampingRun    a sdata:Manufacturing ;
+#       sdata:follows   ex:MiningDC04 ;
+#       sdata:consumes  ex:DC04_Charge ;
+#       sdata:generates ex:BPillar_001 .
+#
+#   ex:ShipToOEM      a sdata:Transport ;
+#       sdata:follows   ex:StampingRun .
+#
+#   ex:TensileTest42  a sdata:Experiment ;
+#       sdata:observes  ex:StampingRun ;         # cross-cutting
+#       sdata:consumes  ex:Probe42 ;
+#       sdata:generates ex:Messkurve42 .
+#
+# Digital chain consuming the physical outputs:
+#
+#   ex:MeshGen_v1     a sdata:Generation ;
+#       sdata:generates ex:FE_Mesh_v1 .
+#
+#   ex:MapToSolver    a sdata:Transformation ;
+#       sdata:follows   ex:MeshGen_v1 ;
+#       sdata:consumes  ex:FE_Mesh_v1 ;
+#       sdata:generates ex:SolverInput_v1 .
+#
+#   ex:TrainSurrogate a sdata:Training ;
+#       sdata:follows   ex:MapToSolver ;
+#       sdata:consumes  ex:Messkurve42 ;         # bridge: physical → digital
+#       sdata:generates ex:UmMatCraML_Model_v3 .
+#
+#   ex:CrashSim_v3    a sdata:Simulation ;
+#       sdata:follows   ex:TrainSurrogate ;
+#       sdata:consumes  ex:UmMatCraML_Model_v3 ;
+#       sdata:generates ex:D3plot_v3 .
+#
+#   ex:ValidateResult a sdata:Validation ;
+#       sdata:follows   ex:CrashSim_v3 ;
+#       sdata:consumes  ex:D3plot_v3 .
+#
+#   ex:PostProc_v3    a sdata:Rendering ;
+#       sdata:observes  ex:CrashSim_v3 ;         # cross-cutting
+#       sdata:consumes  ex:D3plot_v3 ;
+#       sdata:generates ex:CrashViz_v3 .
+#
+# =============================================================================
+# END — sdata-lifecycle.ttl v1.0.0
+# =============================================================================
