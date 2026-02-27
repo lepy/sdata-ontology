@@ -2,7 +2,7 @@
 
 **Deployment-ready mid-level ontology for Product Passports, Circular Economy & Digital Twins.**
 
-[![Version](https://img.shields.io/badge/version-0.3.0-informational.svg)](https://w3id.org/sdata/core/0.3.0)
+[![Version](https://img.shields.io/badge/version-latest-informational.svg)](https://w3id.org/sdata/core)
 [![W3ID](https://img.shields.io/badge/W3ID-w3id.org%2Fsdata-blueviolet.svg)](https://w3id.org/sdata)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![OWL 2 DL](https://img.shields.io/badge/OWL-2%20DL-blue.svg)](https://www.w3.org/TR/owl2-overview/)
@@ -10,6 +10,8 @@
 [![W3C PROV-O](https://img.shields.io/badge/W3C-PROV--O-orange.svg)](https://www.w3.org/TR/prov-o/)
 [![QUDT](https://img.shields.io/badge/QUDT-3.1-yellow.svg)](http://qudt.org/)
 [![Turtle](https://img.shields.io/badge/format-Turtle%20(.ttl)-brightgreen.svg)](https://www.w3.org/TR/turtle/)
+![GitHub last commit](https://img.shields.io/github/last-commit/lepy/sdata-ontology)
+![GitHub contributors](https://img.shields.io/github/contributors/lepy/sdata-ontology)
 
 ---
 
