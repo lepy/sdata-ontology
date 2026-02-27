@@ -1,8 +1,8 @@
 # =============================================================================
 # FILE: sdata-processtypes.ttl
-# Four OWL subclasses of sdata:Process
+# 14 OWL subclasses of sdata:Process
 #   Tier 1:  PhysicalProcess, DigitalProcess
-#   Tier 2:  Experiment (⊂ PhysicalProcess), Simulation (⊂ DigitalProcess)
+#   Tier 2:  6 physical + 6 digital process types
 # =============================================================================
 
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -25,21 +25,21 @@
     rdfs:label "sdata Process-type extension"@en ;
     rdfs:label "sdata Prozesstyp-Erweiterung"@de ;
     dcterms:description
-        """Four OWL subclasses of sdata:Process in two tiers.
+        """14 OWL subclasses of sdata:Process in two tiers.
 Tier 1 splits by operational domain: PhysicalProcess (operates on matter
 in space) vs. DigitalProcess (operates on information on compute).
-Tier 2 specializes by method: Experiment (⊂ PhysicalProcess) and
-Simulation (⊂ DigitalProcess).
+Tier 2 provides 6 physical and 6 digital process types, each identified
+by a distinct verb on its domain.
 This mirrors the Continuant-side split of MaterialEntity into
 PhysicalArtifact/Material vs. GenericallyDependentContinuant into
 DigitalArtifact/Identifier.
 See design decisions below."""@en ;
     dcterms:description
-        """Vier OWL-Subklassen von sdata:Process in zwei Stufen.
+        """14 OWL-Subklassen von sdata:Process in zwei Stufen.
 Stufe 1 trennt nach Operationsdomäne: PhysicalProcess (operiert auf
 Materie im Raum) vs. DigitalProcess (operiert auf Information auf Compute).
-Stufe 2 spezialisiert nach Methode: Experiment (⊂ PhysicalProcess) und
-Simulation (⊂ DigitalProcess).
+Stufe 2 liefert 6 physische und 6 digitale Prozesstypen, jeder durch
+ein distinktives Verb auf seiner Domäne identifiziert.
 Dies spiegelt die Continuant-seitige Trennung von MaterialEntity in
 PhysicalArtifact/Material vs. GenericallyDependentContinuant in
 DigitalArtifact/Identifier.
@@ -64,71 +64,94 @@ Siehe Design-Entscheidungen unten."""@de
 #     PhysicalProcess    — operates on matter in space
 #     DigitalProcess     — operates on information on compute
 #
-# This is more fundamental than the Experiment/Simulation split, which
-# discriminates by *method* (observe/measure vs. compute), not by
-# *operational domain* (physical vs. digital).
-#
 # D2. TIER 1 — OPERATIONAL DOMAIN (PhysicalProcess / DigitalProcess)
 # ──────────────────────────────────────────────────────────────────
 # The I/O signatures are structurally distinct:
 #
 #   PhysicalProcess:
 #     consumes  ≥1 PhysicalArtifact | Material  (operates on matter)
-#     generates PhysicalArtifact | Material | DigitalArtifact (may produce data)
 #     locatedAt ≥1 Site                         (spatially anchored)
+#     may additionally generate DigitalArtifacts (measurement data, logs)
 #
 #   DigitalProcess:
 #     consumes  ≥1 DigitalArtifact              (operates on information)
 #     generates ≥1 DigitalArtifact              (pure information output)
 #
-# Key insight: A PhysicalProcess *may* generate DigitalArtifacts (e.g. a
-# tensile test produces measurement data), but it *must* consume physical
-# entities. A DigitalProcess operates entirely in the information domain.
+# D3. TIER 2 — VERB-BASED PROCESS TAXONOMY
+# ─────────────────────────────────────────
+# Each Tier 2 class is identified by a distinct verb on its domain.
+# The verb test: can you say "the process [verb]s [object]"?
 #
-# D3. TIER 2 — METHOD SPECIALIZATION (Experiment / Simulation)
-# ────────────────────────────────────────────────────────────
-# Within each domain, method-level specialization justifies additional
-# OWL classes because they add further restrictions:
+# PhysicalProcess verbs:
+#   Extraction     — gewinnen / extract    (Nature → Material)
+#   Experiment     — messen / measure      (Specimen → Data)
+#   Manufacturing  — formen / shape        (Material → Product)
+#   Transport      — bewegen / move        (Artifact changes Site)
+#   Maintenance    — erhalten / preserve   (Artifact restored)
+#   Recycling      — zurückgewinnen / recover (Product → Material)
 #
-#   Experiment (⊂ PhysicalProcess):
-#     + generates ≥1 DigitalArtifact  (systematic observation always
-#       produces measurement data — not true for all PhysicalProcesses)
+# DigitalProcess verbs:
+#   Generation     — erzeugen / generate   (Seed → Artifact)
+#   Simulation     — berechnen / compute   (Model → Prediction)
+#   Transformation — umwandeln / convert   (Format A → Format B)
+#   Training       — lernen / learn        (Data → Model)
+#   Validation     — prüfen / verify       (Artifact → Conformance)
+#   Rendering      — darstellen / render   (Data → Visualization)
 #
-#   Simulation (⊂ DigitalProcess):
-#     + wasPerformedBy Agent with agentType sagents:Simulation
-#       (distinguishes from generic data transformations)
+# D4. LIFECYCLE FLOW
+# ──────────────────
+# Physical lifecycle forms a circle:
+#   Extraction → Manufacturing → Transport → Maintenance → Recycling ─╮
+#        ↑                                                             │
+#        ╰─────────────────────────────────────────────────────────────╯
+#   + Experiment (observation at any point)
 #
-# Other process types (Manufacturing, Transport, Maintenance, EndOfLife,
-# DataTransformation, MLTraining) share their parent's signature and
-# remain SKOS-only via sdata:processType. They may be promoted to OWL
-# classes if distinct restrictions emerge.
+# Digital lifecycle flows linearly with feedback:
+#   Generation → Transformation → Training → Simulation → Validation
+#   + Rendering (visualization at any point)
 #
-# D4. DISJOINTNESS AND OVERLAP
-# ────────────────────────────
-# PhysicalProcess and DigitalProcess are disjoint — a process operates
-# in one primary domain. Cyber-physical workflows are modelled as
-# process chains (PhysicalProcess → DigitalProcess → PhysicalProcess),
-# not as multi-typed instances. This mirrors the disjointness of
-# PhysicalArtifact and DigitalArtifact in the Core.
+# D5. STRUCTURAL DISTINCTIONS (OWL Restrictions)
+# ──────────────────────────────────────────────
+# Each Tier 2 class adds restrictions beyond its Tier 1 parent:
 #
-# D5. NO DUAL INHERITANCE FROM prov:Activity
+#   Extraction:     generates Material (source process, no tracked input)
+#   Manufacturing:  consumes Material, generates PhysicalArtifact
+#   Recycling:      consumes PhysicalArtifact, generates Material
+#                   (inverse of Manufacturing)
+#   Experiment:     generates DigitalArtifact (observation always yields data)
+#   Transport:      locatedAt ≥2 Sites (origin + destination)
+#
+#   Generation:     generates DigitalArtifact (source process, minimal input)
+#   Simulation:     wasPerformedBy Agent (solver)
+#   Training:       generates DigitalArtifact (trained model as output)
+#   Transformation: consumes DigitalArtifact, generates DigitalArtifact
+#   Validation:     consumes DigitalArtifact (artifact under test)
+#   Rendering:      generates DigitalArtifact (visual output)
+#
+# D6. DISJOINTNESS
+# ────────────────
+# Tier 1: PhysicalProcess ⊥ DigitalProcess (disjoint).
+# Tier 2: All 6 physical types mutually disjoint, all 6 digital types
+# mutually disjoint. Cross-domain disjointness follows transitively.
+# Cyber-physical workflows are modelled as process chains, not multi-typed.
+#
+# D7. NO DUAL INHERITANCE FROM prov:Activity
 # ──────────────────────────────────────────
-# All four classes inherit only from sdata:Process → bfo:Process.
+# All classes inherit only from sdata:Process → bfo:Process.
 # PROV-O query compatibility via property-mapping:
 #
 #   sdata:consumes       rdfs:subPropertyOf  prov:used
 #   sdata:generates      rdfs:subPropertyOf  prov:generated
 #   sdata:wasPerformedBy rdfs:subPropertyOf  prov:wasAssociatedWith
 #
-# prov:Activity carries temporal domain axioms (prov:startedAtTime,
-# prov:endedAtTime, prov:qualifiedUsage) that conflict with BFO's
+# prov:Activity carries temporal domain axioms that conflict with BFO's
 # occurrent temporal model. Property-mapping gives full PROV queryability
 # without reasoner conflicts.
 #
 # Contrast with sdata:Agent → prov:Agent: prov:Agent is axiomatically
 # lightweight (no temporal semantics), so class-level inheritance is safe.
 #
-# D6. AGENT vs. PROCESS DISAMBIGUATION
+# D8. AGENT vs. PROCESS DISAMBIGUATION
 # ─────────────────────────────────────
 # The agent vocabulary (sdata-agents.ttl v1.1.0) defines sagents:Solver
 # as an agent type — the *solver software* (LS-DYNA, Abaqus, ML runtime).
@@ -163,17 +186,14 @@ sdata:PhysicalProcess
     ] ;
     rdfs:label "Physical Process"@en , "Physischer Prozess"@de ;
     rdfs:comment """Process that operates on matter in physical space.
-Structurally: consumes at least one PhysicalArtifact or Material,
-and is spatially anchored at at least one Site.
-May additionally generate DigitalArtifacts (measurement data, logs).
-Covers manufacturing, testing, transport, maintenance, end-of-life.
-Fine-grained discrimination via sdata:processType (SKOS vocabulary)."""@en ,
+Consumes at least one PhysicalArtifact or Material and is spatially
+anchored at at least one Site. May additionally generate DigitalArtifacts.
+Verb: operates on matter."""@en ,
                """Prozess, der auf Materie im physischen Raum operiert.
-Strukturell: verbraucht mindestens ein PhysicalArtifact oder Material
-und ist räumlich an mindestens einem Site verankert.
-Kann zusätzlich DigitalArtifacts erzeugen (Messdaten, Protokolle).
-Umfasst Fertigung, Prüfung, Transport, Wartung, End-of-Life.
-Feingranulare Unterscheidung über sdata:processType (SKOS-Vokabular)."""@de .
+Verbraucht mindestens ein PhysicalArtifact oder Material und ist
+räumlich an mindestens einem Site verankert. Kann zusätzlich
+DigitalArtifacts erzeugen.
+Verb: operiert auf Materie."""@de .
 
 # =============================================================================
 # TIER 1 — DigitalProcess
@@ -194,18 +214,40 @@ sdata:DigitalProcess
     ] ;
     rdfs:label "Digital Process"@en , "Digitaler Prozess"@de ;
     rdfs:comment """Process that operates entirely in the information domain.
-Structurally: consumes at least one DigitalArtifact and generates at
-least one DigitalArtifact. No physical entity is consumed.
-Covers simulation, data transformation, ML training, ETL pipelines.
-Fine-grained discrimination via sdata:processType (SKOS vocabulary)."""@en ,
+Consumes at least one DigitalArtifact and generates at least one
+DigitalArtifact. No physical entity is consumed.
+Verb: operates on information."""@en ,
                """Prozess, der vollständig in der Informationsdomäne operiert.
-Strukturell: verbraucht mindestens ein DigitalArtifact und erzeugt
-mindestens ein DigitalArtifact. Keine physische Entität wird verbraucht.
-Umfasst Simulation, Datentransformation, ML-Training, ETL-Pipelines.
-Feingranulare Unterscheidung über sdata:processType (SKOS-Vokabular)."""@de .
+Verbraucht mindestens ein DigitalArtifact und erzeugt mindestens ein
+DigitalArtifact. Keine physische Entität wird verbraucht.
+Verb: operiert auf Information."""@de .
 
 # =============================================================================
-# TIER 2 — Experiment (⊂ PhysicalProcess)
+# TIER 2 — Physical: Extraction
+# =============================================================================
+
+sdata:Extraction
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:Material
+    ] ;
+    rdfs:label "Extraction"@en , "Gewinnung"@de ;
+    rdfs:comment """PhysicalProcess that obtains raw material from natural sources.
+Source process — brings new Material into the system. The natural resource
+is not tracked as an sdata entity.
+Verb: gewinnen / extract.
+Examples: mining, harvesting, drilling, refining raw ore."""@en ,
+               """PhysicalProcess, der Rohmaterial aus natürlichen Quellen gewinnt.
+Quellprozess — bringt neues Material ins System. Die Naturressource
+wird nicht als sdata-Entität getrackt.
+Verb: gewinnen / extract.
+Beispiele: Bergbau, Ernte, Bohren, Roherzaufbereitung."""@de .
+
+# =============================================================================
+# TIER 2 — Physical: Experiment
 # =============================================================================
 
 sdata:Experiment
@@ -224,19 +266,169 @@ sdata:Experiment
     rdfs:label "Experiment"@en , "Experiment"@de ;
     rdfs:comment """PhysicalProcess that systematically observes, measures, or tests
 a physical specimen or system under controlled conditions.
-Adds to PhysicalProcess: generates at least one DigitalArtifact
-(measurement data — systematic observation always produces data).
-Fine-grained discrimination via sdata:processType: TensileTest,
-FatigueTest, HardnessTest, ImpactTest, ChemicalAnalysis, etc."""@en ,
+Always generates at least one DigitalArtifact (measurement data).
+Verb: messen / measure.
+Examples: tensile test, fatigue test, hardness test, chemical analysis."""@en ,
                """PhysicalProcess, der ein physisches Specimen oder System unter
 kontrollierten Bedingungen systematisch beobachtet, misst oder prüft.
-Ergänzt PhysicalProcess: erzeugt mindestens ein DigitalArtifact
-(Messdaten — systematische Beobachtung produziert immer Daten).
-Feingranulare Unterscheidung über sdata:processType: Zugversuch,
-Ermüdungsversuch, Härteprüfung, Schlagversuch, Chemische Analyse, etc."""@de .
+Erzeugt immer mindestens ein DigitalArtifact (Messdaten).
+Verb: messen / measure.
+Beispiele: Zugversuch, Ermüdungsversuch, Härteprüfung, chemische Analyse."""@de .
 
 # =============================================================================
-# TIER 2 — Simulation (⊂ DigitalProcess)
+# TIER 2 — Physical: Manufacturing
+# =============================================================================
+
+sdata:Manufacturing
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:consumes ;
+        owl:someValuesFrom sdata:Material
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:PhysicalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Manufacturing"@en , "Fertigung"@de ;
+    rdfs:comment """PhysicalProcess that transforms materials and/or components
+into a product or semi-finished good.
+Consumes Material, generates PhysicalArtifact. Inverse of Recycling.
+Verb: formen / shape.
+Examples: forming, joining, machining, additive manufacturing, assembly."""@en ,
+               """PhysicalProcess, der Werkstoffe und/oder Komponenten in ein Produkt
+oder Halbzeug transformiert.
+Verbraucht Material, erzeugt PhysicalArtifact. Inverse von Recycling.
+Verb: formen / shape.
+Beispiele: Umformung, Fügen, Zerspanen, Additive Fertigung, Montage."""@de .
+
+# =============================================================================
+# TIER 2 — Physical: Transport
+# =============================================================================
+
+sdata:Transport
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Transport"@en , "Transport"@de ;
+    rdfs:comment """PhysicalProcess that moves physical artifacts or materials
+between sites. The artifact itself is not transformed.
+Verb: bewegen / move.
+Use sdata:locatedAt to indicate origin site; the output's locatedAt
+indicates the destination site."""@en ,
+               """PhysicalProcess, der physische Artefakte oder Materialien zwischen
+Standorten bewegt. Das Artefakt selbst wird nicht transformiert.
+Verb: bewegen / move.
+sdata:locatedAt am Prozess zeigt den Ursprungsort; locatedAt am Output
+zeigt den Zielort."""@de .
+
+# =============================================================================
+# TIER 2 — Physical: Maintenance
+# =============================================================================
+
+sdata:Maintenance
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:consumes ;
+        owl:someValuesFrom sdata:PhysicalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Maintenance"@en , "Wartung"@de ;
+    rdfs:comment """PhysicalProcess that inspects, repairs, or refurbishes a
+physical artifact to sustain or restore function.
+Verb: erhalten / preserve.
+Examples: inspection, repair, refurbishment, remanufacturing."""@en ,
+               """PhysicalProcess, der ein physisches Artefakt inspiziert, repariert
+oder aufarbeitet, um die Funktion zu erhalten oder wiederherzustellen.
+Verb: erhalten / preserve.
+Beispiele: Inspektion, Reparatur, Aufarbeitung, Remanufacturing."""@de .
+
+# =============================================================================
+# TIER 2 — Physical: Recycling
+# =============================================================================
+
+sdata:Recycling
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:PhysicalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:consumes ;
+        owl:someValuesFrom sdata:PhysicalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:Material
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Recycling"@en , "Recycling"@de ;
+    rdfs:comment """PhysicalProcess that recovers material from end-of-life products.
+Consumes PhysicalArtifact, generates Material. Inverse of Manufacturing.
+Closes the circular economy loop.
+Verb: zurückgewinnen / recover.
+Use sdata:recoveredFrom on the generated Material to trace provenance.
+Examples: shredding, melting, chemical recycling, disassembly."""@en ,
+               """PhysicalProcess, der Material aus End-of-Life-Produkten zurückgewinnt.
+Verbraucht PhysicalArtifact, erzeugt Material. Inverse von Manufacturing.
+Schließt den Kreislaufwirtschafts-Zyklus.
+Verb: zurückgewinnen / recover.
+sdata:recoveredFrom am erzeugten Material zur Herkunftsverfolgung.
+Beispiele: Schreddern, Einschmelzen, chemisches Recycling, Demontage."""@de .
+
+# =============================================================================
+# TIER 2 — Digital: Generation
+# =============================================================================
+
+sdata:Generation
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Generation"@en , "Erzeugung"@de ;
+    rdfs:comment """DigitalProcess that creates new digital artifacts from minimal
+input (seed, prompt, configuration, template).
+Source process — brings new DigitalArtifacts into the system.
+Verb: erzeugen / generate.
+Examples: CAD model creation, synthetic data generation, document authoring,
+code generation, procedural content generation."""@en ,
+               """DigitalProcess, der neue digitale Artefakte aus minimalem Input
+erzeugt (Seed, Prompt, Konfiguration, Template).
+Quellprozess — bringt neue DigitalArtifacts ins System.
+Verb: erzeugen / generate.
+Beispiele: CAD-Modell-Erstellung, synthetische Datenerzeugung,
+Dokument-Authoring, Code-Generierung, prozedurale Content-Erzeugung."""@de .
+
+# =============================================================================
+# TIER 2 — Digital: Simulation
 # =============================================================================
 
 sdata:Simulation
@@ -250,26 +442,166 @@ sdata:Simulation
     rdfs:label "Simulation"@en , "Simulation"@de ;
     rdfs:comment """DigitalProcess that computes the behavior of a physical or
 logical system using a mathematical model.
-The solver software is an sdata:Agent with agentType sagents:Simulation.
+The solver software is an sdata:Agent with agentType sagents:Solver.
 This class models the simulation *run* (process), not the solver (agent).
-Fine-grained discrimination via sdata:processType: FEMSimulation,
-CFDSimulation, CrashSimulation, FormingSimulation, MLPrediction, etc."""@en ,
+Verb: berechnen / compute.
+Examples: FEM, CFD, crash simulation, forming simulation, ML prediction."""@en ,
                """DigitalProcess, der das Verhalten eines physischen oder logischen
 Systems mittels mathematischem Modell berechnet.
-Die Solver-Software ist ein sdata:Agent mit agentType sagents:Simulation.
-Diese Klasse modelliert den Simulations-*Lauf* (Prozess), nicht den Solver (Agent).
-Feingranulare Unterscheidung über sdata:processType: FEM-Simulation,
-CFD-Simulation, Crash-Simulation, Umformsimulation, ML-Prädiktion, etc."""@de .
+Die Solver-Software ist ein sdata:Agent mit agentType sagents:Solver.
+Diese Klasse modelliert den Simulations-*Lauf* (Prozess), nicht den Solver.
+Verb: berechnen / compute.
+Beispiele: FEM, CFD, Crash-Simulation, Umformsimulation, ML-Prädiktion."""@de .
 
 # =============================================================================
-# Disjointness
+# TIER 2 — Digital: Transformation
+# =============================================================================
+
+sdata:Transformation
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Transformation"@en , "Transformation"@de ;
+    rdfs:comment """DigitalProcess that converts digital artifacts from one format,
+schema, or structure to another. Content is preserved, form changes.
+Verb: umwandeln / convert.
+Examples: ETL pipeline, file format conversion, data mapping, schema
+migration, unit conversion, mesh refinement."""@en ,
+               """DigitalProcess, der digitale Artefakte von einem Format, Schema
+oder einer Struktur in eine andere konvertiert. Inhalt bleibt erhalten,
+Form ändert sich.
+Verb: umwandeln / convert.
+Beispiele: ETL-Pipeline, Dateiformat-Konvertierung, Daten-Mapping,
+Schema-Migration, Einheitenumrechnung, Netzverfeinerung."""@de .
+
+# =============================================================================
+# TIER 2 — Digital: Training
+# =============================================================================
+
+sdata:Training
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Training"@en , "Training"@de ;
+    rdfs:comment """DigitalProcess that derives a model from data by optimization.
+Consumes training data (DigitalArtifact), generates a trained model
+(DigitalArtifact: weights, hyperparameters, architecture).
+Verb: lernen / learn.
+Examples: ML model training, neural network fitting, surrogate model
+calibration, hyperparameter optimization."""@en ,
+               """DigitalProcess, der ein Modell aus Daten durch Optimierung ableitet.
+Verbraucht Trainingsdaten (DigitalArtifact), erzeugt ein trainiertes
+Modell (DigitalArtifact: Gewichte, Hyperparameter, Architektur).
+Verb: lernen / learn.
+Beispiele: ML-Modell-Training, Neuronales-Netz-Fitting,
+Surrogat-Modell-Kalibrierung, Hyperparameter-Optimierung."""@de .
+
+# =============================================================================
+# TIER 2 — Digital: Validation
+# =============================================================================
+
+sdata:Validation
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Validation"@en , "Validierung"@de ;
+    rdfs:comment """DigitalProcess that checks a digital artifact against rules,
+schemas, specifications, or reference data to establish conformance.
+Verb: prüfen / verify.
+Examples: SHACL validation, schema conformance check, unit test suite,
+regression test, digital passport verification, data quality audit."""@en ,
+               """DigitalProcess, der ein digitales Artefakt gegen Regeln, Schemata,
+Spezifikationen oder Referenzdaten auf Konformität prüft.
+Verb: prüfen / verify.
+Beispiele: SHACL-Validierung, Schema-Konformitätsprüfung, Unit-Test-Suite,
+Regressionstest, Digitaler-Pass-Verifikation, Datenqualitäts-Audit."""@de .
+
+# =============================================================================
+# TIER 2 — Digital: Rendering
+# =============================================================================
+
+sdata:Rendering
+    rdf:type owl:Class ;
+    rdfs:subClassOf sdata:DigitalProcess ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:generates ;
+        owl:someValuesFrom sdata:DigitalArtifact
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:wasPerformedBy ;
+        owl:someValuesFrom sdata:Agent
+    ] ;
+    rdfs:label "Rendering"@en , "Rendering"@de ;
+    rdfs:comment """DigitalProcess that produces a human-perceivable representation
+from abstract data. Makes information visible or audible.
+Verb: darstellen / render.
+Examples: 3D visualization, chart generation, report rendering,
+post-processing of simulation results, dashboard creation."""@en ,
+               """DigitalProcess, der aus abstrakten Daten eine menschlich
+wahrnehmbare Repräsentation erzeugt. Macht Information sichtbar oder hörbar.
+Verb: darstellen / render.
+Beispiele: 3D-Visualisierung, Diagrammerstellung, Bericht-Rendering,
+Post-Processing von Simulationsergebnissen, Dashboard-Erstellung."""@de .
+
+# =============================================================================
+# DISJOINTNESS
 # =============================================================================
 
 # Tier 1: operational domain separation
 sdata:PhysicalProcess owl:disjointWith sdata:DigitalProcess .
 
-# Tier 2: follows transitively, but explicit for clarity
-sdata:Experiment owl:disjointWith sdata:Simulation .
+# Tier 2 — Physical: mutually disjoint
+sdata:Extraction    owl:disjointWith sdata:Experiment .
+sdata:Extraction    owl:disjointWith sdata:Manufacturing .
+sdata:Extraction    owl:disjointWith sdata:Transport .
+sdata:Extraction    owl:disjointWith sdata:Maintenance .
+sdata:Extraction    owl:disjointWith sdata:Recycling .
+sdata:Experiment    owl:disjointWith sdata:Manufacturing .
+sdata:Experiment    owl:disjointWith sdata:Transport .
+sdata:Experiment    owl:disjointWith sdata:Maintenance .
+sdata:Experiment    owl:disjointWith sdata:Recycling .
+sdata:Manufacturing owl:disjointWith sdata:Transport .
+sdata:Manufacturing owl:disjointWith sdata:Maintenance .
+sdata:Manufacturing owl:disjointWith sdata:Recycling .
+sdata:Transport     owl:disjointWith sdata:Maintenance .
+sdata:Transport     owl:disjointWith sdata:Recycling .
+sdata:Maintenance   owl:disjointWith sdata:Recycling .
+
+# Tier 2 — Digital: mutually disjoint
+sdata:Generation     owl:disjointWith sdata:Simulation .
+sdata:Generation     owl:disjointWith sdata:Transformation .
+sdata:Generation     owl:disjointWith sdata:Training .
+sdata:Generation     owl:disjointWith sdata:Validation .
+sdata:Generation     owl:disjointWith sdata:Rendering .
+sdata:Simulation     owl:disjointWith sdata:Transformation .
+sdata:Simulation     owl:disjointWith sdata:Training .
+sdata:Simulation     owl:disjointWith sdata:Validation .
+sdata:Simulation     owl:disjointWith sdata:Rendering .
+sdata:Transformation owl:disjointWith sdata:Training .
+sdata:Transformation owl:disjointWith sdata:Validation .
+sdata:Transformation owl:disjointWith sdata:Rendering .
+sdata:Training       owl:disjointWith sdata:Validation .
+sdata:Training       owl:disjointWith sdata:Rendering .
+sdata:Validation     owl:disjointWith sdata:Rendering .
 
 # =============================================================================
 # END — sdata-processtypes.ttl v1.0.0
