@@ -5,7 +5,7 @@ from rdflib import Namespace
 from src.visualization.agents_hierarchy_plot import extract_hierarchy, load_graph
 
 ROOT = Path(__file__).resolve().parent.parent
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
 PROV_AGENT = "http://www.w3.org/ns/prov#Agent"
 BFO_MATERIAL_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000040"

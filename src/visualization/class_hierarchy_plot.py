@@ -12,7 +12,7 @@ from typing import Iterable
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
 
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
 PROV_PREFIX = "http://www.w3.org/ns/prov#"
 BFO_ENTITY = URIRef("http://purl.obolibrary.org/obo/BFO_0000001")

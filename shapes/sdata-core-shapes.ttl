@@ -1,11 +1,11 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # =============================================================================
-# sdata Core SHACL Shapes v0.2.0
+# sdata Core SHACL Shapes v0.3.0
 # =============================================================================
 
 <https://w3id.org/sdata/shapes/MaterialArtifactShape>
@@ -122,6 +122,7 @@
             [ sh:class sdata:MaterialArtifact ]
             [ sh:class sdata:Material ]
             [ sh:class sdata:InformationArtifact ]
+            [ sh:class sdata:Information ]
         ) ;
     ] ;
     sh:property [
@@ -130,6 +131,7 @@
             [ sh:class sdata:MaterialArtifact ]
             [ sh:class sdata:Material ]
             [ sh:class sdata:InformationArtifact ]
+            [ sh:class sdata:Information ]
         ) ;
     ] ;
     sh:property [
@@ -214,6 +216,10 @@
         sh:datatype xsd:string ;
     ] ;
     sh:property [
+        sh:path sdata:consistsOf ;
+        sh:class sdata:Information ;
+    ] ;
+    sh:property [
         sh:path sdata:represents ;
         sh:or (
             [ sh:class sdata:MaterialArtifact ]
@@ -248,7 +254,7 @@
     sh:sparql [
         sh:message "sdata:validFrom must be before sdata:validUntil."@en ;
         sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core#>
+            PREFIX sdata: <https://w3id.org/sdata/core/>
             SELECT $this WHERE {
                 $this sdata:validFrom ?from .
                 $this sdata:validUntil ?until .
@@ -287,13 +293,44 @@
     sh:sparql [
         sh:message "sdata:validFrom must be before sdata:validUntil on Identifier."@en ;
         sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core#>
+            PREFIX sdata: <https://w3id.org/sdata/core/>
             SELECT $this WHERE {
                 $this sdata:validFrom ?from .
                 $this sdata:validUntil ?until .
                 FILTER (?from >= ?until)
             }
         """ ;
+    ] .
+
+<https://w3id.org/sdata/shapes/InformationShape>
+    a sh:NodeShape ;
+    sh:targetClass sdata:Information ;
+    rdfs:label "Information Shape"@en ;
+    sh:property [
+        sh:path sdata:name ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path sdata:description ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path sdata:hasIdentifier ;
+        sh:class sdata:Identifier ;
+    ] ;
+    sh:property [
+        sh:path sdata:hostedAt ;
+        sh:class sdata:InformationSite ;
+    ] ;
+    sh:property [
+        sh:path sdata:derivedFrom ;
+        sh:or (
+            [ sh:class sdata:Information ]
+            [ sh:class sdata:InformationArtifact ]
+        ) ;
     ] .
 
 <https://w3id.org/sdata/shapes/InformationAgentShape>
@@ -348,6 +385,7 @@
             [ sh:class sdata:MaterialArtifact ]
             [ sh:class sdata:Material ]
             [ sh:class sdata:InformationArtifact ]
+            [ sh:class sdata:Information ]
         ) ;
     ] ;
     sh:property [
@@ -356,6 +394,7 @@
             [ sh:class sdata:MaterialArtifact ]
             [ sh:class sdata:Material ]
             [ sh:class sdata:InformationArtifact ]
+            [ sh:class sdata:Information ]
         ) ;
     ] ;
     sh:property [
@@ -444,7 +483,7 @@
     sh:sparql [
         sh:message "sdata:validFrom must be before sdata:validUntil on Role."@en ;
         sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core#>
+            PREFIX sdata: <https://w3id.org/sdata/core/>
             SELECT $this WHERE {
                 $this sdata:validFrom ?from .
                 $this sdata:validUntil ?until .
@@ -454,5 +493,5 @@
     ] .
 
 # =============================================================================
-# END — sdata Core SHACL Shapes v0.2.0
+# END — sdata Core SHACL Shapes v0.3.0
 # =============================================================================

@@ -23,7 +23,7 @@ make lint
 uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
 ```
 
-## Visualize agents hierarchy (subgraph under sdata:Agent)
+## Visualize agents hierarchy (subgraph under sdata:MaterialAgent / sdata:InformationAgent)
 
 ```bash
 uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both

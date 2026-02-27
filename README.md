@@ -23,20 +23,20 @@ sdata is a modular ontology suite built on three orthogonal foundations:
 All IRIs resolve via [w3id.org](https://w3id.org):
 
 ```
-@prefix sdata: <https://w3id.org/sdata/core#> .
+@prefix sdata: <https://w3id.org/sdata/core/> .
 ```
 
 | Module | IRI | Description |
 |---|---|---|
-| **Core** | `https://w3id.org/sdata/core` | 8 classes, 18 object properties, 12 datatype properties |
-| **Agents** | `https://w3id.org/sdata/agents` | SKOS ConceptScheme for agent types |
+| **Core** | `https://w3id.org/sdata/core` | 12 classes, 15 object properties, 14 datatype properties |
+| **Agents** | `https://w3id.org/sdata/vocab/agents` | SKOS ConceptScheme for agent types |
 | **Core Shapes** | `https://w3id.org/sdata/core/shapes` | SHACL constraints for core data validation |
 
 ## Repository Structure
 
 ```
 sdata/
-├── sdata-core.ttl              Core ontology (v0.2.0)
+├── sdata-core.ttl              Core ontology (v0.3.0)
 ├── sdata-agents.ttl            SKOS: Agent types
 ├── shapes/
 │   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
@@ -73,37 +73,41 @@ sdata/
 
 ## SDATA Core Ontology at a Glance
 
-### 8 Classes
+### 12 Classes
 
-| SDATA Class        | BFO Superclass | Description |
-|--------------------|---|---|
-| `Agent`            | prov:Agent | Entity capable of bearing responsibility |
-| `PhysicalArtifact` | MaterialEntity | Discrete, serializable manufactured object |
-| `Material`         | MaterialEntity | Homogeneous, divisible substance |
-| `Site`             | Site (Immaterial) | Three-dimensional spatial region |
-| `DigitalArtifact`  | GenericallyDependentContinuant | Information entity (CAD, passport, dataset) |
-| `Process`          | Process | Occurrent that transforms, transports, or measures |
-| `Role`             | Role | Context-dependent, realizable entity |
-| `Identifier`       | GenericallyDependentContinuant | Reified, typed identification token |
+| SDATA Class | BFO Superclass | Description |
+|---|---|---|
+| `MaterialArtifact` | MaterialEntity | Discrete physical artifact |
+| `Material` | MaterialEntity | Homogeneous material substance |
+| `MaterialAgent` | MaterialEntity + prov:Agent | Tangible acting entity |
+| `MaterialProcess` | Process | Process in material domain |
+| `MaterialSite` | Site | Spatial location for material domain |
+| `InformationArtifact` | GenericallyDependentContinuant | Discrete information artifact |
+| `Information` | GenericallyDependentContinuant | Homogeneous information substance |
+| `InformationAgent` | GenericallyDependentContinuant + prov:Agent | Intangible acting entity |
+| `InformationProcess` | Process | Process in information domain |
+| `InformationSite` | GenericallyDependentContinuant | Logical location for information domain |
+| `Role` | Role | Orthogonal context role |
+| `Identifier` | GenericallyDependentContinuant | Orthogonal typed identifier token |
 
 ### Key Design Decisions
 
 - **Flat class hierarchy** — subtype discrimination via SKOS ConceptSchemes, not OWL subclasses
 - **PROV-O via property-mapping** — `generates ⊆ prov:generated`, `consumes ⊆ prov:used`, `wasPerformedBy ⊆ prov:wasAssociatedWith` (no dual inheritance)
 - **consistsOf vs. hasPart** — material constitution vs. structural BOM hierarchy, strictly separated
-- **Agent overlap allowed** — a robot can be both PhysicalArtifact and Agent
+- **Dual substance model** — `Material` and `Information` are domain-dual non-discrete substances
 - **xsd:dateTimeStamp** — mandatory timezone for global supply chain interoperability
-- **Identifier as own class** — reified for multi-ID schemes (GTIN + Serial + DID + ECLASS-IRDI)
+- **Identifier as orthogonal class** — domain-spanning identifier token
 
 ## Usage
 
 ### SPARQL — find all materials in a product
 
 ```sparql
-PREFIX sdata: <https://w3id.org/sdata/core#>
+PREFIX sdata: <https://w3id.org/sdata/core/>
 
 SELECT ?product ?material ?materialName WHERE {
-  ?product a sdata:PhysicalArtifact ;
+  ?product a sdata:MaterialArtifact ;
            sdata:consistsOf ?material .
   ?material sdata:name ?materialName .
 }
@@ -122,10 +126,10 @@ SELECT ?entity ?activity ?agent WHERE {
 
 ## Versioning
 
-Versions follow semantic versioning. Each release is tagged (`v0.2.0`, …).
+Versions follow semantic versioning. Each release is tagged (`v0.3.0`, …).
 
 - **Ontology IRI** (always current): `https://w3id.org/sdata/core`
-- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.2.0`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.3.0`
 
 Import the unversioned IRI to track latest, or the versioned IRI to pin.
 

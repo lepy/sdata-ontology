@@ -11,7 +11,7 @@ from pathlib import Path
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL, SKOS
 
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents#")
 PROV_AGENT = URIRef("http://www.w3.org/ns/prov#Agent")
 SDATA_MATERIAL_AGENT = SDATA.MaterialAgent

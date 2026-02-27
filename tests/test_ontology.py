@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from rdflib import Graph, Namespace, URIRef, RDF
 
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -39,7 +39,7 @@ def test_turtle_syntax(ttl_file):
 
 EXPECTED_CLASSES = [
     "MaterialArtifact", "Material", "MaterialAgent", "MaterialProcess", "MaterialSite",
-    "InformationArtifact", "Identifier", "InformationAgent", "InformationProcess",
+    "InformationArtifact", "Information", "Identifier", "InformationAgent", "InformationProcess",
     "InformationSite", "Role",
 ]
 
@@ -57,6 +57,7 @@ EXPECTED_OBJECT_PROPERTIES = [
     "consistsOf", "hasPart", "consumes", "generates", "isGeneratedBy",
     "wasPerformedBy", "hasIdentifier", "locatedAt", "isLocationOf",
     "hostedAt", "isHostOf", "hostedOn", "hosts", "containsSite", "recoveredFrom",
+    "derivedFrom",
 ]
 
 
@@ -85,10 +86,10 @@ def test_datatype_properties_exist(core_graph, prop_name):
 
 
 def test_core_class_count(core_graph):
-    """Core must have exactly 11 classes."""
+    """Core must have exactly 12 classes."""
     classes = set(core_graph.subjects(RDF.type, URIRef("http://www.w3.org/2002/07/owl#Class")))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}: {sdata_classes}"
+    assert len(sdata_classes) == 12, f"Expected 12 classes, found {len(sdata_classes)}: {sdata_classes}"
 
 
 # ─── SHACL Validation ────────────────────────────────────────────────────────
@@ -114,7 +115,7 @@ def test_shacl_battery_passport():
 # ─── Example Data Completeness ───────────────────────────────────────────────
 
 def test_example_uses_all_classes(example_graph):
-    """Battery passport example should instantiate all 11 core classes."""
+    """Battery passport example should instantiate all 12 core classes."""
     for class_name in EXPECTED_CLASSES:
         uri = SDATA[class_name]
         instances = list(example_graph.subjects(RDF.type, uri))
