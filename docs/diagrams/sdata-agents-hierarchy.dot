@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Agents Hierarchy (sdata:Agent -> SKOS agent types)",
+		label="sdata Agents Hierarchy (sdata Material/Information agents -> SKOS agent types)",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.55,
@@ -25,20 +25,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_prov {
-		graph [color="#F3C887",
-			label="PROV ontology",
-			style=rounded
-		];
-		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label=Agent];
-		__anchor_prov	[height=0,
-			label="",
-			style=invis,
-			width=0];
-	}
 	subgraph cluster_bfo {
 		graph [color="#F3C887",
 			label="BFO ontology",
@@ -57,23 +43,58 @@ digraph "" {
 			style=invis,
 			width=0];
 	}
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
+			style=rounded
+		];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata agent class"];
+		legend_scheme	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="SKOS ConceptScheme"];
+		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
+		legend_bfo	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label="BFO class"];
+		legend_bfo -> legend_sdata	[label="superclass → subclass"];
+		legend_concept	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="SKOS Concept"];
+		legend_scheme -> legend_concept	[label="broader -> narrower"];
+	}
+	subgraph cluster_prov {
+		graph [color="#F3C887",
+			label="PROV ontology",
+			style=rounded
+		];
+		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
+			fillcolor="#FFF4E5",
+			fontcolor="#7B341E",
+			label=Agent];
+		__anchor_prov	[height=0,
+			label="",
+			style=invis,
+			width=0];
+	}
 	subgraph cluster_core {
 		graph [color="#90B5E8",
 			label="sdata-core ontology",
 			style=rounded
 		];
-		"https://w3id.org/sdata/core#Agent"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core#InformationAgent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label=Agent];
-		"https://w3id.org/sdata/core#DigitalArtifact"	[color="#2B6CB0",
+			label="Information Agent"];
+		"https://w3id.org/sdata/core#MaterialAgent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label="Digital Artifact"];
-		"https://w3id.org/sdata/core#PhysicalArtifact"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Physical Artifact"];
+			label="Material Agent"];
 		__anchor_core	[height=0,
 			label="",
 			style=invis,
@@ -92,10 +113,6 @@ digraph "" {
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label="Digital Twin"];
-		"https://w3id.org/sdata/vocab/agents#Hardware"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Hardware];
 		"https://w3id.org/sdata/vocab/agents#Machine"	[color="#2F855A",
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
@@ -112,58 +129,36 @@ digraph "" {
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label=Service];
-		"https://w3id.org/sdata/vocab/agents#Simulation"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Simulation];
 		"https://w3id.org/sdata/vocab/agents#Software"	[color="#2F855A",
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label=Software];
+		"https://w3id.org/sdata/vocab/agents#Solver"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Solver];
 		__anchor_agents	[height=0,
 			label="",
 			style=invis,
 			width=0];
 	}
-	subgraph cluster_legend {
-		graph [color="#CBD5E0",
-			label=Legend,
-			style=rounded
-		];
-		legend_sdata	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="sdata:Agent"];
-		legend_scheme	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="SKOS ConceptScheme"];
-		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
-		legend_bfo	[color="#B7791F",
-			fillcolor="#FFF4E5",
-			fontcolor="#7B341E",
-			label="BFO class"];
-		legend_bfo -> legend_sdata	[label="superclass → subclass"];
-		legend_concept	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="SKOS Concept"];
-		legend_scheme -> legend_concept	[label="broader -> narrower"];
-	}
-	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#DigitalArtifact";
-	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#PhysicalArtifact";
-	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#Agent";
-	"https://w3id.org/sdata/core#Agent" -> "https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[label="typed via sdata:agentType"];
-	"https://w3id.org/sdata/core#DigitalArtifact" -> "https://w3id.org/sdata/vocab/agents#Software"	[label="also an"];
-	"https://w3id.org/sdata/core#PhysicalArtifact" -> "https://w3id.org/sdata/vocab/agents#Hardware"	[label="also an"];
-	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Hardware";
+	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core#InformationAgent";
+	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core#MaterialAgent";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#InformationAgent";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core#MaterialAgent";
+	"https://w3id.org/sdata/core#InformationAgent" -> "https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[label="typed via sdata:agentType"];
+	"https://w3id.org/sdata/core#InformationAgent" -> "https://w3id.org/sdata/vocab/agents#Organization"	[label="also an"];
+	"https://w3id.org/sdata/core#InformationAgent" -> "https://w3id.org/sdata/vocab/agents#Software"	[label="also an"];
+	"https://w3id.org/sdata/core#MaterialAgent" -> "https://w3id.org/sdata/vocab/agents#AgentTypeScheme"	[label="typed via sdata:agentType"];
+	"https://w3id.org/sdata/core#MaterialAgent" -> "https://w3id.org/sdata/vocab/agents#Machine"	[label="also an"];
+	"https://w3id.org/sdata/core#MaterialAgent" -> "https://w3id.org/sdata/vocab/agents#Person"	[label="also an"];
+	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Machine";
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Organization";
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Person";
 	"https://w3id.org/sdata/vocab/agents#AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents#Software";
-	"https://w3id.org/sdata/vocab/agents#Hardware" -> "https://w3id.org/sdata/vocab/agents#Machine";
 	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#DigitalTwin";
 	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Service";
-	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Simulation";
+	"https://w3id.org/sdata/vocab/agents#Software" -> "https://w3id.org/sdata/vocab/agents#Solver";
 	__anchor_prov -> __anchor_core	[style=invis,
 		weight=20];
 	__anchor_bfo -> __anchor_core	[style=invis,

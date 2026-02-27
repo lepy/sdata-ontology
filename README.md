@@ -36,7 +36,7 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 ```
 sdata/
-├── sdata-core.ttl              Core ontology (v0.1)
+├── sdata-core.ttl              Core ontology (v0.2.0)
 ├── sdata-agents.ttl            SKOS: Agent types
 ├── shapes/
 │   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
@@ -122,10 +122,10 @@ SELECT ?entity ?activity ?agent WHERE {
 
 ## Versioning
 
-Versions follow semantic versioning. Each release is tagged (`v0.1`, …).
+Versions follow semantic versioning. Each release is tagged (`v0.2.0`, …).
 
 - **Ontology IRI** (always current): `https://w3id.org/sdata/core`
-- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.1`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.2.0`
 
 Import the unversioned IRI to track latest, or the versioned IRI to pin.
 

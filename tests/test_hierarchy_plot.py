@@ -29,14 +29,17 @@ def test_extract_contains_all_expected_sdata_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes if node.kind == "sdata"}
     expected = {
-        str(SDATA.Agent),
-        str(SDATA.PhysicalArtifact),
+        str(SDATA.MaterialArtifact),
         str(SDATA.Material),
-        str(SDATA.Site),
-        str(SDATA.DigitalArtifact),
-        str(SDATA.Process),
+        str(SDATA.MaterialAgent),
+        str(SDATA.MaterialProcess),
+        str(SDATA.MaterialSite),
+        str(SDATA.InformationArtifact),
         str(SDATA.Role),
         str(SDATA.Identifier),
+        str(SDATA.InformationAgent),
+        str(SDATA.InformationProcess),
+        str(SDATA.InformationSite),
     }
     assert expected.issubset(classes)
 
@@ -76,7 +79,7 @@ def test_edges_only_target_sdata_or_external_and_bfo_reaches_entity():
         assert reaches_entity(node), f"BFO node {node} does not connect to BFO entity"
 
 
-def test_agent_chain_includes_prov_agent():
+def test_agent_chains_include_prov_agent():
     model = _model()
     kinds = {str(node.iri): node.kind for node in model.nodes}
     assert PROV_AGENT in kinds
@@ -84,6 +87,7 @@ def test_agent_chain_includes_prov_agent():
     agent_parent_edges = {
         (str(edge.child), str(edge.parent))
         for edge in model.edges
-        if str(edge.child) == str(SDATA.Agent)
+        if str(edge.child) in {str(SDATA.MaterialAgent), str(SDATA.InformationAgent)}
     }
-    assert (str(SDATA.Agent), PROV_AGENT) in agent_parent_edges
+    assert (str(SDATA.MaterialAgent), PROV_AGENT) in agent_parent_edges
+    assert (str(SDATA.InformationAgent), PROV_AGENT) in agent_parent_edges
