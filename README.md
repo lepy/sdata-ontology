@@ -42,8 +42,11 @@ sdata/
 │   ├── sdata-core-shapes.ttl   SHACL shapes for core validation
 ├── examples/
 │   └── battery-passport.ttl    Example: Battery Passport instance data
-├── src/examples/
-│   └── dpp_01.py               Python example graph builder
+├── src/
+│   ├── examples/
+│   │   └── dpp_01.py           Python example graph builder
+│   └── visualization/
+│       └── class_hierarchy_plot.py
 ├── vendor/ontologies/
 │   ├── bfo.ttl                 Vendored BFO ontology (from official ISO BFO 2020 OWL)
 │   ├── prov-o.ttl              Vendored PROV-O ontology
@@ -52,8 +55,15 @@ sdata/
 │   ├── vaem.ttl                Vendored QUDT dependency
 │   └── skos.ttl                Vendored QUDT dependency
 ├── docs/
-│   └── index.md                MkDocs entry page
+│   ├── index.md                MkDocs entry page
+│   └── diagrams/
+│       ├── sdata-class-hierarchy.svg
+│       └── sdata-class-hierarchy.png
+├── tests/
+│   ├── test_ontology.py
+│   └── test_hierarchy_plot.py
 ├── mkdocs.yml                  MkDocs site configuration
+├── uv.lock                     Locked dependency graph for uv
 ├── LICENSE
 └── README.md
 ```
@@ -181,6 +191,10 @@ uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams 
 # Build static docs site with MkDocs
 uv run mkdocs build
 ```
+
+Docs entrypoint:
+
+- `docs/index.md`
 
 ## Contributing
 
