@@ -330,6 +330,40 @@ def build_agraph(model: Model):
                 constraint="false",
             )
 
+    # Group and connect dual processtype class pairs (Material* <-> Information*).
+    proc_nodes = [node for node in model.nodes if node.kind == "proc"]
+    proc_node_ids = {str(node.iri) for node in proc_nodes}
+    proc_pairs: list[tuple[str, str, str]] = []
+    for node in proc_nodes:
+        left_id = str(node.iri)
+        local = left_id.rsplit("/", 1)[-1]
+        if not local.startswith("Material"):
+            continue
+        suffix = local[len("Material") :]
+        right_local = f"Information{suffix}"
+        right_id = f"{SDATA_SLASH}{right_local}"
+        if right_id in proc_node_ids:
+            proc_pairs.append((left_id, right_id, local))
+
+    for left_id, right_id, local in sorted(proc_pairs):
+        pair_rank = proc_cluster.add_subgraph(
+            name=f"cluster_proc_dual_rank_{local}",
+            rank="same",
+            style="invis",
+        )
+        pair_rank.add_node(left_id)
+        pair_rank.add_node(right_id)
+        graph.add_edge(
+            left_id,
+            right_id,
+            dir="none",
+            style="dashed",
+            color="#6B7280",
+            fontcolor="#6B7280",
+            label="dual",
+            constraint="false",
+        )
+
     return graph
 
 
