@@ -22,7 +22,7 @@
 <https://w3id.org/sdata/processtypes>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "1.0.0 — 27 February 2026" ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
     rdfs:label "sdata Process-type extension"@en ;
     rdfs:label "sdata Prozesstyp-Erweiterung"@de ;
     dcterms:description
@@ -153,7 +153,7 @@ Siehe Design-Entscheidungen unten."""@de
 #
 # D8. AGENT vs. PROCESS DISAMBIGUATION
 # ─────────────────────────────────────
-# The agent vocabulary (sdata-agents.ttl v1.1.0) defines sagents:Solver
+# The agent vocabulary (sdata-agents.ttl v0.1.0) defines sagents:Solver
 # as an agent type — the *solver software*. A simulation run is:
 #   ex:CrashSim  a  sdata:DigitalProcess , sdata:Observation ;
 #                sdata:wasPerformedBy ex:LSDYNA_R14 .
@@ -463,5 +463,5 @@ sdata:Recovery      owl:disjointWith sdata:Destruction .
 #   ex:PurgeOldLogs   a  sdata:DigitalProcess , sdata:Destruction .
 #
 # =============================================================================
-# END — sdata-processtypes.ttl v1.0.0
+# END — sdata-processtypes.ttl v0.1.0
 # =============================================================================
