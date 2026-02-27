@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents viz-examples clean
 
 UV ?= uv
 
@@ -51,3 +51,11 @@ clean:
 # ─── Visualize agents hierarchy ─────────────────────────────────────────────
 viz-agents: check-uv
 	$(UV) run python -m src.visualization.agents_hierarchy_plot
+
+# ─── Visualize all example TTL graphs ───────────────────────────────────────
+viz-examples: check-uv
+	@for f in examples/*.ttl; do \
+		base="$$(basename "$$f" .ttl)-graph"; \
+		echo "Rendering $$f -> docs/diagrams/$${base}.{dot,svg,png}"; \
+		$(UV) run python -m src.visualization.example_ttl_plot --input "$$f" --out-dir docs/diagrams --format both --name "$$base" || exit 1; \
+	done
