@@ -5,3 +5,15 @@ theme:
   name: material
 nav:
   - Home: index.md
+  - Ontologies:
+      - sdata-core: ontologies/sdata-core/index.md
+      - sdata-agents: ontologies/sdata-agents/index.md
+      - sdata-processtypes: ontologies/sdata-processtypes/index.md
+      - sdata-lifecycle: ontologies/sdata-lifecycle/index.md
+      - sdata-quantities: ontologies/sdata-quantities/index.md
+      - sdata-vd-interval: ontologies/sdata-vd-interval/index.md
+      - sdata-vd-enum: ontologies/sdata-vd-enum/index.md
+      - sdata-vd-statistical: ontologies/sdata-vd-statistical/index.md
+      - sdata-vd-fuzzy: ontologies/sdata-vd-fuzzy/index.md
+      - sdata-r-strategies: ontologies/sdata-r-strategies/index.md
+      - sdata-core-shapes: ontologies/sdata-core-shapes/index.md
