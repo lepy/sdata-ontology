@@ -68,20 +68,20 @@ sdata/
 └── README.md
 ```
 
-## Core Ontology at a Glance
+## SDATA Core Ontology at a Glance
 
 ### 8 Classes
 
-| Class | BFO Superclass | Description |
-|---|---|---|
-| `Agent` | prov:Agent | Entity capable of bearing responsibility |
+| SDATA Class        | BFO Superclass | Description |
+|--------------------|---|---|
+| `Agent`            | prov:Agent | Entity capable of bearing responsibility |
 | `PhysicalArtifact` | MaterialEntity | Discrete, serializable manufactured object |
-| `Material` | MaterialEntity | Homogeneous, divisible substance |
-| `Site` | Site (Immaterial) | Three-dimensional spatial region |
-| `DigitalArtifact` | GenericallyDependentContinuant | Information entity (CAD, passport, dataset) |
-| `Process` | Process | Occurrent that transforms, transports, or measures |
-| `Role` | Role | Context-dependent, realizable entity |
-| `Identifier` | GenericallyDependentContinuant | Reified, typed identification token |
+| `Material`         | MaterialEntity | Homogeneous, divisible substance |
+| `Site`             | Site (Immaterial) | Three-dimensional spatial region |
+| `DigitalArtifact`  | GenericallyDependentContinuant | Information entity (CAD, passport, dataset) |
+| `Process`          | Process | Occurrent that transforms, transports, or measures |
+| `Role`             | Role | Context-dependent, realizable entity |
+| `Identifier`       | GenericallyDependentContinuant | Reified, typed identification token |
 
 ### Key Design Decisions
 
