@@ -25,30 +25,19 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_legend {
-		graph [color="#CBD5E0",
-			label=Legend,
+	subgraph cluster_prov {
+		graph [color="#F3C887",
+			label="PROV ontology",
 			style=rounded
 		];
-		legend_sdata	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="sdata agent class"];
-		legend_scheme	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="SKOS ConceptScheme"];
-		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
-		legend_bfo	[color="#B7791F",
+		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
 			fillcolor="#FFF4E5",
 			fontcolor="#7B341E",
-			label="BFO class"];
-		legend_bfo -> legend_sdata	[label="superclass → subclass"];
-		legend_concept	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="SKOS Concept"];
-		legend_scheme -> legend_concept	[label="broader -> narrower"];
+			label=Agent];
+		__anchor_prov	[height=0,
+			label="",
+			style=invis,
+			width=0];
 	}
 	subgraph cluster_bfo {
 		graph [color="#F3C887",
@@ -140,19 +129,30 @@ digraph "" {
 			style=invis,
 			width=0];
 	}
-	subgraph cluster_prov {
-		graph [color="#F3C887",
-			label="PROV ontology",
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
 			style=rounded
 		];
-		"http://www.w3.org/ns/prov#Agent"	[color="#B7791F",
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata agent class"];
+		legend_scheme	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="SKOS ConceptScheme"];
+		legend_sdata -> legend_scheme	[label="typed via sdata:agentType"];
+		legend_bfo	[color="#B7791F",
 			fillcolor="#FFF4E5",
 			fontcolor="#7B341E",
-			label=Agent];
-		__anchor_prov	[height=0,
-			label="",
-			style=invis,
-			width=0];
+			label="BFO class"];
+		legend_bfo -> legend_sdata	[label="superclass → subclass"];
+		legend_concept	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="SKOS Concept"];
+		legend_scheme -> legend_concept	[label="broader -> narrower"];
 	}
 	"http://purl.obolibrary.org/obo/BFO_0000031" -> "https://w3id.org/sdata/core/InformationAgent";
 	"http://purl.obolibrary.org/obo/BFO_0000040" -> "https://w3id.org/sdata/core/MaterialAgent";

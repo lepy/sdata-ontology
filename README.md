@@ -35,7 +35,7 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 | Module | IRI | Description |
 |---|---|---|
-| **Core** | `https://w3id.org/sdata/core` | 12 classes, 15 object properties, 14 datatype properties |
+| **Core** | `https://w3id.org/sdata/core` | 17 classes (5 dimensions + 10 leaf + 2 orthogonal), 20 object properties, 14 datatype properties |
 | **Agents** | `https://w3id.org/sdata/vocab/agents` | SKOS ConceptScheme for agent types |
 | **Core Shapes** | `https://w3id.org/sdata/core/shapes` | SHACL constraints for core data validation |
 
@@ -43,7 +43,7 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 ```
 sdata/
-├── sdata-core.ttl              Core ontology (v0.3.0)
+├── sdata-core.ttl              Core ontology (v0.4.0)
 ├── sdata-agents.ttl            SKOS: Agent types
 ├── sdata-*.ttl
 ├── shapes/
@@ -77,36 +77,42 @@ sdata/
 
 ## SDATA Core Ontology at a Glance
 
-### only 12 Classes: 5 + 5 + 2
+### 17 Classes: 5 + 10 + 2
 
-| SDATA Class | BFO Superclass | Description |
+| SDATA Class | Layer | Description |
 |---|---|---|
-| `Material` | MaterialEntity | Homogeneous material substance |
-| `Information` | GenericallyDependentContinuant | Homogeneous information substance |
-| `MaterialArtifact` | MaterialEntity | Discrete physical artifact |
-| `InformationArtifact` | GenericallyDependentContinuant | Discrete information artifact |
-| `MaterialProcess` | Process | Process in material domain |
-| `InformationProcess` | Process | Process in information domain |
-| `MaterialSite` | Site | Spatial location for material domain |
-| `InformationSite` | GenericallyDependentContinuant | Logical location for information domain |
-| `MaterialAgent` | MaterialEntity + prov:Agent | Tangible acting entity |
-| `InformationAgent` | GenericallyDependentContinuant + prov:Agent | Intangible acting entity |
-| `Role` | Role | Orthogonal context role |
-| `Identifier` | GenericallyDependentContinuant | Orthogonal typed identifier token |
+| `Artifact` | Dimension | Union of `MaterialArtifact` and `InformationArtifact` |
+| `Substance` | Dimension | Union of `Material` and `Information` |
+| `Agent` | Dimension | Union of `MaterialAgent` and `InformationAgent` |
+| `Process` | Dimension | Union of `MaterialProcess` and `InformationProcess` |
+| `Site` | Dimension | Union of `MaterialSite` and `InformationSite` |
+| `MaterialArtifact` | Leaf | Discrete physical artifact |
+| `InformationArtifact` | Leaf | Discrete information artifact |
+| `Material` | Leaf | Homogeneous material substance |
+| `Information` | Leaf | Homogeneous information substance |
+| `MaterialAgent` | Leaf | Tangible acting entity |
+| `InformationAgent` | Leaf | Intangible acting entity |
+| `MaterialProcess` | Leaf | Process in material domain |
+| `InformationProcess` | Leaf | Process in information domain |
+| `MaterialSite` | Leaf | Spatial location for material domain |
+| `InformationSite` | Leaf | Logical location for information domain |
+| `Role` | Orthogonal | Context-dependent realizable role |
+| `Identifier` | Orthogonal | Typed identifier token across both domains |
 
 ### Dual Principle
 
-`sdata-core` follows a symmetric dual model:
+`sdata-core` follows a layered model:
 
-- **Material side (tangible)**: `Material`, `MaterialArtifact`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
-- **Information side (intangible)**: `Information`, `InformationArtifact`, `InformationAgent`, `InformationProcess`, `InformationSite`
+- **Dimension layer**: `Artifact`, `Substance`, `Agent`, `Process`, `Site`
+- **Leaf layer (dual, material side)**: `Material`, `MaterialArtifact`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
+- **Leaf layer (dual, information side)**: `Information`, `InformationArtifact`, `InformationAgent`, `InformationProcess`, `InformationSite`
+- **Orthogonal classes**: `Role`, `Identifier`
 
-Each material class has a semantic dual on the information side.  
-Two classes are intentionally **orthogonal** (domain-spanning): `Role` and `Identifier`.
+Each material class has a semantic dual on the information side. The 5 dimension classes are defined OWL unions over those dual pairs.
 
 ### Key Design Decisions
 
-- **Flat class hierarchy** — subtype discrimination via SKOS ConceptSchemes, not OWL subclasses
+- **Two-layer class architecture** — dimension classes for query ergonomics, leaf classes for ontological precision
 - **PROV-O via property-mapping** — `generates ⊆ prov:generated`, `consumes ⊆ prov:used`, `wasPerformedBy ⊆ prov:wasAssociatedWith` (no dual inheritance)
 - **consistsOf vs. hasPart** — material constitution vs. structural BOM hierarchy, strictly separated
 - **Dual substance model** — `Material` and `Information` are domain-dual non-discrete substances
@@ -140,10 +146,10 @@ SELECT ?entity ?activity ?agent WHERE {
 
 ## Versioning
 
-Versions follow semantic versioning. Each release is tagged (`v0.3.0`, …).
+Versions follow semantic versioning. Each release is tagged (`v0.4.0`, …).
 
 - **Ontology IRI** (always current): `https://w3id.org/sdata/core`
-- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.3.0`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.4.0`
 
 Import the unversioned IRI to track latest, or the versioned IRI to pin.
 
@@ -187,30 +193,49 @@ make test
 make lint
 ```
 
-## Class Hierarchy Visualization
+## Visualizations
 
-Generate a styled class hierarchy diagram (SVG + PNG) from `sdata-core.ttl`, including BFO and PROV base hierarchies down to the sdata base classes:
+Generate all main diagrams (DOT + SVG + PNG):
+
+```bash
+make viz-all
+```
+
+Individual targets:
 
 ```bash
 make viz-hierarchy
 make viz-agents
+make viz-core-processtypes
+make viz-core-processtypes-sdata-only
+make viz-process-dual
+make viz-combined
+make viz-lifecycle
 ```
-
-Output files:
-
-- `docs/diagrams/sdata-class-hierarchy.svg`
-- `docs/diagrams/sdata-class-hierarchy.png`
-- `docs/diagrams/sdata-agents-hierarchy.svg`
-- `docs/diagrams/sdata-agents-hierarchy.png`
-
-![sdata class hierarchy](docs/diagrams/sdata-class-hierarchy.png)
 
 Direct CLI usage:
 
 ```bash
 uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
 uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.core_processtypes_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.core_processtypes_sdata_only_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.process_dual_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.combined_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.lifecycle_plot --out-dir docs/diagrams --format both
 ```
+
+Key output files:
+
+- `docs/diagrams/sdata-class-hierarchy.{dot,svg,png}`
+- `docs/diagrams/sdata-agents-hierarchy.{dot,svg,png}`
+- `docs/diagrams/sdata-core-processtypes-hierarchy.{dot,svg,png}`
+- `docs/diagrams/sdata-core-processtypes-sdata-only.{dot,svg,png}`
+- `docs/diagrams/sdata-process-dual-hierarchy.{dot,svg,png}`
+- `docs/diagrams/sdata-combined-hierarchy.{dot,svg,png}`
+- `docs/diagrams/sdata-lifecycle-flow.{dot,svg,png}`
+
+![sdata class hierarchy](docs/diagrams/sdata-class-hierarchy.png)
 
 ## Documentation
 

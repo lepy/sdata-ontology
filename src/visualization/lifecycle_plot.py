@@ -10,7 +10,7 @@ from pathlib import Path
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
 
-SDATA = Namespace("https://w3id.org/sdata/core#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
 SLC = Namespace("https://w3id.org/sdata/lifecycle#")
 
 STAGE_CREATION = SDATA.Creation

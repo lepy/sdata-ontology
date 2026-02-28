@@ -38,15 +38,19 @@ def test_turtle_syntax(ttl_file):
 # ─── Core Ontology Structure ─────────────────────────────────────────────────
 
 EXPECTED_CLASSES = [
+    # Dimension layer (v0.4.0)
+    "Artifact", "Substance", "Agent", "Process", "Site",
+    # Leaf layer
     "MaterialArtifact", "Material", "MaterialAgent", "MaterialProcess", "MaterialSite",
-    "InformationArtifact", "Information", "Identifier", "InformationAgent", "InformationProcess",
-    "InformationSite", "Role",
+    "InformationArtifact", "Information", "InformationAgent", "InformationProcess", "InformationSite",
+    # Orthogonal layer
+    "Identifier", "Role",
 ]
 
 
 @pytest.mark.parametrize("class_name", EXPECTED_CLASSES)
 def test_core_classes_exist(core_graph, class_name):
-    """All 8 core classes must be declared."""
+    """All core classes must be declared."""
     uri = SDATA[class_name]
     assert (uri, RDF.type, URIRef("http://www.w3.org/2002/07/owl#Class")) in core_graph, \
         f"sdata:{class_name} not declared as owl:Class"
@@ -79,17 +83,17 @@ EXPECTED_DATATYPE_PROPERTIES = [
 
 @pytest.mark.parametrize("prop_name", EXPECTED_DATATYPE_PROPERTIES)
 def test_datatype_properties_exist(core_graph, prop_name):
-    """All 12 datatype properties must be declared."""
+    """All datatype properties must be declared."""
     uri = SDATA[prop_name]
     assert (uri, RDF.type, URIRef("http://www.w3.org/2002/07/owl#DatatypeProperty")) in core_graph, \
         f"sdata:{prop_name} not declared as owl:DatatypeProperty"
 
 
 def test_core_class_count(core_graph):
-    """Core must have exactly 12 classes."""
+    """Core must have exactly 17 classes."""
     classes = set(core_graph.subjects(RDF.type, URIRef("http://www.w3.org/2002/07/owl#Class")))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 12, f"Expected 12 classes, found {len(sdata_classes)}: {sdata_classes}"
+    assert len(sdata_classes) == 17, f"Expected 17 classes, found {len(sdata_classes)}: {sdata_classes}"
 
 
 # ─── SHACL Validation ────────────────────────────────────────────────────────
@@ -114,9 +118,27 @@ def test_shacl_battery_passport():
 
 # ─── Example Data Completeness ───────────────────────────────────────────────
 
-def test_example_uses_all_classes(example_graph):
-    """Battery passport example should instantiate all 12 core classes."""
-    for class_name in EXPECTED_CLASSES:
+def test_example_uses_leaf_and_orthogonal_classes(example_graph):
+    """Battery passport example should instantiate all 12 leaf/orthogonal classes."""
+    for class_name in [
+        "MaterialArtifact", "Material", "MaterialAgent", "MaterialProcess", "MaterialSite",
+        "InformationArtifact", "Information", "InformationAgent", "InformationProcess",
+        "InformationSite", "Identifier", "Role",
+    ]:
         uri = SDATA[class_name]
         instances = list(example_graph.subjects(RDF.type, uri))
         assert len(instances) > 0, f"No instances of sdata:{class_name} in example"
+
+
+def test_example_covers_dimension_classes_via_leafs(example_graph):
+    """Dimension classes must be covered by corresponding leaf instances in the example."""
+    dimension_to_leafs = {
+        "Artifact": ("MaterialArtifact", "InformationArtifact"),
+        "Substance": ("Material", "Information"),
+        "Agent": ("MaterialAgent", "InformationAgent"),
+        "Process": ("MaterialProcess", "InformationProcess"),
+        "Site": ("MaterialSite", "InformationSite"),
+    }
+    for dimension, leafs in dimension_to_leafs.items():
+        covered = any(list(example_graph.subjects(RDF.type, SDATA[leaf])) for leaf in leafs)
+        assert covered, f"sdata:{dimension} is not covered by any leaf instance in example"
