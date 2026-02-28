@@ -7,7 +7,6 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL, SKOS
@@ -16,16 +15,13 @@ SDATA_SLASH = "https://w3id.org/sdata/core/"
 SDATA_HASH = "https://w3id.org/sdata/core#"
 SAGENTS_SLASH = "https://w3id.org/sdata/vocab/agents/"
 SAGENTS_HASH = "https://w3id.org/sdata/vocab/agents#"
-BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
-PROV_PREFIX = "http://www.w3.org/ns/prov#"
-BFO_ENTITY = URIRef("http://purl.obolibrary.org/obo/BFO_0000001")
 
 
 @dataclass(frozen=True)
 class Node:
     iri: URIRef
     label: str
-    kind: str  # "core" | "proc" | "agents_scheme" | "agents_concept" | "bfo" | "prov"
+    kind: str  # "core" | "proc" | "agents_scheme" | "agents_concept"
 
 
 @dataclass(frozen=True)
@@ -87,11 +83,6 @@ def _is_sdata_uri(iri: URIRef) -> bool:
     return text.startswith(SDATA_SLASH) or text.startswith(SDATA_HASH)
 
 
-def _is_external(iri: URIRef) -> bool:
-    text = str(iri)
-    return text.startswith(BFO_PREFIX) or text.startswith(PROV_PREFIX)
-
-
 def _classes_from(graph: Graph) -> set[URIRef]:
     return {
         _canon(cls)
@@ -110,7 +101,7 @@ def _parents(graph: Graph, node: URIRef) -> set[URIRef]:
 
 
 def load_graphs(
-    core_path: Path, processtypes_path: Path, agents_path: Path, vendor_paths: Iterable[Path]
+    core_path: Path, processtypes_path: Path, agents_path: Path
 ) -> tuple[Graph, Graph, Graph, Graph]:
     for path, label in (
         (core_path, "Core ontology"),
@@ -133,9 +124,6 @@ def load_graphs(
     merged += core_graph
     merged += proc_graph
     merged += agents_graph
-    for path in vendor_paths:
-        if path.exists():
-            merged.parse(path, format="turtle")
 
     return core_graph, proc_graph, agents_graph, merged
 
@@ -147,7 +135,6 @@ def extract_model(core_graph: Graph, proc_graph: Graph, agents_graph: Graph, mer
 
     nodes: dict[URIRef, Node] = {}
     edges: set[Edge] = set()
-    external: set[URIRef] = set()
 
     for cls in sorted(core_classes, key=str):
         nodes[cls] = Node(iri=cls, label=_best_label(merged, cls), kind="core")
@@ -159,29 +146,6 @@ def extract_model(core_graph: Graph, proc_graph: Graph, agents_graph: Graph, mer
         for parent in _parents(merged, child):
             if parent in all_sdata_classes:
                 edges.add(Edge(parent=parent, child=child, kind="subclass"))
-            elif _is_external(parent):
-                external.add(parent)
-                edges.add(Edge(parent=parent, child=child, kind="subclass"))
-
-    stack = list(external)
-    visited: set[URIRef] = set()
-    while stack:
-        current = stack.pop()
-        if current in visited:
-            continue
-        visited.add(current)
-        for parent in _parents(merged, current):
-            if _is_external(parent):
-                external.add(parent)
-                edges.add(Edge(parent=parent, child=current, kind="subclass"))
-                stack.append(parent)
-
-    if any(str(n).startswith(BFO_PREFIX) for n in external):
-        external.add(BFO_ENTITY)
-
-    for ext in sorted(external, key=str):
-        kind = "bfo" if str(ext).startswith(BFO_PREFIX) else "prov"
-        nodes[ext] = Node(iri=ext, label=_best_label(merged, ext), kind=kind)
 
     schemes = [
         s
@@ -239,7 +203,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Combined Hierarchy (core + processtypes + agents)",
+        label="sdata Combined Hierarchy (autark core + processtypes + agents)",
         labelloc="t",
         labeljust="c",
     )
@@ -266,16 +230,12 @@ def build_agraph(model: Model):
     agents_cluster = graph.add_subgraph(
         name="cluster_agents", label="sdata-agents vocabulary", color="#9AD9BF", style="rounded"
     )
-    bfo_cluster = graph.add_subgraph(name="cluster_bfo", label="BFO hierarchy", color="#F3C887", style="rounded")
-    prov_cluster = graph.add_subgraph(name="cluster_prov", label="PROV hierarchy", color="#CFE8D6", style="rounded")
 
     style_map = {
         "core": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "proc": {"fillcolor": "#EEF8E7", "color": "#4F8A10", "fontcolor": "#2F5D08"},
         "agents_scheme": {"fillcolor": "#E7FFF6", "color": "#2F855A", "fontcolor": "#1C4532"},
         "agents_concept": {"fillcolor": "#F0FFF9", "color": "#2F855A", "fontcolor": "#1C4532"},
-        "bfo": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
-        "prov": {"fillcolor": "#EAF7EF", "color": "#2F855A", "fontcolor": "#1C4532"},
     }
 
     for node in model.nodes:
@@ -284,12 +244,8 @@ def build_agraph(model: Model):
             target = core_cluster
         elif node.kind == "proc":
             target = proc_cluster
-        elif node.kind in {"agents_scheme", "agents_concept"}:
-            target = agents_cluster
-        elif node.kind == "bfo":
-            target = bfo_cluster
         else:
-            target = prov_cluster
+            target = agents_cluster
         target.add_node(str(node.iri), label=node.label, **attrs)
 
     for edge in model.edges:
@@ -300,7 +256,6 @@ def build_agraph(model: Model):
             attrs.update({"style": "dotted", "color": "#2F855A"})
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 
-    # Group and connect dual core class pairs analogous to class_hierarchy_plot.
     dual_pairs = [
         (URIRef(SDATA_SLASH + "MaterialArtifact"), URIRef(SDATA_SLASH + "InformationArtifact")),
         (URIRef(SDATA_SLASH + "Material"), URIRef(SDATA_SLASH + "Information")),
@@ -330,7 +285,6 @@ def build_agraph(model: Model):
                 constraint="false",
             )
 
-    # Group and connect dual processtype class pairs (Material* <-> Information*).
     proc_nodes = [node for node in model.nodes if node.kind == "proc"]
     proc_node_ids = {str(node.iri) for node in proc_nodes}
     proc_pairs: list[tuple[str, str, str]] = []
@@ -378,23 +332,11 @@ def render(
         graph.draw(out_png, format="png", prog=layout, args=f"-Gdpi={dpi}")
 
 
-def _default_vendor_files(vendor_dir: Path) -> list[Path]:
-    return [
-        vendor_dir / "bfo.ttl",
-        vendor_dir / "prov-o.ttl",
-        vendor_dir / "qudt.ttl",
-        vendor_dir / "dtype.ttl",
-        vendor_dir / "vaem.ttl",
-        vendor_dir / "skos.ttl",
-    ]
-
-
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--processtypes", type=Path, default=Path("sdata-processtypes.ttl"))
     parser.add_argument("--agents", type=Path, default=Path("sdata-agents.ttl"))
-    parser.add_argument("--vendor-dir", type=Path, default=Path("vendor/ontologies"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-combined-hierarchy")
     parser.add_argument("--format", choices=("svg", "png", "both"), default="both")
@@ -407,11 +349,10 @@ def main(argv: list[str] | None = None) -> int:
     logging.getLogger("rdflib.term").setLevel(logging.CRITICAL)
 
     args = parse_args(argv or sys.argv[1:])
-    vendor_paths = _default_vendor_files(args.vendor_dir)
 
     try:
         core_g, proc_g, agents_g, merged_g = load_graphs(
-            args.core, args.processtypes, args.agents, vendor_paths
+            args.core, args.processtypes, args.agents
         )
         model = extract_model(core_g, proc_g, agents_g, merged_g)
         if not model.nodes:

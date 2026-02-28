@@ -1,4 +1,4 @@
-"""Create a styled class hierarchy plot from ontology Turtle files."""
+"""Create a styled class hierarchy plot from sdata-core Turtle files."""
 
 from __future__ import annotations
 
@@ -7,22 +7,18 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
-BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
-PROV_PREFIX = "http://www.w3.org/ns/prov#"
-BFO_ENTITY = URIRef("http://purl.obolibrary.org/obo/BFO_0000001")
 
 
 @dataclass(frozen=True)
 class HierarchyNode:
     iri: URIRef
     label: str
-    kind: str  # "sdata" or "bfo"
+    kind: str  # "sdata"
 
 
 @dataclass(frozen=True)
@@ -37,16 +33,17 @@ class HierarchyModel:
     edges: tuple[HierarchyEdge, ...]
 
 
-def load_graph(core_path: Path, vendor_paths: Iterable[Path]) -> Graph:
-    """Load core ontology and selected vendor ontologies into one RDF graph."""
+def load_graph(core_path: Path, alignment_path: Path | None = None) -> Graph:
+    """Load autark core ontology and optional alignment module into one RDF graph."""
     if not core_path.exists():
         raise FileNotFoundError(f"Core ontology not found: {core_path}")
 
     graph = Graph()
     graph.parse(core_path, format="turtle")
-    for path in vendor_paths:
-        if path.exists():
-            graph.parse(path, format="turtle")
+    if alignment_path:
+        if not alignment_path.exists():
+            raise FileNotFoundError(f"Alignment ontology not found: {alignment_path}")
+        graph.parse(alignment_path, format="turtle")
     return graph
 
 
@@ -71,66 +68,27 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
     return str(sorted(labels, key=score)[0])
 
 
-def _is_external_class(iri: URIRef) -> bool:
-    text = str(iri)
-    return text.startswith(BFO_PREFIX) or text.startswith(PROV_PREFIX)
-
-
-def _external_parents(graph: Graph, node: URIRef) -> list[URIRef]:
-    return [
-        parent
-        for parent in graph.objects(node, RDFS.subClassOf)
-        if isinstance(parent, URIRef) and _is_external_class(parent)
-    ]
-
-
 def extract_hierarchy(graph: Graph) -> HierarchyModel:
-    """Extract sdata classes plus external base hierarchies (BFO and PROV)."""
+    """Extract sdata class hierarchy from asserted subclass relations."""
     sdata_classes = {
         cls
         for cls in graph.subjects(RDF.type, OWL.Class)
         if isinstance(cls, URIRef) and str(cls).startswith(str(SDATA))
     }
 
-    external_classes: set[URIRef] = set()
     edges: set[HierarchyEdge] = set()
-
     for child in sdata_classes:
         for parent in graph.objects(child, RDFS.subClassOf):
             if isinstance(parent, URIRef) and parent in sdata_classes:
                 edges.add(HierarchyEdge(child=child, parent=parent))
 
-        seeds = _external_parents(graph, child)
-        for seed in seeds:
-            external_classes.add(seed)
-            edges.add(HierarchyEdge(child=child, parent=seed))
-
-        stack = list(seeds)
-        visited: set[URIRef] = set()
-        while stack:
-            current = stack.pop()
-            if current in visited:
-                continue
-            visited.add(current)
-
-            parents = _external_parents(graph, current)
-            for parent in parents:
-                external_classes.add(parent)
-                edges.add(HierarchyEdge(child=current, parent=parent))
-                stack.append(parent)
-
-    if any(str(node).startswith(BFO_PREFIX) for node in external_classes):
-        external_classes.add(BFO_ENTITY)
-
-    nodes: list[HierarchyNode] = []
-    for cls in sorted(sdata_classes, key=str):
-        nodes.append(HierarchyNode(iri=cls, label=_best_label(graph, cls), kind="sdata"))
-    for cls in sorted(external_classes, key=str):
-        kind = "bfo" if str(cls).startswith(BFO_PREFIX) else "prov"
-        nodes.append(HierarchyNode(iri=cls, label=_best_label(graph, cls), kind=kind))
+    nodes = tuple(
+        HierarchyNode(iri=cls, label=_best_label(graph, cls), kind="sdata")
+        for cls in sorted(sdata_classes, key=str)
+    )
 
     return HierarchyModel(
-        nodes=tuple(nodes),
+        nodes=nodes,
         edges=tuple(sorted(edges, key=lambda e: (str(e.child), str(e.parent)))),
     )
 
@@ -155,7 +113,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Class Hierarchy (BFO/PROV base hierarchy -> sdata classes)",
+        label="sdata Class Hierarchy (autark core)",
         labelloc="t",
         labeljust="c",
     )
@@ -177,34 +135,14 @@ def build_agraph(model: HierarchyModel):
     sdata_cluster = graph.add_subgraph(
         name="cluster_sdata", label="sdata classes", color="#90B5E8", style="rounded"
     )
-    bfo_cluster = graph.add_subgraph(
-        name="cluster_bfo_context", label="BFO hierarchy", color="#F3C887", style="rounded"
-    )
-    prov_cluster = graph.add_subgraph(
-        name="cluster_prov_context", label="PROV hierarchy", color="#9AD9BF", style="rounded"
-    )
 
-    style_map = {
-        "sdata": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
-        "bfo": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
-        "prov": {"fillcolor": "#E7FFF6", "color": "#2F855A", "fontcolor": "#1C4532"},
-    }
-
+    style = {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"}
     for node in model.nodes:
-        attrs = style_map[node.kind]
-        if node.kind == "sdata":
-            target = sdata_cluster
-        elif node.kind == "bfo":
-            target = bfo_cluster
-        else:
-            target = prov_cluster
-        target.add_node(str(node.iri), label=node.label, **attrs)
+        sdata_cluster.add_node(str(node.iri), label=node.label, **style)
 
-    # Render top-down as superclass -> subclass so BFO entity stays at the top.
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
 
-    # Group dual class pairs (Material/Information) on the same rank and mark duality.
     dual_pairs = [
         (SDATA.MaterialArtifact, SDATA.InformationArtifact),
         (SDATA.Material, SDATA.Information),
@@ -242,22 +180,7 @@ def build_agraph(model: HierarchyModel):
         color="#2B6CB0",
         fontcolor="#1A365D",
     )
-    legend.add_node(
-        "legend_bfo",
-        label="BFO parent",
-        fillcolor="#FFF4E5",
-        color="#B7791F",
-        fontcolor="#7B341E",
-    )
-    legend.add_node(
-        "legend_prov",
-        label="PROV parent",
-        fillcolor="#E7FFF6",
-        color="#2F855A",
-        fontcolor="#1C4532",
-    )
-    legend.add_edge("legend_bfo", "legend_sdata", label="superclass → subclass", color="#4A5568")
-    legend.add_edge("legend_prov", "legend_sdata", label="", color="#4A5568")
+    legend.add_edge("legend_sdata", "legend_sdata", label="superclass -> subclass", color="#4A5568")
 
     return graph
 
@@ -274,21 +197,10 @@ def render(
         graph.draw(out_png, format="png", prog=layout, args=f"-Gdpi={dpi}")
 
 
-def _default_vendor_files(vendor_dir: Path) -> list[Path]:
-    return [
-        vendor_dir / "bfo.ttl",
-        vendor_dir / "prov-o.ttl",
-        vendor_dir / "qudt.ttl",
-        vendor_dir / "dtype.ttl",
-        vendor_dir / "vaem.ttl",
-        vendor_dir / "skos.ttl",
-    ]
-
-
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
-    parser.add_argument("--vendor-dir", type=Path, default=Path("vendor/ontologies"))
+    parser.add_argument("--alignment", type=Path, default=None)
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-class-hierarchy")
     parser.add_argument("--format", choices=("svg", "png", "both"), default="both")
@@ -298,14 +210,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    # Vendor ontologies may contain malformed rdf:HTML literals; keep output clean.
     logging.getLogger("rdflib.term").setLevel(logging.CRITICAL)
 
     args = parse_args(argv or sys.argv[1:])
-    vendor_paths = _default_vendor_files(args.vendor_dir)
 
     try:
-        graph = load_graph(args.core, vendor_paths)
+        graph = load_graph(args.core, args.alignment)
         model = extract_hierarchy(graph)
         if not model.nodes:
             print("No classes found for visualization.", file=sys.stderr)

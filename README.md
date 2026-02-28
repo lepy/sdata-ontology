@@ -6,9 +6,8 @@
 [![W3ID](https://img.shields.io/badge/W3ID-w3id.org%2Fsdata-blueviolet.svg)](https://w3id.org/sdata)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![OWL 2 DL](https://img.shields.io/badge/OWL-2%20DL-blue.svg)](https://www.w3.org/TR/owl2-overview/)
-[![BFO 2020](https://img.shields.io/badge/BFO-2020%20(ISO%2FIEC%2021838--2)-green.svg)](https://basic-formal-ontology.org/bfo-2020.html)
-[![W3C PROV-O](https://img.shields.io/badge/W3C-PROV--O-orange.svg)](https://www.w3.org/TR/prov-o/)
-[![QUDT](https://img.shields.io/badge/QUDT-3.1-yellow.svg)](http://qudt.org/)
+[![Core](https://img.shields.io/badge/core-v0.5.0%20autark-green.svg)](https://w3id.org/sdata/core/0.5.0)
+[![Alignment](https://img.shields.io/badge/alignment-BFO%2FPROV%20optional-orange.svg)](https://w3id.org/sdata/alignment/bfo-prov/0.5.0)
 [![Turtle](https://img.shields.io/badge/format-Turtle%20(.ttl)-brightgreen.svg)](https://www.w3.org/TR/turtle/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/lepy/sdata-ontology)
 ![GitHub contributors](https://img.shields.io/github/contributors/lepy/sdata-ontology)
@@ -17,13 +16,13 @@
 
 ## Overview
 
-sdata is a modular ontology suite built on three orthogonal foundations:
+sdata is a modular ontology suite with an autark core and optional alignment modules:
 
 | Foundation | Standard | Answers |
 |---|---|---|
-| **BFO** | ISO/IEC 21838-2:2021 | *What exists?* — categorical grounding |
-| **PROV-O** | W3C Recommendation | *Who did what when?* — provenance tracking |
-| **QUDT** | QUDT 3.1 | *How much?* — quantities, units, dimensions |
+| **sdata-core (autark)** | RDF/RDFS/OWL/XSD only | *What exists in sdata?* — without external ontology imports |
+| **sdata-bfo-prov alignment (optional)** | BFO 2020 + PROV-O | *How does sdata map to external upper ontologies?* |
+| **Extension modules** | sdata-processtypes, sdata-lifecycle, sdata-vd-* | *How is the domain specialized?* |
 
 ## Namespace
 
@@ -35,7 +34,8 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 | Module | IRI | Description |
 |---|---|---|
-| **Core** | `https://w3id.org/sdata/core` | 17 classes (5 dimensions + 10 leaf + 2 orthogonal), 20 object properties, 14 datatype properties |
+| **Core** | `https://w3id.org/sdata/core` | 19 classes (2 domains + 5 dimensions + 10 leaf + 2 orthogonal), 20 object properties, 14 datatype properties |
+| **BFO/PROV Alignment** | `https://w3id.org/sdata/alignment/bfo-prov` | Optional bridge axioms from sdata-core to BFO/PROV |
 | **Agents** | `https://w3id.org/sdata/vocab/agents` | SKOS ConceptScheme for agent types |
 | **Core Shapes** | `https://w3id.org/sdata/core/shapes` | SHACL constraints for core data validation |
 
@@ -43,7 +43,9 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 ```
 sdata/
-├── sdata-core.ttl              Core ontology (v0.4.0)
+├── sdata-core.ttl              Core ontology (v0.5.0 autark)
+├── sdata-core-v0.5.0.ttl       Versioned autark core snapshot
+├── sdata-core-v0.5.0-bfo-alignment.ttl   Optional BFO/PROV bridge module
 ├── sdata-agents.ttl            SKOS: Agent types
 ├── sdata-*.ttl
 ├── shapes/
@@ -56,13 +58,7 @@ sdata/
 │   └── visualization/
 │       ├── class_hierarchy_plot.py
 │       └── ...
-├── vendor/ontologies/
-│   ├── bfo.ttl                 Vendored BFO ontology (from official ISO BFO 2020 OWL)
-│   ├── prov-o.ttl              Vendored PROV-O ontology
-│   ├── qudt.ttl                Vendored QUDT ontology
-│   ├── dtype.ttl               Vendored QUDT dependency
-│   ├── vaem.ttl                Vendored QUDT dependency
-│   └── skos.ttl                Vendored QUDT dependency
+├── vendor/ontologies/          Optional vendor files (needed only for alignment workflows)
 ├── docs/
 │   ├── index.md                MkDocs entry page
 │   └── ...
@@ -77,10 +73,12 @@ sdata/
 
 ## SDATA Core Ontology at a Glance
 
-### 17 Classes: 5 + 10 + 2
+### 19 Classes: 2 + 5 + 10 + 2
 
 | SDATA Class | Layer | Description |
 |---|---|---|
+| `Tangible` | Domain | Union of all material-side leaf classes |
+| `Intangible` | Domain | Union of all information-side leaf classes |
 | `Artifact` | Dimension | Union of `MaterialArtifact` and `InformationArtifact` |
 | `Substance` | Dimension | Union of `Material` and `Information` |
 | `Agent` | Dimension | Union of `MaterialAgent` and `InformationAgent` |
@@ -101,19 +99,21 @@ sdata/
 
 ### Dual Principle
 
-`sdata-core` follows a layered model:
+`sdata-core` v0.5.0 follows a layered model:
 
+- **Domain layer**: `Tangible`, `Intangible`
 - **Dimension layer**: `Artifact`, `Substance`, `Agent`, `Process`, `Site`
 - **Leaf layer (dual, material side)**: `Material`, `MaterialArtifact`, `MaterialAgent`, `MaterialProcess`, `MaterialSite`
 - **Leaf layer (dual, information side)**: `Information`, `InformationArtifact`, `InformationAgent`, `InformationProcess`, `InformationSite`
 - **Orthogonal classes**: `Role`, `Identifier`
 
-Each material class has a semantic dual on the information side. The 5 dimension classes are defined OWL unions over those dual pairs.
+Each material class has a semantic dual on the information side. Domain and dimension classes are defined OWL unions over leaf classes.
 
 ### Key Design Decisions
 
-- **Two-layer class architecture** — dimension classes for query ergonomics, leaf classes for ontological precision
-- **PROV-O via property-mapping** — `generates ⊆ prov:generated`, `consumes ⊆ prov:used`, `wasPerformedBy ⊆ prov:wasAssociatedWith` (no dual inheritance)
+- **Four-layer class architecture** — domains + dimensions + leaves + orthogonals
+- **Autark core** — no ontology imports and no hard dependency on BFO/PROV/QUDT
+- **Optional alignment module** — BFO/PROV mapping is moved to `sdata-core-v0.5.0-bfo-alignment.ttl`
 - **consistsOf vs. hasPart** — material constitution vs. structural BOM hierarchy, strictly separated
 - **Dual substance model** — `Material` and `Information` are domain-dual non-discrete substances
 - **xsd:dateTimeStamp** — mandatory timezone for global supply chain interoperability
@@ -133,23 +133,23 @@ SELECT ?product ?material ?materialName WHERE {
 }
 ```
 
-### SPARQL — provenance chain (PROV-O compatible)
+### SPARQL — process chain
 
 ```sparql
-PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX sdata: <https://w3id.org/sdata/core/>
 
 SELECT ?entity ?activity ?agent WHERE {
-  ?activity prov:generated ?entity ;
-            prov:wasAssociatedWith ?agent .
+  ?activity sdata:generates ?entity ;
+            sdata:wasPerformedBy ?agent .
 }
 ```
 
 ## Versioning
 
-Versions follow semantic versioning. Each release is tagged (`v0.4.0`, …).
+Versions follow semantic versioning. Each release is tagged (`v0.5.0`, …).
 
 - **Ontology IRI** (always current): `https://w3id.org/sdata/core`
-- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.4.0`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.5.0`
 
 Import the unversioned IRI to track latest, or the versioned IRI to pin.
 
@@ -160,10 +160,10 @@ Import the unversioned IRI to track latest, or the versioned IRI to pin.
 pyshacl -s shapes/sdata-core-shapes.ttl -df turtle data.ttl
 ```
 
-## Offline / Autark Imports
+## Autark Core and Optional Alignment
 
-The core ontology imports are vendored in `vendor/ontologies/` so the repository is usable offline without fetching BFO/PROV-O/QUDT from the web.  
-All runtime imports are in Turtle (`*.ttl`), including BFO.
+`sdata-core.ttl` is fully autark and does not import any ontology.  
+If you need BFO/PROV interoperability, import `sdata-core-v0.5.0-bfo-alignment.ttl` additionally.
 
 ## Development Setup
 
@@ -223,6 +223,17 @@ uv run python -m src.visualization.core_processtypes_sdata_only_plot --out-dir d
 uv run python -m src.visualization.process_dual_hierarchy_plot --out-dir docs/diagrams --format both
 uv run python -m src.visualization.combined_hierarchy_plot --out-dir docs/diagrams --format both
 uv run python -m src.visualization.lifecycle_plot --out-dir docs/diagrams --format both
+```
+
+Optional alignment overlay for class hierarchy:
+
+```bash
+uv run python -m src.visualization.class_hierarchy_plot \
+  --core sdata-core-v0.5.0.ttl \
+  --alignment sdata-core-v0.5.0-bfo-alignment.ttl \
+  --out-dir docs/diagrams \
+  --name sdata-class-hierarchy-aligned \
+  --format both
 ```
 
 Key output files:

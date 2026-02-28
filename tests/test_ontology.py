@@ -38,7 +38,9 @@ def test_turtle_syntax(ttl_file):
 # ─── Core Ontology Structure ─────────────────────────────────────────────────
 
 EXPECTED_CLASSES = [
-    # Dimension layer (v0.4.0)
+    # Domain layer (v0.5.0)
+    "Tangible", "Intangible",
+    # Dimension layer
     "Artifact", "Substance", "Agent", "Process", "Site",
     # Leaf layer
     "MaterialArtifact", "Material", "MaterialAgent", "MaterialProcess", "MaterialSite",
@@ -90,10 +92,10 @@ def test_datatype_properties_exist(core_graph, prop_name):
 
 
 def test_core_class_count(core_graph):
-    """Core must have exactly 17 classes."""
+    """Core must have exactly 19 classes."""
     classes = set(core_graph.subjects(RDF.type, URIRef("http://www.w3.org/2002/07/owl#Class")))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 17, f"Expected 17 classes, found {len(sdata_classes)}: {sdata_classes}"
+    assert len(sdata_classes) == 19, f"Expected 19 classes, found {len(sdata_classes)}: {sdata_classes}"
 
 
 # ─── SHACL Validation ────────────────────────────────────────────────────────
@@ -142,3 +144,26 @@ def test_example_covers_dimension_classes_via_leafs(example_graph):
     for dimension, leafs in dimension_to_leafs.items():
         covered = any(list(example_graph.subjects(RDF.type, SDATA[leaf])) for leaf in leafs)
         assert covered, f"sdata:{dimension} is not covered by any leaf instance in example"
+
+
+def test_example_covers_domain_classes_via_leafs(example_graph):
+    """Domain classes must be covered by corresponding leaf instances in the example."""
+    domain_to_leafs = {
+        "Tangible": (
+            "MaterialArtifact",
+            "Material",
+            "MaterialAgent",
+            "MaterialProcess",
+            "MaterialSite",
+        ),
+        "Intangible": (
+            "InformationArtifact",
+            "Information",
+            "InformationAgent",
+            "InformationProcess",
+            "InformationSite",
+        ),
+    }
+    for domain, leafs in domain_to_leafs.items():
+        covered = any(list(example_graph.subjects(RDF.type, SDATA[leaf])) for leaf in leafs)
+        assert covered, f"sdata:{domain} is not covered by any leaf instance in example"

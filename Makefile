@@ -52,7 +52,7 @@ clean:
 viz-agents: check-uv
 	$(UV) run python -m src.visualization.agents_hierarchy_plot
 
-# ─── Visualize core + processtypes (with BFO/PROV context) ──────────────────
+# ─── Visualize core + processtypes (autark core) ────────────────────────────
 viz-core-processtypes: check-uv
 	$(UV) run python -m src.visualization.core_processtypes_hierarchy_plot
 

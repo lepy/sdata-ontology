@@ -67,6 +67,15 @@ digraph "" {
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
 		label="Information Site"];
+	"https://w3id.org/sdata/core/Intangible"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Intangible];
+	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/Information";
+	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationAgent";
+	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationArtifact";
+	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationProcess";
+	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationSite";
 	"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
@@ -133,6 +142,15 @@ digraph "" {
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
 		label=Substance];
+	"https://w3id.org/sdata/core/Tangible"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Tangible];
+	"https://w3id.org/sdata/core/Tangible" -> "https://w3id.org/sdata/core/Material";
+	"https://w3id.org/sdata/core/Tangible" -> "https://w3id.org/sdata/core/MaterialAgent";
+	"https://w3id.org/sdata/core/Tangible" -> "https://w3id.org/sdata/core/MaterialArtifact";
+	"https://w3id.org/sdata/core/Tangible" -> "https://w3id.org/sdata/core/MaterialProcess";
+	"https://w3id.org/sdata/core/Tangible" -> "https://w3id.org/sdata/core/MaterialSite";
 	"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",

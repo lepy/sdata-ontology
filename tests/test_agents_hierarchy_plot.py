@@ -7,9 +7,6 @@ from src.visualization.agents_hierarchy_plot import extract_hierarchy, load_grap
 ROOT = Path(__file__).resolve().parent.parent
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
-PROV_AGENT = "http://www.w3.org/ns/prov#Agent"
-BFO_MATERIAL_ENTITY = "http://purl.obolibrary.org/obo/BFO_0000040"
-BFO_GDC = "http://purl.obolibrary.org/obo/BFO_0000031"
 
 
 def _model():
@@ -23,9 +20,6 @@ def test_extract_contains_root_nodes():
     assert str(SDATA.MaterialAgent) in kinds
     assert str(SDATA.InformationAgent) in kinds
     assert str(SAGENTS.AgentTypeScheme) in kinds
-    assert PROV_AGENT in kinds
-    assert BFO_MATERIAL_ENTITY in kinds
-    assert BFO_GDC in kinds
 
 
 def test_extract_contains_expected_agent_concepts():
@@ -47,10 +41,6 @@ def test_extract_contains_expected_agent_concepts():
 def test_extract_contains_expected_hierarchy_edges():
     model = _model()
     edges = {(str(edge.parent), str(edge.child)) for edge in model.edges}
-    assert (PROV_AGENT, str(SDATA.MaterialAgent)) in edges
-    assert (PROV_AGENT, str(SDATA.InformationAgent)) in edges
-    assert (BFO_MATERIAL_ENTITY, str(SDATA.MaterialAgent)) in edges
-    assert (BFO_GDC, str(SDATA.InformationAgent)) in edges
     assert (str(SDATA.MaterialAgent), str(SAGENTS.AgentTypeScheme)) in edges
     assert (str(SDATA.InformationAgent), str(SAGENTS.AgentTypeScheme)) in edges
     assert (str(SDATA.MaterialAgent), str(SAGENTS.Person)) in edges

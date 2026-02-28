@@ -7,23 +7,19 @@ import logging
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 from rdflib import Graph, Literal, RDF, RDFS, URIRef
 from rdflib.namespace import OWL, SKOS
 
 SDATA_SLASH = "https://w3id.org/sdata/core/"
 SDATA_HASH = "https://w3id.org/sdata/core#"
-BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
-PROV_PREFIX = "http://www.w3.org/ns/prov#"
-BFO_ENTITY = URIRef("http://purl.obolibrary.org/obo/BFO_0000001")
 
 
 @dataclass(frozen=True)
 class Node:
     iri: URIRef
     label: str
-    kind: str  # "core" | "proc" | "bfo" | "prov"
+    kind: str  # "core" | "proc"
 
 
 @dataclass(frozen=True)
@@ -84,11 +80,6 @@ def _is_sdata_uri(iri: URIRef) -> bool:
     return text.startswith(SDATA_SLASH) or text.startswith(SDATA_HASH)
 
 
-def _is_external(iri: URIRef) -> bool:
-    text = str(iri)
-    return text.startswith(BFO_PREFIX) or text.startswith(PROV_PREFIX)
-
-
 def _classes_from(graph: Graph) -> set[URIRef]:
     return {
         _canon(cls)
@@ -106,7 +97,7 @@ def _parents(graph: Graph, node: URIRef) -> set[URIRef]:
     return found
 
 
-def load_graphs(core_path: Path, processtypes_path: Path, vendor_paths: Iterable[Path]) -> tuple[Graph, Graph, Graph]:
+def load_graphs(core_path: Path, processtypes_path: Path) -> tuple[Graph, Graph, Graph]:
     for path, label in ((core_path, "Core ontology"), (processtypes_path, "Processtypes ontology")):
         if not path.exists():
             raise FileNotFoundError(f"{label} not found: {path}")
@@ -120,9 +111,6 @@ def load_graphs(core_path: Path, processtypes_path: Path, vendor_paths: Iterable
     merged = Graph()
     merged += core_graph
     merged += proc_graph
-    for path in vendor_paths:
-        if path.exists():
-            merged.parse(path, format="turtle")
 
     return core_graph, proc_graph, merged
 
@@ -134,7 +122,6 @@ def extract_model(core_graph: Graph, proc_graph: Graph, merged: Graph) -> Model:
 
     nodes: dict[URIRef, Node] = {}
     edges: set[Edge] = set()
-    external: set[URIRef] = set()
 
     for cls in sorted(core_classes, key=str):
         nodes[cls] = Node(iri=cls, label=_best_label(merged, cls), kind="core")
@@ -147,30 +134,6 @@ def extract_model(core_graph: Graph, proc_graph: Graph, merged: Graph) -> Model:
         for parent in _parents(merged, child):
             if parent in all_sdata_classes:
                 edges.add(Edge(parent=parent, child=child))
-            elif _is_external(parent):
-                external.add(parent)
-                edges.add(Edge(parent=parent, child=child))
-
-    stack = list(external)
-    visited: set[URIRef] = set()
-    while stack:
-        current = stack.pop()
-        if current in visited:
-            continue
-        visited.add(current)
-
-        for parent in _parents(merged, current):
-            if _is_external(parent):
-                external.add(parent)
-                edges.add(Edge(parent=parent, child=current))
-                stack.append(parent)
-
-    if any(str(n).startswith(BFO_PREFIX) for n in external):
-        external.add(BFO_ENTITY)
-
-    for ext in sorted(external, key=str):
-        kind = "bfo" if str(ext).startswith(BFO_PREFIX) else "prov"
-        nodes[ext] = Node(iri=ext, label=_best_label(merged, ext), kind=kind)
 
     return Model(
         nodes=tuple(sorted(nodes.values(), key=lambda n: (n.kind, str(n.iri)))),
@@ -198,7 +161,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Core + Processtypes Hierarchy (without agents)",
+        label="sdata Core + Processtypes Hierarchy (autark core)",
         labelloc="t",
         labeljust="c",
     )
@@ -221,32 +184,23 @@ def build_agraph(model: Model):
     proc_cluster = graph.add_subgraph(
         name="cluster_proc", label="sdata-processtypes classes", color="#B6D7A8", style="rounded"
     )
-    bfo_cluster = graph.add_subgraph(name="cluster_bfo", label="BFO hierarchy", color="#F3C887", style="rounded")
-    prov_cluster = graph.add_subgraph(name="cluster_prov", label="PROV hierarchy", color="#9AD9BF", style="rounded")
 
     style_map = {
         "core": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "proc": {"fillcolor": "#EEF8E7", "color": "#4F8A10", "fontcolor": "#2F5D08"},
-        "bfo": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
-        "prov": {"fillcolor": "#E7FFF6", "color": "#2F855A", "fontcolor": "#1C4532"},
     }
 
     for node in model.nodes:
         attrs = style_map[node.kind]
         if node.kind == "core":
             target = core_cluster
-        elif node.kind == "proc":
-            target = proc_cluster
-        elif node.kind == "bfo":
-            target = bfo_cluster
         else:
-            target = prov_cluster
+            target = proc_cluster
         target.add_node(str(node.iri), label=node.label, **attrs)
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
 
-    # Group and connect dual core class pairs.
     core_dual_pairs = [
         (URIRef(SDATA_SLASH + "MaterialArtifact"), URIRef(SDATA_SLASH + "InformationArtifact")),
         (URIRef(SDATA_SLASH + "Material"), URIRef(SDATA_SLASH + "Information")),
@@ -276,7 +230,6 @@ def build_agraph(model: Model):
                 constraint="false",
             )
 
-    # Group and connect dual processtype pairs (Material* <-> Information*).
     proc_nodes = [node for node in model.nodes if node.kind == "proc"]
     proc_node_ids = {str(node.iri) for node in proc_nodes}
     proc_pairs: list[tuple[str, str, str]] = []
@@ -310,7 +263,6 @@ def build_agraph(model: Model):
             constraint="false",
         )
 
-    # Force the processtypes cluster below the core cluster in top-bottom layouts.
     core_nodes = sorted((str(node.iri) for node in model.nodes if node.kind == "core"))
     proc_nodes_ordered = sorted((str(node.iri) for node in model.nodes if node.kind == "proc"))
     if core_nodes and proc_nodes_ordered:
@@ -338,22 +290,10 @@ def render(
         graph.draw(out_png, format="png", prog=layout, args=f"-Gdpi={dpi}")
 
 
-def _default_vendor_files(vendor_dir: Path) -> list[Path]:
-    return [
-        vendor_dir / "bfo.ttl",
-        vendor_dir / "prov-o.ttl",
-        vendor_dir / "qudt.ttl",
-        vendor_dir / "dtype.ttl",
-        vendor_dir / "vaem.ttl",
-        vendor_dir / "skos.ttl",
-    ]
-
-
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--processtypes", type=Path, default=Path("sdata-processtypes.ttl"))
-    parser.add_argument("--vendor-dir", type=Path, default=Path("vendor/ontologies"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-core-processtypes-hierarchy")
     parser.add_argument("--format", choices=("svg", "png", "both"), default="both")
@@ -366,10 +306,9 @@ def main(argv: list[str] | None = None) -> int:
     logging.getLogger("rdflib.term").setLevel(logging.CRITICAL)
 
     args = parse_args(argv or sys.argv[1:])
-    vendor_paths = _default_vendor_files(args.vendor_dir)
 
     try:
-        core_g, proc_g, merged_g = load_graphs(args.core, args.processtypes, vendor_paths)
+        core_g, proc_g, merged_g = load_graphs(args.core, args.processtypes)
         model = extract_model(core_g, proc_g, merged_g)
         if not model.nodes:
             print("No nodes found for visualization.", file=sys.stderr)
