@@ -26,19 +26,27 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
+	"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
-		label=Identifier];
+		label=Agent];
 	"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Creation];
-	"https://w3id.org/sdata/core/Identifier" -> "https://w3id.org/sdata/core/Creation"	[color="#FFFFFF",
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Creation"	[color="#FFFFFF",
 		constraint=true,
 		minlen=2,
 		style=invis,
 		weight=120];
+	"https://w3id.org/sdata/core/Artifact"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Artifact];
+	"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Identifier];
 	"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
@@ -55,41 +63,6 @@ digraph "" {
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
 		label="Information Process"];
-	"https://w3id.org/sdata/core/InformationCreation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Creation"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationCreation";
-	"https://w3id.org/sdata/core/InformationDestruction"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Destruction"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationDestruction";
-	"https://w3id.org/sdata/core/InformationObservation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Observation"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationObservation";
-	"https://w3id.org/sdata/core/InformationPreservation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Preservation"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationPreservation";
-	"https://w3id.org/sdata/core/InformationRecovery"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Recovery"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationRecovery";
-	"https://w3id.org/sdata/core/InformationTransfer"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Transfer"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationTransfer";
-	"https://w3id.org/sdata/core/InformationTransformation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Information Transformation"];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationTransformation";
 	"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
@@ -134,41 +107,6 @@ digraph "" {
 		fontcolor="#6B7280",
 		label=dual,
 		style=dashed];
-	"https://w3id.org/sdata/core/MaterialCreation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Creation"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialCreation";
-	"https://w3id.org/sdata/core/MaterialDestruction"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Destruction"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialDestruction";
-	"https://w3id.org/sdata/core/MaterialObservation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Observation"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialObservation";
-	"https://w3id.org/sdata/core/MaterialPreservation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Preservation"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialPreservation";
-	"https://w3id.org/sdata/core/MaterialRecovery"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Recovery"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialRecovery";
-	"https://w3id.org/sdata/core/MaterialTransfer"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Transfer"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialTransfer";
-	"https://w3id.org/sdata/core/MaterialTransformation"	[color="#4F8A10",
-		fillcolor="#EEF8E7",
-		fontcolor="#2F5D08",
-		label="Material Transformation"];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialTransformation";
 	"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
@@ -179,88 +117,44 @@ digraph "" {
 		fontcolor="#6B7280",
 		label=dual,
 		style=dashed];
+	"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Process];
 	"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
 		fillcolor="#E8F1FF",
 		fontcolor="#1A365D",
 		label=Role];
-	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/InformationCreation";
-	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/MaterialCreation";
+	"https://w3id.org/sdata/core/Site"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Site];
+	"https://w3id.org/sdata/core/Substance"	[color="#2B6CB0",
+		fillcolor="#E8F1FF",
+		fontcolor="#1A365D",
+		label=Substance];
 	"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Destruction];
-	"https://w3id.org/sdata/core/Destruction" -> "https://w3id.org/sdata/core/InformationDestruction";
-	"https://w3id.org/sdata/core/Destruction" -> "https://w3id.org/sdata/core/MaterialDestruction";
-	"https://w3id.org/sdata/core/MaterialCreation" -> "https://w3id.org/sdata/core/InformationCreation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialDestruction" -> "https://w3id.org/sdata/core/InformationDestruction"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialObservation" -> "https://w3id.org/sdata/core/InformationObservation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialPreservation" -> "https://w3id.org/sdata/core/InformationPreservation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialRecovery" -> "https://w3id.org/sdata/core/InformationRecovery"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialTransfer" -> "https://w3id.org/sdata/core/InformationTransfer"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialTransformation" -> "https://w3id.org/sdata/core/InformationTransformation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
 	"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Observation];
-	"https://w3id.org/sdata/core/Observation" -> "https://w3id.org/sdata/core/InformationObservation";
-	"https://w3id.org/sdata/core/Observation" -> "https://w3id.org/sdata/core/MaterialObservation";
 	"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Preservation];
-	"https://w3id.org/sdata/core/Preservation" -> "https://w3id.org/sdata/core/InformationPreservation";
-	"https://w3id.org/sdata/core/Preservation" -> "https://w3id.org/sdata/core/MaterialPreservation";
 	"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Recovery];
-	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/InformationRecovery";
-	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/MaterialRecovery";
 	"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Transfer];
-	"https://w3id.org/sdata/core/Transfer" -> "https://w3id.org/sdata/core/InformationTransfer";
-	"https://w3id.org/sdata/core/Transfer" -> "https://w3id.org/sdata/core/MaterialTransfer";
 	"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
 		fillcolor="#EEF8E7",
 		fontcolor="#2F5D08",
 		label=Transformation];
-	"https://w3id.org/sdata/core/Transformation" -> "https://w3id.org/sdata/core/InformationTransformation";
-	"https://w3id.org/sdata/core/Transformation" -> "https://w3id.org/sdata/core/MaterialTransformation";
 }

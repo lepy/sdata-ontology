@@ -8,6 +8,8 @@ sdata is a modular ontology suite for Product Passports, Circular Economy, and D
 - `sdata-agents.ttl`: SKOS vocabulary for agent typing
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
+Current core model: **17 classes** (`5 dimensions + 10 leaf + 2 orthogonal`).
+
 ## Ontology docs with tensile test examples
 
 - [sdata-core](ontologies/sdata-core/index.md)
@@ -31,16 +33,29 @@ make test
 make lint
 ```
 
-## Visualize class hierarchy
+## Visualizations
 
 ```bash
 uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.core_processtypes_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.core_processtypes_sdata_only_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.process_dual_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.combined_hierarchy_plot --out-dir docs/diagrams --format both
+uv run python -m src.visualization.lifecycle_plot --out-dir docs/diagrams --format both
 ```
 
-## Visualize agents hierarchy (subgraph under sdata:MaterialAgent / sdata:InformationAgent)
+Oder über Makefile:
 
 ```bash
-uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both
+make viz-hierarchy
+make viz-agents
+make viz-core-processtypes
+make viz-core-processtypes-sdata-only
+make viz-process-dual
+make viz-combined
+make viz-lifecycle
+make viz-all
 ```
 
 ## Build docs

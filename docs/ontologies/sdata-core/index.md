@@ -1,6 +1,12 @@
 # sdata-core.ttl
 
-Das Kernmodul definiert die zentralen Klassen (Material/Information, Agent, Prozess, Site) und die Basisbeziehungen.
+Das Kernmodul definiert ein 17-Klassen-Modell:
+
+- 5 Dimensionen: `Artifact`, `Substance`, `Agent`, `Process`, `Site`
+- 10 Leaf-Klassen: Material-/Information-Duale
+- 2 orthogonale Klassen: `Role`, `Identifier`
+
+Zusätzlich enthält es die zentralen Objekt- und Datentyp-Properties für Instanzdaten und Provenance.
 
 ## Zugversuch-Beispiel
 

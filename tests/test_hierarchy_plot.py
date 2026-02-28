@@ -29,6 +29,11 @@ def test_extract_contains_all_expected_sdata_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes if node.kind == "sdata"}
     expected = {
+        str(SDATA.Artifact),
+        str(SDATA.Substance),
+        str(SDATA.Agent),
+        str(SDATA.Process),
+        str(SDATA.Site),
         str(SDATA.MaterialArtifact),
         str(SDATA.Material),
         str(SDATA.MaterialAgent),

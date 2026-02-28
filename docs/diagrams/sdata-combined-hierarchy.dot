@@ -26,24 +26,55 @@ digraph "" {
 		fontsize=10,
 		penwidth=1.5
 	];
+	subgraph cluster_proc {
+		graph [color="#B6D7A8",
+			label="sdata-processtypes verb classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Creation];
+		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Destruction];
+		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Observation];
+		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Preservation];
+		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Recovery];
+		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transfer];
+		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transformation];
+	}
+	subgraph cluster_prov {
+		graph [color="#CFE8D6",
+			label="PROV hierarchy",
+			style=rounded
+		];
+		"http://www.w3.org/ns/prov#Agent"	[color="#2F855A",
+			fillcolor="#EAF7EF",
+			fontcolor="#1C4532",
+			label=Agent];
+	}
 	subgraph cluster_core {
 		graph [color="#90B5E8",
 			label="sdata-core classes",
 			style=rounded
 		];
-		subgraph cluster_combined_dual_rank_Material {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label=Information];
-			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label=Material];
-		}
 		subgraph cluster_combined_dual_rank_MaterialArtifact {
 			graph [rank=same,
 				style=invis
@@ -56,6 +87,19 @@ digraph "" {
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
 				label="Material Artifact"];
+		}
+		subgraph cluster_combined_dual_rank_Material {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Information];
+			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Material];
 		}
 		subgraph cluster_combined_dual_rank_MaterialAgent {
 			graph [rank=same,
@@ -96,189 +140,34 @@ digraph "" {
 				fontcolor="#1A365D",
 				label="Material Site"];
 		}
+		"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Agent];
+		"https://w3id.org/sdata/core/Artifact"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Artifact];
 		"https://w3id.org/sdata/core/Identifier"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Identifier];
+		"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Process];
 		"https://w3id.org/sdata/core/Role"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Role];
-	}
-	subgraph cluster_proc {
-		graph [color="#B6D7A8",
-			label="sdata-processtypes verb classes",
-			style=rounded
-		];
-		subgraph cluster_proc_dual_rank_MaterialCreation {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationCreation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Creation"];
-			"https://w3id.org/sdata/core/MaterialCreation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Creation"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialDestruction {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationDestruction"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Destruction"];
-			"https://w3id.org/sdata/core/MaterialDestruction"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Destruction"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialObservation {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationObservation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Observation"];
-			"https://w3id.org/sdata/core/MaterialObservation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Observation"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialPreservation {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationPreservation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Preservation"];
-			"https://w3id.org/sdata/core/MaterialPreservation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Preservation"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialRecovery {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationRecovery"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Recovery"];
-			"https://w3id.org/sdata/core/MaterialRecovery"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Recovery"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialTransfer {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationTransfer"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Transfer"];
-			"https://w3id.org/sdata/core/MaterialTransfer"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Transfer"];
-		}
-		subgraph cluster_proc_dual_rank_MaterialTransformation {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationTransformation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Information Transformation"];
-			"https://w3id.org/sdata/core/MaterialTransformation"	[color="#4F8A10",
-				fillcolor="#EEF8E7",
-				fontcolor="#2F5D08",
-				label="Material Transformation"];
-		}
-		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Creation];
-		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Destruction];
-		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Observation];
-		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Preservation];
-		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Recovery];
-		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transfer];
-		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transformation];
-	}
-	subgraph cluster_agents {
-		graph [color="#9AD9BF",
-			label="sdata-agents vocabulary",
-			style=rounded
-		];
-		"https://w3id.org/sdata/vocab/agents/Actuator"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Actuator];
-		"https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="Digital Twin"];
-		"https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Hardware];
-		"https://w3id.org/sdata/vocab/agents/Organization"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Organization];
-		"https://w3id.org/sdata/vocab/agents/Person"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Person];
-		"https://w3id.org/sdata/vocab/agents/Processor"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Processor];
-		"https://w3id.org/sdata/vocab/agents/Sensor"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Sensor];
-		"https://w3id.org/sdata/vocab/agents/Service"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Service];
-		"https://w3id.org/sdata/vocab/agents/Software"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Software];
-		"https://w3id.org/sdata/vocab/agents/Solver"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label=Solver];
-		"https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="Agent types"];
+		"https://w3id.org/sdata/core/Site"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Site];
+		"https://w3id.org/sdata/core/Substance"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Substance];
 	}
 	subgraph cluster_bfo {
 		graph [color="#F3C887",
@@ -334,15 +223,55 @@ digraph "" {
 			fontcolor="#7B341E",
 			label="immaterial entity"];
 	}
-	subgraph cluster_prov {
-		graph [color="#CFE8D6",
-			label="PROV hierarchy",
+	subgraph cluster_agents {
+		graph [color="#9AD9BF",
+			label="sdata-agents vocabulary",
 			style=rounded
 		];
-		"http://www.w3.org/ns/prov#Agent"	[color="#2F855A",
-			fillcolor="#EAF7EF",
+		"https://w3id.org/sdata/vocab/agents/Actuator"	[color="#2F855A",
+			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
-			label=Agent];
+			label=Actuator];
+		"https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="Digital Twin"];
+		"https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Hardware];
+		"https://w3id.org/sdata/vocab/agents/Organization"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Organization];
+		"https://w3id.org/sdata/vocab/agents/Person"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Person];
+		"https://w3id.org/sdata/vocab/agents/Processor"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Processor];
+		"https://w3id.org/sdata/vocab/agents/Sensor"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Sensor];
+		"https://w3id.org/sdata/vocab/agents/Service"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Service];
+		"https://w3id.org/sdata/vocab/agents/Software"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Software];
+		"https://w3id.org/sdata/vocab/agents/Solver"	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label=Solver];
+		"https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="Agent types"];
 	}
 	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Actuator"	[color="#2F855A",
 		label=broader,
@@ -407,13 +336,6 @@ digraph "" {
 	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[color="#2F855A",
 		label="typed via sdata:agentType",
 		style=dashed];
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationCreation";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationDestruction";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationObservation";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationPreservation";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationRecovery";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationTransfer";
-	"https://w3id.org/sdata/core/InformationProcess" -> "https://w3id.org/sdata/core/InformationTransformation";
 	"https://w3id.org/sdata/core/Material" -> "https://w3id.org/sdata/core/Information"	[color="#6B7280",
 		constraint=false,
 		dir=none,
@@ -441,75 +363,13 @@ digraph "" {
 		fontcolor="#6B7280",
 		label=dual,
 		style=dashed];
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialCreation";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialDestruction";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialObservation";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialPreservation";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialRecovery";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialTransfer";
-	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/MaterialTransformation";
 	"https://w3id.org/sdata/core/MaterialSite" -> "https://w3id.org/sdata/core/InformationSite"	[color="#6B7280",
 		constraint=false,
 		dir=none,
 		fontcolor="#6B7280",
 		label=dual,
 		style=dashed];
-	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/InformationCreation";
-	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/MaterialCreation";
-	"https://w3id.org/sdata/core/Destruction" -> "https://w3id.org/sdata/core/InformationDestruction";
-	"https://w3id.org/sdata/core/Destruction" -> "https://w3id.org/sdata/core/MaterialDestruction";
-	"https://w3id.org/sdata/core/MaterialCreation" -> "https://w3id.org/sdata/core/InformationCreation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialDestruction" -> "https://w3id.org/sdata/core/InformationDestruction"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialObservation" -> "https://w3id.org/sdata/core/InformationObservation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialPreservation" -> "https://w3id.org/sdata/core/InformationPreservation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialRecovery" -> "https://w3id.org/sdata/core/InformationRecovery"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialTransfer" -> "https://w3id.org/sdata/core/InformationTransfer"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/MaterialTransformation" -> "https://w3id.org/sdata/core/InformationTransformation"	[color="#6B7280",
-		constraint=false,
-		dir=none,
-		fontcolor="#6B7280",
-		label=dual,
-		style=dashed];
-	"https://w3id.org/sdata/core/Observation" -> "https://w3id.org/sdata/core/InformationObservation";
-	"https://w3id.org/sdata/core/Observation" -> "https://w3id.org/sdata/core/MaterialObservation";
-	"https://w3id.org/sdata/core/Preservation" -> "https://w3id.org/sdata/core/InformationPreservation";
-	"https://w3id.org/sdata/core/Preservation" -> "https://w3id.org/sdata/core/MaterialPreservation";
-	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/InformationRecovery";
-	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/MaterialRecovery";
-	"https://w3id.org/sdata/core/Transfer" -> "https://w3id.org/sdata/core/InformationTransfer";
-	"https://w3id.org/sdata/core/Transfer" -> "https://w3id.org/sdata/core/MaterialTransfer";
-	"https://w3id.org/sdata/core/Transformation" -> "https://w3id.org/sdata/core/InformationTransformation";
-	"https://w3id.org/sdata/core/Transformation" -> "https://w3id.org/sdata/core/MaterialTransformation";
+	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/Agent";
 	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/InformationAgent";
 	"http://www.w3.org/ns/prov#Agent" -> "https://w3id.org/sdata/core/MaterialAgent";
 }
