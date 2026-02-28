@@ -23,7 +23,7 @@
 <https://w3id.org/sdata/vocab/agents>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "0.3.0 — 27 February 2026" ;
+    owl:versionInfo "0.5.1 — 1 March 2026" ;
     rdfs:label "sdata agentType vocabulary"@en ,
                "sdata agentType-Vokabular"@de ;
     dcterms:description """Controlled vocabulary (SKOS) for sdata:agentType.
@@ -35,7 +35,7 @@ Two dual pairs plus subtypes:
   Hardware                  Software
     └── Sensor                └── Solver
     └── Actuator              └── Service
-    └── Processor             └── DigitalTwin
+    └── Processor
 
 The tangibility test determines the side:
   'Can you point at it?' → MaterialAgent (Person, Hardware)
@@ -43,7 +43,10 @@ The tangibility test determines the side:
 
 A Machine (Zwick Z100, robot arm, production line) is a composite:
 its body is Hardware (MaterialAgent), its control logic is Software
-(InformationAgent). Model both and link via sdata:hostedOn."""@en .
+(InformationAgent). Model both and link via sdata:hostedOn.
+
+Digital Twin is not an agentType value in v0.5.1 core. Model it as
+sdata:InformationArtifact with represents + realizes pattern."""@en .
 
 
 # =============================================================================
@@ -171,8 +174,7 @@ with it — the same Software can migrate across Processors."""@en ;
     skos:scopeNote "Identify via URI + version string, or package hash (SHA-256)."@en ;
     skos:narrower
         sagents:Solver ,
-        sagents:Service ,
-        sagents:DigitalTwin .
+        sagents:Service .
 
 sagents:Solver
     a skos:Concept ;
@@ -194,17 +196,6 @@ sagents:Service
 or stores data (API, ETL pipeline, data broker)."""@en ;
     skos:example "REST API, SPARQL endpoint, CI/CD pipeline, message broker."@en .
 
-sagents:DigitalTwin
-    a skos:Concept ;
-    skos:inScheme sagents:AgentTypeScheme ;
-    skos:broader sagents:Software ;
-    skos:prefLabel "Digital Twin"@en , "Digitaler Zwilling"@de ;
-    skos:definition """Software representation of a material entity that
-synchronizes state bidirectionally and may act autonomously."""@en ;
-    skos:scopeNote """A Digital Twin is both data consumer and producer.
-References its material counterpart via sdata:represents."""@en .
-
-
 # =============================================================================
 # DUALITY MAP
 # =============================================================================
@@ -218,7 +209,7 @@ References its material counterpart via sdata:represents."""@en .
 #   (tangible substrate)          (intangible logic)
 #   ├── Sensor                    ├── Solver
 #   ├── Actuator                  ├── Service
-#   └── Processor                 └── DigitalTwin
+#   └── Processor
 #
 # COMPOSITE PATTERN — how to model a Machine:
 # ─────────────────────────────────────────────
@@ -238,5 +229,5 @@ References its material counterpart via sdata:represents."""@en .
 #       sdata:wasPerformedBy ex:ZwickZ100_Control .    # Software records
 #
 # =============================================================================
-# END — sdata-agents.ttl v0.3.0
+# END — sdata-agents.ttl v0.5.1
 # =============================================================================

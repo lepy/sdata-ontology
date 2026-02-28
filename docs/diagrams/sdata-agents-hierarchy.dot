@@ -56,10 +56,6 @@ digraph "" {
 			fillcolor="#E7FFF6",
 			fontcolor="#1C4532",
 			label="Agent types"];
-		"https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="Digital Twin"];
 		"https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
@@ -130,7 +126,6 @@ digraph "" {
 	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Actuator";
 	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Processor";
 	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Sensor";
-	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/DigitalTwin";
 	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/Service";
 	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/Solver";
 	__anchor_core -> __anchor_agents	[style=invis,

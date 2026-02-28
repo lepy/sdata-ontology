@@ -33,7 +33,6 @@ def test_extract_contains_expected_agent_concepts():
         str(SAGENTS.Sensor),
         str(SAGENTS.Solver),
         str(SAGENTS.Service),
-        str(SAGENTS.DigitalTwin),
     }
     assert expected.issubset(concepts)
 
@@ -47,4 +46,3 @@ def test_extract_contains_expected_hierarchy_edges():
     assert (str(SDATA.MaterialAgent), str(SAGENTS.Hardware)) in edges
     assert (str(SDATA.InformationAgent), str(SAGENTS.Software)) in edges
     assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Hardware)) in edges
-    assert (str(SAGENTS.Software), str(SAGENTS.DigitalTwin)) in edges

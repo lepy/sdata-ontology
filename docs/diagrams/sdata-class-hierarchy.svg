@@ -23,16 +23,16 @@
 <title>cluster_dual_rank_MaterialArtifact</title>
 </g>
 <g id="clust4" class="cluster">
-<title>cluster_dual_rank_MaterialSite</title>
+<title>cluster_dual_rank_MaterialProcess</title>
 </g>
 <g id="clust5" class="cluster">
 <title>cluster_dual_rank_Material</title>
 </g>
 <g id="clust6" class="cluster">
-<title>cluster_dual_rank_MaterialProcess</title>
+<title>cluster_dual_rank_MaterialAgent</title>
 </g>
 <g id="clust7" class="cluster">
-<title>cluster_dual_rank_MaterialAgent</title>
+<title>cluster_dual_rank_MaterialSite</title>
 </g>
 <!-- legend_sdata -->
 <g id="node1" class="node">
@@ -65,77 +65,77 @@
 <path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M431.76,-42C456.39,-42 485.19,-42 510.83,-42"/>
 <text text-anchor="middle" x="471.25" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
 </g>
-<!-- https://w3id.org/sdata/core/InformationSite -->
-<g id="node4" class="node">
-<title>https://w3id.org/sdata/core/InformationSite</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1624.5,-60C1624.5,-60 1531.5,-60 1531.5,-60 1525.5,-60 1519.5,-54 1519.5,-48 1519.5,-48 1519.5,-36 1519.5,-36 1519.5,-30 1525.5,-24 1531.5,-24 1531.5,-24 1624.5,-24 1624.5,-24 1630.5,-24 1636.5,-30 1636.5,-36 1636.5,-36 1636.5,-48 1636.5,-48 1636.5,-54 1630.5,-60 1624.5,-60"/>
-<text text-anchor="middle" x="1578" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Site</text>
-</g>
-<!-- https://w3id.org/sdata/core/MaterialSite -->
-<g id="node5" class="node">
-<title>https://w3id.org/sdata/core/MaterialSite</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1428,-60C1428,-60 1356,-60 1356,-60 1350,-60 1344,-54 1344,-48 1344,-48 1344,-36 1344,-36 1344,-30 1350,-24 1356,-24 1356,-24 1428,-24 1428,-24 1434,-24 1440,-30 1440,-36 1440,-36 1440,-48 1440,-48 1440,-54 1434,-60 1428,-60"/>
-<text text-anchor="middle" x="1392" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Site</text>
-</g>
-<!-- https://w3id.org/sdata/core/MaterialSite&#45;&gt;https://w3id.org/sdata/core/InformationSite -->
-<g id="edge11" class="edge">
-<title>https://w3id.org/sdata/core/MaterialSite&#45;&gt;https://w3id.org/sdata/core/InformationSite</title>
-<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1440.38,-42C1464.49,-42 1493.85,-42 1519.24,-42"/>
-<text text-anchor="middle" x="1479.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
-</g>
-<!-- https://w3id.org/sdata/core/Information -->
-<g id="node6" class="node">
-<title>https://w3id.org/sdata/core/Information</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1292,-60C1292,-60 1226,-60 1226,-60 1220,-60 1214,-54 1214,-48 1214,-48 1214,-36 1214,-36 1214,-30 1220,-24 1226,-24 1226,-24 1292,-24 1292,-24 1298,-24 1304,-30 1304,-36 1304,-36 1304,-48 1304,-48 1304,-54 1298,-60 1292,-60"/>
-<text text-anchor="middle" x="1259" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information</text>
-</g>
-<!-- https://w3id.org/sdata/core/Material -->
-<g id="node7" class="node">
-<title>https://w3id.org/sdata/core/Material</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1122.5,-60C1122.5,-60 1077.5,-60 1077.5,-60 1071.5,-60 1065.5,-54 1065.5,-48 1065.5,-48 1065.5,-36 1065.5,-36 1065.5,-30 1071.5,-24 1077.5,-24 1077.5,-24 1122.5,-24 1122.5,-24 1128.5,-24 1134.5,-30 1134.5,-36 1134.5,-36 1134.5,-48 1134.5,-48 1134.5,-54 1128.5,-60 1122.5,-60"/>
-<text text-anchor="middle" x="1100" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material</text>
-</g>
-<!-- https://w3id.org/sdata/core/Material&#45;&gt;https://w3id.org/sdata/core/Information -->
-<g id="edge7" class="edge">
-<title>https://w3id.org/sdata/core/Material&#45;&gt;https://w3id.org/sdata/core/Information</title>
-<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1134.5,-42C1157.79,-42 1188.76,-42 1213.99,-42"/>
-<text text-anchor="middle" x="1174.25" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
-</g>
 <!-- https://w3id.org/sdata/core/InformationProcess -->
-<g id="node8" class="node">
+<g id="node4" class="node">
 <title>https://w3id.org/sdata/core/InformationProcess</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1013.5,-60C1013.5,-60 898.5,-60 898.5,-60 892.5,-60 886.5,-54 886.5,-48 886.5,-48 886.5,-36 886.5,-36 886.5,-30 892.5,-24 898.5,-24 898.5,-24 1013.5,-24 1013.5,-24 1019.5,-24 1025.5,-30 1025.5,-36 1025.5,-36 1025.5,-48 1025.5,-48 1025.5,-54 1019.5,-60 1013.5,-60"/>
-<text text-anchor="middle" x="956" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Process</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1648.5,-60C1648.5,-60 1533.5,-60 1533.5,-60 1527.5,-60 1521.5,-54 1521.5,-48 1521.5,-48 1521.5,-36 1521.5,-36 1521.5,-30 1527.5,-24 1533.5,-24 1533.5,-24 1648.5,-24 1648.5,-24 1654.5,-24 1660.5,-30 1660.5,-36 1660.5,-36 1660.5,-48 1660.5,-48 1660.5,-54 1654.5,-60 1648.5,-60"/>
+<text text-anchor="middle" x="1591" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Process</text>
 </g>
 <!-- https://w3id.org/sdata/core/MaterialProcess -->
-<g id="node9" class="node">
+<g id="node5" class="node">
 <title>https://w3id.org/sdata/core/MaterialProcess</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M795,-60C795,-60 701,-60 701,-60 695,-60 689,-54 689,-48 689,-48 689,-36 689,-36 689,-30 695,-24 701,-24 701,-24 795,-24 795,-24 801,-24 807,-30 807,-36 807,-36 807,-48 807,-48 807,-54 801,-60 795,-60"/>
-<text text-anchor="middle" x="748" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Process</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1430,-60C1430,-60 1336,-60 1336,-60 1330,-60 1324,-54 1324,-48 1324,-48 1324,-36 1324,-36 1324,-30 1330,-24 1336,-24 1336,-24 1430,-24 1430,-24 1436,-24 1442,-30 1442,-36 1442,-36 1442,-48 1442,-48 1442,-54 1436,-60 1430,-60"/>
+<text text-anchor="middle" x="1383" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Process</text>
 </g>
 <!-- https://w3id.org/sdata/core/MaterialProcess&#45;&gt;https://w3id.org/sdata/core/InformationProcess -->
 <g id="edge10" class="edge">
 <title>https://w3id.org/sdata/core/MaterialProcess&#45;&gt;https://w3id.org/sdata/core/InformationProcess</title>
-<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M807.05,-42C831.79,-42 860.73,-42 886.5,-42"/>
-<text text-anchor="middle" x="846.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
+<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1442.05,-42C1466.79,-42 1495.73,-42 1521.5,-42"/>
+<text text-anchor="middle" x="1481.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
+</g>
+<!-- https://w3id.org/sdata/core/Information -->
+<g id="node6" class="node">
+<title>https://w3id.org/sdata/core/Information</title>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1272,-60C1272,-60 1206,-60 1206,-60 1200,-60 1194,-54 1194,-48 1194,-48 1194,-36 1194,-36 1194,-30 1200,-24 1206,-24 1206,-24 1272,-24 1272,-24 1278,-24 1284,-30 1284,-36 1284,-36 1284,-48 1284,-48 1284,-54 1278,-60 1272,-60"/>
+<text text-anchor="middle" x="1239" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information</text>
+</g>
+<!-- https://w3id.org/sdata/core/Material -->
+<g id="node7" class="node">
+<title>https://w3id.org/sdata/core/Material</title>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1102.5,-60C1102.5,-60 1057.5,-60 1057.5,-60 1051.5,-60 1045.5,-54 1045.5,-48 1045.5,-48 1045.5,-36 1045.5,-36 1045.5,-30 1051.5,-24 1057.5,-24 1057.5,-24 1102.5,-24 1102.5,-24 1108.5,-24 1114.5,-30 1114.5,-36 1114.5,-36 1114.5,-48 1114.5,-48 1114.5,-54 1108.5,-60 1102.5,-60"/>
+<text text-anchor="middle" x="1080" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material</text>
+</g>
+<!-- https://w3id.org/sdata/core/Material&#45;&gt;https://w3id.org/sdata/core/Information -->
+<g id="edge7" class="edge">
+<title>https://w3id.org/sdata/core/Material&#45;&gt;https://w3id.org/sdata/core/Information</title>
+<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1114.5,-42C1137.79,-42 1168.76,-42 1193.99,-42"/>
+<text text-anchor="middle" x="1154.25" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
 </g>
 <!-- https://w3id.org/sdata/core/InformationAgent -->
-<g id="node10" class="node">
+<g id="node8" class="node">
 <title>https://w3id.org/sdata/core/InformationAgent</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1981.5,-60C1981.5,-60 1876.5,-60 1876.5,-60 1870.5,-60 1864.5,-54 1864.5,-48 1864.5,-48 1864.5,-36 1864.5,-36 1864.5,-30 1870.5,-24 1876.5,-24 1876.5,-24 1981.5,-24 1981.5,-24 1987.5,-24 1993.5,-30 1993.5,-36 1993.5,-36 1993.5,-48 1993.5,-48 1993.5,-54 1987.5,-60 1981.5,-60"/>
-<text text-anchor="middle" x="1929" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Agent</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M993.5,-60C993.5,-60 888.5,-60 888.5,-60 882.5,-60 876.5,-54 876.5,-48 876.5,-48 876.5,-36 876.5,-36 876.5,-30 882.5,-24 888.5,-24 888.5,-24 993.5,-24 993.5,-24 999.5,-24 1005.5,-30 1005.5,-36 1005.5,-36 1005.5,-48 1005.5,-48 1005.5,-54 999.5,-60 993.5,-60"/>
+<text text-anchor="middle" x="941" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Agent</text>
 </g>
 <!-- https://w3id.org/sdata/core/MaterialAgent -->
-<g id="node11" class="node">
+<g id="node9" class="node">
 <title>https://w3id.org/sdata/core/MaterialAgent</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1773,-60C1773,-60 1689,-60 1689,-60 1683,-60 1677,-54 1677,-48 1677,-48 1677,-36 1677,-36 1677,-30 1683,-24 1689,-24 1689,-24 1773,-24 1773,-24 1779,-24 1785,-30 1785,-36 1785,-36 1785,-48 1785,-48 1785,-54 1779,-60 1773,-60"/>
-<text text-anchor="middle" x="1731" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Agent</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M785,-60C785,-60 701,-60 701,-60 695,-60 689,-54 689,-48 689,-48 689,-36 689,-36 689,-30 695,-24 701,-24 701,-24 785,-24 785,-24 791,-24 797,-30 797,-36 797,-36 797,-48 797,-48 797,-54 791,-60 785,-60"/>
+<text text-anchor="middle" x="743" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Agent</text>
 </g>
 <!-- https://w3id.org/sdata/core/MaterialAgent&#45;&gt;https://w3id.org/sdata/core/InformationAgent -->
 <g id="edge8" class="edge">
 <title>https://w3id.org/sdata/core/MaterialAgent&#45;&gt;https://w3id.org/sdata/core/InformationAgent</title>
-<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1785.1,-42C1809.61,-42 1838.77,-42 1864.41,-42"/>
-<text text-anchor="middle" x="1824.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
+<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M797.1,-42C821.61,-42 850.77,-42 876.41,-42"/>
+<text text-anchor="middle" x="836.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
+</g>
+<!-- https://w3id.org/sdata/core/InformationSite -->
+<g id="node10" class="node">
+<title>https://w3id.org/sdata/core/InformationSite</title>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1981.5,-60C1981.5,-60 1888.5,-60 1888.5,-60 1882.5,-60 1876.5,-54 1876.5,-48 1876.5,-48 1876.5,-36 1876.5,-36 1876.5,-30 1882.5,-24 1888.5,-24 1888.5,-24 1981.5,-24 1981.5,-24 1987.5,-24 1993.5,-30 1993.5,-36 1993.5,-36 1993.5,-48 1993.5,-48 1993.5,-54 1987.5,-60 1981.5,-60"/>
+<text text-anchor="middle" x="1935" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Information Site</text>
+</g>
+<!-- https://w3id.org/sdata/core/MaterialSite -->
+<g id="node11" class="node">
+<title>https://w3id.org/sdata/core/MaterialSite</title>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1785,-60C1785,-60 1713,-60 1713,-60 1707,-60 1701,-54 1701,-48 1701,-48 1701,-36 1701,-36 1701,-30 1707,-24 1713,-24 1713,-24 1785,-24 1785,-24 1791,-24 1797,-30 1797,-36 1797,-36 1797,-48 1797,-48 1797,-54 1791,-60 1785,-60"/>
+<text text-anchor="middle" x="1749" y="-38.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material Site</text>
+</g>
+<!-- https://w3id.org/sdata/core/MaterialSite&#45;&gt;https://w3id.org/sdata/core/InformationSite -->
+<g id="edge11" class="edge">
+<title>https://w3id.org/sdata/core/MaterialSite&#45;&gt;https://w3id.org/sdata/core/InformationSite</title>
+<path fill="none" stroke="#6b7280" stroke-width="1.6" stroke-dasharray="5,2" d="M1797.38,-42C1821.49,-42 1850.85,-42 1876.24,-42"/>
+<text text-anchor="middle" x="1836.75" y="-48.8" font-family="Helvetica,sans-Serif" font-size="14.00" fill="#6b7280">dual</text>
 </g>
 <!-- https://w3id.org/sdata/core/Agent -->
 <g id="node12" class="node">
@@ -152,104 +152,104 @@
 <!-- https://w3id.org/sdata/core/Identifier -->
 <g id="node14" class="node">
 <title>https://w3id.org/sdata/core/Identifier</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1639.5,-179C1639.5,-179 1588.5,-179 1588.5,-179 1582.5,-179 1576.5,-173 1576.5,-167 1576.5,-167 1576.5,-155 1576.5,-155 1576.5,-149 1582.5,-143 1588.5,-143 1588.5,-143 1639.5,-143 1639.5,-143 1645.5,-143 1651.5,-149 1651.5,-155 1651.5,-155 1651.5,-167 1651.5,-167 1651.5,-173 1645.5,-179 1639.5,-179"/>
-<text text-anchor="middle" x="1614" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Identifier</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1638.5,-179C1638.5,-179 1587.5,-179 1587.5,-179 1581.5,-179 1575.5,-173 1575.5,-167 1575.5,-167 1575.5,-155 1575.5,-155 1575.5,-149 1581.5,-143 1587.5,-143 1587.5,-143 1638.5,-143 1638.5,-143 1644.5,-143 1650.5,-149 1650.5,-155 1650.5,-155 1650.5,-167 1650.5,-167 1650.5,-173 1644.5,-179 1638.5,-179"/>
+<text text-anchor="middle" x="1613" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Identifier</text>
 </g>
 <!-- https://w3id.org/sdata/core/Intangible -->
 <g id="node15" class="node">
 <title>https://w3id.org/sdata/core/Intangible</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1342,-179C1342,-179 1286,-179 1286,-179 1280,-179 1274,-173 1274,-167 1274,-167 1274,-155 1274,-155 1274,-149 1280,-143 1286,-143 1286,-143 1342,-143 1342,-143 1348,-143 1354,-149 1354,-155 1354,-155 1354,-167 1354,-167 1354,-173 1348,-179 1342,-179"/>
-<text text-anchor="middle" x="1314" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Intangible</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1338,-179C1338,-179 1282,-179 1282,-179 1276,-179 1270,-173 1270,-167 1270,-167 1270,-155 1270,-155 1270,-149 1276,-143 1282,-143 1282,-143 1338,-143 1338,-143 1344,-143 1350,-149 1350,-155 1350,-155 1350,-167 1350,-167 1350,-173 1344,-179 1338,-179"/>
+<text text-anchor="middle" x="1310" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Intangible</text>
 </g>
 <!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationArtifact -->
 <g id="edge4" class="edge">
 <title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationArtifact</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1278.47,-142.93C1270.58,-139.79 1262.13,-136.9 1254,-135 1001.15,-76.04 918.77,-175.6 671,-98 648.34,-90.9 625.48,-77.05 608.34,-65.03"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="610,-62.56 601.36,-60.01 606.52,-67.39 610,-62.56"/>
-</g>
-<!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationSite -->
-<g id="edge6" class="edge">
-<title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationSite</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1354.13,-143.4C1383.55,-131.12 1424.4,-113.85 1460,-98 1484.73,-86.99 1512.16,-74.24 1534.34,-63.79"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1535.84,-66.37 1542.26,-60.05 1533.3,-60.99 1535.84,-66.37"/>
-</g>
-<!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/Information -->
-<g id="edge2" class="edge">
-<title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/Information</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1306,-142.99C1296.72,-123.23 1281.31,-90.47 1270.69,-67.86"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1273.32,-66.46 1267.01,-60.03 1267.93,-68.99 1273.32,-66.46"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1274.47,-142.94C1266.58,-139.79 1258.13,-136.9 1250,-135 998.89,-76.39 917.06,-175.12 671,-98 648.34,-90.9 625.48,-77.05 608.34,-65.02"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="610,-62.55 601.36,-60.01 606.53,-67.38 610,-62.55"/>
 </g>
 <!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationProcess -->
 <g id="edge5" class="edge">
 <title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationProcess</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1276.69,-142.98C1269.27,-140.02 1261.47,-137.2 1254,-135 1164.33,-108.65 1134.46,-130.95 1047,-98 1025.58,-89.93 1003.56,-76.77 986.54,-65.35"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="987.79,-62.6 979.1,-60.25 984.43,-67.51 987.79,-62.6"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1350.07,-143.85C1380.76,-131.44 1424.12,-113.8 1462,-98 1489.05,-86.72 1519.19,-73.88 1543.53,-63.45"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1544.91,-66.1 1551.55,-60.01 1542.56,-60.63 1544.91,-66.1"/>
+</g>
+<!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/Information -->
+<g id="edge2" class="edge">
+<title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/Information</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1299.68,-142.99C1287.63,-123.14 1267.63,-90.18 1253.91,-67.56"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1256.29,-65.76 1249.34,-60.03 1251.2,-68.84 1256.29,-65.76"/>
 </g>
 <!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationAgent -->
 <g id="edge3" class="edge">
 <title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationAgent</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1354.38,-155.59C1464.01,-143.5 1761.91,-110 1805,-98 1834.45,-89.8 1865.92,-75.77 1889.79,-63.94"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1891.32,-66.5 1897.58,-60.02 1888.65,-61.18 1891.32,-66.5"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1272.71,-142.91C1265.29,-139.96 1257.48,-137.15 1250,-135 1153.44,-107.27 1120.79,-134.02 1027,-98 1006.34,-90.07 985.37,-76.78 969.31,-65.26"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="970.91,-62.74 962.3,-60.12 967.39,-67.54 970.91,-62.74"/>
+</g>
+<!-- https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationSite -->
+<g id="edge6" class="edge">
+<title>https://w3id.org/sdata/core/Intangible&#45;&gt;https://w3id.org/sdata/core/InformationSite</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M1350.09,-155.83C1461.98,-144.09 1772.4,-110.77 1817,-98 1844.99,-89.98 1874.69,-76.11 1897.29,-64.3"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1898.86,-66.84 1904.97,-60.23 1896.07,-61.58 1898.86,-66.84"/>
 </g>
 <!-- https://w3id.org/sdata/core/Process -->
 <g id="node16" class="node">
 <title>https://w3id.org/sdata/core/Process</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1222,-179C1222,-179 1180,-179 1180,-179 1174,-179 1168,-173 1168,-167 1168,-167 1168,-155 1168,-155 1168,-149 1174,-143 1180,-143 1180,-143 1222,-143 1222,-143 1228,-143 1234,-149 1234,-155 1234,-155 1234,-167 1234,-167 1234,-173 1228,-179 1222,-179"/>
-<text text-anchor="middle" x="1201" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Process</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1218,-179C1218,-179 1176,-179 1176,-179 1170,-179 1164,-173 1164,-167 1164,-167 1164,-155 1164,-155 1164,-149 1170,-143 1176,-143 1176,-143 1218,-143 1218,-143 1224,-143 1230,-149 1230,-155 1230,-155 1230,-167 1230,-167 1230,-173 1224,-179 1218,-179"/>
+<text text-anchor="middle" x="1197" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Process</text>
 </g>
 <!-- https://w3id.org/sdata/core/Role -->
 <g id="node17" class="node">
 <title>https://w3id.org/sdata/core/Role</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1116,-179C1116,-179 1086,-179 1086,-179 1080,-179 1074,-173 1074,-167 1074,-167 1074,-155 1074,-155 1074,-149 1080,-143 1086,-143 1086,-143 1116,-143 1116,-143 1122,-143 1128,-149 1128,-155 1128,-155 1128,-167 1128,-167 1128,-173 1122,-179 1116,-179"/>
-<text text-anchor="middle" x="1101" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Role</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1112,-179C1112,-179 1082,-179 1082,-179 1076,-179 1070,-173 1070,-167 1070,-167 1070,-155 1070,-155 1070,-149 1076,-143 1082,-143 1082,-143 1112,-143 1112,-143 1118,-143 1124,-149 1124,-155 1124,-155 1124,-167 1124,-167 1124,-173 1118,-179 1112,-179"/>
+<text text-anchor="middle" x="1097" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Role</text>
 </g>
 <!-- https://w3id.org/sdata/core/Site -->
 <g id="node18" class="node">
 <title>https://w3id.org/sdata/core/Site</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1022,-179C1022,-179 992,-179 992,-179 986,-179 980,-173 980,-167 980,-167 980,-155 980,-155 980,-149 986,-143 992,-143 992,-143 1022,-143 1022,-143 1028,-143 1034,-149 1034,-155 1034,-155 1034,-167 1034,-167 1034,-173 1028,-179 1022,-179"/>
-<text text-anchor="middle" x="1007" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Site</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1018,-179C1018,-179 988,-179 988,-179 982,-179 976,-173 976,-167 976,-167 976,-155 976,-155 976,-149 982,-143 988,-143 988,-143 1018,-143 1018,-143 1024,-143 1030,-149 1030,-155 1030,-155 1030,-167 1030,-167 1030,-173 1024,-179 1018,-179"/>
+<text text-anchor="middle" x="1003" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Site</text>
 </g>
 <!-- https://w3id.org/sdata/core/Substance -->
 <g id="node19" class="node">
 <title>https://w3id.org/sdata/core/Substance</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M927.5,-179C927.5,-179 868.5,-179 868.5,-179 862.5,-179 856.5,-173 856.5,-167 856.5,-167 856.5,-155 856.5,-155 856.5,-149 862.5,-143 868.5,-143 868.5,-143 927.5,-143 927.5,-143 933.5,-143 939.5,-149 939.5,-155 939.5,-155 939.5,-167 939.5,-167 939.5,-173 933.5,-179 927.5,-179"/>
-<text text-anchor="middle" x="898" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Substance</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M923.5,-179C923.5,-179 864.5,-179 864.5,-179 858.5,-179 852.5,-173 852.5,-167 852.5,-167 852.5,-155 852.5,-155 852.5,-149 858.5,-143 864.5,-143 864.5,-143 923.5,-143 923.5,-143 929.5,-143 935.5,-149 935.5,-155 935.5,-155 935.5,-167 935.5,-167 935.5,-173 929.5,-179 923.5,-179"/>
+<text text-anchor="middle" x="894" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Substance</text>
 </g>
 <!-- https://w3id.org/sdata/core/Tangible -->
 <g id="node20" class="node">
 <title>https://w3id.org/sdata/core/Tangible</title>
-<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M804.5,-179C804.5,-179 759.5,-179 759.5,-179 753.5,-179 747.5,-173 747.5,-167 747.5,-167 747.5,-155 747.5,-155 747.5,-149 753.5,-143 759.5,-143 759.5,-143 804.5,-143 804.5,-143 810.5,-143 816.5,-149 816.5,-155 816.5,-155 816.5,-167 816.5,-167 816.5,-173 810.5,-179 804.5,-179"/>
-<text text-anchor="middle" x="782" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Tangible</text>
+<path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M800.5,-179C800.5,-179 755.5,-179 755.5,-179 749.5,-179 743.5,-173 743.5,-167 743.5,-167 743.5,-155 743.5,-155 743.5,-149 749.5,-143 755.5,-143 755.5,-143 800.5,-143 800.5,-143 806.5,-143 812.5,-149 812.5,-155 812.5,-155 812.5,-167 812.5,-167 812.5,-173 806.5,-179 800.5,-179"/>
+<text text-anchor="middle" x="778" y="-157.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Tangible</text>
 </g>
 <!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialArtifact -->
 <g id="edge14" class="edge">
 <title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialArtifact</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M747.28,-155.21C692.03,-147 581.13,-128.17 491,-98 463.97,-88.95 434.93,-75.47 412.42,-64.12"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="413.67,-61.41 404.75,-60.2 410.97,-66.71 413.67,-61.41"/>
-</g>
-<!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialSite -->
-<g id="edge16" class="edge">
-<title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialSite</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M814.47,-142.99C821.72,-139.83 829.48,-136.93 837,-135 1046.39,-81.23 1120.53,-176.39 1322,-98 1339.91,-91.03 1356.93,-77.86 1369.71,-66.15"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1371.86,-68.21 1375.98,-60.21 1367.77,-63.89 1371.86,-68.21"/>
-</g>
-<!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/Material -->
-<g id="edge12" class="edge">
-<title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/Material</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M816.11,-142.91C822.91,-139.96 830.09,-137.15 837,-135 926.24,-107.22 960.96,-140.88 1044,-98 1058.44,-90.54 1071.58,-78.1 1081.49,-66.93"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1083.98,-68.6 1087.23,-60.2 1079.46,-64.74 1083.98,-68.6"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M743.31,-155.07C688.68,-146.75 579.66,-127.82 491,-98 463.98,-88.91 434.94,-75.43 412.43,-64.09"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="413.68,-61.38 404.76,-60.17 410.98,-66.68 413.68,-61.38"/>
 </g>
 <!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialProcess -->
 <g id="edge15" class="edge">
 <title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialProcess</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M777.06,-142.99C771.37,-123.4 761.96,-91.04 755.4,-68.46"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="758.18,-67.37 752.95,-60.03 752.47,-69.03 758.18,-67.37"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M810.77,-142.87C817.93,-139.77 825.59,-136.91 833,-135 1035.45,-82.73 1104.71,-167.26 1302,-98 1322.12,-90.94 1341.98,-77.58 1356.99,-65.81"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1359.21,-67.84 1363.96,-60.18 1355.47,-63.21 1359.21,-67.84"/>
+</g>
+<!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/Material -->
+<g id="edge12" class="edge">
+<title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/Material</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M812.13,-142.99C818.93,-140.03 826.11,-137.2 833,-135 915.37,-108.71 947.46,-138.23 1024,-98 1038.38,-90.44 1051.52,-77.99 1061.45,-66.84"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1063.93,-68.52 1067.2,-60.13 1059.41,-64.65 1063.93,-68.52"/>
 </g>
 <!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialAgent -->
 <g id="edge13" class="edge">
 <title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialAgent</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M814.13,-142.94C821.46,-139.75 829.35,-136.84 837,-135 1013.92,-92.47 1483.2,-157.97 1655,-98 1674.43,-91.22 1693.19,-77.74 1707.21,-65.82"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1709.26,-67.97 1713.69,-60.13 1705.34,-63.5 1709.26,-67.97"/>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M772.91,-142.99C767.05,-123.4 757.37,-91.04 750.62,-68.46"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="753.38,-67.32 748.1,-60.03 747.68,-69.03 753.38,-67.32"/>
+</g>
+<!-- https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialSite -->
+<g id="edge16" class="edge">
+<title>https://w3id.org/sdata/core/Tangible&#45;&gt;https://w3id.org/sdata/core/MaterialSite</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.6" d="M810.13,-142.93C817.46,-139.74 825.35,-136.83 833,-135 1016,-91.15 1502.54,-163.38 1679,-98 1697.14,-91.28 1714.28,-77.98 1727.06,-66.14"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.6" points="1729.25,-68.16 1733.32,-60.13 1725.13,-63.87 1729.25,-68.16"/>
 </g>
 </g>
 </svg>

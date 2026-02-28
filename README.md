@@ -6,7 +6,7 @@
 [![W3ID](https://img.shields.io/badge/W3ID-w3id.org%2Fsdata-blueviolet.svg)](https://w3id.org/sdata)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-blue.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 [![OWL 2 DL](https://img.shields.io/badge/OWL-2%20DL-blue.svg)](https://www.w3.org/TR/owl2-overview/)
-[![Core](https://img.shields.io/badge/core-v0.5.0%20autark-green.svg)](https://w3id.org/sdata/core/0.5.0)
+[![Core](https://img.shields.io/badge/core-v0.5.1%20autark-green.svg)](https://w3id.org/sdata/core/0.5.1)
 [![Alignment](https://img.shields.io/badge/alignment-BFO%2FPROV%20optional-orange.svg)](https://w3id.org/sdata/alignment/bfo-prov/0.5.0)
 [![Turtle](https://img.shields.io/badge/format-Turtle%20(.ttl)-brightgreen.svg)](https://www.w3.org/TR/turtle/)
 ![GitHub last commit](https://img.shields.io/github/last-commit/lepy/sdata-ontology)
@@ -43,8 +43,8 @@ All IRIs resolve via [w3id.org](https://w3id.org):
 
 ```
 sdata/
-├── sdata-core.ttl              Core ontology (v0.5.0 autark)
-├── sdata-core-v0.5.0.ttl       Versioned autark core snapshot
+├── sdata-core.ttl              Core ontology (v0.5.1 autark)
+├── sdata-core-v0.5.1.ttl       Versioned autark core snapshot
 ├── sdata-core-v0.5.0-bfo-alignment.ttl   Optional BFO/PROV bridge module
 ├── sdata-agents.ttl            SKOS: Agent types
 ├── sdata-*.ttl
@@ -99,7 +99,7 @@ sdata/
 
 ### Dual Principle
 
-`sdata-core` v0.5.0 follows a layered model:
+`sdata-core` v0.5.1 follows a layered model:
 
 - **Domain layer**: `Tangible`, `Intangible`
 - **Dimension layer**: `Artifact`, `Substance`, `Agent`, `Process`, `Site`
@@ -146,10 +146,10 @@ SELECT ?entity ?activity ?agent WHERE {
 
 ## Versioning
 
-Versions follow semantic versioning. Each release is tagged (`v0.5.0`, …).
+Versions follow semantic versioning. Each release is tagged (`v0.5.1`, …).
 
 - **Ontology IRI** (always current): `https://w3id.org/sdata/core`
-- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.5.0`
+- **Version IRI** (pinned): `https://w3id.org/sdata/core/0.5.1`
 
 Import the unversioned IRI to track latest, or the versioned IRI to pin.
 
@@ -229,7 +229,7 @@ Optional alignment overlay for class hierarchy:
 
 ```bash
 uv run python -m src.visualization.class_hierarchy_plot \
-  --core sdata-core-v0.5.0.ttl \
+  --core sdata-core-v0.5.1.ttl \
   --alignment sdata-core-v0.5.0-bfo-alignment.ttl \
   --out-dir docs/diagrams \
   --name sdata-class-hierarchy-aligned \

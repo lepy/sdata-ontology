@@ -50,7 +50,7 @@ Optional (with alignment module):
 
 ```bash
 uv run python -m src.visualization.class_hierarchy_plot \
-  --core sdata-core-v0.5.0.ttl \
+  --core sdata-core-v0.5.1.ttl \
   --alignment sdata-core-v0.5.0-bfo-alignment.ttl \
   --out-dir docs/diagrams \
   --name sdata-class-hierarchy-aligned \

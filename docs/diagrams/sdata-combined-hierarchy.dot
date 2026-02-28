@@ -26,6 +26,40 @@ digraph "" {
 		fontsize=10,
 		penwidth=1.5
 	];
+	subgraph cluster_proc {
+		graph [color="#B6D7A8",
+			label="sdata-processtypes verb classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Creation];
+		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Destruction];
+		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Observation];
+		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Preservation];
+		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Recovery];
+		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transfer];
+		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transformation];
+	}
 	subgraph cluster_core {
 		graph [color="#90B5E8",
 			label="sdata-core classes",
@@ -133,40 +167,6 @@ digraph "" {
 			fontcolor="#1A365D",
 			label=Tangible];
 	}
-	subgraph cluster_proc {
-		graph [color="#B6D7A8",
-			label="sdata-processtypes verb classes",
-			style=rounded
-		];
-		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Creation];
-		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Destruction];
-		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Observation];
-		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Preservation];
-		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Recovery];
-		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transfer];
-		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transformation];
-	}
 	subgraph cluster_agents {
 		graph [color="#9AD9BF",
 			label="sdata-agents vocabulary",
@@ -176,10 +176,6 @@ digraph "" {
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
 			label=Actuator];
-		"https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="Digital Twin"];
 		"https://w3id.org/sdata/vocab/agents/Hardware"	[color="#2F855A",
 			fillcolor="#F0FFF9",
 			fontcolor="#1C4532",
@@ -224,9 +220,6 @@ digraph "" {
 		label=broader,
 		style=dotted];
 	"https://w3id.org/sdata/vocab/agents/Hardware" -> "https://w3id.org/sdata/vocab/agents/Sensor"	[color="#2F855A",
-		label=broader,
-		style=dotted];
-	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/DigitalTwin"	[color="#2F855A",
 		label=broader,
 		style=dotted];
 	"https://w3id.org/sdata/vocab/agents/Software" -> "https://w3id.org/sdata/vocab/agents/Service"	[color="#2F855A",

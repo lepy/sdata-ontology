@@ -24,7 +24,7 @@ ex:Node42
 ex:ZwickZ100
     a sdata:MaterialAgent ;
     sdata:name "Zwick Z100" ;
-    sdata:agentType "Machine" ;
+    sdata:agentType "Hardware" ;
     sdata:locatedAt ex:LaborHalle3 .
 
 ex:LSDYNA_R14

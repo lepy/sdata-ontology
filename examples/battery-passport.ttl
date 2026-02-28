@@ -5,7 +5,7 @@
 @prefix ex: <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Pack Product Passport (sdata core 0.3.0)
+# Example: Battery Pack Product Passport (sdata core 0.5.1)
 # =============================================================================
 
 # Material Agents
@@ -18,7 +18,7 @@ ex:OperatorMueller
 ex:ZwickZ100
     a sdata:MaterialAgent ;
     sdata:name "Zwick Z100" ;
-    sdata:agentType "Machine" ;
+    sdata:agentType "Hardware" ;
     sdata:locatedAt ex:PackAssembly .
 
 # Information Agents

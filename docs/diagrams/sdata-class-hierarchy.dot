@@ -54,18 +54,18 @@ digraph "" {
 				fontcolor="#1A365D",
 				label="Material Artifact"];
 		}
-		subgraph cluster_dual_rank_MaterialSite {
+		subgraph cluster_dual_rank_MaterialProcess {
 			graph [rank=same,
 				style=invis
 			];
-			"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
+			"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
-				label="Information Site"];
-			"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
+				label="Information Process"];
+			"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
-				label="Material Site"];
+				label="Material Process"];
 		}
 		subgraph cluster_dual_rank_Material {
 			graph [rank=same,
@@ -80,19 +80,6 @@ digraph "" {
 				fontcolor="#1A365D",
 				label=Material];
 		}
-		subgraph cluster_dual_rank_MaterialProcess {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationProcess"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label="Information Process"];
-			"https://w3id.org/sdata/core/MaterialProcess"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label="Material Process"];
-		}
 		subgraph cluster_dual_rank_MaterialAgent {
 			graph [rank=same,
 				style=invis
@@ -105,6 +92,19 @@ digraph "" {
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
 				label="Material Agent"];
+		}
+		subgraph cluster_dual_rank_MaterialSite {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/InformationSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Information Site"];
+			"https://w3id.org/sdata/core/MaterialSite"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label="Material Site"];
 		}
 		"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
