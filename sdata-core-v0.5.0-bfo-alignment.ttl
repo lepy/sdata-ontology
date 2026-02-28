@@ -1,0 +1,420 @@
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix bfo:     <http://purl.obolibrary.org/obo/BFO_> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+
+
+# =============================================================================
+# sdata–BFO/PROV Alignment Module v0.5.0
+# 28 February 2026
+# 14 Class Axioms (12 BFO + 2 PROV) · 4 Property Axioms
+# =============================================================================
+#
+#                    ╔═══════════════════════════════════════════╗
+#                    ║         ALIGNMENT-MODUL (optional)        ║
+#                    ║                                           ║
+#                    ║  Schließt sdata v0.5.0 Autark an BFO      ║
+#                    ║  und PROV-O an — ohne die Kernontologie   ║
+#                    ║  zu verändern.                             ║
+#                    ║                                           ║
+#                    ║  Importieren: owl:imports dieses Modul     ║
+#                    ║  Ignorieren:  sdata bleibt autark          ║
+#                    ╚═══════════════════════════════════════════╝
+#
+# =============================================================================
+
+<https://w3id.org/sdata/alignment/bfo-prov>
+    rdf:type         owl:Ontology ;
+    rdfs:label       "sdata–BFO/PROV Alignment v0.5.0"@en ,
+                     "sdata–BFO/PROV-Alignment v0.5.0"@de ;
+    owl:versionInfo  """0.5.0 — 28 February 2026. Alignment-Modul.
+Verbindet die autarke sdata-Kernontologie (v0.5.0) mit BFO 2020
+(ISO/IEC 21838-2:2021) und PROV-O (W3C Recommendation).
+
+Dieses Modul enthält NUR Brückenaxiome:
+  · 14 rdfs:subClassOf-Axiome   (sdata-Klasse → BFO/PROV-Klasse)
+  · 4 rdfs:subPropertyOf-Axiome (sdata-Property → PROV-Property)
+
+Es definiert keine neuen Klassen oder Properties.
+Es verändert keine bestehenden Axiome der Kernontologie.
+Es ist vollständig optional — sdata funktioniert ohne dieses Modul."""@en ;
+
+    owl:versionIRI   <https://w3id.org/sdata/alignment/bfo-prov/0.5.0> ;
+
+    # ─── Imports ─────────────────────────────────────────────────────────────
+    owl:imports      <https://w3id.org/sdata/core> ;
+    owl:imports      <urn:sdata:vendor:bfo> ;
+    owl:imports      <urn:sdata:vendor:prov> ;
+
+    # ─── Conformance ─────────────────────────────────────────────────────────
+    dcterms:conformsTo <urn:iso:std:iso-iec:21838:-2:ed-1:v1:en> ;
+    rdfs:seeAlso     <https://basic-formal-ontology.org/bfo-2020.html> ;
+    rdfs:seeAlso     <https://www.w3.org/TR/prov-o/> ;
+    dc:license       <https://creativecommons.org/licenses/by/4.0/> ;
+
+    rdfs:comment     """Brückenmodul zwischen der autarken sdata-Ontologie und den
+etablierten Oberen Ontologien BFO und PROV-O.
+
+═══════════════════════════════════════════════════════════════
+ DESIGNPRINZIP: ADDITIVE AXIOME, KEINE MUTATION
+═══════════════════════════════════════════════════════════════
+
+Dieses Modul folgt dem Open World Assumption-Prinzip von OWL:
+neue Axiome können hinzugefügt werden, ohne bestehende zu ändern.
+Alle Axiome hier sind rein additiv — sie spezialisieren sdata-Klassen
+als Subklassen von BFO/PROV-Klassen, ohne die sdata-interne Logik
+zu berühren.
+
+Importkette:
+  Anwendungsontologie
+    └── owl:imports sdata-bfo-alignment.ttl
+          ├── owl:imports sdata-core.ttl (v0.5.0 autark)
+          ├── owl:imports BFO 2020
+          └── owl:imports PROV-O
+
+Wer nur sdata-core.ttl importiert, bekommt die autarke Fassung.
+Wer zusätzlich dieses Modul importiert, bekommt BFO/PROV-Kompatibilität.
+
+═══════════════════════════════════════════════════════════════
+ BFO-ALIGNMENT-STRATEGIE
+═══════════════════════════════════════════════════════════════
+
+Die Alignment-Axiome werden NUR auf Blattebene assertiert.
+Auf Domänen- und Dimensionsebene wird NICHTS assertiert, weil:
+
+  Domänenebene:
+    sdata:Tangible spannt bfo:MaterialEntity ∪ bfo:Site ∪ bfo:Process
+    sdata:Intangible spannt bfo:GDC ∪ bfo:Process
+    → Kein einzelner BFO-Elternteil. bfo:Entity wäre korrekt aber
+      informationally empty. Also: kein Axiom.
+
+  Dimensionsebene:
+    sdata:Artifact spannt bfo:MaterialEntity ∪ bfo:GDC
+    sdata:Substance spannt bfo:MaterialEntity ∪ bfo:GDC
+    sdata:Agent spannt bfo:MaterialEntity ∪ bfo:GDC
+    sdata:Site spannt bfo:Site ∪ bfo:GDC
+    → Kein einzelner BFO-Elternteil. Also: kein Axiom.
+
+    sdata:Process ≡ MaterialProcess ∪ InformationProcess
+    Beide ⊆ bfo:Process → Reasoner inferiert sdata:Process ⊆ bfo:Process
+    → Kein manuelles Axiom nötig (Redundanzvermeidung).
+
+Das Ergebnis: 10 Blatt-Axiome + 1 Role-Axiom + 1 Identifier-Axiom
+= 12 Klassen-Alignment-Axiome. Minimal, präzise, inferierfähig.
+
+═══════════════════════════════════════════════════════════════
+ PROV-O-ALIGNMENT-STRATEGIE
+═══════════════════════════════════════════════════════════════
+
+Klassen:
+  MaterialAgent und InformationAgent werden zu prov:Agent-Subklassen.
+  → Der Reasoner inferiert: sdata:Agent ⊆ prov:Agent (via equivalentClass).
+  → sdata:Agent wird NICHT manuell als prov:Agent-Subklasse assertiert
+    (Redundanzvermeidung — es folgt aus den Blatt-Axiomen).
+
+  MaterialProcess und InformationProcess werden NICHT zu
+  prov:Activity-Subklassen. PROV-Kompatibilität für Prozesse
+  läuft über Property-Mapping (siehe unten).
+
+Properties:
+  4 sdata-Properties werden als Sub-Properties ihrer PROV-Pendants
+  registriert. Damit erkennt jedes PROV-aware Tool automatisch die
+  sdata-Relationen als spezialisierte PROV-Relationen.
+
+═══════════════════════════════════════════════════════════════
+ BFO-ZUORDNUNGSTABELLE
+═══════════════════════════════════════════════════════════════
+
+ sdata-Klasse              BFO 2020 Klasse                      BFO-ID
+ ─────────────────────── ──────────────────────────────────── ──────────
+ MaterialArtifact         MaterialEntity                       0000040
+ Material                 MaterialEntity                       0000040
+ MaterialAgent            MaterialEntity                       0000040
+ MaterialProcess          Process                              0000015
+ MaterialSite             Site (⊂ ImmaterialEntity)            0000029
+ InformationArtifact      GenericallyDependentContinuant       0000031
+ Information              GenericallyDependentContinuant       0000031
+ InformationAgent         GenericallyDependentContinuant       0000031
+ InformationProcess       Process                              0000015
+ InformationSite          GenericallyDependentContinuant       0000031
+ Role                     Role (⊂ RealizableEntity)            0000023
+ Identifier               GenericallyDependentContinuant       0000031
+ ─────────────────────── ──────────────────────────────────── ──────────
+ Tangible                 (kein Axiom — spannt ME ∪ Site ∪ P)
+ Intangible               (kein Axiom — spannt GDC ∪ P)
+ Artifact                 (kein Axiom — spannt ME ∪ GDC)
+ Substance                (kein Axiom — spannt ME ∪ GDC)
+ Agent                    (kein Axiom — spannt ME ∪ GDC)
+ Process                  (inferiert → bfo:Process)
+ Site                     (kein Axiom — spannt Site ∪ GDC)
+
+ PROV-O-ZUORDNUNGSTABELLE
+ ─────────────────────── ──────────────────────────────────────────────
+ MaterialAgent            prov:Agent
+ InformationAgent         prov:Agent
+ Agent                    (inferiert → prov:Agent)
+ consumes                 prov:used              (rdfs:subPropertyOf)
+ generates                prov:generated         (rdfs:subPropertyOf)
+ wasPerformedBy           prov:wasAssociatedWith (rdfs:subPropertyOf)
+ derivedFrom              prov:wasDerivedFrom    (rdfs:subPropertyOf)
+"""@en .
+
+
+# =============================================================================
+# I. BFO CLASS ALIGNMENT — 12 Axiome (Blattebene + Orthogonal)
+# =============================================================================
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TANGIBLE-Blätter → BFO
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── MaterialArtifact → bfo:MaterialEntity ───────────────────────────────────
+sdata:MaterialArtifact
+    rdfs:subClassOf bfo:0000040 .   # bfo:MaterialEntity (ISO/IEC 21838-2:2021)
+    # Begründung: Diskretes materielles Objekt — paradigmatischer Fall von
+    # MaterialEntity. Unabhängig existierend, räumlich ausgedehnt.
+
+# ─── Material → bfo:MaterialEntity ───────────────────────────────────────────
+sdata:Material
+    rdfs:subClassOf bfo:0000040 .   # bfo:MaterialEntity
+    # Begründung: Homogene materielle Substanz — MaterialEntity im Sinne
+    # von BFO's 'object aggregate' oder 'fiat object part'. Masse-tragend,
+    # räumlich lokalisiert, unabhängig existierend.
+
+# ─── MaterialAgent → bfo:MaterialEntity ──────────────────────────────────────
+sdata:MaterialAgent
+    rdfs:subClassOf bfo:0000040 .   # bfo:MaterialEntity
+    # Begründung: Person oder Maschine — materielles Objekt mit der
+    # zusätzlichen Fähigkeit, Verantwortung zu tragen und zu agieren.
+
+# ─── MaterialProcess → bfo:Process ───────────────────────────────────────────
+sdata:MaterialProcess
+    rdfs:subClassOf bfo:0000015 .   # bfo:Process
+    # Begründung: Zeitlich ausgedehntes Occurrent, das auf Materie operiert.
+    # BFO's Process ist die einzige Occurrent-Kategorie, die hier passt.
+    # Kein prov:Activity-Alignment (PROV über Property-Mapping).
+
+# ─── MaterialSite → bfo:Site ─────────────────────────────────────────────────
+sdata:MaterialSite
+    rdfs:subClassOf bfo:0000029 .   # bfo:Site (⊂ ImmaterialEntity ⊂ IndependentContinuant)
+    # Begründung: Dreidimensionaler räumlicher Bereich — immateriell
+    # im BFO-Sinne (kein Masse-Träger), aber räumlich definiert.
+    # BFO's Site ist die präzise Kategorie für solche Raumregionen.
+    #
+    # Ontologische Feinheit: In sdata v0.5.0 ist MaterialSite ⊆ Tangible
+    # (man kann auf den Ort zeigen). In BFO ist Site ⊆ ImmaterialEntity
+    # (keine Masse). Kein Widerspruch: sdata's Tangible-Kriterium ist
+    # 'zeigbar', BFO's Material-Kriterium ist 'masse-tragend'. Ein Ort
+    # ist zeigbar aber masselos — Tangible in sdata, immateriell in BFO.
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# INTANGIBLE-Blätter → BFO
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── InformationArtifact → bfo:GenericallyDependentContinuant ────────────────
+sdata:InformationArtifact
+    rdfs:subClassOf bfo:0000031 .   # bfo:GenericallyDependentContinuant (GDC)
+    # Begründung: Diskretes Informationsding, das von materiellen Trägern
+    # abhängt aber nicht mit ihnen identisch ist. GDC ist BFO's Kategorie
+    # für Entitäten, die an verschiedenen Trägern realisiert werden können.
+
+# ─── Information → bfo:GenericallyDependentContinuant ────────────────────────
+sdata:Information
+    rdfs:subClassOf bfo:0000031 .   # bfo:GenericallyDependentContinuant
+    # Begründung: Homogene Informationssubstanz — GDC, weil sie von
+    # Trägern abhängt und über Träger hinweg identisch bleiben kann.
+
+# ─── InformationAgent → bfo:GenericallyDependentContinuant ──────────────────
+sdata:InformationAgent
+    rdfs:subClassOf bfo:0000031 .   # bfo:GenericallyDependentContinuant
+    # Begründung: Organisation, Solver, Bot — nicht-materielle Entität mit
+    # Handlungsfähigkeit. GDC, weil von materiellen Trägern abhängig
+    # (eine Organisation braucht Personen und Infrastruktur).
+
+# ─── InformationProcess → bfo:Process ────────────────────────────────────────
+sdata:InformationProcess
+    rdfs:subClassOf bfo:0000015 .   # bfo:Process
+    # Begründung: Zeitlich ausgedehntes Occurrent in der Informationsdomäne.
+    # Wie MaterialProcess ein bfo:Process — die Occurrent-Natur ist
+    # domänenunabhängig.
+    #
+    # Inferenz: Da beide Process-Blätter ⊆ bfo:Process, inferiert der
+    # Reasoner korrekt: sdata:Process (Dimension) ⊆ bfo:Process.
+
+# ─── InformationSite → bfo:GenericallyDependentContinuant ───────────────────
+sdata:InformationSite
+    rdfs:subClassOf bfo:0000031 .   # bfo:GenericallyDependentContinuant
+    # Begründung: Logischer Ort (Cloud-Region, Namespace) — abhängig von
+    # materiellen Trägern, migrierbar. GDC, nicht bfo:Site, weil bfo:Site
+    # per Definition räumlich-dreidimensional ist, InformationSite aber nicht.
+    #
+    # Asymmetrie: MaterialSite → bfo:Site, InformationSite → bfo:GDC.
+    # Dies spiegelt die fundamentale Asymmetrie: räumliche Orte und
+    # logische Orte sind ontologisch verschieden, auch wenn sdata sie
+    # unter der gemeinsamen Dimension 'Site' vereint.
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ORTHOGONAL → BFO
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─── Role → bfo:Role ─────────────────────────────────────────────────────────
+sdata:Role
+    rdfs:subClassOf bfo:0000023 .   # bfo:Role (⊂ RealizableEntity ⊂ SDC)
+    # Begründung: Kontextabhängige, realisierbare Entität — exakt BFO's
+    # Role-Konzept. Ein Träger realisiert eine Rolle, wenn die
+    # entsprechenden Bedingungen erfüllt sind.
+
+# ─── Identifier → bfo:GenericallyDependentContinuant ────────────────────────
+sdata:Identifier
+    rdfs:subClassOf bfo:0000031 .   # bfo:GenericallyDependentContinuant
+    # Begründung: Typisierter Identifikations-Token — von Trägern abhängig
+    # (eine GTIN existiert auf Etiketten, in Datenbanken, in Registries),
+    # aber über Träger hinweg identisch. GDC ist die passende Kategorie.
+
+
+# =============================================================================
+# II. PROV-O CLASS ALIGNMENT — 2 Axiome (Blattebene)
+# =============================================================================
+#
+# Strategie:
+#   · Agent-Blätter → prov:Agent (sicher, axiomatisch leichtgewichtig)
+#   · Process-Blätter → NICHT prov:Activity (PROV über Property-Mapping)
+#
+# Der Reasoner inferiert aus den Blatt-Axiomen:
+#   sdata:Agent (Dimension) ⊆ prov:Agent
+# Dieses Axiom wird NICHT manuell assertiert (Redundanzvermeidung).
+# =============================================================================
+
+# ─── MaterialAgent → prov:Agent ──────────────────────────────────────────────
+sdata:MaterialAgent
+    rdfs:subClassOf prov:Agent .
+    # Begründung: prov:Agent ist axiomatisch leichtgewichtig — es assertiert
+    # nur 'etwas, das Verantwortung tragen kann'. Keine problematischen
+    # Vererbungsaxiome. Sicher für Dual-Inheritance (bfo:ME + prov:Agent).
+
+# ─── InformationAgent → prov:Agent ──────────────────────────────────────────
+sdata:InformationAgent
+    rdfs:subClassOf prov:Agent .
+    # Begründung: Gleiche Argumentation wie MaterialAgent. Organisation,
+    # Solver, Bot — alle prov:Agent-fähig.
+    #
+    # Inferenz: sdata:Agent ≡ MA ∪ IA, beide ⊆ prov:Agent
+    # → Reasoner inferiert: sdata:Agent ⊆ prov:Agent. ✓
+
+
+# =============================================================================
+# III. PROV-O PROPERTY ALIGNMENT — 4 Axiome
+# =============================================================================
+#
+# Strategie: Property-Mapping statt Class-Inheritance.
+#
+# sdata-Prozesse erben NICHT von prov:Activity, aber ihre Relationen
+# sind Sub-Properties der PROV-Pendants. Damit erkennt jedes PROV-aware
+# Tool (PROV-Validator, Lineage-Viewer) automatisch:
+#   · sdata:consumes-Tripel als prov:used-Tripel
+#   · sdata:generates-Tripel als prov:generated-Tripel
+#   · sdata:wasPerformedBy-Tripel als prov:wasAssociatedWith-Tripel
+#   · sdata:derivedFrom-Tripel als prov:wasDerivedFrom-Tripel
+#
+# KEIN ALIGNMENT FÜR:
+#   · sdata:realizes (kein PROV-Pendant)
+#   · sdata:represents (kein PROV-Pendant — PROV hat prov:alternateOf,
+#     aber die Semantik ist zu verschieden)
+#   · sdata:consistsOf, hasPart, recoveredFrom (materiell, kein PROV-Pendant)
+#   · sdata:locatedAt, hostedAt, hostedOn, containsSite (spatial/logical,
+#     kein PROV-Pendant)
+#   · sdata:hasIdentifier (sdata-spezifisch)
+# =============================================================================
+
+# ─── consumes → prov:used ────────────────────────────────────────────────────
+sdata:consumes
+    rdfs:subPropertyOf prov:used .
+    # prov:used: 'An Activity used an Entity.'
+    # sdata:consumes spezialisiert dies auf sdata-Prozesse und -Artefakte/-Substanzen.
+    # Jedes sdata:consumes-Tripel ist automatisch ein prov:used-Tripel.
+
+# ─── generates → prov:generated ──────────────────────────────────────────────
+sdata:generates
+    rdfs:subPropertyOf prov:generated .
+    # prov:generated: 'An Activity generated an Entity.'
+    # Richtung beachten: prov:generated hat Domain prov:Activity,
+    # Range prov:Entity. sdata:generates hat Domain sdata:Process,
+    # Range sdata:Artifact ∪ sdata:Substance. Kompatibel, da die
+    # sdata-Ranges informell 'Entities' im PROV-Sinne sind.
+
+# ─── wasPerformedBy → prov:wasAssociatedWith ─────────────────────────────────
+sdata:wasPerformedBy
+    rdfs:subPropertyOf prov:wasAssociatedWith .
+    # prov:wasAssociatedWith: 'An Activity was associated with an Agent.'
+    # sdata:wasPerformedBy ist die spezialisierte 'performed by'-Variante.
+    # Die Richtung passt: Process (≈ Activity) → Agent.
+
+# ─── derivedFrom → prov:wasDerivedFrom ───────────────────────────────────────
+sdata:derivedFrom
+    rdfs:subPropertyOf prov:wasDerivedFrom .
+    # prov:wasDerivedFrom: 'An Entity was derived from another Entity.'
+    # sdata:derivedFrom spezialisiert dies auf Information-Substanzen und
+    # InformationArtifacts — die informationelle Lineage.
+
+
+# =============================================================================
+# IV. DESIGNENTSCHEIDUNGEN
+# =============================================================================
+#
+# WARUM DIESES MODUL EXISTIERT:
+# ─────────────────────────────
+# sdata v0.5.0 ist absichtlich autark — es funktioniert ohne BFO und PROV.
+# Aber BFO und PROV sind etablierte Standards:
+#   · BFO 2020 (ISO/IEC 21838-2:2021) — Obere Ontologie für Biowissenschaften,
+#     Industrie, und interdisziplinäre Interoperabilität.
+#   · PROV-O (W3C Recommendation) — Standard für Provenance-Tracking.
+#
+# Dieses Alignment-Modul ermöglicht beides:
+#   · Autarker Betrieb: nur sdata-core.ttl importieren.
+#   · Standards-konformer Betrieb: zusätzlich dieses Modul importieren.
+#
+# WARUM NUR BLATTEBENE:
+# ─────────────────────
+# Die Domänenklassen (Tangible, Intangible) und Dimensionsklassen
+# (Artifact, Substance, Agent, Site) spannen verschiedene BFO-Kategorien.
+# Ein Alignment auf diesen Ebenen wäre entweder:
+#   · Zu vage (→ bfo:Entity — informationally empty)
+#   · Falsch (→ bfo:MaterialEntity für Tangible — ignoriert Process/Site)
+#
+# Einzige Ausnahme: sdata:Process (Dimension), wo der Reasoner korrekt
+# inferiert: sdata:Process ⊆ bfo:Process (weil beide Blätter ⊆ bfo:Process).
+# Dieses Axiom wird NICHT manuell assertiert (Redundanzvermeidung).
+#
+# WARUM KEIN prov:Activity:
+# ─────────────────────────
+# prov:Activity bringt eigene Axiome mit (prov:startedAtTime,
+# prov:endedAtTime, prov:wasInformedBy, etc.), die zu
+# Dual-Inheritance-Problemen führen können. sdata vermeidet dies
+# durch Property-Mapping: die vier Sub-Property-Axiome reichen aus,
+# damit PROV-Tools sdata-Daten als PROV-Graphen interpretieren können.
+#
+# MATERIALSITE UND BFO:SITE — DIE FEINHEIT:
+# ──────────────────────────────────────────
+# In sdata ist MaterialSite ⊆ Tangible (zeigbar).
+# In BFO ist Site ⊆ ImmaterialEntity (masselos).
+# Kein Widerspruch: sdata's Tangible = 'zeigbar', BFO's Material = 'masse-
+# tragend'. Ein Fabrikgelände ist zeigbar (Tangible) aber masselos (BFO:
+# ImmaterialEntity). Die Kriterien sind orthogonal.
+#
+# REASONER-INFERENZEN (durch dieses Modul aktiviert):
+# ────────────────────────────────────────────────────
+#   sdata:Process ⊆ bfo:Process          (via MP ⊆ bfo:P ∧ IP ⊆ bfo:P)
+#   sdata:Agent ⊆ prov:Agent             (via MA ⊆ prov:A ∧ IA ⊆ prov:A)
+#   sdata:Tangible ⊆ bfo:Entity          (via Blätter, trivial)
+#   sdata:Intangible ⊆ bfo:Entity        (via Blätter, trivial)
+#
+# =============================================================================
+# ENDE — sdata–BFO/PROV Alignment v0.5.0 — 28 February 2026
+# =============================================================================

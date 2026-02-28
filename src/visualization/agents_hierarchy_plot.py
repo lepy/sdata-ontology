@@ -13,10 +13,8 @@ from rdflib.namespace import OWL, SKOS
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
-PROV_AGENT = URIRef("http://www.w3.org/ns/prov#Agent")
 SDATA_MATERIAL_AGENT = SDATA.MaterialAgent
 SDATA_INFORMATION_AGENT = SDATA.InformationAgent
-BFO_PREFIX = "http://purl.obolibrary.org/obo/BFO_"
 SDATA_HASH = "https://w3id.org/sdata/core#"
 SAGENTS_HASH = "https://w3id.org/sdata/vocab/agents#"
 
@@ -25,7 +23,7 @@ SAGENTS_HASH = "https://w3id.org/sdata/vocab/agents#"
 class HierarchyNode:
     iri: URIRef
     label: str
-    kind: str  # "prov" | "sdata" | "scheme" | "concept"
+    kind: str  # "sdata" | "scheme" | "concept"
 
 
 @dataclass(frozen=True)
@@ -94,7 +92,12 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
     return str(sorted(labels, key=score)[0])
 
 
-def _infer_side(graph: Graph, concept: URIRef, broader_index: dict[URIRef, set[URIRef]], seen: set[URIRef] | None = None) -> str | None:
+def _infer_side(
+    graph: Graph,
+    concept: URIRef,
+    broader_index: dict[URIRef, set[URIRef]],
+    seen: set[URIRef] | None = None,
+) -> str | None:
     seen = seen or set()
     if concept in seen:
         return None
@@ -127,16 +130,6 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
                 nodes[sdata_class] = "sdata"
                 if sdata_class not in agent_roots:
                     agent_roots.append(sdata_class)
-            for parent in graph.objects(alias, RDFS.subClassOf):
-                if not isinstance(parent, URIRef):
-                    continue
-                parent = _canon_core(parent)
-                if parent == PROV_AGENT:
-                    nodes[parent] = "prov"
-                    edges.add(HierarchyEdge(parent=parent, child=sdata_class))
-                if str(parent).startswith(BFO_PREFIX):
-                    nodes[parent] = "bfo"
-                    edges.add(HierarchyEdge(parent=parent, child=sdata_class))
 
     schemes = [
         scheme
@@ -212,7 +205,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Agents Hierarchy (sdata Material/Information agents -> SKOS agent types)",
+        label="sdata Agents Hierarchy (autark core agents -> SKOS agent types)",
         labelloc="t",
         labeljust="c",
     )
@@ -231,12 +224,6 @@ def build_agraph(model: HierarchyModel):
         fontname="Helvetica",
     )
 
-    prov_cluster = graph.add_subgraph(
-        name="cluster_prov", label="PROV ontology", color="#F3C887", style="rounded"
-    )
-    bfo_cluster = graph.add_subgraph(
-        name="cluster_bfo", label="BFO ontology", color="#F3C887", style="rounded"
-    )
     core_cluster = graph.add_subgraph(
         name="cluster_core", label="sdata-core ontology", color="#90B5E8", style="rounded"
     )
@@ -245,19 +232,13 @@ def build_agraph(model: HierarchyModel):
     )
 
     style_map = {
-        "bfo": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
-        "prov": {"fillcolor": "#FFF4E5", "color": "#B7791F", "fontcolor": "#7B341E"},
         "sdata": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "scheme": {"fillcolor": "#E7FFF6", "color": "#2F855A", "fontcolor": "#1C4532"},
         "concept": {"fillcolor": "#F0FFF9", "color": "#2F855A", "fontcolor": "#1C4532"},
     }
 
     for node in model.nodes:
-        if node.kind == "prov":
-            target = prov_cluster
-        elif node.kind == "bfo":
-            target = bfo_cluster
-        elif node.kind == "sdata":
+        if node.kind == "sdata":
             target = core_cluster
         else:
             target = agents_cluster
@@ -276,20 +257,13 @@ def build_agraph(model: HierarchyModel):
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
     legend.add_node("legend_sdata", label="sdata agent class", **style_map["sdata"])
-    legend.add_node("legend_bfo", label="BFO class", **style_map["bfo"])
     legend.add_node("legend_scheme", label="SKOS ConceptScheme", **style_map["scheme"])
     legend.add_node("legend_concept", label="SKOS Concept", **style_map["concept"])
     legend.add_edge("legend_sdata", "legend_scheme", label="typed via sdata:agentType", color="#4A5568")
-    legend.add_edge("legend_bfo", "legend_sdata", label="superclass → subclass", color="#4A5568")
     legend.add_edge("legend_scheme", "legend_concept", label="broader -> narrower", color="#4A5568")
 
-    # Layering hints: top=prov+bfo, then sdata-core, then sdata-agents.
-    prov_cluster.add_node("__anchor_prov", style="invis", width="0", height="0", label="")
-    bfo_cluster.add_node("__anchor_bfo", style="invis", width="0", height="0", label="")
     core_cluster.add_node("__anchor_core", style="invis", width="0", height="0", label="")
     agents_cluster.add_node("__anchor_agents", style="invis", width="0", height="0", label="")
-    graph.add_edge("__anchor_prov", "__anchor_core", style="invis", weight="20")
-    graph.add_edge("__anchor_bfo", "__anchor_core", style="invis", weight="20")
     graph.add_edge("__anchor_core", "__anchor_agents", style="invis", weight="20")
 
     return graph

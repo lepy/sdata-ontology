@@ -5,10 +5,11 @@ sdata is a modular ontology suite for Product Passports, Circular Economy, and D
 ## Included modules
 
 - `sdata-core.ttl`: core ontology classes and properties
+- `sdata-core-v0.5.0-bfo-alignment.ttl`: optional BFO/PROV bridge axioms
 - `sdata-agents.ttl`: SKOS vocabulary for agent typing
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **17 classes** (`5 dimensions + 10 leaf + 2 orthogonal`).
+Current core model: **19 classes** (`2 domains + 5 dimensions + 10 leaf + 2 orthogonal`), fully autark (no ontology imports).
 
 ## Ontology docs with tensile test examples
 
@@ -43,6 +44,17 @@ uv run python -m src.visualization.core_processtypes_sdata_only_plot --out-dir d
 uv run python -m src.visualization.process_dual_hierarchy_plot --out-dir docs/diagrams --format both
 uv run python -m src.visualization.combined_hierarchy_plot --out-dir docs/diagrams --format both
 uv run python -m src.visualization.lifecycle_plot --out-dir docs/diagrams --format both
+```
+
+Optional (with alignment module):
+
+```bash
+uv run python -m src.visualization.class_hierarchy_plot \
+  --core sdata-core-v0.5.0.ttl \
+  --alignment sdata-core-v0.5.0-bfo-alignment.ttl \
+  --out-dir docs/diagrams \
+  --name sdata-class-hierarchy-aligned \
+  --format both
 ```
 
 Oder über Makefile:
