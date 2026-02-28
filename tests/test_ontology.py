@@ -38,7 +38,7 @@ def test_turtle_syntax(ttl_file):
 # ─── Core Ontology Structure ─────────────────────────────────────────────────
 
 EXPECTED_CLASSES = [
-    # Domain layer (v0.5.0)
+    # Domain layer (v0.5.1)
     "Tangible", "Intangible",
     # Dimension layer
     "Artifact", "Substance", "Agent", "Process", "Site",

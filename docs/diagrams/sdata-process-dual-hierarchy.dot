@@ -26,20 +26,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_information_branch {
-		graph [color="#A9D18E",
-			label="Information process branch",
-			rankdir=TB,
-			style=rounded
-		];
-	}
-	subgraph cluster_material_branch {
-		graph [color="#9DC3E6",
-			label="Material process branch",
-			rankdir=TB,
-			style=rounded
-		];
-	}
 	subgraph cluster_process_roots {
 		graph [color="#D6D6D6",
 			label="Process roots",
@@ -54,6 +40,20 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Material Process"];
+	}
+	subgraph cluster_material_branch {
+		graph [color="#9DC3E6",
+			label="Material process branch",
+			rankdir=TB,
+			style=rounded
+		];
+	}
+	subgraph cluster_information_branch {
+		graph [color="#A9D18E",
+			label="Information process branch",
+			rankdir=TB,
+			style=rounded
+		];
 	}
 	"https://w3id.org/sdata/core/MaterialProcess" -> "https://w3id.org/sdata/core/InformationProcess"	[color="#6B7280",
 		constraint=false,

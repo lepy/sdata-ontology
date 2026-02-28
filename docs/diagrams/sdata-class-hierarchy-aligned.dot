@@ -2,10 +2,9 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Core + Processtypes Hierarchy (autark core)",
+		label="sdata Class Hierarchy (autark core)",
 		labeljust=c,
 		labelloc=t,
-		newrank=true,
 		nodesep=0.55,
 		overlap=false,
 		pad=0.35,
@@ -26,46 +25,36 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_proc {
-		graph [color="#B6D7A8",
-			label="sdata-processtypes classes",
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
 			style=rounded
 		];
-		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Creation];
-		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Destruction];
-		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Observation];
-		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Preservation];
-		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Recovery];
-		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transfer];
-		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transformation];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata class"];
+		legend_sdata -> legend_sdata	[label="superclass -> subclass"];
 	}
-	subgraph cluster_core {
+	subgraph cluster_sdata {
 		graph [color="#90B5E8",
-			label="sdata-core classes",
+			label="sdata classes",
 			style=rounded
 		];
-		subgraph cluster_core_dual_rank_MaterialArtifact {
+		subgraph cluster_dual_rank_Material {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Information];
+			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+				fillcolor="#E8F1FF",
+				fontcolor="#1A365D",
+				label=Material];
+		}
+		subgraph cluster_dual_rank_MaterialArtifact {
 			graph [rank=same,
 				style=invis
 			];
@@ -78,20 +67,7 @@ digraph "" {
 				fontcolor="#1A365D",
 				label="Material Artifact"];
 		}
-		subgraph cluster_core_dual_rank_MaterialAgent {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label="Information Agent"];
-			"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
-				fillcolor="#E8F1FF",
-				fontcolor="#1A365D",
-				label="Material Agent"];
-		}
-		subgraph cluster_core_dual_rank_MaterialSite {
+		subgraph cluster_dual_rank_MaterialSite {
 			graph [rank=same,
 				style=invis
 			];
@@ -104,7 +80,7 @@ digraph "" {
 				fontcolor="#1A365D",
 				label="Material Site"];
 		}
-		subgraph cluster_core_dual_rank_MaterialProcess {
+		subgraph cluster_dual_rank_MaterialProcess {
 			graph [rank=same,
 				style=invis
 			];
@@ -117,18 +93,18 @@ digraph "" {
 				fontcolor="#1A365D",
 				label="Material Process"];
 		}
-		subgraph cluster_core_dual_rank_Material {
+		subgraph cluster_dual_rank_MaterialAgent {
 			graph [rank=same,
 				style=invis
 			];
-			"https://w3id.org/sdata/core/Information"	[color="#2B6CB0",
+			"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
-				label=Information];
-			"https://w3id.org/sdata/core/Material"	[color="#2B6CB0",
+				label="Information Agent"];
+			"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
 				fillcolor="#E8F1FF",
 				fontcolor="#1A365D",
-				label=Material];
+				label="Material Agent"];
 		}
 		"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
@@ -167,11 +143,6 @@ digraph "" {
 			fontcolor="#1A365D",
 			label=Tangible];
 	}
-	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Creation"	[color="#FFFFFF",
-		constraint=true,
-		minlen=2,
-		style=invis,
-		weight=120];
 	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/Information";
 	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationAgent";
 	"https://w3id.org/sdata/core/Intangible" -> "https://w3id.org/sdata/core/InformationArtifact";

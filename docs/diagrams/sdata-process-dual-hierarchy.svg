@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 153.2)">
 <polygon fill="#fafbfc" stroke="transparent" points="-25.2,25.2 -25.2,-153.2 799.2,-153.2 799.2,25.2 -25.2,25.2"/>
 <text text-anchor="middle" x="387" y="-108" font-family="Helvetica,sans-Serif" font-size="20.00">sdata Process Hierarchy (MaterialProcess/InformationProcess branches only)</text>
-<g id="clust3" class="cluster">
+<g id="clust1" class="cluster">
 <title>cluster_process_roots</title>
 <path fill="#fafbfc" stroke="#d6d6d6" d="M222.5,-8C222.5,-8 551.5,-8 551.5,-8 557.5,-8 563.5,-14 563.5,-20 563.5,-20 563.5,-78 563.5,-78 563.5,-84 557.5,-90 551.5,-90 551.5,-90 222.5,-90 222.5,-90 216.5,-90 210.5,-84 210.5,-78 210.5,-78 210.5,-20 210.5,-20 210.5,-14 216.5,-8 222.5,-8"/>
 <text text-anchor="middle" x="387" y="-70" font-family="Helvetica,sans-Serif" font-size="20.00">Process roots</text>
