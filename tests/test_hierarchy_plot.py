@@ -13,7 +13,7 @@ def _model():
     return extract_hierarchy(graph)
 
 
-def test_extract_contains_expected_v080_classes():
+def test_extract_contains_expected_v091_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes if node.kind == "sdata"}
     expected = {
@@ -22,17 +22,13 @@ def test_extract_contains_expected_v080_classes():
         str(SDATA.Product),
         str(SDATA.Hardware),
         str(SDATA.Software),
-        str(SDATA.Process),
-        str(SDATA.ManufacturingProcess),
-        str(SDATA.FormingProcess),
-        str(SDATA.MechanicalTest),
-        str(SDATA.Simulation),
         str(SDATA.Data),
-        str(SDATA.DigitalProductPass),
+        str(SDATA.Process),
         str(SDATA.Agent),
         str(SDATA.Person),
-        str(SDATA.MachineAgent),
+        str(SDATA.HardwareAgent),
         str(SDATA.SoftwareAgent),
+        str(SDATA.Organization),
         str(SDATA.AttributeQuantityValue),
         str(SDATA.ValueDomain),
     }
@@ -60,8 +56,6 @@ def test_expected_subclass_edges_exist():
     assert (str(SDATA.Product), str(SDATA.Object)) in edges
     assert (str(SDATA.Hardware), str(SDATA.Object)) in edges
     assert (str(SDATA.Software), str(SDATA.Object)) in edges
-    assert (str(SDATA.ManufacturingProcess), str(SDATA.Process)) in edges
-    assert (str(SDATA.FormingProcess), str(SDATA.ManufacturingProcess)) in edges
-    assert (str(SDATA.MechanicalTest), str(SDATA.Experiment)) in edges
-    assert (str(SDATA.DigitalProductPass), str(SDATA.Data)) in edges
+    assert (str(SDATA.Data), str(SDATA.Object)) in edges
     assert (str(SDATA.Person), str(SDATA.Agent)) in edges
+    assert (str(SDATA.HardwareAgent), str(SDATA.Agent)) in edges

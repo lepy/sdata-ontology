@@ -1,13 +1,11 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix qudt:  <http://qudt.org/schema/qudt/> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix ex:    <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Passport (sdata core 0.8.0)
+# Example: Battery Passport (sdata core 0.9.1)
 # =============================================================================
 
 # --- Materials ----------------------------------------------------------------
@@ -86,7 +84,7 @@ ex:OperatorMueller
     sdata:hasIdentifier "PERS-042" .
 
 ex:PressLine_A1
-    a sdata:Hardware, sdata:MachineAgent ;
+    a sdata:Hardware, sdata:HardwareAgent ;
     sdata:hasIdentifier "HW-PRESS-A1" .
 
 ex:LSDYNA_R14
@@ -100,46 +98,76 @@ ex:VoltPackAG
 # --- Processes ----------------------------------------------------------------
 
 ex:CathodeProduction_01
-    a sdata:ManufacturingProcess ;
+    a sdata:Process ;
     sdata:hasInput ex:NMC811 ;
     sdata:hasOutput ex:CathodeFoil_01 ;
     sdata:performedBy ex:OperatorMueller ;
     sdata:usesHardware ex:PressLine_A1 ;
     sdata:producesData ex:CathodeProcessData_01 ;
-    sdata:hasStandard "DIN 8580" .
+    sdata:hasStandard "DIN 8580" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.Transformative
+    ] .
 
 ex:CellAssembly_01
-    a sdata:AssemblyProcess ;
+    a sdata:Process ;
     sdata:hasInput ex:CathodeFoil_01 ;
     sdata:hasOutput ex:BatteryCell_01 ;
     sdata:performedBy ex:OperatorMueller ;
     sdata:usesHardware ex:PressLine_A1 ;
-    sdata:producesData ex:AssemblyData_01 .
+    sdata:producesData ex:AssemblyData_01 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.Assembly
+    ] .
 
 ex:TensileTest_01
-    a sdata:MechanicalTest ;
+    a sdata:Process ;
     sdata:hasInput ex:BatteryCell_01 ;
     sdata:performedBy ex:OperatorMueller ;
     sdata:performedBy ex:PressLine_A1 ;
     sdata:usesHardware ex:PressLine_A1 ;
     sdata:producesData ex:TensileData_01 ;
-    sdata:hasStandard "DIN EN ISO 6892-1" .
+    sdata:hasStandard "DIN EN ISO 6892-1" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.TensileTest
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DomainAxis ;
+        sms:hasStateValue sms:domain.Structural
+    ] .
 
 ex:CrashSimulation_v3
-    a sdata:CrashSimulation ;
+    a sdata:Process ;
     sdata:hasInput ex:BatteryPack_001 ;
     sdata:hasOutput ex:BatteryPack_001 ;
     sdata:performedBy ex:LSDYNA_R14 ;
     sdata:usesSoftware ex:LSDYNA_R14 ;
-    sdata:producesData ex:CrashData_v3 .
+    sdata:producesData ex:CrashData_v3 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.CrashSimulation
+    ] .
 
 ex:PackAssembly_01
-    a sdata:AssemblyProcess ;
+    a sdata:Process ;
     sdata:hasInput ex:BatteryCell_01 ;
     sdata:hasOutput ex:BatteryPack_001 ;
     sdata:performedBy ex:OperatorMueller ;
     sdata:usesHardware ex:PressLine_A1 ;
-    sdata:producesData ex:PackAssemblyData_01 .
+    sdata:producesData ex:PackAssemblyData_01 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.Assembly
+    ] .
 
 # --- Data ---------------------------------------------------------------------
 
@@ -148,45 +176,79 @@ ex:CathodeProcessData_01
     sdata:describes ex:CathodeFoil_01 ;
     sdata:producedBy ex:CathodeProduction_01 ;
     sdata:hasValue 1850.0 ;
-    sdata:hasUnit "kN" ;
-    sdata:hasVersion "1.0.0" .
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.ProcessRecord
+    ] .
 
 ex:AssemblyData_01
     a sdata:Data ;
     sdata:describes ex:BatteryCell_01 ;
     sdata:producedBy ex:CellAssembly_01 ;
-    sdata:hasVersion "1.0.0" .
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.ProcessRecord
+    ] .
 
 ex:TensileData_01
     a sdata:Data ;
     sdata:describes ex:BatteryCell_01 ;
     sdata:producedBy ex:TensileTest_01 ;
     sdata:hasQuantity ex:YieldStrength_AQV ;
-    sdata:hasVersion "1.0.0" .
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.TestReport
+    ] .
 
 ex:CrashData_v3
     a sdata:Data ;
     sdata:describes ex:BatteryPack_001 ;
     sdata:producedBy ex:CrashSimulation_v3 ;
-    sdata:hasVersion "3.0.0" .
+    sdata:hasVersion "3.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.SimulationReport
+    ] .
 
 ex:PackAssemblyData_01
     a sdata:Data ;
     sdata:describes ex:BatteryPack_001 ;
     sdata:producedBy ex:PackAssembly_01 ;
-    sdata:hasVersion "1.0.0" .
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.ProcessRecord
+    ] .
 
 ex:InspectionCertificate_001
-    a sdata:Certificate ;
+    a sdata:Data ;
     sdata:describes ex:BatteryPack_001 ;
     sdata:certifiedBy ex:VoltPackAG ;
     sdata:hasStandard "EN 10204 3.1" ;
-    sdata:hasVersion "2026-03" .
+    sdata:hasVersion "2026-03" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.Certificate
+    ] .
 
 ex:DPP_001
-    a sdata:DigitalProductPass ;
+    a sdata:Data ;
     sdata:describes ex:BatteryPack_001 ;
-    sdata:hasVersion "0.8.0" .
+    sdata:hasVersion "0.9.1" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.DigitalProductPass
+    ] .
 
 # --- AQV / ValueDomain --------------------------------------------------------
 
@@ -207,4 +269,3 @@ ex:BatteryPack_001
     sdata:hasData ex:CrashData_v3 ;
     sdata:hasData ex:InspectionCertificate_001 ;
     sdata:hasData ex:DPP_001 .
-

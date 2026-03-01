@@ -10,7 +10,7 @@ Definiert die 7 Verb-Klassen:
 - `Recovery`
 - `Destruction`
 
-Die Verb-Klassen sind orthogonal zu fachlichen Prozessklassen aus `sdata-core` und werden per Multi-Typing genutzt.
+Die Verb-Klassen sind orthogonal zur Core-Klasse `sdata:Process` und werden per Multi-Typing genutzt.
 
 ## Kurzbeispiel
 
@@ -19,7 +19,7 @@ Die Verb-Klassen sind orthogonal zu fachlichen Prozessklassen aus `sdata-core` u
 @prefix ex:    <https://example.org/zugversuch/> .
 
 ex:Zugversuch_A1
-  a sdata:MechanicalTest , sdata:Observation ;
+  a sdata:Process , sdata:Observation ;
   sdata:hasInput ex:Probe_A1 ;
   sdata:performedBy ex:Zwick_Z100 ;
   sdata:producesData ex:Messdaten_A1 .

@@ -1,4 +1,4 @@
-"""Tests for sdata-core ontology and instance data (v0.8.0)."""
+"""Tests for sdata-core ontology and instance data (v0.9.1)."""
 
 from pathlib import Path
 
@@ -48,27 +48,11 @@ EXPECTED_CLASSES = [
     "Product",
     "Hardware",
     "Software",
-    "Process",
-    "ManufacturingProcess",
-    "FormingProcess",
-    "JoiningProcess",
-    "CoatingProcess",
-    "HeatTreatment",
-    "Experiment",
-    "MechanicalTest",
-    "MetallographicExamination",
-    "ChemicalAnalysis",
-    "Simulation",
-    "CrashSimulation",
-    "RecyclingProcess",
-    "AssemblyProcess",
-    "Transport",
     "Data",
-    "Certificate",
-    "DigitalProductPass",
+    "Process",
     "Agent",
     "Person",
-    "MachineAgent",
+    "HardwareAgent",
     "SoftwareAgent",
     "Organization",
     "AttributeQuantityValue",
@@ -121,7 +105,6 @@ EXPECTED_DATATYPE_PROPERTIES = [
     "dtype",
     "domainDescription",
     "hasValue",
-    "hasUnit",
 ]
 
 
@@ -136,7 +119,7 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 30, f"Expected 30 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 14, f"Expected 14 classes, found {len(sdata_classes)}"
 
 
 def _instances_of_class_or_subclass(example_graph: Graph, core_graph: Graph, class_uri: URIRef) -> set[URIRef]:
@@ -171,13 +154,10 @@ def test_example_uses_representative_domain_classes(example_graph, core_graph):
         "Product",
         "Hardware",
         "Software",
-        "ManufacturingProcess",
-        "MechanicalTest",
-        "Simulation",
-        "DigitalProductPass",
-        "Certificate",
+        "Data",
+        "Process",
         "Person",
-        "MachineAgent",
+        "HardwareAgent",
         "SoftwareAgent",
         "Organization",
         "AttributeQuantityValue",
@@ -220,6 +200,9 @@ def test_material_state_module_core_terms_exist(material_state_graph):
         "LifecyclePhaseAxis",
         "StructureAxis",
         "RoleAxis",
+        "MethodAxis",
+        "DomainAxis",
+        "DataTypeAxis",
     ]:
         assert (SMS[class_name], RDF.type, OWL_CLASS) in material_state_graph
 

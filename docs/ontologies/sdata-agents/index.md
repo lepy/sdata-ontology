@@ -20,7 +20,7 @@ Typische Konzepte:
 ex:Prueferin_Lehmann a sdata:Person ;
   sdata:hasIdentifier "PERS-LEHMANN-01" .
 
-ex:Zwick_Z100 a sdata:Hardware, sdata:MachineAgent ;
+ex:Zwick_Z100 a sdata:Hardware, sdata:HardwareAgent ;
   sdata:hasIdentifier "HW-ZWICK-Z100" .
 
 ex:LSDYNA_R14 a sdata:Software, sdata:SoftwareAgent ;

@@ -5,7 +5,7 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
 # =============================================================================
-# sdata Core SHACL Shapes v0.8.0 (MIN/OPA-based model)
+# sdata Core SHACL Shapes v0.9.1 (MIN/OPA-based model)
 # =============================================================================
 
 <https://w3id.org/sdata/shapes/IdentifierLiteralShape>
@@ -61,5 +61,5 @@
     ] .
 
 # =============================================================================
-# END — sdata Core SHACL Shapes v0.8.0
+# END — sdata Core SHACL Shapes v0.9.1
 # =============================================================================
