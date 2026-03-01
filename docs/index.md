@@ -53,6 +53,7 @@ Individual targets:
 
 ```bash
 make viz-hierarchy
+make viz-min-opa-core
 make viz-material-state
 make viz-specimen
 make viz-examples
