@@ -1,0 +1,897 @@
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix sms:     <https://w3id.org/sdata/material-state/> .
+@prefix min:     <https://w3id.org/min#> .
+@prefix opa:     <https://w3id.org/opa#> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+
+# =============================================================================
+#
+#   sdata-material-state — Material State Space
+#
+#   Erweiterungsmodul für sdata v0.6.0
+#
+#   Architekturprinzip:
+#
+#     1 generischer Mechanismus  (StateAxis + StateAssignment)
+#     10 vordefinierte Achsen     (Origin, Processing, Condition, ...)
+#     n Achsenwerte pro Achse    (als SKOS-Konzepte, offen erweiterbar)
+#     ∞ benutzerdefinierte Achsen (durch Subklassen von StateAxis)
+#
+#   Der Zustand eines Materials ist kein Feld — er ist ein Vektor:
+#
+#     MaterialState = Σ StateAssignment_i   für i ∈ {1..n Achsen}
+#
+#   Jede StateAssignment ist ein Data-Nexus mit Provenienz.
+#   Der User definiert, welche Achsen er braucht.
+#
+#   v0.2.0 — 2026-03-01
+#
+# =============================================================================
+
+
+# —————————————————————————————————————————————————————————————————————————————
+#   ONTOLOGIE-DEKLARATION
+# —————————————————————————————————————————————————————————————————————————————
+
+<https://w3id.org/sdata/material-state>
+    rdf:type         owl:Ontology ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.1.0> ;
+    owl:versionInfo  "0.1.0 — 2026-03-01" ;
+    owl:imports      <https://w3id.org/sdata/core> ;
+
+    dcterms:title    "sdata-material-state — Material State Space"@en ;
+    dcterms:title    "sdata-material-state — Werkstoff-Zustandsraum"@de ;
+    dcterms:description """Generischer Achsen-Mechanismus für den
+multidimensionalen Zustandsraum von Werkstoffen und Produkten.
+
+10 vordefinierte Achsen:
+
+  Material-Achsen (beschreiben sdata:Material):
+  1. Origin         — woher? (virgin, recycled, bio-based, blended)
+  2. ProcessingState — was wurde getan? (raw, processed, heat-treated, aged)
+  3. Condition      — wie gut? (pristine, degraded, contaminated)
+  4. Form           — welche Gestalt? (powder, granulate, sheet, ...)
+  5. Grade          — für welchen Einsatz? (technical, automotive, ...)
+  6. Compliance     — welche Zulassungen? (REACH, RoHS, ...)
+  7. Composition    — wie zusammengesetzt? (homogeneous, composite, ...)
+  8. LifecyclePhase — wo im Leben? (production, in-use, end-of-life, ...)
+
+  Product-Achsen (beschreiben sdata:Product):
+  9. Structure      — wie aufgebaut? (single-part, assembly, system)
+ 10. Role           — welche Rolle? (production, specimen, prototype, spare)
+
+Erweiterbar: Neue Achsen durch Subklassen von sms:StateAxis.
+             Neue Werte durch SKOS-Konzepte im jeweiligen ConceptScheme.
+             13 Lifecycle-Phasen in 5 Top-Level-Gruppen mit Hierarchie.
+             56 vordefinierte Werte insgesamt."""@en ;
+
+    dcterms:creator  "Lepy & Claude" ;
+    dcterms:created  "2026-03-01"^^xsd:date ;
+    dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
+    min:layer        "domain-extension" .
+
+
+# #############################################################################
+#
+#   TEIL I — DER GENERISCHE MECHANISMUS
+#
+#   Drei Bausteine:
+#
+#     StateAxis        — die Dimension (WAS wird beschrieben?)
+#     StateAssignment  — die Zuordnung (Material × Achse × Wert)
+#     skos:Concept     — der Wert (WIE ist der Zustand?)
+#
+#   Pattern:
+#
+#     :material  ──hasStateAssignment──▶  :assignment
+#                                            │
+#                                    onAxis──┤──hasStateValue──▶ :concept
+#                                            │
+#                                    producedBy──▶ :activity (optional)
+#                                            │
+#                                    hasQuantity──▶ :aqv (optional, Detailwerte)
+#
+# #############################################################################
+
+
+# =============================================================================
+#   1.1 StateAxis — die Dimension
+# =============================================================================
+
+sms:StateAxis a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "State Axis"@en , "Zustandsachse"@de ;
+    rdfs:comment """Eine Dimension im Zustandsraum eines Materials.
+Abstrakte Basisklasse — jede konkrete Achse ist eine Subklasse.
+
+ERWEITERUNGSPUNKT: Benutzer definieren neue Achsen als:
+
+  ex:MyCustomAxis  a owl:Class ;
+      rdfs:subClassOf sms:StateAxis ;
+      sms:hasConceptScheme ex:my-custom-values .
+
+Jede StateAxis verweist auf ein skos:ConceptScheme,
+das die zulässigen Werte dieser Achse enthält.
+Neue Werte können jederzeit als skos:Concept
+zum Scheme hinzugefügt werden."""@de ;
+
+    min:designRationale """StateAxis als Klasse (nicht Instanz) weil:
+1. Jede Achse hat eigene Semantik und eigenes ValueSet.
+2. Subklassen ermöglichen achsenspezifische Constraints.
+3. OWL-Reasoner können achsenspezifisch inferieren.
+StateAxis als min:Nexus weil eine Achse selbst ein
+informational-modales Konstrukt ist — eine Perspektive
+auf den Werkstoff."""@de .
+
+sms:hasConceptScheme a owl:ObjectProperty ;
+    rdfs:label "has concept scheme"@en , "hat Begriffssystem"@de ;
+    rdfs:domain sms:StateAxis ;
+    rdfs:range skos:ConceptScheme ;
+    rdfs:comment """Verknüpft eine Achse mit ihrem Wertesystem.
+Jede Achse hat genau ein ConceptScheme."""@de .
+
+
+# =============================================================================
+#   1.2 StateAssignment — die Zuordnung
+# =============================================================================
+
+sms:StateAssignment a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "State Assignment"@en , "Zustandszuordnung"@de ;
+    rdfs:comment """Ein Data-Nexus, der einem Material einen Wert auf
+einer bestimmten Achse zuweist.
+
+StateAssignment ist ein vollwertiger sdata:Data-Nexus:
+  — sdata:describes  → das Material
+  — sdata:producedBy → die Activity, die den Zustand erzeugt hat
+  — sdata:hasQuantity → optionale Detail-AQVs (z.B. Recyclatanteil in %)
+  — sms:onAxis       → welche Achse
+  — sms:hasStateValue → welcher Wert (skos:Concept)
+
+Die Provenienz (producedBy) ist OPTIONAL — nicht jeder Zustand
+hat eine bekannte Ursache. Aber wenn sie bekannt ist, ist sie
+im selben Muster ausdrückbar."""@de ;
+
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty sms:onAxis ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty sms:hasStateValue ;
+        owl:minCardinality "1"^^xsd:nonNegativeInteger
+    ] .
+
+
+# =============================================================================
+#   1.3 Relationen
+# =============================================================================
+
+sms:hasStateAssignment a owl:ObjectProperty ;
+    rdfs:subPropertyOf sdata:hasData ;
+    rdfs:label "has state assignment"@en , "hat Zustandszuordnung"@de ;
+    rdfs:domain sdata:Material ;
+    rdfs:range sms:StateAssignment ;
+    rdfs:comment """Verknüpft ein Material mit einer Zustandszuordnung.
+Spezialisierung von sdata:hasData — ein StateAssignment IST Data."""@de .
+
+sms:onAxis a owl:ObjectProperty ;
+    rdfs:label "on axis"@en , "auf Achse"@de ;
+    rdfs:domain sms:StateAssignment ;
+    rdfs:range sms:StateAxis ;
+    rdfs:comment """Gibt an, auf welcher Achse diese Zuordnung liegt.
+Functional — jede Zuordnung betrifft genau eine Achse."""@de ;
+    a owl:FunctionalProperty .
+
+sms:hasStateValue a owl:ObjectProperty ;
+    rdfs:label "has state value"@en , "hat Zustandswert"@de ;
+    rdfs:domain sms:StateAssignment ;
+    rdfs:range skos:Concept ;
+    rdfs:comment """Der Wert auf dieser Achse. Ein skos:Concept aus dem
+ConceptScheme der zugehörigen Achse.
+
+Kann mehrwertig sein — z.B. Compliance: REACH + RoHS gleichzeitig."""@de .
+
+
+# #############################################################################
+#
+#   TEIL II — 8 VORDEFINIERTE ACHSEN
+#
+#   Jede Achse besteht aus:
+#     1. Einer Subklasse von sms:StateAxis
+#     2. Einem skos:ConceptScheme mit initialen Werten
+#     3. Den skos:Concepts als Enum-Werte
+#
+#   Konvention:
+#     Achsen-Klasse  →  sms:XxxAxis
+#     ConceptScheme  →  sms:xxx-values
+#     Concepts       →  sms:xxx.Wert
+#
+# #############################################################################
+
+
+# =============================================================================
+#   Achse 1: ORIGIN — Woher kommt der Werkstoff?
+# =============================================================================
+
+sms:OriginAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Origin Axis"@en , "Herkunftsachse"@de ;
+    sms:hasConceptScheme sms:origin-values ;
+    rdfs:comment """Primäre Achse: Herkunft des Werkstoffs.
+Zentral für Kreislaufwirtschaft und DPP."""@de .
+
+sms:origin-values a skos:ConceptScheme ;
+    rdfs:label "Origin Values"@en , "Herkunftswerte"@de ;
+    skos:hasTopConcept sms:origin.Virgin ,
+                       sms:origin.Recycled ,
+                       sms:origin.BioBased ,
+                       sms:origin.Blended .
+
+sms:origin.Virgin a skos:Concept ;
+    skos:inScheme sms:origin-values ;
+    skos:prefLabel "Virgin"@en , "Primär"@de ;
+    skos:definition "Aus Rohstoff erstmalig gewonnen."@de .
+
+sms:origin.Recycled a skos:Concept ;
+    skos:inScheme sms:origin-values ;
+    skos:prefLabel "Recycled"@en , "Recycelt"@de ;
+    skos:definition "Aus Recyclingprozess rückgewonnen."@de .
+
+sms:origin.BioBased a skos:Concept ;
+    skos:inScheme sms:origin-values ;
+    skos:prefLabel "Bio-based"@en , "Biobasiert"@de ;
+    skos:definition "Aus nachwachsenden Rohstoffen gewonnen."@de .
+
+sms:origin.Blended a skos:Concept ;
+    skos:inScheme sms:origin-values ;
+    skos:prefLabel "Blended"@en , "Gemischt"@de ;
+    skos:definition "Definierter Mix verschiedener Herkunftsklassen."@de .
+
+
+# =============================================================================
+#   Achse 2: PROCESSING — Was wurde getan?
+# =============================================================================
+
+sms:ProcessingAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Processing Axis"@en , "Verarbeitungsachse"@de ;
+    sms:hasConceptScheme sms:processing-values ;
+    rdfs:comment """Sekundäre Achse: Verarbeitungszustand.
+Grundsätzlich aus Activity-Kette ableitbar, hier
+als eigenständiger Deskriptor reifiziert."""@de .
+
+sms:processing-values a skos:ConceptScheme ;
+    rdfs:label "Processing Values"@en , "Verarbeitungswerte"@de ;
+    skos:hasTopConcept sms:processing.Raw ,
+                       sms:processing.Processed ,
+                       sms:processing.HeatTreated ,
+                       sms:processing.Aged .
+
+sms:processing.Raw a skos:Concept ;
+    skos:inScheme sms:processing-values ;
+    skos:prefLabel "Raw"@en , "Roh"@de ;
+    skos:definition "Unverarbeitet, Anlieferungszustand."@de .
+
+sms:processing.Processed a skos:Concept ;
+    skos:inScheme sms:processing-values ;
+    skos:prefLabel "Processed"@en , "Verarbeitet"@de ;
+    skos:definition "Nach gezielter Formgebung oder Behandlung."@de .
+
+sms:processing.HeatTreated a skos:Concept ;
+    skos:inScheme sms:processing-values ;
+    skos:prefLabel "Heat-treated"@en , "Wärmebehandelt"@de ;
+    skos:definition "Nach thermischer Behandlung."@de .
+
+sms:processing.Aged a skos:Concept ;
+    skos:inScheme sms:processing-values ;
+    skos:prefLabel "Aged"@en , "Gealtert"@de ;
+    skos:definition "Natürlich oder künstlich ausgelagert."@de .
+
+
+# =============================================================================
+#   Achse 3: CONDITION — Wie gut ist der Werkstoff?
+# =============================================================================
+
+sms:ConditionAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Condition Axis"@en , "Konditionsachse"@de ;
+    sms:hasConceptScheme sms:condition-values ;
+    rdfs:comment """Sekundäre Achse: Qualitäts- und Degradationsgrad.
+Aus Messdaten ableitbar, hier reifiziert."""@de .
+
+sms:condition-values a skos:ConceptScheme ;
+    rdfs:label "Condition Values"@en , "Konditionswerte"@de ;
+    skos:hasTopConcept sms:condition.Pristine ,
+                       sms:condition.Degraded ,
+                       sms:condition.Contaminated .
+
+sms:condition.Pristine a skos:Concept ;
+    skos:inScheme sms:condition-values ;
+    skos:prefLabel "Pristine"@en , "Unversehrt"@de ;
+    skos:definition "Sollzustand, keine Degradation."@de .
+
+sms:condition.Degraded a skos:Concept ;
+    skos:inScheme sms:condition-values ;
+    skos:prefLabel "Degraded"@en , "Degradiert"@de ;
+    skos:definition "Eigenschaftsverlust durch Nutzung oder Recycling."@de .
+
+sms:condition.Contaminated a skos:Concept ;
+    skos:inScheme sms:condition-values ;
+    skos:prefLabel "Contaminated"@en , "Kontaminiert"@de ;
+    skos:definition "Unerwünschte Beimengungen vorhanden."@de .
+
+
+# =============================================================================
+#   Achse 4: FORM — In welcher Gestalt?
+# =============================================================================
+
+sms:FormAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Form Axis"@en , "Formachse"@de ;
+    sms:hasConceptScheme sms:form-values ;
+    rdfs:comment """Primäre Achse: physische Gestalt des Werkstoffs."""@de .
+
+sms:form-values a skos:ConceptScheme ;
+    rdfs:label "Form Values"@en , "Formwerte"@de ;
+    skos:hasTopConcept sms:form.Powder ,
+                       sms:form.Granulate ,
+                       sms:form.Sheet ,
+                       sms:form.Coil ,
+                       sms:form.Wire ,
+                       sms:form.Film ,
+                       sms:form.Bulk ,
+                       sms:form.Fiber .
+
+sms:form.Powder a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Powder"@en , "Pulver"@de .
+
+sms:form.Granulate a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Granulate"@en , "Granulat"@de .
+
+sms:form.Sheet a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Sheet"@en , "Blech"@de .
+
+sms:form.Coil a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Coil"@en , "Coil"@de .
+
+sms:form.Wire a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Wire"@en , "Draht"@de .
+
+sms:form.Film a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Film"@en , "Folie"@de .
+
+sms:form.Bulk a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Bulk"@en , "Massivkörper"@de .
+
+sms:form.Fiber a skos:Concept ;
+    skos:inScheme sms:form-values ;
+    skos:prefLabel "Fiber"@en , "Faser"@de .
+
+
+# =============================================================================
+#   Achse 5: GRADE — Für welchen Einsatz?
+# =============================================================================
+
+sms:GradeAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Grade Axis"@en , "Güteachse"@de ;
+    sms:hasConceptScheme sms:grade-values ;
+    rdfs:comment """Primäre Achse: Einsatzklassifizierung."""@de .
+
+sms:grade-values a skos:ConceptScheme ;
+    rdfs:label "Grade Values"@en , "Gütewerte"@de ;
+    skos:hasTopConcept sms:grade.Technical ,
+                       sms:grade.Automotive ,
+                       sms:grade.FoodContact ,
+                       sms:grade.Medical ,
+                       sms:grade.Aerospace .
+
+sms:grade.Technical a skos:Concept ;
+    skos:inScheme sms:grade-values ;
+    skos:prefLabel "Technical"@en , "Technisch"@de .
+
+sms:grade.Automotive a skos:Concept ;
+    skos:inScheme sms:grade-values ;
+    skos:prefLabel "Automotive"@en , "Automotive"@de .
+
+sms:grade.FoodContact a skos:Concept ;
+    skos:inScheme sms:grade-values ;
+    skos:prefLabel "Food Contact"@en , "Lebensmittelkontakt"@de .
+
+sms:grade.Medical a skos:Concept ;
+    skos:inScheme sms:grade-values ;
+    skos:prefLabel "Medical"@en , "Medizinisch"@de .
+
+sms:grade.Aerospace a skos:Concept ;
+    skos:inScheme sms:grade-values ;
+    skos:prefLabel "Aerospace"@en , "Luft- und Raumfahrt"@de .
+
+
+# =============================================================================
+#   Achse 6: COMPLIANCE — Welche Zulassungen?
+# =============================================================================
+
+sms:ComplianceAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Compliance Axis"@en , "Konformitätsachse"@de ;
+    sms:hasConceptScheme sms:compliance-values ;
+    rdfs:comment """Meta-Achse: regulatorische Zulassungen.
+MEHRWERTIG — ein Material kann mehrere Zulassungen haben.
+Extern getrieben durch Regulierungsbehörden."""@de .
+
+sms:compliance-values a skos:ConceptScheme ;
+    rdfs:label "Compliance Values"@en , "Konformitätswerte"@de ;
+    skos:hasTopConcept sms:compliance.REACH ,
+                       sms:compliance.RoHS ,
+                       sms:compliance.FoodContact ,
+                       sms:compliance.ESPR ,
+                       sms:compliance.IATF .
+
+sms:compliance.REACH a skos:Concept ;
+    skos:inScheme sms:compliance-values ;
+    skos:prefLabel "REACH"@en ;
+    skos:definition "EU-Chemikalienverordnung (EG) Nr. 1907/2006."@de .
+
+sms:compliance.RoHS a skos:Concept ;
+    skos:inScheme sms:compliance-values ;
+    skos:prefLabel "RoHS"@en ;
+    skos:definition "Beschränkung gefährlicher Stoffe, Richtlinie 2011/65/EU."@de .
+
+sms:compliance.FoodContact a skos:Concept ;
+    skos:inScheme sms:compliance-values ;
+    skos:prefLabel "Food Contact"@en , "Lebensmittelkontakt"@de ;
+    skos:definition "Verordnung (EG) Nr. 1935/2004."@de .
+
+sms:compliance.ESPR a skos:Concept ;
+    skos:inScheme sms:compliance-values ;
+    skos:prefLabel "ESPR"@en ;
+    skos:definition "Ecodesign for Sustainable Products Regulation."@de .
+
+sms:compliance.IATF a skos:Concept ;
+    skos:inScheme sms:compliance-values ;
+    skos:prefLabel "IATF 16949"@en ;
+    skos:definition "Qualitätsmanagement Automotive."@de .
+
+
+# =============================================================================
+#   Achse 7: COMPOSITION — Wie zusammengesetzt?
+# =============================================================================
+
+sms:CompositionAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Composition Axis"@en , "Zusammensetzungsachse"@de ;
+    sms:hasConceptScheme sms:composition-values ;
+    rdfs:comment """Primäre Achse: Art der Zusammensetzung."""@de .
+
+sms:composition-values a skos:ConceptScheme ;
+    rdfs:label "Composition Values"@en , "Zusammensetzungswerte"@de ;
+    skos:hasTopConcept sms:composition.Homogeneous ,
+                       sms:composition.Alloy ,
+                       sms:composition.Composite ,
+                       sms:composition.Blend ,
+                       sms:composition.MultiMaterial .
+
+sms:composition.Homogeneous a skos:Concept ;
+    skos:inScheme sms:composition-values ;
+    skos:prefLabel "Homogeneous"@en , "Homogen"@de ;
+    skos:definition "Einphasig, einheitliche Zusammensetzung."@de .
+
+sms:composition.Alloy a skos:Concept ;
+    skos:inScheme sms:composition-values ;
+    skos:prefLabel "Alloy"@en , "Legierung"@de ;
+    skos:definition "Metallische Mischung."@de .
+
+sms:composition.Composite a skos:Concept ;
+    skos:inScheme sms:composition-values ;
+    skos:prefLabel "Composite"@en , "Verbundwerkstoff"@de ;
+    skos:definition "Matrix + Verstärkung."@de .
+
+sms:composition.Blend a skos:Concept ;
+    skos:inScheme sms:composition-values ;
+    skos:prefLabel "Blend"@en , "Blend"@de ;
+    skos:definition "Polymergemisch."@de .
+
+sms:composition.MultiMaterial a skos:Concept ;
+    skos:inScheme sms:composition-values ;
+    skos:prefLabel "Multi-Material"@en , "Multi-Material"@de ;
+    skos:definition "Mehrere distinkte Werkstoffe in einem Verbund."@de .
+
+
+# =============================================================================
+#   Achse 8: LIFECYCLE PHASE — Wo im Leben?
+# =============================================================================
+
+sms:LifecyclePhaseAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Lifecycle Phase Axis"@en , "Lebenszyklusphase-Achse"@de ;
+    sms:hasConceptScheme sms:phase-values ;
+    rdfs:comment """Sekundäre Achse: Position im Produktlebenszyklus.
+Ableitbar aus der Activity-Kette, hier reifiziert.
+
+13 Phasen in 5 Top-Level-Gruppen mit skos:broader-Hierarchie:
+
+  Production
+   ├── RawMaterialExtraction
+   ├── Processing
+   └── Assembly
+  InUse
+   └── Maintenance
+  EndOfLife
+   ├── Collection
+   ├── Recycling
+   ├── Reuse
+   └── Disposal
+  Storage
+  Transit
+
+Queries mit skos:broader* über Top-Level finden automatisch
+alle Unterphasen."""@de .
+
+sms:phase-values a skos:ConceptScheme ;
+    rdfs:label "Lifecycle Phase Values"@en , "Lebenszyklusphasenwerte"@de ;
+    skos:hasTopConcept sms:phase.Production ,
+                       sms:phase.InUse ,
+                       sms:phase.EndOfLife ,
+                       sms:phase.Storage ,
+                       sms:phase.Transit .
+
+# --- Top-Level: Production ---
+
+sms:phase.Production a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Production"@en , "Produktion"@de ;
+    skos:definition "Oberbegriff für alle Herstellungsphasen."@de .
+
+sms:phase.RawMaterialExtraction a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Raw Material Extraction"@en , "Rohstoffgewinnung"@de ;
+    skos:definition "Gewinnung und Aufbereitung des Ausgangsstoffs. Erste Phase, relevant für CO₂-Footprint und Lieferkettentransparenz."@de ;
+    skos:broader sms:phase.Production .
+
+sms:phase.Processing a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Processing"@en , "Verarbeitung"@de ;
+    skos:definition "Formgebung und Fertigung. Vom Halbzeug zum Bauteil."@de ;
+    skos:broader sms:phase.Production .
+
+sms:phase.Assembly a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Assembly"@en , "Montage"@de ;
+    skos:definition "Zusammenbau von Bauteilen zu Baugruppen oder Produkten."@de ;
+    skos:broader sms:phase.Production .
+
+# --- Top-Level: InUse ---
+
+sms:phase.InUse a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "In Use"@en , "In Nutzung"@de ;
+    skos:definition "Betriebsphase beim Endkunden."@de .
+
+sms:phase.Maintenance a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Maintenance"@en , "Wartung"@de ;
+    skos:definition "Instandhaltung, Reparatur, Inspektion während der Nutzung."@de ;
+    skos:broader sms:phase.InUse .
+
+# --- Top-Level: EndOfLife ---
+
+sms:phase.EndOfLife a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "End of Life"@en , "Ende der Nutzung"@de ;
+    skos:definition "Oberbegriff für alle Nachnutzungsphasen."@de .
+
+sms:phase.Collection a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Collection"@en , "Sammlung"@de ;
+    skos:definition "Rücknahme und Sammlung ausgedienter Produkte. Brücke zwischen Nutzungsende und Aufbereitung."@de ;
+    skos:broader sms:phase.EndOfLife .
+
+sms:phase.Recycling a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Recycling"@en , "Recycling"@de ;
+    skos:definition "Stoffliche Verwertung. Der Werkstoff wird in einen neuen Lebenszyklus überführt."@de ;
+    skos:broader sms:phase.EndOfLife .
+
+sms:phase.Reuse a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Reuse"@en , "Wiederverwendung"@de ;
+    skos:definition "Erneuter Einsatz ohne wesentliche Aufbereitung. Teil der 10R-Kreislaufstrategien."@de ;
+    skos:broader sms:phase.EndOfLife .
+
+sms:phase.Disposal a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Disposal"@en , "Entsorgung"@de ;
+    skos:definition "Endgültige Beseitigung, wenn keine Verwertung möglich ist."@de ;
+    skos:broader sms:phase.EndOfLife .
+
+# --- Top-Level: Storage und Transit (ohne Unterphasen) ---
+
+sms:phase.Storage a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Storage"@en , "Lagerung"@de ;
+    skos:definition "Zwischenlagerung an beliebiger Stelle im Lebenszyklus."@de .
+
+sms:phase.Transit a skos:Concept ;
+    skos:inScheme sms:phase-values ;
+    skos:prefLabel "Transit"@en , "Transport"@de ;
+    skos:definition "Unterwegs zwischen Stationen im Lebenszyklus."@de .
+
+
+# =============================================================================
+#   Achse 9: STRUCTURE — Wie ist das Product aufgebaut?
+# =============================================================================
+
+sms:StructureAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Structure Axis"@en , "Strukturachse"@de ;
+    sms:hasConceptScheme sms:structure-values ;
+    rdfs:comment """Product-Achse: Strukturelle Zusammensetzung.
+Einzelteil, Baugruppe, Unterbaugruppe oder Gesamtsystem.
+
+Ersetzt die ehemaligen Klassen sdata:Component, sdata:Assembly.
+In v0.8.0 sind alle gefertigten Dinge sdata:Product — die Struktur
+ist ein Zustand, kein Typ.
+
+Baugruppen nutzen zusätzlich min:hasComponent-Relationen."""@de .
+
+sms:structure-values a skos:ConceptScheme ;
+    rdfs:label "Structure Values"@en , "Strukturwerte"@de ;
+    skos:hasTopConcept sms:structure.SinglePart ,
+                       sms:structure.Assembly ,
+                       sms:structure.System .
+
+sms:structure.SinglePart a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Single Part"@en , "Einzelteil"@de ;
+    skos:definition "Monolithisches Product ohne Unterteile."@de .
+
+sms:structure.SubAssembly a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Sub-Assembly"@en , "Unterbaugruppe"@de ;
+    skos:definition "Baugruppe, die Teil einer größeren Baugruppe ist."@de ;
+    skos:broader sms:structure.Assembly .
+
+sms:structure.Assembly a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Assembly"@en , "Baugruppe"@de ;
+    skos:definition "Aus mehreren Products zusammengesetzt (min:hasComponent)."@de .
+
+sms:structure.System a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "System"@en , "Gesamtsystem"@de ;
+    skos:definition "Vollständiges Endprodukt. Höchste Integrationsstufe."@de .
+
+
+# =============================================================================
+#   Achse 10: ROLE — Welche Rolle spielt das Product?
+# =============================================================================
+
+sms:RoleAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Role Axis"@en , "Rollenachse"@de ;
+    sms:hasConceptScheme sms:role-values ;
+    rdfs:comment """Product-Achse: Funktionale Rolle im Lebenszyklus.
+Perspektivabhängig — dasselbe Product kann in verschiedenen
+Kontexten verschiedene Rollen haben.
+
+Ersetzt die ehemalige Klasse sdata:Specimen.
+Ein Probekörper ist ein Product mit role.Specimen."""@de .
+
+sms:role-values a skos:ConceptScheme ;
+    rdfs:label "Role Values"@en , "Rollenwerte"@de ;
+    skos:hasTopConcept sms:role.Production ,
+                       sms:role.Specimen ,
+                       sms:role.Prototype ,
+                       sms:role.Spare ,
+                       sms:role.EndOfLife .
+
+sms:role.Production a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Production"@en , "Serienteil"@de ;
+    skos:definition "Reguläres Serienteil in der Produktion."@de .
+
+sms:role.Specimen a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Specimen"@en , "Probekörper"@de ;
+    skos:definition "Product, das für einen Versuch bestimmt ist. Rolle ergibt sich aus hasInput eines Experiments."@de .
+
+sms:role.Prototype a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Prototype"@en , "Prototyp"@de ;
+    skos:definition "Vorserie oder Funktionsmuster."@de .
+
+sms:role.Spare a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Spare Part"@en , "Ersatzteil"@de ;
+    skos:definition "Product als Ersatz für ein defektes oder verschlissenes Teil."@de .
+
+sms:role.EndOfLife a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "End of Life"@en , "Altbauteil"@de ;
+    skos:definition "Product am Ende seiner Nutzungsdauer, vor Recycling oder Entsorgung."@de .
+
+
+# #############################################################################
+#
+#   TEIL III — ERWEITERUNGSANLEITUNG
+#
+#   So fügt ein Benutzer eine neue Achse hinzu:
+#
+#   SCHRITT 1: Neue Achsen-Klasse
+#
+#     ex:MoistureAxis  a owl:Class ;
+#         rdfs:subClassOf sms:StateAxis ;
+#         rdfs:label "Moisture Axis"@en ;
+#         sms:hasConceptScheme ex:moisture-values .
+#
+#   SCHRITT 2: Neues ConceptScheme mit Werten
+#
+#     ex:moisture-values  a skos:ConceptScheme .
+#
+#     ex:moisture.Dry       a skos:Concept ;
+#         skos:inScheme ex:moisture-values ;
+#         skos:prefLabel "Dry"@en .
+#
+#     ex:moisture.Conditioned  a skos:Concept ;
+#         skos:inScheme ex:moisture-values ;
+#         skos:prefLabel "Conditioned"@en .
+#
+#     ex:moisture.Saturated  a skos:Concept ;
+#         skos:inScheme ex:moisture-values ;
+#         skos:prefLabel "Saturated"@en .
+#
+#   SCHRITT 3: Benutzung
+#
+#     :pa6_sample  a sdata:Material ;
+#         sms:hasStateAssignment [
+#             a sms:StateAssignment ;
+#             sms:onAxis ex:MoistureAxis ;
+#             sms:hasStateValue ex:moisture.Conditioned ;
+#             sdata:hasQuantity [
+#                 a sdata:AttributeQuantityValue ;
+#                 sdata:name "moisture_content" ;
+#                 qudt:numericValue 2.5 ;
+#                 sdata:unitSymbol "%" ;
+#                 sdata:dtype "float"
+#             ]
+#         ] .
+#
+#   SCHRITT 4 (optional): Neuen Wert zu bestehender Achse
+#
+#     ex:origin.OceanReclaimed  a skos:Concept ;
+#         skos:inScheme sms:origin-values ;
+#         skos:prefLabel "Ocean Reclaimed"@en ;
+#         skos:broader sms:origin.Recycled .
+#
+#   Drei Zeilen für einen neuen Wert. Sechs Zeilen für eine neue Achse.
+#   Keine Schemaänderung nötig — nur neue Instanzen/Konzepte.
+#
+# #############################################################################
+
+
+# #############################################################################
+#
+#   TEIL IV — VOLLSTÄNDIGES BEISPIEL
+#
+#   PP-GF30 Recyclat-Granulat, Automotive-Grade, REACH+RoHS-konform
+#
+# #############################################################################
+
+#   :pp_gf30_lot42  a sdata:Material ;
+#       sdata:hasIdentifier "MAT-PP-GF30-042" ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:OriginAxis ;
+#           sms:hasStateValue sms:origin.Recycled ;
+#           sdata:producedBy :recycling_run_17 ;
+#           sdata:hasQuantity [
+#               a sdata:AttributeQuantityValue ;
+#               sdata:name "recycled_content" ;
+#               qudt:numericValue 0.70 ;
+#               sdata:unitSymbol "%" ;
+#               sdata:dtype "float"
+#           ] ;
+#           sdata:hasQuantity [
+#               a sdata:AttributeQuantityValue ;
+#               sdata:name "cycle_count" ;
+#               qudt:numericValue 3 ;
+#               sdata:dtype "int"
+#           ]
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:ProcessingAxis ;
+#           sms:hasStateValue sms:processing.Processed ;
+#           sdata:producedBy :injection_molding_08
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:ConditionAxis ;
+#           sms:hasStateValue sms:condition.Degraded ;
+#           sdata:hasQuantity [
+#               a sdata:AttributeQuantityValue ;
+#               sdata:name "fiber_length_retention" ;
+#               qudt:numericValue 0.62 ;
+#               sdata:unitSymbol "%" ;
+#               sdata:dtype "float"
+#           ]
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:FormAxis ;
+#           sms:hasStateValue sms:form.Granulate
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:GradeAxis ;
+#           sms:hasStateValue sms:grade.Automotive
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:ComplianceAxis ;
+#           sms:hasStateValue sms:compliance.REACH ;
+#           sms:hasStateValue sms:compliance.RoHS
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:CompositionAxis ;
+#           sms:hasStateValue sms:composition.Composite
+#       ] ;
+#
+#       sms:hasStateAssignment [
+#           a sms:StateAssignment ;
+#           sms:onAxis sms:LifecyclePhaseAxis ;
+#           sms:hasStateValue sms:phase.Production
+#       ] .
+#
+#   10 Achsen. 8 Assignments. 1 generischer Mechanismus.
+#   Jede Achse mit optionaler Provenienz und Detail-AQVs.
+#
+# #############################################################################
+
+
+# #############################################################################
+#
+#   EPILOG
+#
+#   sdata-material-state v0.2.0
+#
+#   Architektur:
+#
+#     sms:StateAxis          — die Dimension (abstrakt, erweiterbar)
+#     sms:StateAssignment    — die Zuordnung (Data-Nexus mit Provenienz)
+#     skos:Concept           — der Wert (offen erweiterbar)
+#
+#   10 vordefinierte Achsen, 56 vordefinierte Werte.
+#
+#   Erweiterung:
+#     Neue Achse    = 1 Subklasse + 1 ConceptScheme + n Concepts
+#     Neuer Wert    = 1 Concept im bestehenden Scheme
+#     Keine Schemaänderung nötig.
+#
+#   Das ist der Material State Space.
+#
+# #############################################################################

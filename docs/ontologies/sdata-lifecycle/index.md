@@ -1,25 +1,31 @@
 # sdata-lifecycle.ttl
 
-Erweitert um Lebenszyklusfluss und Instanzverkettung (`sdata:precedes`, `sdata:follows`, `sdata:observes`).
+Lifecycle-Modul für Prozessketten auf Basis der Verb-Klassen.
 
-## Zugversuch-Beispiel
+Wesentliche Relationen:
+
+- `slc:typicallyFollowedBy` (Schema-Level zwischen Verb-Klassen)
+- `sdata:precedes` / `sdata:follows` (Instanz-Level zwischen Prozessen)
+- `sdata:observes` (Beobachtungsprozess zu Zielprozess)
+
+## Kurzbeispiel
 
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/zugversuch/> .
 
 ex:Probenfertigung_A1
-  a sdata:MaterialProcess , sdata:Creation ;
-  sdata:generates ex:Probe_A1 .
+  a sdata:ManufacturingProcess , sdata:Creation ;
+  sdata:hasOutput ex:Probe_A1 .
 
 ex:Zugversuch_A1
-  a sdata:MaterialProcess , sdata:Observation ;
-  sdata:consumes ex:Probe_A1 ;
-  sdata:generates ex:Messdaten_A1 ;
+  a sdata:MechanicalTest , sdata:Observation ;
+  sdata:hasInput ex:Probe_A1 ;
+  sdata:producesData ex:Messdaten_A1 ;
   sdata:follows ex:Probenfertigung_A1 .
 
-ex:BerichtsExport_A1
-  a sdata:InformationProcess , sdata:Transfer ;
-  sdata:consumes ex:Messdaten_A1 ;
+ex:ReportTransfer_A1
+  a sdata:Transport , sdata:Transfer ;
+  sdata:hasInput ex:Messdaten_A1 ;
   sdata:follows ex:Zugversuch_A1 .
 ```

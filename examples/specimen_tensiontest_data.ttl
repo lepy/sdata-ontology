@@ -1,0 +1,271 @@
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix sms:   <https://w3id.org/sdata/material-state/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix qudt:  <http://qudt.org/schema/qudt/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix :      <https://example.org/zugversuch/> .
+
+
+# =============================================================================
+#   MATERIAL — woraus
+# =============================================================================
+
+:dc04 a sdata:Material ;
+    sdata:hasIdentifier "MAT-DC04-001" ;
+    rdfs:label "DC04"@de ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:OriginAxis ;
+        sms:hasStateValue sms:origin.Virgin
+    ] ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:FormAxis ;
+        sms:hasStateValue sms:form.Sheet
+    ] ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:GradeAxis ;
+        sms:hasStateValue sms:grade.Automotive
+    ] ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:ConditionAxis ;
+        sms:hasStateValue sms:condition.Pristine
+    ] ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:ComplianceAxis ;
+        sms:hasStateValue sms:compliance.REACH
+    ] ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "thickness" ;
+        rdfs:label "Blechdicke"@de ;
+        qudt:numericValue 1.0 ;
+        sdata:unitSymbol "mm" ;
+        qudt:unit <http://qudt.org/vocab/unit/MilliM> ;
+        sdata:dtype "float"
+    ] .
+
+
+# =============================================================================
+#   PRODUCT — was transformiert wird
+# =============================================================================
+
+# Coil: Product des Walzwerks, Input der Probenfertigung
+:coil a sdata:Product ;
+    sdata:madeOf :dc04 ;
+    sdata:hasIdentifier "COIL-DC04-2026-001" ;
+    rdfs:label "DC04-Coil 1.0mm"@de .
+
+# Probe: Product der Probenfertigung, Input des Zugversuchs
+:probe a sdata:Product ;
+    sdata:madeOf :dc04 ;
+    sdata:resultOf :probenfertigung ;
+    sdata:hasIdentifier "SPEC-2026-042" ;
+    rdfs:label "Zugprobe Nr. 42"@de ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:StructureAxis ;
+        sms:hasStateValue sms:structure.SinglePart
+    ] ;
+    sms:hasStateAssignment [
+        sms:onAxis sms:RoleAxis ;
+        sms:hasStateValue sms:role.Specimen
+    ] .
+
+
+# =============================================================================
+#   AGENT — wer
+# =============================================================================
+
+:bediener a sdata:Person ;
+    sdata:hasIdentifier "PERS-BEDIENER-007" ;
+    rdfs:label "Werkstattbediener"@de .
+
+:pruefer a sdata:Person ;
+    sdata:hasIdentifier "PERS-PRUEFER-042" ;
+    rdfs:label "Werkstoffprüfer"@de .
+
+
+# =============================================================================
+#   HARDWARE — womit physisch
+# =============================================================================
+
+:stanze a sdata:Hardware ;
+    sdata:hasIdentifier "HW-STANZE-003" ;
+    rdfs:label "Probenstanze"@de .
+
+:zwick a sdata:Hardware , sdata:MachineAgent ;
+    sdata:hasIdentifier "HW-ZWICK-Z250-007" ;
+    rdfs:label "Zwick Z250"@de ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "F_max" ;
+        rdfs:label "Maximale Prüfkraft"@de ;
+        qudt:numericValue 250.0 ;
+        sdata:unitSymbol "kN" ;
+        sdata:dtype "float"
+    ] .
+
+
+# =============================================================================
+#   PROCESS 1 — Probenfertigung
+# =============================================================================
+
+:probenfertigung a sdata:ManufacturingProcess ;
+    rdfs:label "Probenfertigung"@de ;
+    sdata:hasInput :coil ;
+    sdata:hasOutput :probe ;
+    sdata:performedBy :bediener ;
+    sdata:usesHardware :stanze ;
+    sdata:producesData :fertigung_data ;
+    sdata:hasStandard "DIN 50125" .
+
+:fertigung_data a sdata:Data ;
+    sdata:describes :probe ;
+    sdata:producedBy :probenfertigung ;
+    rdfs:label "Fertigungsdaten Probe 42"@de ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "L0" ;
+        rdfs:label "Anfangsmesslänge"@de ;
+        qudt:numericValue 80.0 ;
+        sdata:unitSymbol "mm" ;
+        sdata:dtype "float"
+    ] ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "b0" ;
+        rdfs:label "Anfangsbreite"@de ;
+        qudt:numericValue 20.0 ;
+        sdata:unitSymbol "mm" ;
+        sdata:dtype "float"
+    ] .
+
+
+# =============================================================================
+#   PROCESS 2 — Zugversuch
+# =============================================================================
+
+:zugversuch a sdata:MechanicalTest ;
+    rdfs:label "Zugversuch Nr. 42"@de ;
+    sdata:hasInput :probe ;
+    sdata:performedBy :pruefer ;
+    sdata:performedBy :zwick ;
+    sdata:usesHardware :zwick ;
+    sdata:producesData :ergebnis ;
+    sdata:hasStandard "DIN EN ISO 6892-1" ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "strain_rate" ;
+        rdfs:label "Dehnrate"@de ;
+        qudt:numericValue 0.001 ;
+        sdata:unitSymbol "1/s" ;
+        sdata:dtype "float"
+    ] ;
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "temperature" ;
+        rdfs:label "Prüftemperatur"@de ;
+        qudt:numericValue 23.0 ;
+        sdata:unitSymbol "°C" ;
+        sdata:dtype "float"
+    ] .
+
+
+# =============================================================================
+#   DATA — was wir wissen
+# =============================================================================
+
+:ergebnis a sdata:Data ;
+    sdata:describes :probe ;
+    sdata:producedBy :zugversuch ;
+    rdfs:label "Zugversuchsergebnis Probe 42"@de ;
+
+    # Zugfestigkeit
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "Rm" ;
+        rdfs:label "Zugfestigkeit"@de ;
+        qudt:numericValue 340.0 ;
+        sdata:unitSymbol "MPa" ;
+        qudt:unit <http://qudt.org/vocab/unit/MegaPA> ;
+        sdata:dtype "float"
+    ] ;
+
+    # Streckgrenze
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "Rp02" ;
+        rdfs:label "Streckgrenze Rp0.2"@de ;
+        qudt:numericValue 180.0 ;
+        sdata:unitSymbol "MPa" ;
+        qudt:unit <http://qudt.org/vocab/unit/MegaPA> ;
+        sdata:dtype "float"
+    ] ;
+
+    # Gleichmaßdehnung
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "AG" ;
+        rdfs:label "Gleichmaßdehnung"@de ;
+        qudt:numericValue 23.5 ;
+        sdata:unitSymbol "%" ;
+        sdata:dtype "float"
+    ] ;
+
+    # Bruchdehnung
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "A80" ;
+        rdfs:label "Bruchdehnung A80"@de ;
+        qudt:numericValue 38.0 ;
+        sdata:unitSymbol "%" ;
+        sdata:dtype "float"
+    ] ;
+
+    # n-Wert
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "n" ;
+        rdfs:label "Verfestigungsexponent"@de ;
+        qudt:numericValue 0.21 ;
+        sdata:unitSymbol "-" ;
+        sdata:dtype "float"
+    ] ;
+
+    # r-Wert
+    sdata:hasQuantity [
+        a sdata:AttributeQuantityValue ;
+        sdata:name "r" ;
+        rdfs:label "senkrechte Anisotropie"@de ;
+        qudt:numericValue 1.85 ;
+        sdata:unitSymbol "-" ;
+        sdata:dtype "float"
+    ] .
+
+
+# =============================================================================
+#   GRAPH
+#
+#   :dc04 (Material)
+#     │ origin: Virgin, form: Sheet, grade: Automotive
+#     │ thickness: 1.0 mm
+#     │
+#     └──madeOf──┐    ┌──madeOf──┘
+#                ▼    ▼
+#   :coil ──▶ :probenfertigung ──▶ :probe (Product)
+#  (Product)  (Manufacturing)       │ role: Specimen
+#                ↑                  │ structure: SinglePart
+#           :bediener               │
+#           :stanze                 │
+#                              :zugversuch (MechanicalTest)
+#                               ↑        │
+#                         :pruefer       producesData
+#                         :zwick          │
+#                        (Person)         ▼
+#                        (HW+Agent)  :ergebnis (Data)
+#                                     Rm  = 340 MPa
+#                                     Rp02 = 180 MPa
+#                                     AG  = 23.5 %
+#                                     A80 = 38.0 %
+#                                     n   = 0.21
+#                                     r   = 1.85
+#

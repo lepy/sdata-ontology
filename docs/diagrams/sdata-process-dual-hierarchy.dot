@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Activity Hierarchy (core + process verbs)",
+		label="sdata Process Hierarchy (core + process verbs)",
 		labeljust=c,
 		labelloc=t,
 		newrank=true,
@@ -26,49 +26,11 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_activity_proc {
-		graph [color="#B6D7A8",
-			label="sdata-processtypes verb classes",
-			style=rounded
-		];
-		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Creation];
-		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Destruction];
-		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Observation];
-		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Preservation];
-		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Recovery];
-		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transfer];
-		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
-			fillcolor="#EEF8E7",
-			fontcolor="#2F5D08",
-			label=Transformation];
-	}
-	subgraph cluster_activity_core {
+	subgraph cluster_process_core {
 		graph [color="#90B5E8",
-			label="sdata-core activity classes",
+			label="sdata-core process classes",
 			style=rounded
 		];
-		"https://w3id.org/sdata/core/Activity"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Activity];
 		"https://w3id.org/sdata/core/AssemblyProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -113,6 +75,10 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Metallographic Examination"];
+		"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Process];
 		"https://w3id.org/sdata/core/RecyclingProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -126,19 +92,40 @@ digraph "" {
 			fontcolor="#1A365D",
 			label=Transport];
 	}
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/AssemblyProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Creation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Destruction";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Experiment";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/ManufacturingProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Observation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Preservation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Recovery";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/RecyclingProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Simulation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Transfer";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Transformation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Transport";
+	subgraph cluster_process_proc {
+		graph [color="#B6D7A8",
+			label="sdata-processtypes verb classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Creation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Creation];
+		"https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Destruction];
+		"https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Observation];
+		"https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Preservation];
+		"https://w3id.org/sdata/core/Recovery"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Recovery];
+		"https://w3id.org/sdata/core/Transfer"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transfer];
+		"https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
+			fillcolor="#EEF8E7",
+			fontcolor="#2F5D08",
+			label=Transformation];
+	}
 	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",
@@ -164,6 +151,19 @@ digraph "" {
 		label=sequence,
 		penwidth=2.0,
 		style=dashed];
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/AssemblyProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Creation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Destruction";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Experiment";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/ManufacturingProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Observation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Preservation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Recovery";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/RecyclingProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Simulation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transfer";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transformation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transport";
 	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",

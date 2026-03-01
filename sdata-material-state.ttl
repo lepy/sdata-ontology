@@ -15,12 +15,12 @@
 #
 #   sdata-material-state — Material State Space
 #
-#   Erweiterungsmodul für sdata v0.6.0
+#   Erweiterungsmodul fuer sdata v0.8.0
 #
 #   Architekturprinzip:
 #
 #     1 generischer Mechanismus  (StateAxis + StateAssignment)
-#     8 vordefinierte Achsen     (Origin, Processing, Condition, ...)
+#     10 vordefinierte Achsen     (Origin, Processing, Condition, ...)
 #     n Achsenwerte pro Achse    (als SKOS-Konzepte, offen erweiterbar)
 #     ∞ benutzerdefinierte Achsen (durch Subklassen von StateAxis)
 #
@@ -31,7 +31,7 @@
 #   Jede StateAssignment ist ein Data-Nexus mit Provenienz.
 #   Der User definiert, welche Achsen er braucht.
 #
-#   v0.1.0 — 2026-03-01
+#   v0.2.0 — 2026-03-01
 #
 # =============================================================================
 
@@ -42,16 +42,18 @@
 
 <https://w3id.org/sdata/material-state>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/material-state/0.1.0> ;
-    owl:versionInfo  "0.1.0 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.2.0> ;
+    owl:versionInfo  "0.2.0 — 2026-03-01" ;
     owl:imports      <https://w3id.org/sdata/core> ;
 
     dcterms:title    "sdata-material-state — Material State Space"@en ;
     dcterms:title    "sdata-material-state — Werkstoff-Zustandsraum"@de ;
     dcterms:description """Generischer Achsen-Mechanismus für den
-multidimensionalen Zustandsraum eines Werkstoffs.
+multidimensionalen Zustandsraum von Werkstoffen und Produkten.
 
-8 vordefinierte Achsen:
+10 vordefinierte Achsen:
+
+  Material-Achsen (beschreiben sdata:Material):
   1. Origin         — woher? (virgin, recycled, bio-based, blended)
   2. ProcessingState — was wurde getan? (raw, processed, heat-treated, aged)
   3. Condition      — wie gut? (pristine, degraded, contaminated)
@@ -61,11 +63,16 @@ multidimensionalen Zustandsraum eines Werkstoffs.
   7. Composition    — wie zusammengesetzt? (homogeneous, composite, ...)
   8. LifecyclePhase — wo im Leben? (production, in-use, end-of-life, ...)
 
+  Product-Achsen (beschreiben sdata:Product):
+  9. Structure      — wie aufgebaut? (single-part, assembly, system)
+ 10. Role           — welche Rolle? (production, specimen, prototype, spare)
+
 Erweiterbar: Neue Achsen durch Subklassen von sms:StateAxis.
              Neue Werte durch SKOS-Konzepte im jeweiligen ConceptScheme.
-             13 Lifecycle-Phasen in 5 Top-Level-Gruppen mit Hierarchie."""@en ;
+             13 Lifecycle-Phasen in 5 Top-Level-Gruppen mit Hierarchie.
+             56 vordefinierte Werte insgesamt."""@en ;
 
-    dcterms:creator  "Lepy" ;
+    dcterms:creator  "Lepy & Claude" ;
     dcterms:created  "2026-03-01"^^xsd:date ;
     dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
     min:layer        "domain-extension" .
@@ -143,7 +150,7 @@ einer bestimmten Achse zuweist.
 
 StateAssignment ist ein vollwertiger sdata:Data-Nexus:
   — sdata:describes  → das Material
-  — sdata:producedBy → die Activity, die den Zustand erzeugt hat
+  — sdata:producedBy → der Process, der den Zustand erzeugt hat
   — sdata:hasQuantity → optionale Detail-AQVs (z.B. Recyclatanteil in %)
   — sms:onAxis       → welche Achse
   — sms:hasStateValue → welcher Wert (skos:Concept)
@@ -259,7 +266,7 @@ sms:ProcessingAxis a owl:Class ;
     rdfs:label "Processing Axis"@en , "Verarbeitungsachse"@de ;
     sms:hasConceptScheme sms:processing-values ;
     rdfs:comment """Sekundäre Achse: Verarbeitungszustand.
-Grundsätzlich aus Activity-Kette ableitbar, hier
+Grundsätzlich aus Process-Kette ableitbar, hier
 als eigenständiger Deskriptor reifiziert."""@de .
 
 sms:processing-values a skos:ConceptScheme ;
@@ -515,7 +522,7 @@ sms:LifecyclePhaseAxis a owl:Class ;
     rdfs:label "Lifecycle Phase Axis"@en , "Lebenszyklusphase-Achse"@de ;
     sms:hasConceptScheme sms:phase-values ;
     rdfs:comment """Sekundäre Achse: Position im Produktlebenszyklus.
-Ableitbar aus der Activity-Kette, hier reifiziert.
+Ableitbar aus der Process-Kette, hier reifiziert.
 
 13 Phasen in 5 Top-Level-Gruppen mit skos:broader-Hierarchie:
 
@@ -624,6 +631,100 @@ sms:phase.Transit a skos:Concept ;
     skos:inScheme sms:phase-values ;
     skos:prefLabel "Transit"@en , "Transport"@de ;
     skos:definition "Unterwegs zwischen Stationen im Lebenszyklus."@de .
+
+
+# =============================================================================
+#   Achse 9: STRUCTURE — Wie ist das Product aufgebaut?
+# =============================================================================
+
+sms:StructureAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Structure Axis"@en , "Strukturachse"@de ;
+    sms:hasConceptScheme sms:structure-values ;
+    rdfs:comment """Product-Achse: Strukturelle Zusammensetzung.
+Einzelteil, Baugruppe, Unterbaugruppe oder Gesamtsystem.
+
+Ersetzt die ehemaligen Klassen sdata:Component, sdata:Assembly.
+In v0.8.0 sind alle gefertigten Dinge sdata:Product — die Struktur
+ist ein Zustand, kein Typ.
+
+Baugruppen nutzen zusätzlich min:hasComponent-Relationen."""@de .
+
+sms:structure-values a skos:ConceptScheme ;
+    rdfs:label "Structure Values"@en , "Strukturwerte"@de ;
+    skos:hasTopConcept sms:structure.SinglePart ,
+                       sms:structure.Assembly ,
+                       sms:structure.System .
+
+sms:structure.SinglePart a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Single Part"@en , "Einzelteil"@de ;
+    skos:definition "Monolithisches Product ohne Unterteile."@de .
+
+sms:structure.SubAssembly a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Sub-Assembly"@en , "Unterbaugruppe"@de ;
+    skos:definition "Baugruppe, die Teil einer größeren Baugruppe ist."@de ;
+    skos:broader sms:structure.Assembly .
+
+sms:structure.Assembly a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "Assembly"@en , "Baugruppe"@de ;
+    skos:definition "Aus mehreren Products zusammengesetzt (min:hasComponent)."@de .
+
+sms:structure.System a skos:Concept ;
+    skos:inScheme sms:structure-values ;
+    skos:prefLabel "System"@en , "Gesamtsystem"@de ;
+    skos:definition "Vollständiges Endprodukt. Höchste Integrationsstufe."@de .
+
+
+# =============================================================================
+#   Achse 10: ROLE — Welche Rolle spielt das Product?
+# =============================================================================
+
+sms:RoleAxis a owl:Class ;
+    rdfs:subClassOf sms:StateAxis ;
+    rdfs:label "Role Axis"@en , "Rollenachse"@de ;
+    sms:hasConceptScheme sms:role-values ;
+    rdfs:comment """Product-Achse: Funktionale Rolle im Lebenszyklus.
+Perspektivabhängig — dasselbe Product kann in verschiedenen
+Kontexten verschiedene Rollen haben.
+
+Ersetzt die ehemalige Klasse sdata:Specimen.
+Ein Probekörper ist ein Product mit role.Specimen."""@de .
+
+sms:role-values a skos:ConceptScheme ;
+    rdfs:label "Role Values"@en , "Rollenwerte"@de ;
+    skos:hasTopConcept sms:role.Production ,
+                       sms:role.Specimen ,
+                       sms:role.Prototype ,
+                       sms:role.Spare ,
+                       sms:role.EndOfLife .
+
+sms:role.Production a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Production"@en , "Serienteil"@de ;
+    skos:definition "Reguläres Serienteil in der Produktion."@de .
+
+sms:role.Specimen a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Specimen"@en , "Probekörper"@de ;
+    skos:definition "Product, das für einen Versuch bestimmt ist. Rolle ergibt sich aus hasInput eines Experiments."@de .
+
+sms:role.Prototype a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Prototype"@en , "Prototyp"@de ;
+    skos:definition "Vorserie oder Funktionsmuster."@de .
+
+sms:role.Spare a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "Spare Part"@en , "Ersatzteil"@de ;
+    skos:definition "Product als Ersatz für ein defektes oder verschlissenes Teil."@de .
+
+sms:role.EndOfLife a skos:Concept ;
+    skos:inScheme sms:role-values ;
+    skos:prefLabel "End of Life"@en , "Altbauteil"@de ;
+    skos:definition "Product am Ende seiner Nutzungsdauer, vor Recycling oder Entsorgung."@de .
 
 
 # #############################################################################
@@ -766,7 +867,7 @@ sms:phase.Transit a skos:Concept ;
 #           sms:hasStateValue sms:phase.Production
 #       ] .
 #
-#   8 Achsen. 8 Assignments. 1 generischer Mechanismus.
+#   10 Achsen. 8 Assignments. 1 generischer Mechanismus.
 #   Jede Achse mit optionaler Provenienz und Detail-AQVs.
 #
 # #############################################################################
@@ -776,7 +877,7 @@ sms:phase.Transit a skos:Concept ;
 #
 #   EPILOG
 #
-#   sdata-material-state v0.1.0
+#   sdata-material-state v0.2.0
 #
 #   Architektur:
 #
@@ -784,7 +885,7 @@ sms:phase.Transit a skos:Concept ;
 #     sms:StateAssignment    — die Zuordnung (Data-Nexus mit Provenienz)
 #     skos:Concept           — der Wert (offen erweiterbar)
 #
-#   8 vordefinierte Achsen, 47 vordefinierte Werte.
+#   10 vordefinierte Achsen, 56 vordefinierte Werte.
 #
 #   Erweiterung:
 #     Neue Achse    = 1 Subklasse + 1 ConceptScheme + n Concepts

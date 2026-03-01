@@ -1,497 +1,65 @@
-@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sms:   <https://w3id.org/sdata/material-state/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
 # =============================================================================
-# sdata Core SHACL Shapes v0.4.0
+# sdata Core SHACL Shapes v0.8.0 (MIN/OPA-based model)
 # =============================================================================
 
-<https://w3id.org/sdata/shapes/MaterialArtifactShape>
+<https://w3id.org/sdata/shapes/IdentifierLiteralShape>
     a sh:NodeShape ;
-    sh:targetClass sdata:MaterialArtifact ;
-    rdfs:label "MaterialArtifact Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
+    rdfs:label "Identifier literal shape"@en ;
+    sh:targetSubjectsOf sdata:hasIdentifier ;
     sh:property [
         sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:consistsOf ;
-        sh:class sdata:Material ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasPart ;
-        sh:class sdata:MaterialArtifact ;
-    ] ;
-    sh:property [
-        sh:path sdata:locatedAt ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:realizes ;
-        sh:class sdata:Role ;
-    ] .
-
-<https://w3id.org/sdata/shapes/MaterialShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:Material ;
-    rdfs:label "Material Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
         sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:description ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:locatedAt ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:recoveredFrom ;
-        sh:or (
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:MaterialArtifact ]
-        ) ;
-    ] .
-
-<https://w3id.org/sdata/shapes/MaterialAgentShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:MaterialAgent ;
-    rdfs:label "MaterialAgent Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:agentType ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:locatedAt ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:realizes ;
-        sh:class sdata:Role ;
-    ] .
-
-<https://w3id.org/sdata/shapes/MaterialProcessShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:MaterialProcess ;
-    rdfs:label "MaterialProcess Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:wasPerformedBy ;
-        sh:minCount 1 ;
-        sh:or (
-            [ sh:class sdata:MaterialAgent ]
-            [ sh:class sdata:InformationAgent ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:consumes ;
-        sh:or (
-            [ sh:class sdata:MaterialArtifact ]
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:InformationArtifact ]
-            [ sh:class sdata:Information ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:generates ;
-        sh:or (
-            [ sh:class sdata:MaterialArtifact ]
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:InformationArtifact ]
-            [ sh:class sdata:Information ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:locatedAt ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path prov:startedAtTime ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:property [
-        sh:path prov:endedAtTime ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:sparql [
-        sh:message "prov:startedAtTime must be before prov:endedAtTime."@en ;
-        sh:select """
-            PREFIX prov: <http://www.w3.org/ns/prov#>
-            SELECT $this WHERE {
-                $this prov:startedAtTime ?start .
-                $this prov:endedAtTime ?end .
-                FILTER (?start >= ?end)
-            }
-        """ ;
-    ] .
-
-<https://w3id.org/sdata/shapes/MaterialSiteShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:MaterialSite ;
-    rdfs:label "MaterialSite Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:geoCoordinates ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:pattern "^-?\\d+\\.?\\d*,-?\\d+\\.?\\d*$" ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasGeometry ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:address ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:containsSite ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] .
-
-<https://w3id.org/sdata/shapes/InformationArtifactShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:InformationArtifact ;
-    rdfs:label "InformationArtifact Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:version ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:description ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:consistsOf ;
-        sh:class sdata:Information ;
-    ] ;
-    sh:property [
-        sh:path sdata:represents ;
-        sh:or (
-            [ sh:class sdata:MaterialArtifact ]
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:MaterialProcess ]
-            [ sh:class sdata:InformationProcess ]
-            [ sh:class sdata:MaterialSite ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:realizes ;
-        sh:class sdata:Role ;
-    ] ;
-    sh:property [
-        sh:path sdata:hostedAt ;
-        sh:class sdata:InformationSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:validFrom ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:property [
-        sh:path sdata:validUntil ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:sparql [
-        sh:message "sdata:validFrom must be before sdata:validUntil."@en ;
-        sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core/>
-            SELECT $this WHERE {
-                $this sdata:validFrom ?from .
-                $this sdata:validUntil ?until .
-                FILTER (?from >= ?until)
-            }
-        """ ;
-    ] .
-
-<https://w3id.org/sdata/shapes/IdentifierShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:Identifier ;
-    rdfs:label "Identifier Shape"@en ;
-    sh:property [
-        sh:path sdata:identifierType ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:identifierValue ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
         sh:minLength 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:validFrom ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:property [
-        sh:path sdata:validUntil ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:sparql [
-        sh:message "sdata:validFrom must be before sdata:validUntil on Identifier."@en ;
-        sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core/>
-            SELECT $this WHERE {
-                $this sdata:validFrom ?from .
-                $this sdata:validUntil ?until .
-                FILTER (?from >= ?until)
-            }
-        """ ;
     ] .
 
-<https://w3id.org/sdata/shapes/InformationShape>
+<https://w3id.org/sdata/shapes/VersionLiteralShape>
     a sh:NodeShape ;
-    sh:targetClass sdata:Information ;
-    rdfs:label "Information Shape"@en ;
+    rdfs:label "Version literal shape"@en ;
+    sh:targetSubjectsOf sdata:hasVersion ;
     sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
+        sh:path sdata:hasVersion ;
         sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:description ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:hostedAt ;
-        sh:class sdata:InformationSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:derivedFrom ;
-        sh:or (
-            [ sh:class sdata:Information ]
-            [ sh:class sdata:InformationArtifact ]
-        ) ;
+        sh:minLength 1 ;
     ] .
 
-<https://w3id.org/sdata/shapes/InformationAgentShape>
+<https://w3id.org/sdata/shapes/ProcessFlowShape>
     a sh:NodeShape ;
-    sh:targetClass sdata:InformationAgent ;
-    rdfs:label "InformationAgent Shape"@en ;
+    rdfs:label "Process flow shape"@en ;
+    sh:targetSubjectsOf sdata:hasInput ;
     sh:property [
-        sh:path sdata:name ;
+        sh:path sdata:hasInput ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
+        sh:nodeKind sh:IRI ;
     ] ;
     sh:property [
-        sh:path sdata:agentType ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] ;
-    sh:property [
-        sh:path sdata:hostedAt ;
-        sh:class sdata:InformationSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:realizes ;
-        sh:class sdata:Role ;
+        sh:path sdata:producesData ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
     ] .
 
-<https://w3id.org/sdata/shapes/InformationProcessShape>
+<https://w3id.org/sdata/shapes/StateAssignmentShape>
     a sh:NodeShape ;
-    sh:targetClass sdata:InformationProcess ;
-    rdfs:label "InformationProcess Shape"@en ;
+    rdfs:label "State assignment shape"@en ;
+    sh:targetClass sms:StateAssignment ;
     sh:property [
-        sh:path sdata:name ;
+        sh:path sms:onAxis ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
+        sh:nodeKind sh:IRI ;
     ] ;
     sh:property [
-        sh:path sdata:wasPerformedBy ;
+        sh:path sms:hasStateValue ;
         sh:minCount 1 ;
-        sh:or (
-            [ sh:class sdata:MaterialAgent ]
-            [ sh:class sdata:InformationAgent ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:consumes ;
-        sh:or (
-            [ sh:class sdata:MaterialArtifact ]
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:InformationArtifact ]
-            [ sh:class sdata:Information ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:generates ;
-        sh:or (
-            [ sh:class sdata:MaterialArtifact ]
-            [ sh:class sdata:Material ]
-            [ sh:class sdata:InformationArtifact ]
-            [ sh:class sdata:Information ]
-        ) ;
-    ] ;
-    sh:property [
-        sh:path sdata:hostedAt ;
-        sh:class sdata:InformationSite ;
-    ] ;
-    sh:property [
-        sh:path prov:startedAtTime ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:property [
-        sh:path prov:endedAtTime ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:sparql [
-        sh:message "prov:startedAtTime must be before prov:endedAtTime."@en ;
-        sh:select """
-            PREFIX prov: <http://www.w3.org/ns/prov#>
-            SELECT $this WHERE {
-                $this prov:startedAtTime ?start .
-                $this prov:endedAtTime ?end .
-                FILTER (?start >= ?end)
-            }
-        """ ;
-    ] .
-
-<https://w3id.org/sdata/shapes/InformationSiteShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:InformationSite ;
-    rdfs:label "InformationSite Shape"@en ;
-    sh:property [
-        sh:path sdata:name ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:endpoint ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:anyURI ;
-    ] ;
-    sh:property [
-        sh:path sdata:hostedOn ;
-        sh:class sdata:MaterialArtifact ;
-    ] ;
-    sh:property [
-        sh:path sdata:locatedAt ;
-        sh:class sdata:MaterialSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:containsSite ;
-        sh:class sdata:InformationSite ;
-    ] ;
-    sh:property [
-        sh:path sdata:hasIdentifier ;
-        sh:class sdata:Identifier ;
-    ] .
-
-<https://w3id.org/sdata/shapes/RoleShape>
-    a sh:NodeShape ;
-    sh:targetClass sdata:Role ;
-    rdfs:label "Role Shape"@en ;
-    sh:property [
-        sh:path sdata:roleType ;
-        sh:minCount 1 ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:description ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-    ] ;
-    sh:property [
-        sh:path sdata:validFrom ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:property [
-        sh:path sdata:validUntil ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:dateTimeStamp ;
-    ] ;
-    sh:sparql [
-        sh:message "sdata:validFrom must be before sdata:validUntil on Role."@en ;
-        sh:select """
-            PREFIX sdata: <https://w3id.org/sdata/core/>
-            SELECT $this WHERE {
-                $this sdata:validFrom ?from .
-                $this sdata:validUntil ?until .
-                FILTER (?from >= ?until)
-            }
-        """ ;
+        sh:nodeKind sh:IRI ;
     ] .
 
 # =============================================================================
-# END — sdata Core SHACL Shapes v0.4.0
+# END — sdata Core SHACL Shapes v0.8.0
 # =============================================================================

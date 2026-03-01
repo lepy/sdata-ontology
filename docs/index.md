@@ -1,19 +1,21 @@
 # sdata Documentation
 
-sdata is a modular ontology suite for Product Passports, Circular Economy, and Digital Twins.
+sdata is a modular ontology suite for Product Passports, Circular Economy and Digital Twins.
 
 ## Included modules
 
-- `sdata-core.ttl`: core ontology classes and properties
-- `sdata-core-v0.5.0-bfo-alignment.ttl`: optional BFO/PROV bridge axioms
+- `sdata-core.ttl` / `sdata-core-v0.8.0.ttl`: core ontology (MIN/OPA-based)
+- `sdata-material-state.ttl`: material state space extension
 - `sdata-agents.ttl`: SKOS vocabulary for agent typing
+- `sdata-processtypes.ttl`: verb-axis process extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **19 classes** (`2 domains + 5 dimensions + 10 leaf + 2 orthogonal`), fully autark (no ontology imports).
+Current core model: **30 classes**, **19 object properties**, **8 datatype properties**.
 
-## Ontology docs with tensile test examples
+## Ontology docs
 
 - [sdata-core](ontologies/sdata-core/index.md)
+- [sdata-material-state](ontologies/sdata-material-state.md)
 - [sdata-agents](ontologies/sdata-agents/index.md)
 - [sdata-processtypes](ontologies/sdata-processtypes/index.md)
 - [sdata-lifecycle](ontologies/sdata-lifecycle/index.md)
@@ -37,27 +39,10 @@ make lint
 ## Visualizations
 
 ```bash
-uv run python -m src.visualization.class_hierarchy_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.agents_hierarchy_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.core_processtypes_hierarchy_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.core_processtypes_sdata_only_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.process_dual_hierarchy_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.combined_hierarchy_plot --out-dir docs/diagrams --format both
-uv run python -m src.visualization.lifecycle_plot --out-dir docs/diagrams --format both
+make viz-all
 ```
 
-Optional (with alignment module):
-
-```bash
-uv run python -m src.visualization.class_hierarchy_plot \
-  --core sdata-core-v0.5.1.ttl \
-  --alignment sdata-core-v0.5.0-bfo-alignment.ttl \
-  --out-dir docs/diagrams \
-  --name sdata-class-hierarchy-aligned \
-  --format both
-```
-
-Oder über Makefile:
+Individual targets:
 
 ```bash
 make viz-hierarchy
@@ -67,7 +52,9 @@ make viz-core-processtypes-sdata-only
 make viz-process-dual
 make viz-combined
 make viz-lifecycle
-make viz-all
+make viz-material-state
+make viz-specimen
+make viz-examples
 ```
 
 ## Build docs

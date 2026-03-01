@@ -1,6 +1,6 @@
 # =============================================================================
 # FILE: sdata-processtypes.ttl
-# 7 OWL verb classes — orthogonal process-verb axis for sdata:Activity
+# 7 OWL verb classes — orthogonal process-verb axis for sdata:Process
 # =============================================================================
 
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -22,7 +22,7 @@
     rdfs:label "sdata Process Verb extension"@en ;
     rdfs:label "sdata Prozess-Verb-Erweiterung"@de ;
     dcterms:description
-        """7 OWL verb classes, all subClassOf sdata:Activity.
+        """7 OWL verb classes, all subClassOf sdata:Process.
 They provide an orthogonal process-verb axis:
   ex:StampingRun  a  sdata:FormingProcess , sdata:Transformation .
   ex:CrashSim_v3  a  sdata:Simulation ,     sdata:Observation ."""@en .
@@ -32,7 +32,7 @@ They provide an orthogonal process-verb axis:
 # =============================================================================
 #
 # D1. ORTHOGONALITY
-#   Axis 1 (Domain class):   Activity subclasses in sdata-core
+#   Axis 1 (Domain class):   Process subclasses in sdata-core
 #   Axis 2 (Verb class):     Creation | Transformation | ... [this file]
 #
 # D2. THE 7 UNIVERSAL VERBS — domain-independent
@@ -52,7 +52,7 @@ They provide an orthogonal process-verb axis:
 #   Rendering → Transformation      Encryption → Transformation
 #   Refurbishment → Preservation    ML Training → Recovery
 #
-# D4. CORE PARENT — all 7 subClassOf sdata:Activity
+# D4. CORE PARENT — all 7 subClassOf sdata:Process
 #
 # D5. DISJOINTNESS — within verb axis: all 7 mutually disjoint (21 pairs)
 #     Across axes: NO disjointness — intersections are the whole point
@@ -62,7 +62,7 @@ They provide an orthogonal process-verb axis:
 # ─── Creation ────────────────────────────────────────────────────────────────
 sdata:Creation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasOutput ;
@@ -88,7 +88,7 @@ Information: Datenerzeugung, CAD-Authoring, synthetische Datenerstellung."""@de 
 # ─── Transformation ──────────────────────────────────────────────────────────
 sdata:Transformation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasInput ;
@@ -121,7 +121,7 @@ Information: ETL, Formatkonvertierung, Schema-Migration, Rendering, Verschlüsse
 # ─── Transfer ────────────────────────────────────────────────────────────────
 sdata:Transfer
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasInput ;
@@ -147,7 +147,7 @@ Information: Dateiupload, Datenreplikation, API-Übertragung."""@de .
 # ─── Observation ─────────────────────────────────────────────────────────────
 sdata:Observation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:producesData ;
@@ -173,7 +173,7 @@ Information: Simulationslauf, Validierungsprüfung, Datenqualitäts-Audit."""@de
 # ─── Preservation ────────────────────────────────────────────────────────────
 sdata:Preservation
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasInput ;
@@ -199,7 +199,7 @@ Information: Archivierung, Backup, Migration auf neuen Speicher, Version-Pinning
 # ─── Recovery ────────────────────────────────────────────────────────────────
 sdata:Recovery
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasInput ;
@@ -233,7 +233,7 @@ Schließt den Lebenszykluskreis: Recovery-Output fließt zurück in Creation."""
 # ─── Destruction ─────────────────────────────────────────────────────────────
 sdata:Destruction
     rdf:type owl:Class ;
-    rdfs:subClassOf sdata:Activity ;
+    rdfs:subClassOf sdata:Process ;
     rdfs:subClassOf [
         rdf:type owl:Restriction ;
         owl:onProperty sdata:hasInput ;
@@ -286,7 +286,7 @@ sdata:Recovery       owl:disjointWith sdata:Destruction .
 # USAGE EXAMPLES (informative)
 # =============================================================================
 #
-# Activity subclass × Verb:
+# Process subclass × Verb:
 #   ex:MiningDC04     a  sdata:ManufacturingProcess , sdata:Creation .
 #   ex:StampingRun    a  sdata:FormingProcess ,       sdata:Transformation .
 #   ex:ShipToOEM      a  sdata:Transport ,            sdata:Transfer .

@@ -70,8 +70,8 @@ canonical lifecycle order. Descriptive, not prescriptive."""@en .
 
 sdata:precedes
     rdf:type owl:ObjectProperty ;
-    rdfs:domain [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
-    rdfs:range [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
     rdfs:label "precedes"@en , "geht voraus"@de ;
     rdfs:comment """Instance-level: this process directly precedes another in an
 actual execution chain."""@en .
@@ -88,7 +88,7 @@ sdata:follows
 sdata:observes
     rdf:type owl:ObjectProperty ;
     rdfs:domain sdata:Observation ;
-    rdfs:range [ owl:unionOf ( sdata:MaterialProcess sdata:InformationProcess ) ] ;
+    rdfs:range sdata:Process ;
     rdfs:label "observes"@en , "beobachtet"@de ;
     rdfs:comment """Links an Observation process to the lifecycle process it
 observes. The Observation does not alter the observed process —
@@ -149,63 +149,63 @@ slc:terminalExit
 #
 # ─── Material lifecycle of a car body panel ─────────────────────────────
 #
-#   ex:MiningDC04     a  sdata:MaterialProcess , sdata:Creation ;
-#       sdata:generates   ex:DC04_Charge ;
+#   ex:MiningDC04     a  sdata:Process , sdata:Creation ;
+#       sdata:hasOutput   ex:DC04_Charge ;
 #       sdata:locatedAt   ex:MineSite_Kiruna .
 #
-#   ex:StampingRun    a  sdata:MaterialProcess , sdata:Transformation ;
+#   ex:StampingRun    a  sdata:Process , sdata:Transformation ;
 #       sdata:follows     ex:MiningDC04 ;
-#       sdata:consumes    ex:DC04_Charge ;
-#       sdata:generates   ex:BPillar_001 ;
-#       sdata:wasPerformedBy ex:PressLine_A1 .          # MaterialAgent
+#       sdata:hasInput    ex:DC04_Charge ;
+#       sdata:hasOutput   ex:BPillar_001 ;
+#       sdata:performedBy ex:PressLine_A1 .          # MaterialAgent
 #
-#   ex:ShipToOEM      a  sdata:MaterialProcess , sdata:Transfer ;
+#   ex:ShipToOEM      a  sdata:Process , sdata:Transfer ;
 #       sdata:follows     ex:StampingRun .
 #
-#   ex:RepairDent     a  sdata:MaterialProcess , sdata:Preservation ;
+#   ex:RepairDent     a  sdata:Process , sdata:Preservation ;
 #       sdata:follows     ex:ShipToOEM .
 #
-#   ex:RecycleParts   a  sdata:MaterialProcess , sdata:Recovery ;
+#   ex:RecycleParts   a  sdata:Process , sdata:Recovery ;
 #       sdata:follows     ex:RepairDent ;
-#       sdata:consumes    ex:BPillar_001 ;
-#       sdata:generates   ex:RecycledSteel_Batch .
+#       sdata:hasInput    ex:BPillar_001 ;
+#       sdata:hasOutput   ex:RecycledSteel_Batch .
 #
-#   ex:TensileTest42  a  sdata:MaterialProcess , sdata:Observation ;
+#   ex:TensileTest42  a  sdata:Process , sdata:Observation ;
 #       sdata:observes    ex:StampingRun ;
-#       sdata:wasPerformedBy ex:ZwickZ100 ;             # MaterialAgent
-#       sdata:generates   ex:Messkurve42 .
+#       sdata:performedBy ex:ZwickZ100 ;             # MaterialAgent
+#       sdata:hasOutput   ex:Messkurve42 .
 #
 # ─── Information lifecycle of a crash simulation ────────────────────────
 #
-#   ex:MeshGen_v1     a  sdata:InformationProcess , sdata:Creation ;
-#       sdata:generates   ex:FE_Mesh_v1 ;
+#   ex:MeshGen_v1     a  sdata:Process , sdata:Creation ;
+#       sdata:hasOutput   ex:FE_Mesh_v1 ;
 #       sdata:hostedAt    ex:HPC_Cluster_EU .           # InformationSite
 #
-#   ex:MapToSolver    a  sdata:InformationProcess , sdata:Transformation ;
+#   ex:MapToSolver    a  sdata:Process , sdata:Transformation ;
 #       sdata:follows     ex:MeshGen_v1 ;
-#       sdata:consumes    ex:FE_Mesh_v1 ;
-#       sdata:generates   ex:SolverInput_v1 .
+#       sdata:hasInput    ex:FE_Mesh_v1 ;
+#       sdata:hasOutput   ex:SolverInput_v1 .
 #
-#   ex:UploadToHPC    a  sdata:InformationProcess , sdata:Transfer ;
+#   ex:UploadToHPC    a  sdata:Process , sdata:Transfer ;
 #       sdata:follows     ex:MapToSolver .
 #
-#   ex:ArchiveResults a  sdata:InformationProcess , sdata:Preservation ;
+#   ex:ArchiveResults a  sdata:Process , sdata:Preservation ;
 #       sdata:follows     ex:UploadToHPC .
 #
-#   ex:TrainSurrogate a  sdata:InformationProcess , sdata:Recovery ;
+#   ex:TrainSurrogate a  sdata:Process , sdata:Recovery ;
 #       sdata:follows     ex:ArchiveResults ;
-#       sdata:consumes    ex:Messkurve42 ;
-#       sdata:generates   ex:UmMatCraML_Model_v3 ;
-#       sdata:wasPerformedBy ex:PyTorch_Runtime .       # InformationAgent
+#       sdata:hasInput    ex:Messkurve42 ;
+#       sdata:hasOutput   ex:UmMatCraML_Model_v3 ;
+#       sdata:performedBy ex:PyTorch_Runtime .       # InformationAgent
 #
-#   ex:CrashSim_v3    a  sdata:InformationProcess , sdata:Observation ;
+#   ex:CrashSim_v3    a  sdata:Process , sdata:Observation ;
 #       sdata:observes    ex:StampingRun ;
-#       sdata:wasPerformedBy ex:LSDYNA_R14 ;            # InformationAgent
-#       sdata:consumes    ex:UmMatCraML_Model_v3 ;
-#       sdata:generates   ex:D3plot_v3 .
+#       sdata:performedBy ex:LSDYNA_R14 ;            # InformationAgent
+#       sdata:hasInput    ex:UmMatCraML_Model_v3 ;
+#       sdata:hasOutput   ex:D3plot_v3 .
 #
-#   ex:PurgeOldSims   a  sdata:InformationProcess , sdata:Destruction ;
-#       sdata:consumes    ex:D3plot_v1_old .
+#   ex:PurgeOldSims   a  sdata:Process , sdata:Destruction ;
+#       sdata:hasInput    ex:D3plot_v1_old .
 #
 # =============================================================================
 # END — sdata-lifecycle.ttl v0.2.0

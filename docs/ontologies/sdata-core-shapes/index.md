@@ -1,26 +1,31 @@
 # shapes/sdata-core-shapes.ttl
 
-SHACL-Validierungsregeln für Instanzdaten (z. B. Pflichtfelder, Datentypen, Konsistenzregeln).
+SHACL-Regeln für das aktuelle `sdata`-Modell (`v0.8.0`, MIN/OPA-basiert).
 
-## Zugversuch-Beispiel
+Die Shapes prüfen u. a.:
+
+- `sdata:hasIdentifier` als String-Literal
+- `sdata:hasVersion` als String-Literal
+- grundlegenden Process-Flow (`hasInput` + `producesData`)
+- Struktur von `sms:StateAssignment` (`onAxis` + `hasStateValue`)
+
+## Beispiel
 
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix prov:  <http://www.w3.org/ns/prov#> .
-@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
-@prefix ex:    <https://example.org/zugversuch/> .
+@prefix sms:   <https://w3id.org/sdata/material-state/> .
+@prefix ex:    <https://example.org/demo/> .
 
-# Erfüllt MaterialProcessShape: name + wasPerformedBy + Zeitlogik
-ex:Zugversuch_A1
-  a sdata:MaterialProcess ;
-  sdata:name "Zugversuch A1" ;
-  sdata:wasPerformedBy ex:Messmaschine_Z100 ;
-  prov:startedAtTime "2026-02-20T09:15:00Z"^^xsd:dateTimeStamp ;
-  prov:endedAtTime   "2026-02-20T09:45:00Z"^^xsd:dateTimeStamp .
+ex:Steel a sdata:Material ;
+  sdata:hasIdentifier "MAT-001" .
+
+ex:Assign1 a sms:StateAssignment ;
+  sms:onAxis sms:OriginAxis ;
+  sms:hasStateValue sms:origin.Recycled .
 ```
 
-Validierung lokal:
+## Lokale Validierung
 
 ```bash
-pyshacl -s shapes/sdata-core-shapes.ttl -df turtle examples/tensiontest-crashsimulation.ttl
+pyshacl -s shapes/sdata-core-shapes.ttl -df turtle examples/battery-passport.ttl
 ```
