@@ -7,6 +7,7 @@ from rdflib import Graph, Namespace, RDF, RDFS, URIRef
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SMS = Namespace("https://w3id.org/sdata/material-state/")
+MIN = Namespace("https://w3id.org/min#")
 ROOT = Path(__file__).resolve().parent.parent
 OWL_CLASS = URIRef("http://www.w3.org/2002/07/owl#Class")
 OWL_OBJ_PROP = URIRef("http://www.w3.org/2002/07/owl#ObjectProperty")
@@ -120,6 +121,10 @@ def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
     assert len(sdata_classes) == 14, f"Expected 14 classes, found {len(sdata_classes)}"
+
+
+def test_value_domain_is_not_min_nexus(core_graph):
+    assert (SDATA.ValueDomain, RDFS.subClassOf, MIN.Nexus) not in core_graph
 
 
 def _instances_of_class_or_subclass(example_graph: Graph, core_graph: Graph, class_uri: URIRef) -> set[URIRef]:
