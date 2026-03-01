@@ -1,19 +1,20 @@
 @prefix sh:    <http://www.w3.org/ns/shacl#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
+@prefix min:   <https://w3id.org/min#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 
 # =============================================================================
-# sdata Core SHACL Shapes v0.9.1 (MIN/OPA-based model)
+# sdata Core SHACL Shapes v0.11.0 (MIN v2 based model)
 # =============================================================================
 
 <https://w3id.org/sdata/shapes/IdentifierLiteralShape>
     a sh:NodeShape ;
     rdfs:label "Identifier literal shape"@en ;
-    sh:targetSubjectsOf sdata:hasIdentifier ;
+    sh:targetSubjectsOf min:hasIdentifier ;
     sh:property [
-        sh:path sdata:hasIdentifier ;
+        sh:path min:hasIdentifier ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
         sh:minLength 1 ;
@@ -32,14 +33,14 @@
 <https://w3id.org/sdata/shapes/ProcessFlowShape>
     a sh:NodeShape ;
     rdfs:label "Process flow shape"@en ;
-    sh:targetSubjectsOf sdata:hasInput ;
+    sh:targetSubjectsOf min:hasInput ;
     sh:property [
-        sh:path sdata:hasInput ;
+        sh:path min:hasInput ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] ;
     sh:property [
-        sh:path sdata:producesData ;
+        sh:path min:generates ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
     ] .
@@ -61,5 +62,5 @@
     ] .
 
 # =============================================================================
-# END — sdata Core SHACL Shapes v0.9.1
+# END — sdata Core SHACL Shapes v0.11.0
 # =============================================================================

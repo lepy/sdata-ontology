@@ -1,0 +1,142 @@
+digraph "" {
+	graph [bgcolor="#FAFBFC",
+		compound=true,
+		fontname=Helvetica,
+		fontsize=20,
+		label="Class Hierarchy: MIN -> sdata-core",
+		labeljust=c,
+		labelloc=t,
+		newrank=true,
+		nodesep=0.55,
+		overlap=false,
+		pad=0.35,
+		rankdir=TB,
+		ranksep=1.0,
+		splines=true
+	];
+	node [fontname=Helvetica,
+		fontsize=12,
+		label="\N",
+		margin="0.14,0.08",
+		penwidth=1.6,
+		shape=box,
+		style="filled,rounded"
+	];
+	edge [arrowsize=0.85,
+		color="#4A5568",
+		fontname=Helvetica,
+		penwidth=1.6
+	];
+	subgraph sdata_rank_object_children {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/Hardware"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Hardware];
+		"https://w3id.org/sdata/core/Material"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Material];
+		"https://w3id.org/sdata/core/Product"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Product];
+		"https://w3id.org/sdata/core/Software"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Software];
+	}
+	subgraph cluster_min {
+		graph [color="#8FB7EA",
+			label="MIN classes",
+			rank=source,
+			style=rounded
+		];
+		subgraph cluster_min_rank {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/min#Agent"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Agent];
+			"https://w3id.org/min#Data"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Data];
+			"https://w3id.org/min#Object"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Object];
+			"https://w3id.org/min#Process"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Process];
+		}
+		"https://w3id.org/min#Nexus"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Nexus];
+		__rank_anchor_min	[height=0.01,
+			label="",
+			shape=point,
+			style=invis,
+			width=0.01];
+	}
+	subgraph sdata_rank_agent_children {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Environment Agent"];
+		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Hardware Agent"];
+		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Organization];
+		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Person];
+		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Software Agent"];
+	}
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/Organization";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/Person";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/SoftwareAgent";
+	"https://w3id.org/sdata/core/Data"	[color="#6B46C1",
+		fillcolor="#F8EEFF",
+		fontcolor="#44337A",
+		label=Data];
+	"https://w3id.org/min#Data" -> "https://w3id.org/sdata/core/Data";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Agent";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Data";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Object";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Process";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Hardware";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Material";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Product";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Software";
+	__rank_anchor_sdata	[height=0.01,
+		label="",
+		shape=point,
+		style=invis,
+		width=0.01];
+	__rank_anchor_min -> __rank_anchor_sdata	[color="#FFFFFF",
+		constraint=true,
+		ltail=cluster_min,
+		minlen=2,
+		style=invis,
+		weight=200];
+}

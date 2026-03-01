@@ -1,23 +1,24 @@
 # shapes/sdata-core-shapes.ttl
 
-SHACL-Regeln für das aktuelle `sdata`-Modell (`v0.10.0`, MIN/OPA-basiert).
+SHACL-Regeln fuer das aktuelle `sdata`-Modell (`v0.11.0`, MIN v2-basiert).
 
-Die Shapes prüfen u. a.:
+Die Shapes pruefen u. a.:
 
-- `sdata:hasIdentifier` als String-Literal
+- `min:hasIdentifier` als String-Literal
 - `sdata:hasVersion` als String-Literal
-- grundlegenden Process-Flow (`hasInput` + `producesData`)
+- grundlegenden Process-Flow (`min:hasInput` + `min:generates`)
 - Struktur von `sms:StateAssignment` (`onAxis` + `hasStateValue`)
 
 ## Beispiel
 
 ```turtle
+@prefix min:   <https://w3id.org/min#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 @prefix ex:    <https://example.org/demo/> .
 
 ex:Steel a sdata:Material ;
-  sdata:hasIdentifier "MAT-001" .
+  min:hasIdentifier "MAT-001" .
 
 ex:Assign1 a sms:StateAssignment ;
   sms:onAxis sms:OriginAxis ;

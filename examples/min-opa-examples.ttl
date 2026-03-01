@@ -1,0 +1,78 @@
+@prefix min:     <https://w3id.org/min#> .
+@prefix ex:      <https://example.org/instances#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+# =============================================================================
+# Drei Nexus-Beispiele in MIN v2-Kategorien (ohne OPA)
+# 1) Object  (material-dominant)
+# 2) Process (balanced)
+# 3) Data    (informational-dominant)
+# =============================================================================
+
+
+# --- 1) Object / material-dominant -------------------------------------------
+
+ex:Stahlcoil_2026_001 a min:Object ;
+    min:hasIdentifier "COIL-2026-001" ;
+    min:hasName "Warmgewalztes Stahlcoil HC340LA" ;
+    min:hasDescription "Mikrolegiertes Stahlcoil fuer Automobil-Strukturbauteile" ;
+    min:hasStatus "raw" ;
+    min:hasTimestamp "2026-02-15T08:30:00"^^xsd:dateTime ;
+    min:materialAspect [
+        ex:massKg 12500.0 ;
+        ex:thicknessMm 1.8 ;
+        ex:widthMm 1200.0
+    ] ;
+    min:informationalAspect [
+        ex:steelGrade "HC340LA" ;
+        ex:standard "DIN EN 10268"
+    ] .
+
+
+# --- 2) Process / balanced ----------------------------------------------------
+
+ex:Tiefziehen_2026_017 a min:Process ;
+    min:hasIdentifier "PROC-TZ-2026-017" ;
+    min:hasName "Tiefziehen Seitenteil links" ;
+    min:hasDescription "Erststufiges Tiefziehen des linken Seitenteils aus HC340LA-Coil" ;
+    min:hasStatus "completed" ;
+    min:hasTimestamp "2026-02-20T14:22:00"^^xsd:dateTime ;
+    min:hasInput ex:Stahlcoil_2026_001 ;
+    min:hasOutput ex:Bauteil_Seitenteil_001 ;
+    min:generates ex:Zugversuchsdaten_2026_042 ;
+    min:materialAspect [
+        ex:pressForcekN 8000.0 ;
+        ex:drawDepthMm 185.0
+    ] ;
+    min:informationalAspect [
+        ex:processPlan "PP-STL-2026-003" ;
+        ex:qualityResult "ok"
+    ] .
+
+ex:Bauteil_Seitenteil_001 a min:Object ;
+    min:hasIdentifier "PART-STL-001" ;
+    min:hasName "Seitenteil links (tiefgezogen)" ;
+    min:hasStatus "processed" ;
+    min:hasTimestamp "2026-02-20T14:23:00"^^xsd:dateTime ;
+    min:resultOf ex:Tiefziehen_2026_017 .
+
+
+# --- 3) Data / informational-dominant ----------------------------------------
+
+ex:Zugversuchsdaten_2026_042 a min:Data ;
+    min:hasIdentifier "DATA-ZV-2026-042" ;
+    min:hasName "Zugversuchsdaten HC340LA Charge SCH-2026-0042" ;
+    min:hasDescription "Spannungs-Dehnungs-Kurve und Kennwerte aus Zugversuch" ;
+    min:hasStatus "validated" ;
+    min:hasTimestamp "2026-02-21T11:05:00"^^xsd:dateTime ;
+    min:describes ex:Bauteil_Seitenteil_001 ;
+    min:generatedBy ex:Tiefziehen_2026_017 ;
+    min:materialAspect [
+        ex:fileFormat "HDF5" ;
+        ex:fileSizeMB 2.4
+    ] ;
+    min:informationalAspect [
+        ex:yieldStrengthMPa 368.0 ;
+        ex:tensileStrengthMPa 427.0
+    ] .

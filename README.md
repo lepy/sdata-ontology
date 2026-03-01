@@ -4,14 +4,15 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core: `sdata-core-v0.10.0.ttl`
-- Foundation: `MIN` + `OPA`
+- Core: `sdata-core-v0.11.0.ttl`
+- Foundation: `MIN v2.0.0` (`min-v2.0.0.ttl`)
+- OPA: removed (absorbed into MIN v2)
 - State Space: `sdata-material-state-v0.5.0.ttl`
 
 ## Module overview
 
-- `sdata-core.ttl` (`v0.10.0`)
-: 15 classes, 19 object properties, 7 datatype properties.
+- `sdata-core.ttl` (`v0.11.0`)
+: 10 classes, 10 object properties, 7 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
 : 13 state axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
 - `shapes/sdata-core-shapes.ttl`
@@ -19,29 +20,31 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Core model in 60 seconds
 
-- 3 categories:
-  - `sdata:Object`
-  - `sdata:Process`
-  - `sdata:Agent`
-- `sdata:Object` subtypes:
-  - `Material`, `Product`, `Hardware`, `Software`, `Data`
-- `sdata:Agent` subtypes:
-  - `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
-- `sdata:Process` has no core subclasses in `v0.10.0`.
-: method and domain are modeled via `sms:MethodAxis` and `sms:DomainAxis`.
+- Base categories come from MIN v2:
+  - `min:Object`
+  - `min:Process`
+  - `min:Data`
+  - `min:Agent`
+- sdata core classes:
+  - Objects: `Material`, `Product`, `Hardware`, `Software`
+  - Data: `Data`
+  - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
+- Process typing is done with `min:Process`.
+: method/domain semantics are modeled via `sms:MethodAxis` and `sms:DomainAxis`.
 
 ## Core modeling pattern
 
 ```text
-Product + Data -> Process -> Product + Data
-                    ^
-                 Agent(s)
-             + optional Hardware/Software
+Object + Data -> Process -> Object + Data
+                  ^
+               Agent(s)
+           + optional Tool/Software
 ```
 
 ## Namespaces
 
 ```turtle
+@prefix min:   <https://w3id.org/min#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 ```
@@ -63,13 +66,13 @@ Build all ontology plots:
 make viz-all
 ```
 
-Build cross-ontology class hierarchy (MIN -> OPA -> sdata-core):
+Build cross-ontology class hierarchy (MIN -> sdata-core):
 
 ```bash
-make viz-min-opa-core
+make viz-min-core
 ```
 
-![Class hierarchy MIN to OPA to sdata-core](docs/diagrams/sdata-min-opa-core-hierarchy.svg)
+![Class hierarchy MIN to sdata-core](docs/diagrams/sdata-min-core-hierarchy.svg)
 
 Build all example plots:
 
@@ -84,17 +87,21 @@ make viz-specimen
 uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
-## Migration notes (v0.8 -> v0.10.0)
+Build `min-opa-examples.ttl` via dedicated 3-plot module
+(`Object`, `Process`, `Data` modalities):
 
-- `Data` moved into `Object` hierarchy.
-- Process subclasses removed from core.
-: use `sms:MethodAxis` and `sms:DomainAxis` instead.
-- `MachineAgent` renamed to `HardwareAgent`.
-- `Certificate`/`DigitalProductPass` moved to `sms:DataTypeAxis` concepts.
-- `sdata:hasUnit` removed from core datatype properties.
-- `EnvironmentAgent` added as 5th agent subtype for non-intentional natural causality.
-- `MethodAxis` adds `method.Degradation` with environmental methods (`Corrosion`, `Weathering`, `NaturalAging`, `BiologicalDecay`, `FatigueDamage`).
-- Legacy extension ontologies `sdata-agents.ttl`, `sdata-processtypes.ttl`, `sdata-lifecycle.ttl` are removed.
+```bash
+make viz-min-opa-examples
+uv run python -m src.visualization.min_opa_examples_plot
+```
+
+## Migration notes (v0.10.0 -> v0.11.0)
+
+- OPA dependency removed.
+- `sdata:Data` moved from Object hierarchy to `min:Data`.
+- Core process type is now `min:Process`.
+- Core identifier/lifecycle relations are provided by MIN v2.
+- sdata keeps only domain-specific relations (`hasMaterial`, `usesTool`, `certifies`, ...).
 
 ## Documentation
 

@@ -12,13 +12,14 @@ from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
+MIN_PREFIX = "https://w3id.org/min#"
 
 
 @dataclass(frozen=True)
 class HierarchyNode:
     iri: URIRef
     label: str
-    kind: str  # "sdata"
+    kind: str  # "sdata" | "min"
 
 
 @dataclass(frozen=True)
@@ -69,22 +70,29 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
 
 
 def extract_hierarchy(graph: Graph) -> HierarchyModel:
-    """Extract sdata class hierarchy from asserted subclass relations."""
+    """Extract sdata class hierarchy and referenced MIN anchor classes."""
     sdata_classes = {
         cls
         for cls in graph.subjects(RDF.type, OWL.Class)
         if isinstance(cls, URIRef) and str(cls).startswith(str(SDATA))
     }
+    min_classes: set[URIRef] = set()
 
     edges: set[HierarchyEdge] = set()
     for child in sdata_classes:
         for parent in graph.objects(child, RDFS.subClassOf):
             if isinstance(parent, URIRef) and parent in sdata_classes:
                 edges.add(HierarchyEdge(child=child, parent=parent))
+            elif isinstance(parent, URIRef) and str(parent).startswith(MIN_PREFIX):
+                min_classes.add(parent)
+                edges.add(HierarchyEdge(child=child, parent=parent))
 
     nodes = tuple(
-        HierarchyNode(iri=cls, label=_best_label(graph, cls), kind="sdata")
-        for cls in sorted(sdata_classes, key=str)
+        [HierarchyNode(iri=cls, label=_best_label(graph, cls), kind="min") for cls in sorted(min_classes, key=str)]
+        + [
+            HierarchyNode(iri=cls, label=_best_label(graph, cls), kind="sdata")
+            for cls in sorted(sdata_classes, key=str)
+        ]
     )
 
     return HierarchyModel(
@@ -113,7 +121,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Class Hierarchy (core v0.10.0 / MIN+OPA based)",
+        label="sdata Class Hierarchy (core v0.11.0 / MIN v2 based)",
         labelloc="t",
         labeljust="c",
     )
@@ -132,26 +140,36 @@ def build_agraph(model: HierarchyModel):
         fontname="Helvetica",
     )
 
-    sdata_cluster = graph.add_subgraph(
-        name="cluster_sdata", label="sdata classes", color="#90B5E8", style="rounded"
-    )
-
-    style = {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"}
+    style_map = {
+        "min": {"fillcolor": "#E7F0FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
+        "sdata": {"fillcolor": "#F8EEFF", "color": "#6B46C1", "fontcolor": "#44337A"},
+    }
     for node in model.nodes:
-        sdata_cluster.add_node(str(node.iri), label=node.label, **style)
+        graph.add_node(str(node.iri), label=node.label, **style_map[node.kind])
+
+    min_nodes = [str(node.iri) for node in model.nodes if node.kind == "min"]
+    if len(min_nodes) >= 2:
+        graph.add_subgraph(min_nodes, name="min_rank", rank="same", style="invis")
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
     legend.add_node(
-        "legend_sdata",
-        label="sdata class",
-        fillcolor="#E8F1FF",
+        "legend_min",
+        label="MIN class",
+        fillcolor="#E7F0FF",
         color="#2B6CB0",
         fontcolor="#1A365D",
     )
-    legend.add_edge("legend_sdata", "legend_sdata", label="superclass -> subclass", color="#4A5568")
+    legend.add_node(
+        "legend_sdata",
+        label="sdata class",
+        fillcolor="#E8F1FF",
+        color="#6B46C1",
+        fontcolor="#44337A",
+    )
+    legend.add_edge("legend_min", "legend_sdata", label="superclass -> subclass", color="#4A5568")
 
     return graph
 

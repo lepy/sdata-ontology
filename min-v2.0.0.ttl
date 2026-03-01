@@ -1,0 +1,596 @@
+@prefix min:     <https://w3id.org/min#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# =============================================================================
+#
+#   MIN — Material · Information · Nexus
+#
+#   Die Grundontologie. Version 2.0.0
+#
+#   Alles, was existiert, ist Nexus.
+#   Nexus hat zwei innere Pole: materialAspect, informationalAspect.
+#   Vier Klassen bestimmen die Seinsweise: Object, Process, Data, Agent.
+#   Die Klassen SIND die Modalität — kein separater Mechanismus nötig.
+#
+#   Zweischicht-Architektur:
+#     MIN   — Grundontologie (dieses Dokument)
+#     sdata — Domänenontologie (Werkstoff, Fertigung, Messdaten, ...)
+#
+#   Philosophische Ahnenreihe:
+#     Aristoteles    — Hyle/Morphe (Polarität), Ousia/Kinesis/Aitia (Kategorien)
+#     Spinoza        — Eine Substanz, zwei Attribute
+#     Whitehead      — Actual Entity, Process, Creativity
+#     Latour         — Aktant (menschlich und nichtmenschlich)
+#
+#   v2.0.0 — 2026-03-01
+#
+# =============================================================================
+
+<https://w3id.org/min> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/min/2.0.0> ;
+    owl:versionInfo "2.0.0" ;
+    dcterms:title "MIN — Material · Information · Nexus"@en ;
+    dcterms:title "MIN — Material · Information · Nexus"@de ;
+    dcterms:description """Grundontologie mit Polaritätsprinzip und
+    vier Grundkategorien.
+
+    Jeder Nexus hat zwei innere Pole (materialAspect, informationalAspect)
+    als anonyme Strukturknoten. Vier Subklassen bestimmen die Seinsweise:
+    Object (material-dominant), Process (ausgewogen), Data (informational-
+    dominant), Agent (handlungsfähig).
+
+    Zweischicht-Architektur: MIN → sdata.
+
+    1 Wurzelklasse. 4 Subklassen. 2 Struktureigenschaften.
+    2 Inter-Nexus-Relationen. 9 Kategorienrelationen.
+    5 Datatype Properties. Das ist MIN."""@de ;
+    dcterms:creator "Lepy" ;
+    dcterms:created "2026-03-01"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/sdata/core> ;
+    min:designRationale """v2 verschmilzt MIN (v1/v2) und OPA zu einer
+    einzigen Grundontologie. Begründung:
+
+    1. Modalität war redundant zur Klassenhierarchie.
+       Object IST material-modal. Process IST balanced.
+       Data IST informational-modal. Ein separates hasModality-
+       Property duplizierte, was die Klasse bereits aussagt.
+
+    2. Die Dreischichtarchitektur (MIN/OPA/sdata) erzeugte
+       Indirektion ohne praktischen Gewinn. Kein realistischer
+       Anwendungsfall nutzt MIN ohne die Kategorisierung.
+
+    3. Material und Information als Klassen (v1) reifizierten
+       einen Dualismus, den die Ontologie philosophisch ablehnt.
+       Blank Nodes (v2) lösten das. v2 behält diese Lösung.
+
+    Ergebnis: Eine Schicht statt zwei. Acht entfernte Konzepte
+    (Modality, MaterialModal, Balanced, InformationalModal,
+    hasModality, isAspectOf, isMaterialAspectOf,
+    isInformationalAspectOf). Kein Ausdrucksverlust."""@de .
+
+
+# #############################################################################
+#
+#   TEIL I — NEXUS (Wurzelklasse)
+#
+#   Alles, was existiert, ist Nexus.
+#   Nexus hat zwei innere Pole — nicht als Teile, nicht als Kinder,
+#   sondern als anonyme Strukturknoten ohne eigene Identität.
+#
+# #############################################################################
+
+min:Nexus a owl:Class ;
+
+    rdfs:label "Nexus"@en ;
+    rdfs:label "Nexus"@de ;
+
+    rdfs:comment """Nexus ist das, was ist.
+
+    Jeder Nexus hat eine innere Struktur mit zwei Polen:
+    — materialAspect: das Kausale, Raumzeitliche, Physische
+    — informationalAspect: das Strukturelle, Bestimmte, Erkennbare
+
+    Diese Pole sind anonyme Strukturknoten (Blank Nodes).
+    Sie existieren nur als Teil des Nexus. Keine eigene Identität,
+    nicht separat referenzierbar. Polarität statt Dualismus.
+
+    Vier Subklassen bestimmen die Seinsweise des Nexus:
+    Object, Process, Data, Agent. Die Klasse IST die Modalität —
+    ein Nexus, der Object ist, ist auf materiale Weise seiend.
+    Kein separater Mechanismus nötig.
+
+    Nexus selbst wird nicht direkt instantiiert.
+    Jede Instanz ist Object, Process, Data oder Agent."""@de ;
+
+    # --- AXIOM: Jeder Nexus hat beide inneren Pole ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:materialAspect ;
+        owl:someValuesFrom owl:Thing
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:informationalAspect ;
+        owl:someValuesFrom owl:Thing
+    ] .
+
+
+# #############################################################################
+#
+#   TEIL II — DIE VIER KATEGORIEN
+#
+#   Die Klasse IST die Seinsweise:
+#
+#     Object   — material-dominant      (das, was IST)
+#     Process  — ausgewogen             (das, was GESCHIEHT)
+#     Data     — informational-dominant  (das, was BESCHREIBT)
+#     Agent    — handlungsfähig          (das, was HANDELT)
+#
+#   Object, Process, Data sind paarweise disjunkt.
+#   Agent ist NICHT disjunkt — er kann zugleich Object sein
+#   (Roboter) oder Data erzeugen (KI). Handlungsfähigkeit
+#   ist eine Eigenschaft, keine Substanz.
+#
+# #############################################################################
+
+# =============================================================================
+#   OBJECT — das, was ist
+# =============================================================================
+
+min:Object a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Object"@en ;
+    rdfs:label "Objekt"@de ;
+    rdfs:comment """Das, was ist. Material-dominanter Nexus.
+
+    Zeigt sich primär als physisches, räumlich ausgedehntes,
+    kausal wirksames Etwas. Sein informationalAspect ist real
+    (Struktur, Eigenschaften), aber der primäre Zugang geht
+    über die Materialität.
+
+    Aristotelisch: Ousia — das Zugrundeliegende.
+
+    Identitätskriterium: materiale Kontinuität.
+    Ein Coil wird umgeformt, bleibt aber derselbe Stahl.
+
+    Ein Object wird durch Processes transformiert.
+    Ein Object wird durch Agents behandelt.
+    Ein Object hat keine Handlungsfähigkeit (→ Agent)."""@de ;
+    skos:example "Rohstoff, Coil, Bauteil, Werkzeug, Maschine (passiv), Prüfling, Recyclat."@de .
+
+
+# =============================================================================
+#   PROCESS — das, was geschieht
+# =============================================================================
+
+min:Process a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Process"@en ;
+    rdfs:label "Prozess"@de ;
+    rdfs:comment """Das, was geschieht. Ausgewogener Nexus.
+
+    Beide Pole sind gleich gewichtig. materialAspect: Kräfte,
+    Energie, physische Wechselwirkung. informationalAspect:
+    Regeln, Parameter, Modell.
+
+    Process ist Transformation — er nimmt Objects als Input,
+    verändert sie, erzeugt Objects als Output und generiert Data.
+
+    Whitehead: ‹the becoming of being›.
+
+    Zeitlichkeit: ein Process beginnt und endet.
+    Ein Process ohne Agent ist Naturvorgang.
+    Ein Process mit Agent ist Handlung."""@de ;
+    skos:example "Umformen, Gießen, Zugversuch, Simulation, Recycling, Montage."@de ;
+
+    # --- Strukturelle Axiome ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasInput ;
+        owl:someValuesFrom min:Object
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasOutput ;
+        owl:someValuesFrom min:Object
+    ] .
+
+
+# =============================================================================
+#   DATA — das, was beschreibt
+# =============================================================================
+
+min:Data a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Data"@en ;
+    rdfs:label "Daten"@de ;
+    rdfs:comment """Das, was beschreibt. Informational-dominanter Nexus.
+
+    Zeigt sich primär als Struktur, Muster, Wissen.
+    Sein materialAspect ist real (Bytes, Speicherchip, Signal),
+    aber der primäre Zugang geht über die Information.
+
+    Data ist der Nexus, dessen Existenzberechtigung in seiner
+    informationalen Bestimmtheit liegt — nicht in seiner
+    physischen Präsenz. Eine Datei existiert als Datei wegen
+    ihrer Semantik, nicht wegen ihrer Bytes.
+
+    Data entsteht typischerweise als Ergebnis eines Processes
+    (Messung → Messdaten, Simulation → Simulationsergebnis)
+    oder beschreibt ein Object (Werkstoffdatenblatt, Zertifikat).
+
+    Abgrenzung: Der informationalAspect eines jeden Nexus ist
+    NICHT dasselbe wie Data. Jedes Object hat einen informational-
+    Aspect (seine Struktur). Aber erst wenn die Information
+    selbst zum Gegenstand wird — verselbständigt, gespeichert,
+    übertragen — wird sie Data."""@de ;
+    skos:example "Messdaten, Simulationsergebnis, Produktpass, Zertifikat, Modell, Norm."@de ;
+    min:designRationale """In OPA (v1) fehlte Data als eigenständige
+    Kategorie. InformationalModal-Nexus waren direkt min:Nexus
+    ohne eigene Klasse. Das war eine Lücke: informational-dominante
+    Nexus verdienen dieselbe Erstklassigkeit wie Objects und
+    Processes. v2 schließt diese Lücke."""@de .
+
+
+# =============================================================================
+#   AGENT — das, was handelt
+# =============================================================================
+
+min:Agent a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Agent"@en ;
+    rdfs:label "Agent"@de ;
+    rdfs:comment """Das, was handelt. Handlungsfähiger Nexus.
+
+    Agent ist ORTHOGONAL zu Object/Process/Data.
+    Ein Agent kann material-dominant sein (Mensch, Roboter)
+    oder informational-dominant (KI, Software-Agent).
+    Was ihn zum Agent macht, ist seine Handlungsfähigkeit:
+
+    1. Kausale Wirksamkeit — verursacht Veränderungen
+    2. Selektivität — wählt zwischen Alternativen
+    3. Zurechenbarkeit — Veränderung ist ihm zuzurechnen
+
+    Intentionalität ist NICHT gefordert. Ein Thermostat hat
+    Agency, aber keine Intention. OPA nimmt dazu keine Stellung.
+
+    Latour: Aktant — alles, was einen Unterschied macht.
+    Agency ist nicht auf Menschen beschränkt.
+
+    Agent ist NICHT disjunkt mit Object. Ein Roboter ist
+    zugleich Object (physisches Ding) und Agent (Handelnder).
+    Ein abgeschalteter Roboter ist nur Object."""@de ;
+    skos:example "Mensch, CNC-Maschine, Roboterarm, Software-Agent, ML-Modell, Organisation."@de ;
+
+    # --- Strukturelles Axiom ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:performs ;
+        owl:someValuesFrom min:Process
+    ] .
+
+
+# --- Disjunktheit ---
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( min:Object min:Process min:Data ) .
+
+# Agent ist NICHT disjunkt mit Object, Process oder Data.
+# Ein Agent kann zugleich Object sein. Das ist gewollt.
+
+
+# #############################################################################
+#
+#   TEIL III — INNERE STRUKTUR (Polarität)
+#
+#   Zwei Properties zeigen in den Nexus hinein — auf anonyme
+#   Strukturknoten, die das materiale und informationale
+#   Innenleben ordnen.
+#
+# #############################################################################
+
+min:materialAspect a owl:ObjectProperty ;
+    rdfs:label "material aspect"@en ;
+    rdfs:label "materialer Aspekt"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:comment """Zeigt auf den materialen Strukturknoten des Nexus.
+
+    Der Blank Node am anderen Ende trägt die Properties,
+    die das Kausale, Raumzeitliche, Physische erfassen.
+    Er hat keine eigene Identität — er IST der Nexus,
+    von der materialen Seite betrachtet.
+
+    Bei Object: Masse, Ausdehnung, Atome, Lagerort.
+    Bei Process: Kräfte, Energie, Maschinenpark.
+    Bei Data: Bytes, Speichermedium, Signalquelle.
+    Bei Agent: Körper, Hardware, Infrastruktur."""@de .
+
+min:informationalAspect a owl:ObjectProperty ;
+    rdfs:label "informational aspect"@en ;
+    rdfs:label "informationaler Aspekt"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:comment """Zeigt auf den informationalen Strukturknoten des Nexus.
+
+    Der Blank Node am anderen Ende trägt die Properties,
+    die das Strukturelle, Bestimmte, Erkennbare erfassen.
+    Er hat keine eigene Identität — er IST der Nexus,
+    von der informationalen Seite betrachtet.
+
+    Bei Object: Zusammensetzung, Gefüge, Normreferenz.
+    Bei Process: Parameter, Regeln, Qualitätskriterien.
+    Bei Data: Semantik, Schema, Kennwerte.
+    Bei Agent: Fähigkeiten, Konfiguration, Rolle."""@de .
+
+
+# #############################################################################
+#
+#   TEIL IV — INTER-NEXUS-RELATIONEN
+#
+# #############################################################################
+
+# --- Primordiale Verbindung ---
+
+min:nexusWith a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:label "nexus with"@en ;
+    rdfs:label "verbunden mit"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Primordiale Verbindung zwischen Nexus-Instanzen.
+    Symmetrisch. Alle spezifischeren Relationen sind
+    Spezialisierungen dieser Ur-Relation."""@de .
+
+min:hasComponent a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "has component"@en ;
+    rdfs:label "hat Bestandteil"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Mereologische Relation: Nexus enthält Nexus.
+    Transitiv. Zeigt NACH AUSSEN (Komposition),
+    im Gegensatz zu materialAspect/informationalAspect
+    die NACH INNEN zeigen (Struktur)."""@de .
+
+
+# #############################################################################
+#
+#   TEIL V — KATEGORIENRELATIONEN
+#
+#              Agent
+#             ╱  │  ╲
+#       actsOn│  │performs
+#             │  │  │
+#             ▼  │  ▼
+#          Object│ Process
+#             ▲  │  │  ▲
+#    resultOf │  │  │  │ undergoes
+#             │  ▼  ▼  │
+#             hasOutput │
+#             hasInput──┘
+#
+#             describes
+#       Data ──────────▶ Nexus
+#       ▲
+#       │ generates
+#       Process
+#
+# #############################################################################
+
+# --- Transformation: Process ↔ Object ---
+
+min:hasInput a owl:ObjectProperty ;
+    rdfs:label "has input"@en ;
+    rdfs:label "hat Eingabe"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:hasOutput a owl:ObjectProperty ;
+    rdfs:label "has output"@en ;
+    rdfs:label "hat Ausgabe"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:undergoes a owl:ObjectProperty ;
+    rdfs:label "undergoes"@en ;
+    rdfs:label "durchläuft"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:hasInput ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:resultOf a owl:ObjectProperty ;
+    rdfs:label "result of"@en ;
+    rdfs:label "Ergebnis von"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:hasOutput ;
+    rdfs:subPropertyOf min:nexusWith .
+
+# --- Agency: Agent ↔ Process ---
+
+min:performs a owl:ObjectProperty ;
+    rdfs:label "performs"@en ;
+    rdfs:label "führt durch"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:performedBy a owl:ObjectProperty ;
+    rdfs:label "performed by"@en ;
+    rdfs:label "durchgeführt von"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Agent ;
+    owl:inverseOf min:performs ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:controls a owl:ObjectProperty ;
+    rdfs:label "controls"@en ;
+    rdfs:label "steuert"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:performs ;
+    rdfs:comment """Stärker als performs: der Agent bestimmt
+    die Parameter des Processes."""@de .
+
+# --- Wirkung: Agent ↔ Object ---
+
+min:actsOn a owl:ObjectProperty ;
+    rdfs:label "acts on"@en ;
+    rdfs:label "wirkt auf"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    owl:propertyChainAxiom ( min:performs min:hasInput ) .
+
+min:affectedBy a owl:ObjectProperty ;
+    rdfs:label "affected by"@en ;
+    rdfs:label "betroffen von"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Agent ;
+    owl:inverseOf min:actsOn ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:owns a owl:ObjectProperty ;
+    rdfs:label "owns"@en ;
+    rdfs:label "besitzt"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Verantwortung, Zuständigkeit, Eigentum.
+    Wichtig für Provenienz und Produktpässe."""@de .
+
+# --- Data-Relationen ---
+
+min:describes a owl:ObjectProperty ;
+    rdfs:label "describes"@en ;
+    rdfs:label "beschreibt"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Data beschreibt einen Nexus.
+    Ein Werkstoffdatenblatt describes ein Object.
+    Ein Protokoll describes einen Process.
+    Ein Zertifikat describes einen Agent."""@de .
+
+min:describedBy a owl:ObjectProperty ;
+    rdfs:label "described by"@en ;
+    rdfs:label "beschrieben durch"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Data ;
+    owl:inverseOf min:describes ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:generates a owl:ObjectProperty ;
+    rdfs:label "generates"@en ;
+    rdfs:label "erzeugt"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Data ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process erzeugt Data.
+    Der Zugversuch generates Messdaten.
+    Die Simulation generates Simulationsergebnis."""@de .
+
+min:generatedBy a owl:ObjectProperty ;
+    rdfs:label "generated by"@en ;
+    rdfs:label "erzeugt durch"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:generates ;
+    rdfs:subPropertyOf min:nexusWith .
+
+# --- Abgeleitete Relation ---
+
+min:produces a owl:ObjectProperty ;
+    rdfs:label "produces"@en ;
+    rdfs:label "produziert"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    owl:propertyChainAxiom ( min:performs min:hasOutput ) ;
+    rdfs:comment """Abgeleitet: Agent performs Process hasOutput Object."""@de .
+
+
+# #############################################################################
+#
+#   TEIL VI — DATATYPE PROPERTIES
+#
+# #############################################################################
+
+min:hasIdentifier a owl:DatatypeProperty ;
+    rdfs:label "has identifier"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+min:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+min:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "has timestamp"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:dateTime .
+
+min:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+min:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+
+# #############################################################################
+#
+#   TEIL VII — ANNOTATION PROPERTIES
+#
+# #############################################################################
+
+min:designRationale a owl:AnnotationProperty ;
+    rdfs:label "design rationale"@en .
+
+min:philosophicalBasis a owl:AnnotationProperty ;
+    rdfs:label "philosophical basis"@en .
+
+
+# #############################################################################
+#
+#   INVENTAR v2.0.0
+#
+#   Klassen:              5  (Nexus, Object, Process, Data, Agent)
+#   Strukturproperties:   2  (materialAspect, informationalAspect)
+#   Inter-Nexus:          2  (nexusWith, hasComponent)
+#   Kategorienrelationen: 13 (hasInput, hasOutput, undergoes, resultOf,
+#                             performs, performedBy, controls,
+#                             actsOn, affectedBy, owns,
+#                             describes, describedBy, generates,
+#                             generatedBy, produces)
+#   Datatype Properties:  5  (hasIdentifier, hasName, hasTimestamp,
+#                             hasDescription, hasStatus)
+#   Annotations:          2  (designRationale, philosophicalBasis)
+#
+#   Entfernt gegenüber v1+OPA:
+#   — min:Material (Klasse)
+#   — min:Information (Klasse)
+#   — min:Modality (Klasse)
+#   — min:MaterialModal, min:Balanced, min:InformationalModal (Individuen)
+#   — min:hasModality (Property)
+#   — min:isAspectOf, min:isMaterialAspectOf, min:isInformationalAspectOf
+#   — min:layer (Annotation — nur noch zwei Schichten)
+#   — Gesamte OPA-Ontologie (absorbiert)
+#
+#   Hinzugefügt:
+#   — min:Data (Klasse — schliesst die InformationalModal-Lücke)
+#   — min:describes, min:describedBy (Data ↔ Nexus)
+#   — min:generates, min:generatedBy (Process → Data)
+#
+# #############################################################################

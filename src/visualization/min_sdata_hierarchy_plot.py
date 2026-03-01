@@ -1,4 +1,4 @@
-"""Create a class hierarchy plot spanning MIN -> OPA -> sdata-core."""
+"""Create a class hierarchy plot spanning MIN -> sdata-core."""
 
 from __future__ import annotations
 
@@ -12,20 +12,17 @@ from rdflib import Graph, Literal, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
 
 MIN_PREFIX = "https://w3id.org/min"
-OPA_PREFIX = "https://w3id.org/opa"
 SDATA_CORE_PREFIX = "https://w3id.org/sdata/core/"
-OPA_OBJECT = "https://w3id.org/opa#Object"
-OPA_PROCESS = "https://w3id.org/opa#Process"
-OPA_AGENT = "https://w3id.org/opa#Agent"
-SDATA_OBJECT = "https://w3id.org/sdata/core/Object"
-SDATA_PROCESS = "https://w3id.org/sdata/core/Process"
-SDATA_AGENT = "https://w3id.org/sdata/core/Agent"
+MIN_NEXUS = "https://w3id.org/min#Nexus"
+MIN_OBJECT = "https://w3id.org/min#Object"
+MIN_PROCESS = "https://w3id.org/min#Process"
+MIN_DATA = "https://w3id.org/min#Data"
+MIN_AGENT = "https://w3id.org/min#Agent"
 SDATA_OBJECT_CHILDREN = (
     "https://w3id.org/sdata/core/Material",
     "https://w3id.org/sdata/core/Product",
     "https://w3id.org/sdata/core/Hardware",
     "https://w3id.org/sdata/core/Software",
-    "https://w3id.org/sdata/core/Data",
 )
 SDATA_AGENT_CHILDREN = (
     "https://w3id.org/sdata/core/Person",
@@ -34,17 +31,13 @@ SDATA_AGENT_CHILDREN = (
     "https://w3id.org/sdata/core/Organization",
     "https://w3id.org/sdata/core/EnvironmentAgent",
 )
-SDATA_INFRA = (
-    "https://w3id.org/sdata/core/AttributeQuantityValue",
-    "https://w3id.org/sdata/core/ValueDomain",
-)
 
 
 @dataclass(frozen=True)
 class Node:
     iri: URIRef
     label: str
-    kind: str  # "min" | "opa" | "sdata"
+    kind: str  # "min" | "sdata"
 
 
 @dataclass(frozen=True)
@@ -63,8 +56,6 @@ def _kind_from_iri(iri: URIRef) -> str | None:
     text = str(iri)
     if text.startswith(MIN_PREFIX):
         return "min"
-    if text.startswith(OPA_PREFIX):
-        return "opa"
     if text.startswith(SDATA_CORE_PREFIX):
         return "sdata"
     return None
@@ -99,33 +90,28 @@ def _classes_from(graph: Graph) -> set[URIRef]:
     }
 
 
-def load_graphs(min_path: Path, opa_path: Path, core_path: Path) -> tuple[Graph, Graph, Graph, Graph]:
-    for path, label in ((min_path, "MIN ontology"), (opa_path, "OPA ontology"), (core_path, "sdata-core ontology")):
+def load_graphs(min_path: Path, core_path: Path) -> tuple[Graph, Graph, Graph]:
+    for path, label in ((min_path, "MIN ontology"), (core_path, "sdata-core ontology")):
         if not path.exists():
             raise FileNotFoundError(f"{label} not found: {path}")
 
     min_graph = Graph()
     min_graph.parse(min_path, format="turtle")
 
-    opa_graph = Graph()
-    opa_graph.parse(opa_path, format="turtle")
-
     core_graph = Graph()
     core_graph.parse(core_path, format="turtle")
 
     merged = Graph()
     merged += min_graph
-    merged += opa_graph
     merged += core_graph
 
-    return min_graph, opa_graph, core_graph, merged
+    return min_graph, core_graph, merged
 
 
-def extract_model(min_graph: Graph, opa_graph: Graph, core_graph: Graph, merged: Graph) -> Model:
+def extract_model(min_graph: Graph, core_graph: Graph, merged: Graph) -> Model:
     min_classes = _classes_from(min_graph)
-    opa_classes = _classes_from(opa_graph)
     core_classes = _classes_from(core_graph)
-    all_classes = min_classes | opa_classes | core_classes
+    all_classes = min_classes | core_classes
 
     nodes = tuple(
         sorted(
@@ -169,7 +155,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="Class Hierarchy: MIN -> OPA -> sdata-core",
+        label="Class Hierarchy: MIN -> sdata-core",
         labelloc="t",
         labeljust="c",
     )
@@ -189,20 +175,16 @@ def build_agraph(model: Model):
     )
 
     min_cluster = graph.add_subgraph(name="cluster_min", label="MIN classes", color="#8FB7EA", style="rounded")
-    opa_cluster = graph.add_subgraph(name="cluster_opa", label="OPA classes", color="#97D5BA", style="rounded")
     min_cluster.graph_attr.update(rank="source")
 
     style_map = {
         "min": {"fillcolor": "#E7F0FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
-        "opa": {"fillcolor": "#E8FFF4", "color": "#2F855A", "fontcolor": "#1C4532"},
         "sdata": {"fillcolor": "#F8EEFF", "color": "#6B46C1", "fontcolor": "#44337A"},
     }
 
     for node in model.nodes:
         if node.kind == "min":
             target = min_cluster
-        elif node.kind == "opa":
-            target = opa_cluster
         else:
             target = graph
         target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
@@ -214,42 +196,26 @@ def build_agraph(model: Model):
         if len(present) >= 2:
             container.add_subgraph(present, name=name, rank="same", style="invis")
 
-    _rank_same(opa_cluster, "cluster_opa_rank", (OPA_OBJECT, OPA_PROCESS, OPA_AGENT))
-    _rank_same(graph, "sdata_rank_top", (SDATA_OBJECT, SDATA_PROCESS, SDATA_AGENT))
+    _rank_same(min_cluster, "cluster_min_rank", (MIN_OBJECT, MIN_PROCESS, MIN_DATA, MIN_AGENT))
     _rank_same(graph, "sdata_rank_object_children", SDATA_OBJECT_CHILDREN)
     _rank_same(graph, "sdata_rank_agent_children", SDATA_AGENT_CHILDREN)
-    _rank_same(graph, "sdata_rank_infra", SDATA_INFRA)
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
 
     min_anchor = "__rank_anchor_min"
-    opa_anchor = "__rank_anchor_opa"
     sdata_anchor = "__rank_anchor_sdata"
     min_cluster.add_node(min_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
-    opa_cluster.add_node(opa_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
     graph.add_node(sdata_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
-
     graph.add_edge(
         min_anchor,
-        opa_anchor,
-        style="invis",
-        color="#FFFFFF",
-        weight="200",
-        minlen="2",
-        constraint="true",
-        ltail="cluster_min",
-        lhead="cluster_opa",
-    )
-    graph.add_edge(
-        opa_anchor,
         sdata_anchor,
         style="invis",
         color="#FFFFFF",
         weight="200",
         minlen="2",
         constraint="true",
-        ltail="cluster_opa",
+        ltail="cluster_min",
     )
 
     return graph
@@ -268,11 +234,10 @@ def render(
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v1.0.0.ttl"))
-    parser.add_argument("--opa", dest="opa_path", type=Path, default=Path("opa-v1.0.0.ttl"))
+    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v2.0.0.ttl"))
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
-    parser.add_argument("--name", default="sdata-min-opa-core-hierarchy")
+    parser.add_argument("--name", default="sdata-min-core-hierarchy")
     parser.add_argument("--format", choices=("svg", "png", "both"), default="both")
     parser.add_argument("--layout", default="dot")
     parser.add_argument("--dpi", type=int, default=220)
@@ -285,11 +250,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
 
     try:
-        min_g, opa_g, core_g, merged_g = load_graphs(args.min_path, args.opa_path, args.core)
-        model = extract_model(min_g, opa_g, core_g, merged_g)
+        min_g, core_g, merged_g = load_graphs(args.min_path, args.core)
+        model = extract_model(min_g, core_g, merged_g)
         if not model.nodes:
-            print("No nodes found for visualization.", file=sys.stderr)
+            print("No classes found for visualization.", file=sys.stderr)
             return 4
+
         agraph = build_agraph(model)
     except FileNotFoundError as exc:
         print(str(exc), file=sys.stderr)
