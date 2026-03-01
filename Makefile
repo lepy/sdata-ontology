@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle viz-material-state viz-specimen viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-material-state viz-specimen viz-all viz-examples clean
 
 UV ?= uv
 
@@ -48,30 +48,6 @@ viz-hierarchy: check-uv
 clean:
 	rm -rf .venv __pycache__ .pytest_cache dist build site
 
-# ─── Visualize agents hierarchy ─────────────────────────────────────────────
-viz-agents: check-uv
-	$(UV) run python -m src.visualization.agents_hierarchy_plot
-
-# ─── Visualize core + processtypes (autark core) ────────────────────────────
-viz-core-processtypes: check-uv
-	$(UV) run python -m src.visualization.core_processtypes_hierarchy_plot
-
-# ─── Visualize core + processtypes (sdata-only) ─────────────────────────────
-viz-core-processtypes-sdata-only: check-uv
-	$(UV) run python -m src.visualization.core_processtypes_sdata_only_plot
-
-# ─── Visualize process dual hierarchy ────────────────────────────────────────
-viz-process-dual: check-uv
-	$(UV) run python -m src.visualization.process_dual_hierarchy_plot
-
-# ─── Visualize combined hierarchy (core + processtypes + agents) ────────────
-viz-combined: check-uv
-	$(UV) run python -m src.visualization.combined_hierarchy_plot
-
-# ─── Visualize lifecycle flow ────────────────────────────────────────────────
-viz-lifecycle: check-uv
-	$(UV) run python -m src.visualization.lifecycle_plot
-
 # ─── Visualize material-state hierarchy ──────────────────────────────────────
 viz-material-state: check-uv
 	$(UV) run python -m src.visualization.material_state_plot
@@ -81,7 +57,7 @@ viz-specimen: check-uv
 	$(UV) run python -m src.visualization.specimen_tensiontest_data_plot
 
 # ─── Generate all main ontology visualizations ───────────────────────────────
-viz-all: viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle viz-material-state
+viz-all: viz-hierarchy viz-material-state
 
 # ─── Visualize all example TTL graphs ───────────────────────────────────────
 viz-examples: viz-specimen check-uv

@@ -6,8 +6,6 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 - `sdata-core.ttl` / `sdata-core-v0.9.2.ttl`: core ontology (MIN/OPA-based)
 - `sdata-material-state.ttl`: material state space extension
-- `sdata-agents.ttl`: SKOS vocabulary for agent typing
-- `sdata-processtypes.ttl`: verb-axis process extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
 Current core model: **14 classes**, **19 object properties**, **7 datatype properties**.
@@ -16,16 +14,12 @@ Current core model: **14 classes**, **19 object properties**, **7 datatype prope
 
 1. `sdata-core` for base classes and properties.
 2. `sdata-material-state` for method/domain/datatype/value typing.
-3. `sdata-processtypes` for lifecycle verb typing.
-4. `sdata-core-shapes` to validate your instance data.
+3. `sdata-core-shapes` to validate your instance data.
 
 ## Ontology docs
 
 - [sdata-core](ontologies/sdata-core/index.md)
 - [sdata-material-state](ontologies/sdata-material-state.md)
-- [sdata-agents](ontologies/sdata-agents/index.md)
-- [sdata-processtypes](ontologies/sdata-processtypes/index.md)
-- [sdata-lifecycle](ontologies/sdata-lifecycle/index.md)
 - [sdata-quantities](ontologies/sdata-quantities/index.md)
 - [sdata-vd-interval](ontologies/sdata-vd-interval/index.md)
 - [sdata-vd-enum](ontologies/sdata-vd-enum/index.md)
@@ -59,12 +53,6 @@ Individual targets:
 
 ```bash
 make viz-hierarchy
-make viz-agents
-make viz-core-processtypes
-make viz-core-processtypes-sdata-only
-make viz-process-dual
-make viz-combined
-make viz-lifecycle
 make viz-material-state
 make viz-specimen
 make viz-examples

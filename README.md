@@ -14,12 +14,6 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 : 14 classes, 19 object properties, 7 datatype properties.
 - `sdata-material-state.ttl` (`v0.4.1`)
 : 13 state axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
-- `sdata-agents.ttl`
-: SKOS vocabulary for agent classifications.
-- `sdata-processtypes.ttl`
-: 7 orthogonal verb classes (`Creation` ... `Destruction`).
-- `sdata-lifecycle.ttl`
-: flow relations (`precedes`, `follows`, `observes`).
 - `shapes/sdata-core-shapes.ttl`
 : SHACL checks for example data.
 
@@ -90,6 +84,7 @@ uv run python -m src.visualization.specimen_tensiontest_data_plot
 - `MachineAgent` renamed to `HardwareAgent`.
 - `Certificate`/`DigitalProductPass` moved to `sms:DataTypeAxis` concepts.
 - `sdata:hasUnit` removed from core datatype properties.
+- Legacy extension ontologies `sdata-agents.ttl`, `sdata-processtypes.ttl`, `sdata-lifecycle.ttl` are removed.
 
 ## Documentation
 
