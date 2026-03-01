@@ -1,10 +1,10 @@
 # sdata-core.ttl
 
-Autarkes Kernmodell (`v0.9.2`) auf MIN/OPA.
+Autarkes Kernmodell (`v0.10.0`) auf MIN/OPA.
 
 ## Umfang
 
-- 14 Klassen
+- 15 Klassen
 - 19 Objekt-Properties
 - 7 Datentyp-Properties
 
@@ -15,7 +15,7 @@ Autarkes Kernmodell (`v0.9.2`) auf MIN/OPA.
 - `sdata:Process`
 : keine Core-Subklassen; Typisierung ueber `sms:MethodAxis` und `sms:DomainAxis`
 - `sdata:Agent`
-: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`
+: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
 
 ## Wichtigste Relationen
 
@@ -38,6 +38,7 @@ Autarkes Kernmodell (`v0.9.2`) auf MIN/OPA.
 - Datenart (`Certificate`, `DigitalProductPass`, `TestReport` ...) über `sms:DataTypeAxis` modellieren.
 - `MachineAgent` nicht mehr verwenden.
 : verwende `HardwareAgent`.
+- Umweltgetriebene, nicht-intentionale Kausalitaet ueber `EnvironmentAgent` modellieren.
 
 ## Kurzbeispiel (Zugversuch)
 

@@ -5,7 +5,7 @@
 @prefix ex:    <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Passport (sdata core 0.9.1)
+# Example: Battery Passport (sdata core 0.10.0)
 # =============================================================================
 
 # --- Materials ----------------------------------------------------------------
@@ -95,6 +95,10 @@ ex:VoltPackAG
     a sdata:Organization ;
     sdata:hasIdentifier "ORG-VOLTPACK" .
 
+ex:AmbientMarineAir
+    a sdata:EnvironmentAgent ;
+    sdata:hasIdentifier "ENV-MARINE-AIR" .
+
 # --- Processes ----------------------------------------------------------------
 
 ex:CathodeProduction_01
@@ -167,6 +171,23 @@ ex:PackAssembly_01
         a sms:StateAssignment ;
         sms:onAxis sms:MethodAxis ;
         sms:hasStateValue sms:method.Assembly
+    ] .
+
+ex:StorageCorrosion_01
+    a sdata:Process ;
+    sdata:hasInput ex:BatteryPack_001 ;
+    sdata:hasOutput ex:BatteryPack_001_Corroded ;
+    sdata:performedBy ex:AmbientMarineAir ;
+    sdata:producesData ex:CorrosionReport_01 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.Corrosion
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DomainAxis ;
+        sms:hasStateValue sms:domain.Chemical
     ] .
 
 # --- Data ---------------------------------------------------------------------
@@ -243,11 +264,23 @@ ex:InspectionCertificate_001
 ex:DPP_001
     a sdata:Data ;
     sdata:describes ex:BatteryPack_001 ;
-    sdata:hasVersion "0.9.1" ;
+    sdata:hasVersion "0.10.0" ;
     sms:hasStateAssignment [
         a sms:StateAssignment ;
         sms:onAxis sms:DataTypeAxis ;
         sms:hasStateValue sms:datatype.DigitalProductPass
+    ] .
+
+ex:CorrosionReport_01
+    a sdata:Data ;
+    sdata:describes ex:BatteryPack_001_Corroded ;
+    sdata:producedBy ex:StorageCorrosion_01 ;
+    sdata:hasQuantity ex:MassLoss_AQV ;
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.TestReport
     ] .
 
 # --- AQV / ValueDomain --------------------------------------------------------
@@ -259,9 +292,35 @@ ex:YieldStrength_AQV
     sdata:hasValueDomain ex:YieldStrengthSpec ;
     qudt:numericValue 340.0 .
 
+ex:MassLoss_AQV
+    a sdata:AttributeQuantityValue ;
+    sdata:unitSymbol "g/m2" ;
+    sdata:dtype "float" ;
+    sdata:hasValueDomain ex:MassLossDomain ;
+    qudt:numericValue 12.3 .
+
 ex:YieldStrengthSpec
     a sdata:ValueDomain ;
     sdata:domainDescription "Yield strength target range." .
+
+ex:MassLossDomain
+    a sdata:ValueDomain ;
+    sdata:domainDescription "Corrosion-related mass loss per area." .
+
+# --- Corrosion output product -------------------------------------------------
+
+ex:BatteryPack_001_Corroded
+    a sdata:Product ;
+    sdata:hasIdentifier "PROD-PACK-001-CORR" ;
+    sdata:madeOf ex:NMC811 ;
+    sdata:madeOf ex:RecycledNickel ;
+    sdata:resultOf ex:StorageCorrosion_01 ;
+    sdata:hasData ex:CorrosionReport_01 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:ConditionAxis ;
+        sms:hasStateValue sms:condition.Degraded
+    ] .
 
 # --- Product data aggregation -------------------------------------------------
 

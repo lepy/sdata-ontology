@@ -1,6 +1,6 @@
 # sdata-material-state.ttl
 
-State-Space-Erweiterung (`v0.4.1`) fuer `sdata-core v0.9.2`.
+State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.10.0`.
 
 ## Zweck
 
@@ -24,12 +24,14 @@ State-Space-Erweiterung (`v0.4.1`) fuer `sdata-core v0.9.2`.
 - Data:
   - `DataTypeAxis`
 
-## Neu in v0.4.1
+## Neu in v0.5.0
 
 - `MethodAxis` hat nun 6 Top-Level-Kategorien:
   - `Transformative`, `Observational`, `Computational`, `Logistical`, `Administrative`, `Creative`
 - Neue Method-Konzepte:
   - `Approval`, `Certification`, `QualityGate`, `Design`, `ProcessPlanning`, `MaterialSelection`
+- Neue Umweltmethoden unter `Transformative`:
+  - `Degradation` mit `Corrosion`, `Weathering`, `NaturalAging`, `BiologicalDecay`, `FatigueDamage`
 
 ## Kernrelationen
 

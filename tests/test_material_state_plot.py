@@ -45,6 +45,8 @@ def test_extract_contains_expected_value_concepts():
         str(SMS["structure.SinglePart"]),
         str(SMS["role.Specimen"]),
         str(SMS["method.TensileTest"]),
+        str(SMS["method.Degradation"]),
+        str(SMS["method.Corrosion"]),
         str(SMS["method.Administrative"]),
         str(SMS["method.Creative"]),
         str(SMS["domain.Structural"]),
@@ -67,4 +69,6 @@ def test_extract_contains_expected_edges():
     assert (str(SMS.DomainAxis), str(SMS["domain-values"]), "scheme") in edges
     assert (str(SMS.DataTypeAxis), str(SMS["datatype-values"]), "scheme") in edges
     assert (str(SMS["origin-values"]), str(SMS["origin.Virgin"]), "top") in edges
+    assert (str(SMS["method.Transformative"]), str(SMS["method.Degradation"]), "broader") in edges
+    assert (str(SMS["method.Degradation"]), str(SMS["method.Corrosion"]), "broader") in edges
     assert (str(SMS["phase.Production"]), str(SMS["phase.Processing"]), "broader") in edges

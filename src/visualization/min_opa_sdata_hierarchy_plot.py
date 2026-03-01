@@ -14,6 +14,30 @@ from rdflib.namespace import OWL
 MIN_PREFIX = "https://w3id.org/min"
 OPA_PREFIX = "https://w3id.org/opa"
 SDATA_CORE_PREFIX = "https://w3id.org/sdata/core/"
+OPA_OBJECT = "https://w3id.org/opa#Object"
+OPA_PROCESS = "https://w3id.org/opa#Process"
+OPA_AGENT = "https://w3id.org/opa#Agent"
+SDATA_OBJECT = "https://w3id.org/sdata/core/Object"
+SDATA_PROCESS = "https://w3id.org/sdata/core/Process"
+SDATA_AGENT = "https://w3id.org/sdata/core/Agent"
+SDATA_OBJECT_CHILDREN = (
+    "https://w3id.org/sdata/core/Material",
+    "https://w3id.org/sdata/core/Product",
+    "https://w3id.org/sdata/core/Hardware",
+    "https://w3id.org/sdata/core/Software",
+    "https://w3id.org/sdata/core/Data",
+)
+SDATA_AGENT_CHILDREN = (
+    "https://w3id.org/sdata/core/Person",
+    "https://w3id.org/sdata/core/HardwareAgent",
+    "https://w3id.org/sdata/core/SoftwareAgent",
+    "https://w3id.org/sdata/core/Organization",
+    "https://w3id.org/sdata/core/EnvironmentAgent",
+)
+SDATA_INFRA = (
+    "https://w3id.org/sdata/core/AttributeQuantityValue",
+    "https://w3id.org/sdata/core/ValueDomain",
+)
 
 
 @dataclass(frozen=True)
@@ -166,11 +190,7 @@ def build_agraph(model: Model):
 
     min_cluster = graph.add_subgraph(name="cluster_min", label="MIN classes", color="#8FB7EA", style="rounded")
     opa_cluster = graph.add_subgraph(name="cluster_opa", label="OPA classes", color="#97D5BA", style="rounded")
-    sdata_cluster = graph.add_subgraph(
-        name="cluster_sdata", label="sdata-core classes", color="#D9B8F7", style="rounded"
-    )
     min_cluster.graph_attr.update(rank="source")
-    sdata_cluster.graph_attr.update(rank="sink")
 
     style_map = {
         "min": {"fillcolor": "#E7F0FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
@@ -179,8 +199,26 @@ def build_agraph(model: Model):
     }
 
     for node in model.nodes:
-        target = min_cluster if node.kind == "min" else opa_cluster if node.kind == "opa" else sdata_cluster
+        if node.kind == "min":
+            target = min_cluster
+        elif node.kind == "opa":
+            target = opa_cluster
+        else:
+            target = graph
         target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
+
+    node_ids = {str(node.iri) for node in model.nodes}
+
+    def _rank_same(container, name: str, ids: tuple[str, ...]) -> None:
+        present = [iri for iri in ids if iri in node_ids]
+        if len(present) >= 2:
+            container.add_subgraph(present, name=name, rank="same", style="invis")
+
+    _rank_same(opa_cluster, "cluster_opa_rank", (OPA_OBJECT, OPA_PROCESS, OPA_AGENT))
+    _rank_same(graph, "sdata_rank_top", (SDATA_OBJECT, SDATA_PROCESS, SDATA_AGENT))
+    _rank_same(graph, "sdata_rank_object_children", SDATA_OBJECT_CHILDREN)
+    _rank_same(graph, "sdata_rank_agent_children", SDATA_AGENT_CHILDREN)
+    _rank_same(graph, "sdata_rank_infra", SDATA_INFRA)
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
@@ -190,7 +228,7 @@ def build_agraph(model: Model):
     sdata_anchor = "__rank_anchor_sdata"
     min_cluster.add_node(min_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
     opa_cluster.add_node(opa_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
-    sdata_cluster.add_node(sdata_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
+    graph.add_node(sdata_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
 
     graph.add_edge(
         min_anchor,
@@ -212,7 +250,6 @@ def build_agraph(model: Model):
         minlen="2",
         constraint="true",
         ltail="cluster_opa",
-        lhead="cluster_sdata",
     )
 
     return graph

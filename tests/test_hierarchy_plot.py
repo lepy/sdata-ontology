@@ -13,7 +13,7 @@ def _model():
     return extract_hierarchy(graph)
 
 
-def test_extract_contains_expected_v091_classes():
+def test_extract_contains_expected_v100_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes if node.kind == "sdata"}
     expected = {
@@ -29,6 +29,7 @@ def test_extract_contains_expected_v091_classes():
         str(SDATA.HardwareAgent),
         str(SDATA.SoftwareAgent),
         str(SDATA.Organization),
+        str(SDATA.EnvironmentAgent),
         str(SDATA.AttributeQuantityValue),
         str(SDATA.ValueDomain),
     }
@@ -59,3 +60,4 @@ def test_expected_subclass_edges_exist():
     assert (str(SDATA.Data), str(SDATA.Object)) in edges
     assert (str(SDATA.Person), str(SDATA.Agent)) in edges
     assert (str(SDATA.HardwareAgent), str(SDATA.Agent)) in edges
+    assert (str(SDATA.EnvironmentAgent), str(SDATA.Agent)) in edges
