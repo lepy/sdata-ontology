@@ -1,4 +1,4 @@
-"""Create a styled agent-type hierarchy plot rooted at sdata agent classes."""
+"""Create a styled agent classification hierarchy plot rooted at sdata agent classes."""
 
 from __future__ import annotations
 
@@ -14,8 +14,6 @@ from rdflib.namespace import OWL, SKOS
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
 SDATA_AGENT = SDATA.Agent
-SDATA_MATERIAL_AGENT = SDATA.MaterialAgent
-SDATA_INFORMATION_AGENT = SDATA.InformationAgent
 SDATA_HASH = "https://w3id.org/sdata/core#"
 SAGENTS_HASH = "https://w3id.org/sdata/vocab/agents#"
 
@@ -93,39 +91,12 @@ def _best_label(graph: Graph, iri: URIRef) -> str:
     return str(sorted(labels, key=score)[0])
 
 
-def _infer_side(
-    graph: Graph,
-    concept: URIRef,
-    broader_index: dict[URIRef, set[URIRef]],
-    seen: set[URIRef] | None = None,
-) -> str | None:
-    seen = seen or set()
-    if concept in seen:
-        return None
-    seen.add(concept)
-
-    text_blobs: list[str] = []
-    for pred in (SKOS.definition, SKOS.scopeNote, RDFS.comment):
-        text_blobs.extend(str(v) for v in graph.objects(concept, pred) if isinstance(v, Literal))
-    blob = " ".join(text_blobs)
-    if "MaterialAgent" in blob:
-        return "material"
-    if "InformationAgent" in blob:
-        return "information"
-
-    for broader in broader_index.get(concept, set()):
-        side = _infer_side(graph, broader, broader_index, seen)
-        if side:
-            return side
-    return None
-
-
 def extract_hierarchy(graph: Graph) -> HierarchyModel:
     nodes: dict[URIRef, str] = {}
     edges: set[HierarchyEdge] = set()
 
     agent_roots: list[URIRef] = []
-    for sdata_class in (SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT):
+    for sdata_class in (SDATA_AGENT,):
         for alias in _core_aliases(sdata_class):
             if (alias, RDF.type, OWL.Class) in graph:
                 nodes[sdata_class] = "sdata"
@@ -152,8 +123,6 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
         for concept in concepts:
             nodes[concept] = "concept"
 
-        broader_index: dict[URIRef, set[URIRef]] = {}
-        legacy_roots = {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}
         has_unified_root = SDATA_AGENT in nodes
         for concept in concepts:
             broader_parents = {
@@ -161,7 +130,6 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
                 for parent in graph.objects(concept, SKOS.broader)
                 if isinstance(parent, URIRef) and parent in concepts
             }
-            broader_index[concept] = broader_parents
 
             if broader_parents:
                 for parent in broader_parents:
@@ -176,13 +144,6 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
                 edges.add(HierarchyEdge(parent=scheme, child=concept))
                 if has_unified_root:
                     edges.add(HierarchyEdge(parent=SDATA_AGENT, child=concept))
-
-            if not has_unified_root and legacy_roots.issubset(nodes):
-                side = _infer_side(graph, concept, broader_index)
-                if side == "material" and SDATA_MATERIAL_AGENT in nodes:
-                    edges.add(HierarchyEdge(parent=SDATA_MATERIAL_AGENT, child=concept))
-                if side == "information" and SDATA_INFORMATION_AGENT in nodes:
-                    edges.add(HierarchyEdge(parent=SDATA_INFORMATION_AGENT, child=concept))
 
     model_nodes = tuple(
         HierarchyNode(iri=iri, label=_best_label(graph, iri), kind=kind)
@@ -211,7 +172,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Agents Hierarchy (core agents -> SKOS agent types)",
+        label="sdata Agents Hierarchy (core agents -> SKOS classifications)",
         labelloc="t",
         labeljust="c",
     )
@@ -252,12 +213,12 @@ def build_agraph(model: HierarchyModel):
 
     for edge in model.edges:
         attrs = {"label": ""}
-        if edge.parent in {SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT} and edge.child in {
+        if edge.parent in {SDATA_AGENT} and edge.child in {
             URIRef(str(SAGENTS) + "AgentTypeScheme"),
             URIRef(SAGENTS_HASH + "AgentTypeScheme"),
         }:
-            attrs["label"] = "typed via sdata:agentType"
-        elif edge.parent in {SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}:
+            attrs["label"] = "classification scheme"
+        elif edge.parent in {SDATA_AGENT}:
             attrs["label"] = "also an"
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 
@@ -265,7 +226,7 @@ def build_agraph(model: HierarchyModel):
     legend.add_node("legend_sdata", label="sdata agent class", **style_map["sdata"])
     legend.add_node("legend_scheme", label="SKOS ConceptScheme", **style_map["scheme"])
     legend.add_node("legend_concept", label="SKOS Concept", **style_map["concept"])
-    legend.add_edge("legend_sdata", "legend_scheme", label="typed via sdata:agentType", color="#4A5568")
+    legend.add_edge("legend_sdata", "legend_scheme", label="classification scheme", color="#4A5568")
     legend.add_edge("legend_scheme", "legend_concept", label="broader -> narrower", color="#4A5568")
 
     core_cluster.add_node("__anchor_core", style="invis", width="0", height="0", label="")

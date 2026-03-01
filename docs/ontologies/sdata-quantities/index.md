@@ -14,8 +14,7 @@ Führt `sdata:AttributeQuantityValue` und `sdata:ValueDomain` ein, um Messgröß
 ex:Probe_A1 sdata:hasQuantity ex:Rm_A1 .
 
 ex:Rm_A1 a sdata:AttributeQuantityValue ;
-  sdata:name "Rm" ;
-  sdata:description "Zugfestigkeit" ;
+  sdata:hasIdentifier "AQV-RM-A1" ;
   sdata:dtype "float" ;
   qudt:numericValue "312.4"^^xsd:double ;
   qudt:unit unit:MegaPA ;

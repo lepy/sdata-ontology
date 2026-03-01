@@ -15,7 +15,7 @@
 #
 #   sdata-material-state — Material State Space
 #
-#   Erweiterungsmodul fuer sdata v0.8.0
+#   Erweiterungsmodul für sdata v0.6.0
 #
 #   Architekturprinzip:
 #
@@ -42,8 +42,8 @@
 
 <https://w3id.org/sdata/material-state>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/material-state/0.2.0> ;
-    owl:versionInfo  "0.2.0 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.1.0> ;
+    owl:versionInfo  "0.1.0 — 2026-03-01" ;
     owl:imports      <https://w3id.org/sdata/core> ;
 
     dcterms:title    "sdata-material-state — Material State Space"@en ;
@@ -150,7 +150,7 @@ einer bestimmten Achse zuweist.
 
 StateAssignment ist ein vollwertiger sdata:Data-Nexus:
   — sdata:describes  → das Material
-  — sdata:producedBy → der Process, der den Zustand erzeugt hat
+  — sdata:producedBy → die Activity, die den Zustand erzeugt hat
   — sdata:hasQuantity → optionale Detail-AQVs (z.B. Recyclatanteil in %)
   — sms:onAxis       → welche Achse
   — sms:hasStateValue → welcher Wert (skos:Concept)
@@ -266,7 +266,7 @@ sms:ProcessingAxis a owl:Class ;
     rdfs:label "Processing Axis"@en , "Verarbeitungsachse"@de ;
     sms:hasConceptScheme sms:processing-values ;
     rdfs:comment """Sekundäre Achse: Verarbeitungszustand.
-Grundsätzlich aus Process-Kette ableitbar, hier
+Grundsätzlich aus Activity-Kette ableitbar, hier
 als eigenständiger Deskriptor reifiziert."""@de .
 
 sms:processing-values a skos:ConceptScheme ;
@@ -522,7 +522,7 @@ sms:LifecyclePhaseAxis a owl:Class ;
     rdfs:label "Lifecycle Phase Axis"@en , "Lebenszyklusphase-Achse"@de ;
     sms:hasConceptScheme sms:phase-values ;
     rdfs:comment """Sekundäre Achse: Position im Produktlebenszyklus.
-Ableitbar aus der Process-Kette, hier reifiziert.
+Ableitbar aus der Activity-Kette, hier reifiziert.
 
 13 Phasen in 5 Top-Level-Gruppen mit skos:broader-Hierarchie:
 

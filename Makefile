@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle viz-material-state viz-specimen viz-all viz-examples clean
 
 UV ?= uv
 
@@ -72,11 +72,19 @@ viz-combined: check-uv
 viz-lifecycle: check-uv
 	$(UV) run python -m src.visualization.lifecycle_plot
 
+# ─── Visualize material-state hierarchy ──────────────────────────────────────
+viz-material-state: check-uv
+	$(UV) run python -m src.visualization.material_state_plot
+
+# ─── Visualize specimen_tensiontest_data example via dedicated module ────────
+viz-specimen: check-uv
+	$(UV) run python -m src.visualization.specimen_tensiontest_data_plot
+
 # ─── Generate all main ontology visualizations ───────────────────────────────
-viz-all: viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle
+viz-all: viz-hierarchy viz-agents viz-core-processtypes viz-core-processtypes-sdata-only viz-process-dual viz-combined viz-lifecycle viz-material-state
 
 # ─── Visualize all example TTL graphs ───────────────────────────────────────
-viz-examples: check-uv
+viz-examples: viz-specimen check-uv
 	@for f in examples/*.ttl; do \
 		base="$$(basename "$$f" .ttl)-graph"; \
 		echo "Rendering $$f -> docs/diagrams/$${base}.{dot,svg,png}"; \

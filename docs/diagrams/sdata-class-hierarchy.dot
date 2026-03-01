@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Class Hierarchy (core v0.6.0 / MIN+OPA based)",
+		label="sdata Class Hierarchy (core v0.8.0 / MIN+OPA based)",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.55,
@@ -30,18 +30,10 @@ digraph "" {
 			label="sdata classes",
 			style=rounded
 		];
-		"https://w3id.org/sdata/core/Activity"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Activity];
 		"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Agent];
-		"https://w3id.org/sdata/core/Assembly"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Assembly];
 		"https://w3id.org/sdata/core/AssemblyProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -62,10 +54,6 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Coating Process"];
-		"https://w3id.org/sdata/core/Component"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Component];
 		"https://w3id.org/sdata/core/CrashSimulation"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -74,6 +62,10 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Data];
+		"https://w3id.org/sdata/core/DigitalProductPass"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Digital Product Pass"];
 		"https://w3id.org/sdata/core/Experiment"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -82,14 +74,14 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Forming Process"];
+		"https://w3id.org/sdata/core/Hardware"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Hardware];
 		"https://w3id.org/sdata/core/HeatTreatment"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Heat Treatment"];
-		"https://w3id.org/sdata/core/HumanAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Human Agent"];
 		"https://w3id.org/sdata/core/JoiningProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -106,30 +98,14 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Material];
-		"https://w3id.org/sdata/core/MaterialProperty"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Property"];
-		"https://w3id.org/sdata/core/MeasurementData"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Measurement Data"];
 		"https://w3id.org/sdata/core/MechanicalTest"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Mechanical Test"];
-		"https://w3id.org/sdata/core/Metadata"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Metadata];
 		"https://w3id.org/sdata/core/MetallographicExamination"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Metallographic Examination"];
-		"https://w3id.org/sdata/core/Model"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Model];
 		"https://w3id.org/sdata/core/Object"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -138,58 +114,34 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Organization];
-		"https://w3id.org/sdata/core/Passport"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Person"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label=Passport];
-		"https://w3id.org/sdata/core/ProcessData"	[color="#2B6CB0",
+			label=Person];
+		"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label="Process Data"];
+			label=Process];
 		"https://w3id.org/sdata/core/Product"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Product];
-		"https://w3id.org/sdata/core/RawMaterial"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Raw Material"];
-		"https://w3id.org/sdata/core/Recyclate"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Recyclate];
 		"https://w3id.org/sdata/core/RecyclingProcess"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Recycling Process"];
-		"https://w3id.org/sdata/core/SemiFinishedProduct"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Semi-Finished Product"];
 		"https://w3id.org/sdata/core/Simulation"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Simulation];
-		"https://w3id.org/sdata/core/SimulationResult"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Software"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label="Simulation Result"];
+			label=Software];
 		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label="Software Agent"];
-		"https://w3id.org/sdata/core/Specimen"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Specimen];
-		"https://w3id.org/sdata/core/Table"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Table];
-		"https://w3id.org/sdata/core/Tool"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Tool];
 		"https://w3id.org/sdata/core/Transport"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -210,25 +162,12 @@ digraph "" {
 			label="sdata class"];
 		legend_sdata -> legend_sdata	[label="superclass -> subclass"];
 	}
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/AssemblyProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Experiment";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/ManufacturingProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/RecyclingProcess";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Simulation";
-	"https://w3id.org/sdata/core/Activity" -> "https://w3id.org/sdata/core/Transport";
-	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/HumanAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/MachineAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Organization";
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Person";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/SoftwareAgent";
 	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Certificate";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/MaterialProperty";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/MeasurementData";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Metadata";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Model";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Passport";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/ProcessData";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/SimulationResult";
-	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Table";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/DigitalProductPass";
 	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/ChemicalAnalysis";
 	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/MechanicalTest";
 	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/MetallographicExamination";
@@ -236,14 +175,15 @@ digraph "" {
 	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/FormingProcess";
 	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/HeatTreatment";
 	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/JoiningProcess";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Assembly";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Component";
+	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Hardware";
 	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Material";
 	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Product";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/RawMaterial";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Recyclate";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/SemiFinishedProduct";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Specimen";
-	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Tool";
+	"https://w3id.org/sdata/core/Object" -> "https://w3id.org/sdata/core/Software";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/AssemblyProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Experiment";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/ManufacturingProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/RecyclingProcess";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Simulation";
+	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transport";
 	"https://w3id.org/sdata/core/Simulation" -> "https://w3id.org/sdata/core/CrashSimulation";
 }

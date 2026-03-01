@@ -174,11 +174,7 @@ def extract_model(core_graph: Graph, proc_graph: Graph, agents_graph: Graph, mer
                 edges.add(Edge(parent=broader, child=concept, kind="broader", label="broader"))
 
     for scheme in schemes:
-        for agent_cls in (
-            URIRef(SDATA_SLASH + "Agent"),
-            URIRef(SDATA_SLASH + "MaterialAgent"),
-            URIRef(SDATA_SLASH + "InformationAgent"),
-        ):
+        for agent_cls in (URIRef(SDATA_SLASH + "Agent"),):
             if agent_cls in nodes:
                 edges.add(Edge(parent=agent_cls, child=scheme, kind="typed", label="typed via sdata:agentType"))
 

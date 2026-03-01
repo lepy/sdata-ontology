@@ -7,6 +7,7 @@ nav:
   - Home: index.md
   - Ontologies:
       - sdata-core: ontologies/sdata-core/index.md
+      - sdata-material-state: ontologies/sdata-material-state.md
       - sdata-agents: ontologies/sdata-agents/index.md
       - sdata-processtypes: ontologies/sdata-processtypes/index.md
       - sdata-lifecycle: ontologies/sdata-lifecycle/index.md

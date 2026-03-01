@@ -1,4 +1,4 @@
-"""Visualize the Activity hierarchy (core + process verb extensions)."""
+"""Visualize the Process hierarchy (core + process verb extensions)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from rdflib.namespace import OWL, SKOS
 
 SDATA_SLASH = "https://w3id.org/sdata/core/"
 SDATA_HASH = "https://w3id.org/sdata/core#"
-ACTIVITY = URIRef(SDATA_SLASH + "Activity")
+PROCESS = URIRef(SDATA_SLASH + "Process")
 
 VERB_SEQUENCE = [
     URIRef(SDATA_SLASH + "Creation"),
@@ -139,7 +139,7 @@ def extract_model(core_graph: Graph, proc_graph: Graph, merged: Graph) -> Model:
                 edges_all.add(Edge(parent=parent, child=child))
 
     included: set[URIRef] = set()
-    roots: list[URIRef] = [ACTIVITY] if ACTIVITY in all_sdata_classes else []
+    roots: list[URIRef] = [PROCESS] if PROCESS in all_sdata_classes else []
     roots.extend([node for node in VERB_SEQUENCE if node in all_sdata_classes])
 
     queue: deque[URIRef] = deque(roots)
@@ -183,7 +183,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Activity Hierarchy (core + process verbs)",
+        label="sdata Process Hierarchy (core + process verbs)",
         labelloc="t",
         labeljust="c",
     )
@@ -203,10 +203,10 @@ def build_agraph(model: Model):
     )
 
     core_cluster = graph.add_subgraph(
-        name="cluster_activity_core", label="sdata-core activity classes", color="#90B5E8", style="rounded"
+        name="cluster_process_core", label="sdata-core process classes", color="#90B5E8", style="rounded"
     )
     proc_cluster = graph.add_subgraph(
-        name="cluster_activity_proc", label="sdata-processtypes verb classes", color="#B6D7A8", style="rounded"
+        name="cluster_process_proc", label="sdata-processtypes verb classes", color="#B6D7A8", style="rounded"
     )
 
     style_map = {
