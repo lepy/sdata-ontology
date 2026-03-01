@@ -63,6 +63,12 @@ Build all ontology plots:
 make viz-all
 ```
 
+Build cross-ontology class hierarchy (MIN -> OPA -> sdata-core):
+
+```bash
+make viz-min-opa-core
+```
+
 Build all example plots:
 
 ```bash

@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-material-state viz-specimen viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-opa-core viz-material-state viz-specimen viz-all viz-examples clean
 
 UV ?= uv
 
@@ -44,6 +44,10 @@ lint: check-uv
 viz-hierarchy: check-uv
 	$(UV) run python -m src.visualization.class_hierarchy_plot
 
+# ─── Visualize cross-ontology class hierarchy (MIN -> OPA -> sdata-core) ────
+viz-min-opa-core: check-uv
+	$(UV) run python -m src.visualization.min_opa_sdata_hierarchy_plot
+
 # ─── Clean ────────────────────────────────────────────────────────────────────
 clean:
 	rm -rf .venv __pycache__ .pytest_cache dist build site
@@ -57,7 +61,7 @@ viz-specimen: check-uv
 	$(UV) run python -m src.visualization.specimen_tensiontest_data_plot
 
 # ─── Generate all main ontology visualizations ───────────────────────────────
-viz-all: viz-hierarchy viz-material-state
+viz-all: viz-hierarchy viz-min-opa-core viz-material-state
 
 # ─── Visualize all example TTL graphs ───────────────────────────────────────
 viz-examples: viz-specimen check-uv
