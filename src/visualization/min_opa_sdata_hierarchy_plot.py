@@ -136,6 +136,7 @@ def build_agraph(model: Model):
     graph.graph_attr.update(
         bgcolor="#FAFBFC",
         rankdir="TB",
+        compound="true",
         newrank="true",
         splines="true",
         overlap="false",
@@ -168,6 +169,8 @@ def build_agraph(model: Model):
     sdata_cluster = graph.add_subgraph(
         name="cluster_sdata", label="sdata-core classes", color="#D9B8F7", style="rounded"
     )
+    min_cluster.graph_attr.update(rank="source")
+    sdata_cluster.graph_attr.update(rank="sink")
 
     style_map = {
         "min": {"fillcolor": "#E7F0FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
@@ -182,13 +185,35 @@ def build_agraph(model: Model):
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
 
-    ordered_min = sorted(str(node.iri) for node in model.nodes if node.kind == "min")
-    ordered_opa = sorted(str(node.iri) for node in model.nodes if node.kind == "opa")
-    ordered_sdata = sorted(str(node.iri) for node in model.nodes if node.kind == "sdata")
-    if ordered_min and ordered_opa:
-        graph.add_edge(ordered_min[0], ordered_opa[0], style="invis", color="#FFFFFF", weight="100")
-    if ordered_opa and ordered_sdata:
-        graph.add_edge(ordered_opa[0], ordered_sdata[0], style="invis", color="#FFFFFF", weight="100")
+    min_anchor = "__rank_anchor_min"
+    opa_anchor = "__rank_anchor_opa"
+    sdata_anchor = "__rank_anchor_sdata"
+    min_cluster.add_node(min_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
+    opa_cluster.add_node(opa_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
+    sdata_cluster.add_node(sdata_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
+
+    graph.add_edge(
+        min_anchor,
+        opa_anchor,
+        style="invis",
+        color="#FFFFFF",
+        weight="200",
+        minlen="2",
+        constraint="true",
+        ltail="cluster_min",
+        lhead="cluster_opa",
+    )
+    graph.add_edge(
+        opa_anchor,
+        sdata_anchor,
+        style="invis",
+        color="#FFFFFF",
+        weight="200",
+        minlen="2",
+        constraint="true",
+        ltail="cluster_opa",
+        lhead="cluster_sdata",
+    )
 
     return graph
 
