@@ -1,7 +1,6 @@
 @prefix sdata:   <https://w3id.org/sdata/core/> .
 @prefix sms:     <https://w3id.org/sdata/material-state/> .
 @prefix min:     <https://w3id.org/min#> .
-@prefix opa:     <https://w3id.org/opa#> .
 @prefix qudt:    <http://qudt.org/schema/qudt/> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -15,7 +14,7 @@
 #
 #   sdata-material-state — State Space
 #
-#   Erweiterungsmodul für sdata v0.10.0
+#   Erweiterungsmodul für sdata v0.11.0
 #
 #   Architekturprinzip:
 #
@@ -67,7 +66,7 @@ multidimensionalen Zustandsraum von Werkstoffen und Produkten.
   9. Structure      — wie aufgebaut? (single-part, assembly, system)
  10. Role           — welche Rolle? (production, specimen, prototype, spare)
 
-  Process-Achsen (beschreiben sdata:Process):
+  Process-Achsen (beschreiben min:Process):
  11. Method         — welches Verfahren? (Transformative → Forming → DeepDrawing, ...)
  12. Domain         — welche Physik? (structural, thermal, fluid, ...)
 
@@ -186,7 +185,7 @@ im selben Muster ausdrückbar."""@de ;
 sms:hasStateAssignment a owl:ObjectProperty ;
     rdfs:subPropertyOf sdata:hasData ;
     rdfs:label "has state assignment"@en , "hat Zustandszuordnung"@de ;
-    rdfs:domain sdata:Material ;
+    rdfs:domain min:Nexus ;
     rdfs:range sms:StateAssignment ;
     rdfs:comment """Verknüpft ein Material mit einer Zustandszuordnung.
 Spezialisierung von sdata:hasData — ein StateAssignment IST Data."""@de .

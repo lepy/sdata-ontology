@@ -12,7 +12,7 @@
 # =============================================================================
 
 :dc04 a sdata:Material ;
-    sdata:hasIdentifier "MAT-DC04-001" ;
+    min:hasIdentifier "MAT-DC04-001" ;
     rdfs:label "DC04"@de ;
     sms:hasStateAssignment [
         sms:onAxis sms:OriginAxis ;
@@ -51,15 +51,15 @@
 
 # Coil: Product des Walzwerks, Input der Probenfertigung
 :coil a sdata:Product ;
-    sdata:madeOf :dc04 ;
-    sdata:hasIdentifier "COIL-DC04-2026-001" ;
+    sdata:hasMaterial :dc04 ;
+    min:hasIdentifier "COIL-DC04-2026-001" ;
     rdfs:label "DC04-Coil 1.0mm"@de .
 
 # Probe: Product der Probenfertigung, Input des Zugversuchs
 :probe a sdata:Product ;
-    sdata:madeOf :dc04 ;
-    sdata:resultOf :probenfertigung ;
-    sdata:hasIdentifier "SPEC-2026-042" ;
+    sdata:hasMaterial :dc04 ;
+    min:resultOf :probenfertigung ;
+    min:hasIdentifier "SPEC-2026-042" ;
     rdfs:label "Zugprobe Nr. 42"@de ;
     sms:hasStateAssignment [
         sms:onAxis sms:StructureAxis ;
@@ -76,11 +76,11 @@
 # =============================================================================
 
 :bediener a sdata:Person ;
-    sdata:hasIdentifier "PERS-BEDIENER-007" ;
+    min:hasIdentifier "PERS-BEDIENER-007" ;
     rdfs:label "Werkstattbediener"@de .
 
 :pruefer a sdata:Person ;
-    sdata:hasIdentifier "PERS-PRUEFER-042" ;
+    min:hasIdentifier "PERS-PRUEFER-042" ;
     rdfs:label "Werkstoffprüfer"@de .
 
 
@@ -89,11 +89,11 @@
 # =============================================================================
 
 :stanze a sdata:Hardware ;
-    sdata:hasIdentifier "HW-STANZE-003" ;
+    min:hasIdentifier "HW-STANZE-003" ;
     rdfs:label "Probenstanze"@de .
 
 :zwick a sdata:Hardware , sdata:HardwareAgent ;
-    sdata:hasIdentifier "HW-ZWICK-Z250-007" ;
+    min:hasIdentifier "HW-ZWICK-Z250-007" ;
     rdfs:label "Zwick Z250"@de ;
     sdata:hasQuantity [
         a sdata:AttributeQuantityValue ;
@@ -109,14 +109,14 @@
 #   PROCESS 1 — Probenfertigung
 # =============================================================================
 
-:probenfertigung a sdata:Process ;
+:probenfertigung a min:Process ;
     rdfs:label "Probenfertigung"@de ;
-    sdata:hasInput :coil ;
-    sdata:hasOutput :probe ;
-    sdata:performedBy :bediener ;
-    sdata:usesHardware :stanze ;
-    sdata:producesData :fertigung_data ;
-    sdata:hasStandard "DIN 50125" ;
+    min:hasInput :coil ;
+    min:hasOutput :probe ;
+    min:performedBy :bediener ;
+    sdata:usesTool :stanze ;
+    min:generates :fertigung_data ;
+    min:hasDescription "DIN 50125" ;
     sms:hasStateAssignment [
         a sms:StateAssignment ;
         sms:onAxis sms:MethodAxis ;
@@ -124,7 +124,7 @@
     ] .
 
 :fertigung_data a sdata:Data ;
-    sdata:describes :probe ;
+    min:describes :probe ;
     sdata:producedBy :probenfertigung ;
     rdfs:label "Fertigungsdaten Probe 42"@de ;
     sdata:hasQuantity [
@@ -154,14 +154,14 @@
 #   PROCESS 2 — Zugversuch
 # =============================================================================
 
-:zugversuch a sdata:Process ;
+:zugversuch a min:Process ;
     rdfs:label "Zugversuch Nr. 42"@de ;
-    sdata:hasInput :probe ;
-    sdata:performedBy :pruefer ;
-    sdata:performedBy :zwick ;
-    sdata:usesHardware :zwick ;
-    sdata:producesData :ergebnis ;
-    sdata:hasStandard "DIN EN ISO 6892-1" ;
+    min:hasInput :probe ;
+    min:performedBy :pruefer ;
+    min:performedBy :zwick ;
+    sdata:usesTool :zwick ;
+    min:generates :ergebnis ;
+    min:hasDescription "DIN EN ISO 6892-1" ;
     sdata:hasQuantity [
         a sdata:AttributeQuantityValue ;
         sdata:name "strain_rate" ;
@@ -195,7 +195,7 @@
 # =============================================================================
 
 :ergebnis a sdata:Data ;
-    sdata:describes :probe ;
+    min:describes :probe ;
     sdata:producedBy :zugversuch ;
     rdfs:label "Zugversuchsergebnis Probe 42"@de ;
 

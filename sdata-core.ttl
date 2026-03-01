@@ -1,7 +1,5 @@
 @prefix sdata:   <https://w3id.org/sdata/core/> .
 @prefix min:     <https://w3id.org/min#> .
-@prefix opa:     <https://w3id.org/opa#> .
-@prefix qudt:    <http://qudt.org/schema/qudt/> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
@@ -11,767 +9,578 @@
 
 # =============================================================================
 #
-#   sdata — Structured Scientific and Technical Data
+#   sdata — Semantic Data Ontology (Core)
 #
-#   Domänenontologie für den Produktlebenszyklus.
-#   Vom Erz bis zum Recyclat. Vom Messwert bis zum Produktpass.
+#   Domänenontologie für Product Passports, Circular Economy,
+#   und Digital Twins.
 #
-#   Drei Schichten, drei Fragen:
+#   v0.11.0 — Migration auf MIN v2.0.0
 #
-#     MIN  fragt: Was ist Sein?      → Nexus, Material, Information, Modalität
-#     OPA  fragt: Was gibt es?       → Object, Process, Agent
-#     sdata fragt: Was gibt es HIER? → Werkstoff, Produkt, Daten, Prozess
+#   Änderungen gegenüber v0.10.0:
 #
-#   Drei Kategorien, abgeleitet aus OPA und MIN:
+#     ENTFERNT:
+#       — owl:imports <https://w3id.org/opa>    (OPA in MIN absorbiert)
+#       — Alle opa: Referenzen                  (→ min:)
 #
-#     sdata:Object   ← opa:Object    (material-modal)
-#     sdata:Process  ← opa:Process   (balanced)
-#     sdata:Agent    ← opa:Agent     (orthogonal zur Modalität)
+#     GEÄNDERT:
+#       — sdata:Data  subClassOf min:Data       (war: sdata:Object)
+#         Data ist jetzt erstklassige MIN-Kategorie, nicht mehr
+#         unter Object eingeordnet. Das ist konzeptionell korrekt:
+#         Daten sind informational-dominant, nicht material-dominant.
 #
-#   Das Lifecycle-Muster (rekursiv, selbstähnlich):
+#     KOMPATIBILITÄTSHINWEISE:
+#       — Alle sdata: URIs bleiben stabil
+#       — Alle sdata: Klassen und Properties bleiben erhalten
+#       — Nur die Superklassen-Referenzen ändern sich (opa: → min:)
+#       — SPARQL-Queries die opa: nutzen, müssen auf min: umgestellt werden
+#       — SHACL-Shapes müssen auf neue Superklassen geprüft werden
 #
-#     Product₀ + Data₀ ──▶ Process ──▶ Product₁ + Data₁
-#                              ↑
-#                         Agent (min. 1)
-#                         Hardware (optional)
-#                         Software (optional)
-#
-#   Product besteht aus Material (madeOf). Material trägt den
-#   multidimensionalen Zustandsvektor (Material State Space).
-#   Data ist ein Object — identifizierbar, versionierbar, speicherbar.
-#   Spezifische Prozess-Methoden und -Typen leben im State Space.
-#
-#   v0.10.0 — 2026-03-01
-#
-#   EVOLUTION:
-#     v0.3.0 → v0.6.0  BFO → MIN/OPA
-#     v0.6.x            RawMaterial, Recyclate → Material State Space
-#     v0.7.x            Activity → Process, HumanAgent → Person
-#     v0.8.0            Object: 7 → 4 Subklassen, madeOf, usesSoftware
-#     v0.9.0            Process: 14 → 4 Subklassen, MethodAxis
-#     v0.9.1            3 Kategorien, Data als Object, NatureAxis → MethodAxis
-#     v0.9.2            Obsolete Module entfernt (agents, processtypes, r-strategies)
-#                        ValueDomain: min:Nexus → owl:Class (Infrastruktur)
-#                        Data: eigene Kategorie → Object-Subklasse
-#                        Certificate, DPP → DataTypeAxis
-#                        Process: 4 → 0 Subklassen → MethodAxis (hierarchisch)
-#                        MachineAgent → HardwareAgent
-#                        9 Domänenklassen total (von 36 in v0.6.0)
-#     v0.10.0           EnvironmentAgent (5. Agent-Subklasse)
-#                        AQV + ValueDomain als Infrastruktur (kein min:Nexus)
-#                        10 Domänenklassen total
+#   v0.11.0 — 2026-03-01
 #
 # =============================================================================
-
 
 # —————————————————————————————————————————————————————————————————————————————
 #   ONTOLOGIE-DEKLARATION
 # —————————————————————————————————————————————————————————————————————————————
 
-<https://w3id.org/sdata/core>
-    rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/core/0.10.0> ;
-    owl:versionInfo  "0.10.0 — 2026-03-01" ;
-    owl:imports      <https://w3id.org/opa> ;
+<https://w3id.org/sdata/core> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/sdata/core/0.11.0> ;
+    owl:versionInfo "0.11.0" ;
+    owl:imports <https://w3id.org/min> ;
+    # owl:imports <https://w3id.org/opa> ;  ← ENTFERNT (OPA in MIN v2 absorbiert)
+    dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
+    dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
+    dcterms:description """Domänenontologie für Materialwissenschaft,
+    Fertigungstechnik, Produktpässe und Kreislaufwirtschaft.
 
-    dcterms:title    "sdata — Structured Scientific and Technical Data"@en ;
-    dcterms:title    "sdata — Strukturierte wissenschaftliche und technische Daten"@de ;
-    dcterms:description """Domänenontologie für den Produktlebenszyklus auf dem
-Drei-Schichten-Fundament MIN/OPA.
+    Zweischicht-Architektur: MIN (Grundontologie) → sdata (Domäne).
 
-3 Kategorien · 10 Domänenklassen · 19 Object Properties · 7 Datatype Properties
-Infrastruktur: AttributeQuantityValue (← QUDT) + ValueDomain
+    sdata spezialisiert die vier MIN-Kategorien:
+      min:Object  → Material, Product, Hardware, Software
+      min:Data    → (direkt genutzt, domänenspezifische Typen via State Space)
+      min:Process → (keine Kern-Subklassen, Methode/Domäne via State Space)
+      min:Agent   → Person, HardwareAgent, SoftwareAgent, Organization,
+                     EnvironmentAgent"""@de ;
+    dcterms:creator "Lepy" ;
+    dcterms:created "2026-03-01"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/min> ;
+    min:designRationale """v0.11.0 migriert auf MIN v2.0.0.
+    OPA ist als Zwischenschicht entfallen — MIN enthält jetzt
+    direkt die vier Kategorien Object, Process, Data, Agent.
 
-Erweiterungsmodule (separate Dateien, optional importierbar):
-  sdata-material-state.ttl  — State Space (13 Achsen, SKOS-Vokabulare)
-  sdata-vd-interval.ttl     — IntervalDomain
-  sdata-vd-enum.ttl         — EnumeratedDomain
-  sdata-vd-statistical.ttl  — StatisticalDomain
-  sdata-vd-fuzzy.ttl        — FuzzyDomain"""@en ;
-
-    dcterms:creator  "Lepy" ;
-    dcterms:created  "2026-03-01"^^xsd:date ;
-    dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
-    rdfs:seeAlso     <https://w3id.org/min> ;
-    rdfs:seeAlso     <https://w3id.org/opa> ;
-    rdfs:seeAlso     <https://w3id.org/sdata/material-state> ;
-    min:layer        "domain" ;
-
-    min:designRationale """v0.10.0 reduziert auf 3 Kategorien und 10 Domänenklassen.
-
-Von 36 Klassen (v0.6.0) auf 10. Alles Domänenspezifische lebt in
-SKOS-Vokabularen des State Space, erweiterbar durch den User.
-
-Die 3 Kategorien:
-  Object  (5 Subkl.): Material, Product, Hardware, Software, Data
-  Process (0 Subkl.): Dimensionen über MethodAxis + DomainAxis
-  Agent   (5 Subkl.): Person, HardwareAgent, SoftwareAgent, Organization, EnvironmentAgent
-
-Schlüsselentscheidungen:
-
-1. Data als Object-Subklasse (nicht eigene Kategorie)
-   Data ist ein identifizierbares, versionierbares Artefakt — wie
-   Material (stofflich) und Product (geometrisch) ist Data (informational)
-   ein Object mit eigenem Fokus. Die Relationen producesData, producedBy,
-   describes, hasData bleiben unverändert.
-   Certificate und DPP → DataTypeAxis (SKOS-Vokabular).
-
-2. Process ohne Subklassen
-   ManufacturingProcess, Experiment, Simulation, Transport → MethodAxis.
-   Die Natur eines Process (transformativ, beobachtend, rechnerisch,
-   logistisch, administrativ, kreativ) ist die oberste Ebene der
-   MethodAxis-Hierarchie:
-     method.Transformative → Forming → DeepDrawing
-     method.Observational → MechanicalTest → TensileTest
-     method.Computational → FEM → CrashSimulation
-     method.Logistical
-     method.Administrative → Approval, Certification, QualityGate
-     method.Creative → Design, ProcessPlanning, MaterialSelection
-   Die Methode (Tiefziehen, Zugversuch, FEM) lebt in Ebene 2+3.
-   Die physikalische Domäne in DomainAxis.
-
-3. HardwareAgent statt MachineAgent
-   Konsistent mit dem Hardware/Software-Paar bei Object.
-   :presse a sdata:Hardware , sdata:HardwareAgent ."""@de .
+    Hauptänderung: sdata:Data ist nicht mehr subClassOf sdata:Object,
+    sondern subClassOf min:Data. Dies korrigiert eine konzeptionelle
+    Schieflage: Daten sind informational-dominant, nicht
+    material-dominant. Sie gehören nicht unter Object."""@de .
 
 
 # #############################################################################
 #
-#   TEIL I — DIE DREI KATEGORIEN
+#   TEIL I — OBJECT-HIERARCHIE
 #
-#   Object  — WAS existiert?     (Werkstoff, Produkt, Gerät, Software, Daten)
-#   Process — WAS geschieht?     (Fertigung, Prüfung, Simulation, Transport)
-#   Agent   — WER handelt?       (Person, Maschine, Software, Organisation)
+#   sdata:Object spezialisiert min:Object für die Domäne.
+#   Vier Subklassen decken die Kernbereiche ab.
+#
+#   Beachte: Data ist NICHT mehr unter Object.
+#   Data ist jetzt subClassOf min:Data (eigene MIN-Kategorie).
 #
 # #############################################################################
 
-
 # =============================================================================
-#   A1. OBJECT — was existiert
+#   MATERIAL — Werkstoff, Rohstoff, Substanz
 # =============================================================================
-
-sdata:Object a owl:Class ;
-    rdfs:subClassOf opa:Object ;
-    rdfs:label "Object"@en ,
-               "Objekt"@de ;
-    rdfs:comment """Das, was im Produktlebenszyklus existiert.
-
-5 Subklassen entlang dreier Achsen:
-
-  Was transformiert wird:
-    Material — woraus (Zusammensetzung, Gefüge, Zustandsvektor)
-    Product  — was (gefertigtes Ding, Identität, DPP)
-
-  Was Transformation ermöglicht:
-    Hardware — womit physisch (Maschine, Werkzeug, Prüfgerät)
-    Software — womit digital (Simulation, MES, ML-Modell)
-
-  Was gewusst wird:
-    Data — Informationsartefakt (Messdaten, Zertifikat, DPP)
-
-Product besteht aus Material (madeOf). Material trägt den
-Zustandsvektor. Data beschreibt Objects und wird von Processes
-erzeugt. Alle 5 Subklassen sind identifizierbar, versionierbar
-und können AQVs tragen (hasQuantity)."""@de .
-
-# --- Object-Subklassen (5) ---
 
 sdata:Material a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Material"@en , "Werkstoff"@de ;
-    rdfs:comment """WORAUS etwas besteht. Identifiziert durch Zusammensetzung,
-Gefüge, Charge. Der Zustand wird über den State Space modelliert
-(Origin, Form, Condition, Compliance, ...).
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Material"@en ;
+    rdfs:label "Werkstoff"@de ;
+    rdfs:comment """Ein Werkstoff oder Rohstoff.
 
-Nicht zu verwechseln mit min:Material (der materiale Aspekt
-eines Nexus). Namespace-Trennung disambiguiert."""@de ;
-    skos:example "DC04-Stahlblech, AA6016-T4, PA6-GF30, PP-Recyclat."@de .
+    Physische Substanz, die in Fertigungsprozessen verarbeitet wird.
+    Identität über chemische Zusammensetzung und Gefügezustand.
+
+    Beispiele: Stahlcoil, Polypropylen-Granulat, Glasfaser-Recyclat,
+    Aluminium-Legierung, Epoxidharz."""@de ;
+    skos:example "HC340LA, PP-GF30, AlSi10Mg, CFK-Prepreg."@de .
+
+
+# =============================================================================
+#   PRODUCT — Erzeugnis, Bauteil, Halbzeug
+# =============================================================================
 
 sdata:Product a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Product"@en , "Produkt"@de ;
-    rdfs:comment """WAS transformiert wird. Identifiziert durch Geometrie,
-Seriennummer, Funktion. Einziger Output-Typ im Lifecycle-Muster.
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Product"@en ;
+    rdfs:label "Produkt"@de ;
+    rdfs:comment """Ein Erzeugnis, Bauteil oder Halbzeug.
 
-Product besteht aus Material (madeOf). Struktur und Rolle
-über den State Space:
-  sms:StructureAxis — single-part, assembly, system
-  sms:RoleAxis — production, specimen, prototype, spare
+    Resultat eines Fertigungsprozesses. Hat eine definierte
+    Geometrie und Funktion. Träger eines Produktpasses.
 
-Baugruppen nutzen min:hasComponent. DPP über hasDPP."""@de ;
-    skos:example "Zugprobe, B-Säule, Türmodul, Fahrzeug, Warmband."@de .
+    Abgrenzung zu Material: Material ist Substanz (ungeformt
+    oder vorgeformt). Product ist Erzeugnis (geformt, funktional).
+    Die Grenze ist fließend — ein Coil kann Material ODER
+    Product sein, je nach Perspektive in der Lieferkette."""@de ;
+    skos:example "Seitenteil, Motorblock, B-Säule, Felge, Getriebe."@de .
+
+
+# =============================================================================
+#   HARDWARE — physisches Gerät, Maschine (passiv)
+# =============================================================================
 
 sdata:Hardware a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Hardware"@en , "Hardware"@de ;
-    rdfs:comment """Physisches Gerät, Maschine oder Werkzeug.
-NICHT disjunkt mit Agent — Doppeltypisierung vorgesehen:
-  :zwick a sdata:Hardware , sdata:HardwareAgent ."""@de ;
-    skos:example "Hydraulische Presse, Zwick Z250, Tiefziehwerkzeug."@de .
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Hardware"@en ;
+    rdfs:label "Hardware"@de ;
+    rdfs:comment """Ein physisches Gerät oder eine Maschine als Object.
+
+    Hardware als PASSIVES Ding — die physische Infrastruktur,
+    ohne Handlungsfähigkeit. Wenn Hardware handelt (steuert,
+    misst, entscheidet), wird sie zusätzlich als HardwareAgent typisiert.
+
+    Abgrenzung: Hardware ist Object (physisches Ding).
+    HardwareAgent ist Agent (handelndes Ding).
+    Ein Roboter kann beides zugleich sein."""@de ;
+    skos:example "Presse, Ofen, Prüfmaschine, Sensor (passiv), Werkzeug."@de .
+
+
+# =============================================================================
+#   SOFTWARE — Softwareprodukt (passiv)
+# =============================================================================
 
 sdata:Software a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Software"@en , "Software"@de ;
-    rdfs:comment """Digitales Artefakt. Simulationssoftware, MES, ML-Modell.
-NICHT disjunkt mit Agent — Doppeltypisierung vorgesehen:
-  :autoform a sdata:Software , sdata:SoftwareAgent ."""@de ;
-    skos:example "AutoForm R10, LS-DYNA R14, Python-ML-Pipeline."@de .
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Software"@en ;
+    rdfs:label "Software"@de ;
+    rdfs:comment """Ein Softwareprodukt als Object.
+
+    Software als PASSIVES Artefakt — der Code, die Installation,
+    die Version. Wenn Software handelt (simuliert, berechnet,
+    entscheidet), wird sie zusätzlich als SoftwareAgent typisiert.
+
+    Abgrenzung: Software ist Object (digitales Artefakt).
+    SoftwareAgent ist Agent (handelndes Artefakt)."""@de ;
+    skos:example "AutoForm R10, Abaqus 2024, Python-Skript, FE-Solver."@de .
+
+
+# =============================================================================
+#   DATA — jetzt subClassOf min:Data
+# =============================================================================
 
 sdata:Data a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Data"@en , "Daten"@de ;
-    rdfs:comment """Informationsartefakt. WAS GEWUSST WIRD.
-Identifizierbar, versionierbar, speicherbar — ein Object
-mit informationalem Fokus.
+    rdfs:subClassOf min:Data ;
+    rdfs:label "Data"@en ;
+    rdfs:label "Daten"@de ;
+    rdfs:comment """Domänenspezifische Daten.
 
-Data wird von Processes erzeugt (producedBy).
-Data beschreibt Objects (describes).
-Data trägt Messwerte (hasQuantity + AQV).
+    MIGRATION v0.10.0 → v0.11.0:
+    Data war subClassOf sdata:Object (= material-dominant).
+    Data ist jetzt subClassOf min:Data (= informational-dominant).
 
-Die ART der Data wird über sms:DataTypeAxis modelliert:
-  Certificate, DigitalProductPass, TestReport, ProcessRecord,
-  MaterialDataSheet, SimulationReport, FlowCurve, CADModel, ...
+    Dies korrigiert die konzeptionelle Einordnung: Daten sind
+    primär über ihre Semantik zugänglich, nicht über ihre Bytes.
+    Ihr materialAspect (Speichermedium) ist real, aber sekundär.
 
-Die ART ergibt sich auch aus den Relationen:
-  Data producedBy [method.Observational/*] → Messdaten
-  Data producedBy [method.Computational/*] → Simulationsergebnis
-  Data producedBy [method.Transformative/*] → Prozessdaten
-  Data producedBy [method.Administrative/*] → Zertifikat, Freigabe
-  Data producedBy [method.Creative/*] → Zeichnung, CAD-Modell"""@de ;
-    skos:example "Zugversuchsergebnis, Prüfbericht, DPP, Fließkurve."@de .
+    Spezifische Datentypen (Certificate, DigitalProductPass, etc.)
+    werden über den sdata-material-state DataTypeAxis modelliert,
+    nicht als Subklassen."""@de ;
+    skos:example "Messdaten, Simulationsergebnis, Werkstoffdatenblatt, CAD-Modell."@de ;
+    min:designRationale """Die Verschiebung von Object nach min:Data
+    ist die wichtigste konzeptionelle Änderung in v0.11.0.
+
+    Begründung: In MIN v2 ist Data eine erstklassige Kategorie
+    neben Object, Process und Agent. Data unter Object einzuordnen
+    war ein Kompromiss der alten Dreischicht-Architektur, in der
+    OPA keinen eigenen Data-Typ hatte. Dieser Kompromiss ist
+    jetzt aufgelöst."""@de .
 
 
-# =============================================================================
-#   A2. PROCESS — was geschieht
-# =============================================================================
-
-sdata:Process a owl:Class ;
-    rdfs:subClassOf opa:Process ;
-    rdfs:label "Process"@en ,
-               "Prozess"@de ;
-    rdfs:comment """Das, was im Produktlebenszyklus geschieht.
-
-Das vollständige Muster:
-
-  Product₀ + Data₀ ──▶ Process ──▶ Product₁ + Data₁
-                           ↑
-                      Agent (min. 1)
-                      Hardware (optional)
-                      Software (optional)
-
-Keine Subklassen. 2 Dimensionen im State Space:
-
-  sms:MethodAxis — WAS wird getan? (dreistufige Hierarchie)
-    Ebene 1 — Natur:
-      Transformative   — verändert Materie
-      Observational    — liest Information ab
-      Computational    — berechnet Information
-      Logistical       — verändert Ort
-      Administrative   — bewertet und entscheidet
-      Creative         — entwirft und plant
-    Ebene 2 — Verfahrensgruppe (Forming, MechanicalTest, FEM, Approval, Design, ...)
-    Ebene 3 — Spezifisches Verfahren (DeepDrawing, TensileTest, QualityGate, ...)
-    Beliebig erweiterbar durch User.
-
-  sms:DomainAxis — WELCHE Physik?
-    Structural, Thermal, Fluid, Electromagnetic, Chemical
-
-Formale Constraints:
-  — Jeder Process erzeugt mindestens eine Data (producesData)
-  — Jeder Process hat mindestens einen Agent (performedBy)
-
-R-Strategien sind Prozessketten:
-  R5 Refurbish = Process(disassembly) → Process(conditioning) →
-                 Process(assembly) → Process(inspection)"""@de ;
-
-    # Constraint: Jeder Process erzeugt Data
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:onProperty sdata:producesData ;
-        owl:someValuesFrom sdata:Data
-    ] ;
-
-    # Constraint: Jeder Process hat mindestens einen Agent
-    rdfs:subClassOf [
-        a owl:Restriction ;
-        owl:onProperty sdata:performedBy ;
-        owl:someValuesFrom sdata:Agent
-    ] .
-
+# #############################################################################
+#
+#   TEIL II — AGENT-HIERARCHIE
+#
+#   sdata:Agent spezialisiert min:Agent für die Domäne.
+#   Fünf Subklassen unterscheiden die Art der Handlungsfähigkeit.
+#
+# #############################################################################
 
 # =============================================================================
-#   A3. AGENT — wer handelt
+#   PERSON — menschlicher Agent
 # =============================================================================
-
-sdata:Agent a owl:Class ;
-    rdfs:subClassOf opa:Agent ;
-    rdfs:label "Agent"@en ,
-               "Agent"@de ;
-    rdfs:comment """Der Handelnde. Definiert über Agency (Kausalität).
-5 Subklassen decken alle Kausalitätsquellen ab:
-  Person           — intentional, menschlich
-  HardwareAgent    — mechanisch, gesteuert
-  SoftwareAgent    — algorithmisch
-  Organization     — kollektiv-intentional
-  EnvironmentAgent — natürlich, nicht-intentional
-
-NICHT disjunkt mit Object — Doppeltypisierung vorgesehen:
-  :presse   a sdata:Hardware ,  sdata:HardwareAgent .
-  :autoform a sdata:Software ,  sdata:SoftwareAgent ."""@de .
-
-# --- Agent-Subklassen (5) ---
 
 sdata:Person a owl:Class ;
-    rdfs:subClassOf sdata:Agent ;
-    rdfs:label "Person"@en , "Person"@de ;
-    rdfs:comment """Agent mit Bewusstsein und Verantwortungsfähigkeit.
-Natürliche Person — Prüfer, Bediener, Ingenieur."""@de .
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Person"@en ;
+    rdfs:label "Person"@de ;
+    rdfs:comment """Ein menschlicher Agent.
+
+    Intentionale Handlungsfähigkeit, moralische Zurechenbarkeit.
+    In der Fertigung: Werker, Prüfer, Konstrukteur, Qualitätsmanager."""@de ;
+    skos:example "Prüfer, Konstrukteur, Werker, Laborant, Projektleiter."@de .
+
+
+# =============================================================================
+#   HARDWARE AGENT — handlungsfähige Maschine
+# =============================================================================
 
 sdata:HardwareAgent a owl:Class ;
-    rdfs:subClassOf sdata:Agent ;
-    rdfs:label "Hardware Agent"@en , "Hardware-Agent"@de ;
-    rdfs:comment """Agent mit physischer Aktorik.
-Doppeltypisierbar mit sdata:Hardware."""@de ;
-    skos:example "Hydraulische Presse, Zwick Z250, Roboterarm."@de .
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Hardware Agent"@en ;
+    rdfs:label "Hardware-Agent"@de ;
+    rdfs:comment """Eine Maschine oder ein Gerät mit Handlungsfähigkeit.
+
+    Typischerweise zugleich sdata:Hardware (physisches Ding)
+    und sdata:HardwareAgent (handelndes Ding). Die Doppeltypisierung
+    ist gewollt und durch die Nicht-Disjunktheit von min:Agent
+    mit min:Object ermöglicht.
+
+    Selektivität durch Steuerung (SPS, Regelkreis, Sensorik)."""@de ;
+    skos:example "CNC-Fräse, Roboterarm, autonomer Sensor, Prüfmaschine mit Steuerung."@de .
+
+
+# =============================================================================
+#   SOFTWARE AGENT — handlungsfähige Software
+# =============================================================================
 
 sdata:SoftwareAgent a owl:Class ;
-    rdfs:subClassOf sdata:Agent ;
-    rdfs:label "Software Agent"@en , "Software-Agent"@de ;
-    rdfs:comment """Agent ohne physische Aktorik.
-Doppeltypisierbar mit sdata:Software."""@de ;
-    skos:example "AutoForm, LS-DYNA, Gradient-Boosting-Modell, MES."@de .
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Software Agent"@en ;
+    rdfs:label "Software-Agent"@de ;
+    rdfs:comment """Eine Software mit Handlungsfähigkeit.
+
+    Führt Berechnungen, Simulationen oder Entscheidungen durch.
+    Typischerweise zugleich sdata:Software (Artefakt) und
+    sdata:SoftwareAgent (handelndes Artefakt).
+
+    Selektivität durch Algorithmen, ML-Modelle, Regelwerke."""@de ;
+    skos:example "FE-Solver, ML-Prognosemodell, Optimierungsalgorithmus, LLM."@de .
+
+
+# =============================================================================
+#   ORGANIZATION — institutioneller Agent
+# =============================================================================
 
 sdata:Organization a owl:Class ;
-    rdfs:subClassOf sdata:Agent ;
-    rdfs:label "Organization"@en , "Organisation"@de ;
-    rdfs:comment """Kollektiver Agent."""@de ;
-    skos:example "Stahlhersteller, OEM, Prüflabor, Zertifizierungsstelle."@de .
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Organization"@en ;
+    rdfs:label "Organisation"@de ;
+    rdfs:comment """Eine Organisation als Agent.
+
+    Kollektive Handlungsfähigkeit. Verantwortlich für Produkte,
+    Prozesse und Zertifizierungen. Wichtig für Produktpässe
+    und Lieferkettenrückverfolgung."""@de ;
+    skos:example "Stahlwerk, Prüflabor, Zertifizierer, OEM, Recyclingunternehmen."@de .
+
+
+# =============================================================================
+#   ENVIRONMENT AGENT — nichtintentionale natürliche Kausalität
+# =============================================================================
 
 sdata:EnvironmentAgent a owl:Class ;
-    rdfs:subClassOf sdata:Agent ;
-    rdfs:label "Environment Agent"@en , "Umgebungs-Agent"@de ;
-    rdfs:comment """Agent ohne Intentionalität, aber mit Kausalität.
-Platzhalter für natürliche Kräfte, die einen Zustandswechsel
-verursachen. Nicht-intentionale, physikalische Agency.
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Environment Agent"@en ;
+    rdfs:label "Umwelt-Agent"@de ;
+    rdfs:comment """Natürliche Umgebungsbedingungen als Agent.
 
-Deckt alle Processes ab, bei denen kein menschlicher, maschineller
-oder algorithmischer Agent identifizierbar ist:
-  Korrosion, Verwitterung, natürliche Alterung, UV-Degradation,
-  biologischer Abbau, Erdbeben, Temperaturwechsel-Ermüdung.
+    Nichtintentionale Kausalität: Korrosion, Verwitterung,
+    biologischer Zerfall, thermische Alterung. Der EnvironmentAgent
+    ‹handelt› nicht bewusst, aber er verursacht Veränderungen
+    und ist kausal zurechenbar.
 
-Relevant für LCA, Degradationsmodellierung und Lagerungseffekte."""@de ;
-    skos:example "Atmosphäre (Korrosion), UV-Strahlung (Degradation), Temperaturzyklus (Ermüdung), Mikroorganismen (biologischer Abbau)."@de .
-
-
-# =============================================================================
-#   A4. ATTRIBUTEQUANTITYVALUE — reifizierter Messwert
-# =============================================================================
-
-sdata:AttributeQuantityValue a owl:Class ;
-    rdfs:subClassOf qudt:QuantityValue ;
-    rdfs:label "Attribute Quantity Value"@en ,
-               "Attribut-Mengenwert"@de ;
-    rdfs:comment """Reifizierter Attribut-Deskriptor. Infrastrukturklasse —
-kein Domänenobjekt, verankert in QUDT für Interoperabilität.
-  qudt:numericValue, qudt:unit (geerbt)
-  sdata:name, sdata:unitSymbol, sdata:dtype, sdata:hasValueDomain"""@de .
-
-sdata:ValueDomain a owl:Class ;
-    rdfs:label "Value Domain"@en ,
-               "Wertebereich"@de ;
-    rdfs:comment """Abstrakter Wertebereich. Reine Infrastrukturklasse —
-kein Domänenobjekt, kein min:Nexus. Spezialisiert durch Extensions:
-  IntervalDomain, EnumeratedDomain, StatisticalDomain, FuzzyDomain"""@de .
-
-sdata:AttributeQuantityValue owl:disjointWith sdata:ValueDomain .
+    Philosophisch: Agency ohne Intentionalität (Latour: Aktant).
+    Praktisch: ermöglicht die Modellierung von Degradationsprozessen
+    im Lebenszyklus ohne einen menschlichen oder maschinellen
+    Handelnden zu fingieren."""@de ;
+    skos:example "Atmosphärische Korrosion, UV-Strahlung, Feuchtigkeit, Temperaturwechsel."@de ;
+    min:designRationale """Eingeführt in v0.10.0. Ein Degradationsprozess
+    wie Korrosion braucht einen performedBy-Agent. Ohne EnvironmentAgent
+    müsste man entweder die Umgebung als Person/HardwareAgent missbrauchen
+    oder auf die performs-Relation verzichten."""@de .
 
 
 # #############################################################################
 #
-#   TEIL II — RELATIONEN (19 Object Properties, 6 Gruppen)
+#   TEIL III — PROCESS
+#
+#   sdata:Process spezialisiert min:Process.
+#   Keine Kern-Subklassen in v0.11.0.
+#   Methode und Domäne werden über den State Space modelliert
+#   (sms:MethodAxis, sms:DomainAxis).
 #
 # #############################################################################
 
-
-# =============================================================================
-#   Lifecycle-Relationen (4)
-# =============================================================================
-
-sdata:hasInput a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:hasInput ;
-    rdfs:label "has input"@en , "hat Eingabe"@de ;
-    rdfs:domain sdata:Process ;
-    rdfs:range sdata:Object ;
-    rdfs:comment "Ein Process hat ein Object als Input."@de .
-
-sdata:hasOutput a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:hasOutput ;
-    rdfs:label "has output"@en , "hat Ausgabe"@de ;
-    rdfs:domain sdata:Process ;
-    rdfs:range sdata:Object ;
-    rdfs:comment "Ein Process erzeugt ein Object als Output."@de .
-
-sdata:undergoes a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:undergoes ;
-    rdfs:label "undergoes"@en , "durchläuft"@de ;
-    rdfs:domain sdata:Object ;
-    rdfs:range sdata:Process ;
-    owl:inverseOf sdata:hasInput ;
-    rdfs:comment "Inverse von hasInput."@de .
-
-sdata:resultOf a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:resultOf ;
-    rdfs:label "result of"@en , "Ergebnis von"@de ;
-    rdfs:domain sdata:Object ;
-    rdfs:range sdata:Process ;
-    owl:inverseOf sdata:hasOutput ;
-    rdfs:comment "Inverse von hasOutput."@de .
+# Keine eigenen Process-Subklassen.
+# sdata nutzt min:Process direkt.
+# Spezialisierung über sdata-material-state MethodAxis/DomainAxis.
 
 
-# =============================================================================
-#   Composition-Relation (1)
-# =============================================================================
+# #############################################################################
+#
+#   TEIL IV — SDATA-SPEZIFISCHE OBJECT PROPERTIES
+#
+#   MIN v2 bringt bereits die Kernrelationen mit:
+#     hasInput, hasOutput, undergoes, resultOf,
+#     performs, performedBy, controls,
+#     actsOn, affectedBy, owns,
+#     describes, describedBy, generates, generatedBy,
+#     produces, nexusWith, hasComponent.
+#
+#   sdata ergänzt domänenspezifische Relationen.
+#
+# #############################################################################
 
-sdata:madeOf a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "made of"@en , "besteht aus"@de ;
-    rdfs:domain sdata:Product ;
+sdata:hasMaterial a owl:ObjectProperty ;
+    rdfs:label "has material"@en ;
+    rdfs:label "hat Werkstoff"@de ;
+    rdfs:domain min:Object ;
     rdfs:range sdata:Material ;
-    rdfs:comment "Product besteht aus Material(s)."@de .
-
-
-# =============================================================================
-#   Data-Relationen (5)
-# =============================================================================
-
-sdata:producesData a owl:ObjectProperty ;
     rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "produces data"@en , "erzeugt Daten"@de ;
-    rdfs:domain sdata:Process ;
-    rdfs:range sdata:Data ;
-    rdfs:comment "Ein Process erzeugt Data."@de .
+    rdfs:comment """Ein Object (Product, Hardware) hat einen Werkstoff.
+    Das Bauteil hat den Werkstoff HC340LA.
+    Domänenspezifische Spezialisierung von nexusWith."""@de .
 
-sdata:producedBy a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "produced by"@en , "erzeugt von"@de ;
-    rdfs:domain sdata:Data ;
-    rdfs:range sdata:Process ;
-    owl:inverseOf sdata:producesData ;
-    rdfs:comment "Provenienz. Inverse von producesData."@de .
+sdata:hasProduct a owl:ObjectProperty ;
+    rdfs:label "has product"@en ;
+    rdfs:label "hat Produkt"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range sdata:Product ;
+    rdfs:subPropertyOf min:owns ;
+    rdfs:comment """Ein Agent besitzt/verantwortet ein Product.
+    Spezialisierung von min:owns für die Lieferkette."""@de .
 
-sdata:describes a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "describes"@en , "beschreibt"@de ;
-    rdfs:domain sdata:Data ;
-    rdfs:range sdata:Object ;
-    rdfs:comment "Data beschreibt ein Object."@de .
-
-sdata:hasData a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "has data"@en , "hat Daten"@de ;
-    rdfs:domain sdata:Object ;
-    rdfs:range sdata:Data ;
-    owl:inverseOf sdata:describes ;
-    rdfs:comment "Inverse von describes."@de .
-
-sdata:hasDPP a owl:ObjectProperty ;
-    rdfs:subPropertyOf sdata:hasData ;
-    rdfs:label "has digital product pass"@en , "hat Digitalen Produktpass"@de ;
-    rdfs:domain sdata:Product ;
-    rdfs:range sdata:Data ;
-    rdfs:comment """Product hat einen DPP.
-Range ist sdata:Data mit sms:DataTypeAxis(digitalProductPass)."""@de .
-
-
-# =============================================================================
-#   Agency-Relationen (3)
-# =============================================================================
-
-sdata:performedBy a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:performedBy ;
-    rdfs:label "performed by"@en , "durchgeführt von"@de ;
-    rdfs:domain sdata:Process ;
-    rdfs:range sdata:Agent ;
-    rdfs:comment "Ein Process wird von einem Agent durchgeführt."@de .
-
-sdata:performs a owl:ObjectProperty ;
-    rdfs:subPropertyOf opa:performs ;
-    rdfs:label "performs"@en , "führt durch"@de ;
-    rdfs:domain sdata:Agent ;
-    rdfs:range sdata:Process ;
-    owl:inverseOf sdata:performedBy ;
-    rdfs:comment "Inverse von performedBy."@de .
-
-sdata:certifiedBy a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "certified by"@en , "zertifiziert von"@de ;
-    rdfs:domain sdata:Data ;
-    rdfs:range sdata:Agent ;
-    rdfs:comment """Data wird von einem Agent beglaubigt.
-Relevant für Data mit sms:DataTypeAxis(certificate)."""@de .
-
-
-# =============================================================================
-#   Infrastructure-Relationen (2)
-# =============================================================================
-
-sdata:usesHardware a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "uses hardware"@en , "nutzt Hardware"@de ;
-    rdfs:domain sdata:Process ;
+sdata:usesTool a owl:ObjectProperty ;
+    rdfs:label "uses tool"@en ;
+    rdfs:label "verwendet Werkzeug"@de ;
+    rdfs:domain min:Process ;
     rdfs:range sdata:Hardware ;
-    rdfs:comment "Ein Process nutzt ein Hardware-Object."@de .
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process verwendet ein Hardware-Werkzeug.
+    Das Tiefziehen verwendet die Presse.
+    Das Werkzeug ist nicht Input/Output, sondern Infrastruktur."""@de .
 
 sdata:usesSoftware a owl:ObjectProperty ;
-    rdfs:subPropertyOf min:nexusWith ;
-    rdfs:label "uses software"@en , "nutzt Software"@de ;
-    rdfs:domain sdata:Process ;
+    rdfs:label "uses software"@en ;
+    rdfs:label "verwendet Software"@de ;
+    rdfs:domain min:Process ;
     rdfs:range sdata:Software ;
-    rdfs:comment "Ein Process nutzt ein Software-Object."@de .
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process verwendet Software.
+    Die Simulation verwendet AutoForm R10."""@de .
 
+sdata:derivedFrom a owl:ObjectProperty ;
+    rdfs:label "derived from"@en ;
+    rdfs:label "abgeleitet von"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range sdata:Data ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Datenherkunft: ein Data-Nexus ist abgeleitet von
+    einem anderen. Simulationsergebnis derivedFrom Eingabedaten.
+    Wichtig für Provenienz und Rückverfolgbarkeit."""@de .
 
-# =============================================================================
-#   Quantity-Relationen (4)
-# =============================================================================
+sdata:certifies a owl:ObjectProperty ;
+    rdfs:label "certifies"@en ;
+    rdfs:label "zertifiziert"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:describes ;
+    rdfs:comment """Data zertifiziert einen Nexus.
+    Spezialisierung von min:describes für Zertifikate
+    und Produktpässe. Impliziert normative Gültigkeit."""@de .
 
-sdata:hasQuantity a owl:ObjectProperty ;
-    rdfs:label "has quantity"@en , "hat Größe"@de ;
-    rdfs:domain [ owl:unionOf (
-        sdata:Object
-        sdata:Process
-    ) ] ;
-    rdfs:range sdata:AttributeQuantityValue ;
-    rdfs:comment "Typisierter Attributwert an Object oder Process."@de .
+sdata:succeeds a owl:ObjectProperty ;
+    rdfs:label "succeeds"@en ;
+    rdfs:label "folgt auf"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Prozessverkettung: ein Process folgt auf einen
+    anderen. Umformen succeeds Walzen. Montage succeeds Fertigung.
+    Ermöglicht die Modellierung von Prozessketten."""@de .
 
-sdata:isQuantityOf a owl:ObjectProperty ;
-    owl:inverseOf sdata:hasQuantity ;
-    rdfs:label "is quantity of"@en , "ist Größe von"@de .
+sdata:precedes a owl:ObjectProperty ;
+    rdfs:label "precedes"@en ;
+    rdfs:label "geht voraus"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Process ;
+    owl:inverseOf sdata:succeeds ;
+    rdfs:subPropertyOf min:nexusWith .
 
-sdata:hasValueDomain a owl:ObjectProperty ;
-    rdfs:label "has value domain"@en , "hat Wertebereich"@de ;
-    rdfs:domain sdata:AttributeQuantityValue ;
-    rdfs:range sdata:ValueDomain ;
-    rdfs:comment "Wertebereichs-Constraint."@de .
+sdata:hasData a owl:ObjectProperty ;
+    rdfs:label "has data"@en ;
+    rdfs:label "hat Daten"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range sdata:Data ;
+    rdfs:subPropertyOf min:describedBy ;
+    rdfs:comment """Ein Nexus hat zugehörige Data.
+    Spezialisierung von min:describedBy für den Fall,
+    dass ein Object, Process oder Agent mit einem
+    konkreten sdata:Data-Nexus verknüpft wird.
 
-sdata:isValueDomainOf a owl:ObjectProperty ;
-    owl:inverseOf sdata:hasValueDomain ;
-    rdfs:label "is value domain of"@en , "ist Wertebereich von"@de .
+    Genutzt von sms:hasStateAssignment (subPropertyOf hasData)
+    und für allgemeine Datenzuordnung:
+    Das Bauteil hasData Werkstoffdatenblatt.
+    Der Prozess hasData Prozessprotokoll."""@de .
+
+sdata:producedBy a owl:ObjectProperty ;
+    rdfs:label "produced by"@en ;
+    rdfs:label "erzeugt durch"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:generatedBy ;
+    rdfs:comment """Data wurde durch einen Process erzeugt.
+    Domänenspezifische Spezialisierung von min:generatedBy.
+
+    Genutzt in sdata-material-state für Provenienz:
+    StateAssignment producedBy RecyclingProcess.
+    Messdaten producedBy Zugversuch."""@de .
 
 
 # #############################################################################
 #
-#   TEIL III — DATATYPE PROPERTIES (7)
+#   TEIL V — SDATA-SPEZIFISCHE DATATYPE PROPERTIES
+#
+#   MIN v2 bringt die generischen DT-Properties mit:
+#     hasIdentifier, hasName, hasTimestamp,
+#     hasDescription, hasStatus.
+#
+#   sdata ergänzt domänenspezifische.
 #
 # #############################################################################
-
-sdata:hasIdentifier a owl:DatatypeProperty ;
-    rdfs:subPropertyOf opa:hasIdentifier ;
-    rdfs:label "has identifier"@en , "hat Identifikator"@de ;
-    rdfs:range xsd:string .
-
-sdata:hasStandard a owl:DatatypeProperty ;
-    rdfs:label "has standard"@en , "hat Norm"@de ;
-    rdfs:range xsd:string ;
-    rdfs:comment "Bezugsnorm. Gilt für Processes, Data, Agents."@de .
 
 sdata:hasVersion a owl:DatatypeProperty ;
-    rdfs:label "has version"@en , "hat Version"@de ;
-    rdfs:domain sdata:Data ;
-    rdfs:range xsd:string .
-
-sdata:unitSymbol a owl:DatatypeProperty ;
-    rdfs:domain sdata:AttributeQuantityValue ;
+    rdfs:label "has version"@en ;
+    rdfs:label "hat Version"@de ;
+    rdfs:domain min:Nexus ;
     rdfs:range xsd:string ;
-    rdfs:label "unit symbol"@en , "Einheitensymbol"@de .
+    rdfs:comment "Versionsnummer (SemVer oder freitext)."@de .
 
-sdata:dtype a owl:DatatypeProperty ;
-    rdfs:domain sdata:AttributeQuantityValue ;
-    rdfs:range [ rdf:type rdfs:Datatype ;
-                 owl:oneOf ( "str" "float" "int" "timestamp" "bool" "uri" ) ] ;
-    rdfs:label "datatype"@en , "Datentyp"@de .
-
-sdata:domainDescription a owl:DatatypeProperty ;
-    rdfs:domain sdata:ValueDomain ;
+sdata:hasUUID a owl:DatatypeProperty ;
+    rdfs:label "has UUID"@en ;
+    rdfs:domain min:Nexus ;
     rdfs:range xsd:string ;
-    rdfs:label "domain description"@en , "Wertebereichsbeschreibung"@de .
+    rdfs:comment "UUID nach RFC 4122."@de .
 
-sdata:hasValue a owl:DatatypeProperty ;
+sdata:hasStartTime a owl:DatatypeProperty ;
+    rdfs:label "has start time"@en ;
+    rdfs:label "hat Startzeit"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "Startzeitpunkt eines Prozesses."@de .
+
+sdata:hasEndTime a owl:DatatypeProperty ;
+    rdfs:label "has end time"@en ;
+    rdfs:label "hat Endzeit"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment "Endzeitpunkt eines Prozesses."@de .
+
+sdata:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "has confidence"@en ;
+    rdfs:label "hat Konfidenz"@de ;
     rdfs:domain sdata:Data ;
-    rdfs:range xsd:double ;
-    rdfs:label "has value"@en , "hat Wert"@de ;
-    rdfs:comment "Convenience-Property für einfache numerische Werte."@de .
+    rdfs:range xsd:float ;
+    rdfs:comment """Konfidenzwert für Datenqualität [0.0, 1.0].
+    Relevant für Fuzzy-basierte LCA-Datenmodellierung."""@de .
+
+sdata:hasSource a owl:DatatypeProperty ;
+    rdfs:label "has source"@en ;
+    rdfs:label "hat Quelle"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Herkunftsangabe (URI, DOI, Normreferenz)."@de .
+
+sdata:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "has location"@en ;
+    rdfs:label "hat Standort"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Standort oder Lagerort."@de .
 
 
 # #############################################################################
 #
-#   TEIL IV — DISJUNKTHEIT
+#   TEIL VI — DISJUNKTHEIT
 #
 # #############################################################################
 
-# Object und Process sind disjunkt.
-# Agent ist NICHT disjunkt mit Object:
-#   HardwareAgent ∩ Hardware, SoftwareAgent ∩ Software.
-
+# Object-Subtypen sind paarweise disjunkt
 [] a owl:AllDisjointClasses ;
-    owl:members ( sdata:Object sdata:Process ) .
+    owl:members (
+        sdata:Material
+        sdata:Product
+        sdata:Hardware
+        sdata:Software
+    ) .
+
+# Agent-Subtypen sind paarweise disjunkt
+[] a owl:AllDisjointClasses ;
+    owl:members (
+        sdata:Person
+        sdata:HardwareAgent
+        sdata:SoftwareAgent
+        sdata:Organization
+        sdata:EnvironmentAgent
+    ) .
+
+# sdata:Data ist NICHT disjunkt mit Object-Subtypen.
+# Ein CAD-Modell könnte sowohl Data als auch Software sein.
 
 
 # #############################################################################
 #
-#   TEIL V — BEISPIEL: ZUGVERSUCH (v0.10.0)
+#   TEIL VII — CORE MODELING PATTERN
 #
-#   :dc04           a sdata:Material .
-#                   # + sms:OriginAxis(virgin), sms:FormAxis(sheet)
+#   Das sdata-Grundmuster:
 #
-#   :coil           a sdata:Product ;
-#                   sdata:madeOf :dc04 .
+#     Material/Product + Data → Process → Product + Data
+#                                  ▲
+#                               Agent(s)
+#                           + optional Hardware/Software
 #
-#   :probenfertigung a sdata:Process ;
-#                   sdata:hasInput :coil ;
-#                   sdata:hasOutput :probe ;
-#                   sdata:performedBy :bediener ;
-#                   sdata:usesHardware :stanze ;
-#                   sdata:producesData :fertigung_data ;
-#                   sdata:hasStandard "DIN 50125" .
-#                   # + sms:MethodAxis(method.Machining)
+#   Alle Relationen kommen aus MIN v2:
+#     min:hasInput, min:hasOutput      (Process ↔ Object)
+#     min:performs, min:performedBy    (Agent ↔ Process)
+#     min:generates, min:generatedBy  (Process → Data)
+#     min:describes, min:describedBy  (Data → Nexus)
+#     min:actsOn, min:affectedBy      (Agent → Object)
+#     min:owns                        (Agent → Object)
 #
-#   :probe          a sdata:Product ;
-#                   sdata:madeOf :dc04 ;
-#                   sdata:resultOf :probenfertigung .
-#                   # + sms:RoleAxis(specimen)
-#                   # + sms:StructureAxis(single-part)
-#
-#   :zwick          a sdata:Hardware , sdata:HardwareAgent .
-#   :pruefer        a sdata:Person .
-#
-#   :zugversuch     a sdata:Process ;
-#                   sdata:hasInput :probe ;
-#                   sdata:performedBy :pruefer ;
-#                   sdata:performedBy :zwick ;
-#                   sdata:usesHardware :zwick ;
-#                   sdata:producesData :ergebnis ;
-#                   sdata:hasStandard "DIN EN ISO 6892-1" .
-#                   # + sms:MethodAxis(method.TensileTest)
-#                   # + sms:DomainAxis(domain.Structural)
-#
-#   :ergebnis       a sdata:Data ;
-#                   sdata:describes :probe ;
-#                   sdata:producedBy :zugversuch ;
-#                   sdata:hasQuantity [ sdata:name "Rm" ;
-#                       qudt:numericValue 340.0 ; sdata:unitSymbol "MPa" ] ;
-#                   sdata:hasQuantity [ sdata:name "A80" ;
-#                       qudt:numericValue 38.0 ; sdata:unitSymbol "%" ] .
-#                   # + sms:DataTypeAxis(testReport)
-#
-#   :fertigung_data a sdata:Data ;
-#                   sdata:describes :probe ;
-#                   sdata:producedBy :probenfertigung .
-#                   # + sms:DataTypeAxis(processRecord)
+#   sdata ergänzt:
+#     sdata:usesTool, sdata:usesSoftware  (Process → Hardware/Software)
+#     sdata:hasMaterial                   (Object → Material)
+#     sdata:derivedFrom                   (Data → Data)
+#     sdata:certifies                     (Data → Nexus)
+#     sdata:succeeds, sdata:precedes      (Process → Process)
 #
 # #############################################################################
 
 
 # #############################################################################
 #
-#   TEIL VI — BEISPIEL: DPP MIT R5 REFURBISH
+#   INVENTAR v0.11.0
 #
-#   :altprodukt     a sdata:Product .
-#                   # + sms:LifecyclePhaseAxis(end-of-life)
-#                   # + sms:RoleAxis(end-of-life)
+#   Klassen:          11  (Material, Product, Hardware, Software, Data,
+#                          Person, HardwareAgent, SoftwareAgent,
+#                          Organization, EnvironmentAgent)
+#                          + min:Object, min:Process, min:Data, min:Agent
+#                          werden direkt genutzt (nicht re-deklariert)
 #
-#   :demontage      a sdata:Process ;
-#                   sdata:hasInput :altprodukt ;
-#                   sdata:hasOutput :einzelteile ;
-#                   sdata:performedBy :techniker ;
-#                   sdata:producesData :demontage_data .
-#                   # + sms:MethodAxis(method.Disassembly)
+#   Object Properties: 10  (hasMaterial, hasProduct, usesTool, usesSoftware,
+#                           derivedFrom, certifies, succeeds, precedes,
+#                           hasData, producedBy)
+#                          + 15 aus MIN v2 geerbt
 #
-#   :aufarbeitung   a sdata:Process ;
-#                   sdata:hasInput :einzelteile ;
-#                   sdata:hasOutput :aufgearbeitete_teile ;
-#                   sdata:performedBy :techniker ;
-#                   sdata:producesData :aufarbeitung_data .
-#                   # + sms:MethodAxis(method.Refurbishment)
+#   Datatype Properties: 7  (hasVersion, hasUUID, hasStartTime, hasEndTime,
+#                            hasConfidence, hasSource, hasLocation)
+#                           + 5 aus MIN v2 geerbt
 #
-#   :remontage      a sdata:Process ;
-#                   sdata:hasInput :aufgearbeitete_teile ;
-#                   sdata:hasOutput :refurbished ;
-#                   sdata:performedBy :techniker ;
-#                   sdata:producesData :montage_data .
-#                   # + sms:MethodAxis(method.Assembly)
-#
-#   :abnahme        a sdata:Process ;
-#                   sdata:hasInput :refurbished ;
-#                   sdata:performedBy :pruefer ;
-#                   sdata:producesData :pruefbericht .
-#                   # + sms:MethodAxis(method.NonDestructiveTest)
-#
-#   :refurbished    a sdata:Product ;
-#                   sdata:hasDPP :dpp .
-#                   # + sms:LifecyclePhaseAxis(in-use) — zurück im Leben!
-#
-#   :dpp            a sdata:Data ;
-#                   sdata:describes :refurbished .
-#                   # + sms:DataTypeAxis(digitalProductPass)
-#
-# #############################################################################
-
-
-# #############################################################################
-#
-#   TEIL VII — BEISPIEL: KORROSION (EnvironmentAgent)
-#
-#   :bauteil_gelagert a sdata:Product .
-#                     # + sms:LifecyclePhaseAxis(storage)
-#
-#   :atmosphaere      a sdata:EnvironmentAgent .
-#
-#   :korrosion        a sdata:Process ;
-#                     sdata:hasInput :bauteil_gelagert ;
-#                     sdata:hasOutput :bauteil_korrodiert ;
-#                     sdata:performedBy :atmosphaere ;
-#                     sdata:producesData :korrosionsbefund .
-#                     # + sms:MethodAxis(method.Corrosion)
-#
-#   :bauteil_korrodiert a sdata:Product ;
-#                     sdata:madeOf :dc04 .
-#                     # + sms:ConditionAxis(degraded)
-#
-#   :korrosionsbefund a sdata:Data ;
-#                     sdata:describes :bauteil_korrodiert ;
-#                     sdata:producedBy :korrosion ;
-#                     sdata:hasQuantity [
-#                         sdata:name "mass_loss" ;
-#                         qudt:numericValue 12.3 ;
-#                         sdata:unitSymbol "g/m²" ] .
-#                     # + sms:DataTypeAxis(testReport)
-#
-# #############################################################################
-
-
-# #############################################################################
-#
-#   EPILOG
-#
-#   sdata v0.10.0 auf dem Drei-Schichten-Fundament MIN/OPA.
-#
-#     min:MaterialModal       → opa:Object  → sdata:Object  (5 Subkl.)
-#     min:Balanced            → opa:Process → sdata:Process  (0 Subkl.)
-#     (orthogonal)            → opa:Agent   → sdata:Agent    (5 Subkl.)
-#
-#   3 Kategorien. 10 Domänenklassen. 19 Object Properties.
-#   7 Datatype Properties. 2 Infrastrukturklassen (AQV ← QUDT, ValueDomain).
-#   1 Muster:
-#
-#       Product + Data ──▶ Process ──▶ Product + Data
-#                             ↑
-#                        Agent (min. 1)
-#                        Hardware (opt.)
-#                        Software (opt.)
-#
-#   Von 36 Klassen (v0.6.0) auf 10 (v0.10.0).
-#   Das Wissen lebt in 13 SKOS-Achsen mit 148 Werten.
-#
-#   Das ist sdata.
+#   MIGRATION v0.10.0 → v0.11.0:
+#   — owl:imports opa entfernt (OPA in MIN absorbiert)
+#   — Alle opa: Referenzen → min:
+#   — sdata:Data: subClassOf sdata:Object → subClassOf min:Data
+#   — Klassenanzahl: 15 → 11 (4 Basisklassen jetzt in MIN)
+#   — Keine neue sdata-Funktionalität verloren
+#   — SHACL-Shapes müssen angepasst werden (opa: → min:)
 #
 # #############################################################################

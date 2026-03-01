@@ -1,4 +1,4 @@
-"""Tests for sdata-core ontology and instance data (v0.10.0)."""
+"""Tests for sdata-core ontology and instance data (v0.11.0)."""
 
 from pathlib import Path
 
@@ -19,6 +19,13 @@ OWL_DATA_PROP = URIRef("http://www.w3.org/2002/07/owl#DatatypeProperty")
 def core_graph():
     g = Graph()
     g.parse(ROOT / "sdata-core.ttl", format="turtle")
+    return g
+
+
+@pytest.fixture(scope="session")
+def min_graph():
+    g = Graph()
+    g.parse(ROOT / "min-v2.0.0.ttl", format="turtle")
     return g
 
 
@@ -45,21 +52,16 @@ def test_turtle_syntax(ttl_file):
 
 
 EXPECTED_CLASSES = [
-    "Object",
     "Material",
     "Product",
     "Hardware",
     "Software",
     "Data",
-    "Process",
-    "Agent",
     "Person",
     "HardwareAgent",
     "SoftwareAgent",
     "Organization",
     "EnvironmentAgent",
-    "AttributeQuantityValue",
-    "ValueDomain",
 ]
 
 
@@ -70,25 +72,16 @@ def test_core_classes_exist(core_graph, class_name):
 
 
 EXPECTED_OBJECT_PROPERTIES = [
-    "hasInput",
-    "hasOutput",
-    "undergoes",
-    "resultOf",
-    "madeOf",
-    "producesData",
-    "producedBy",
-    "describes",
-    "hasData",
-    "hasDPP",
-    "performedBy",
-    "performs",
-    "certifiedBy",
-    "usesHardware",
+    "hasMaterial",
+    "hasProduct",
+    "usesTool",
     "usesSoftware",
-    "hasQuantity",
-    "isQuantityOf",
-    "hasValueDomain",
-    "isValueDomainOf",
+    "derivedFrom",
+    "certifies",
+    "succeeds",
+    "precedes",
+    "hasData",
+    "producedBy",
 ]
 
 
@@ -101,13 +94,13 @@ def test_object_properties_exist(core_graph, prop_name):
 
 
 EXPECTED_DATATYPE_PROPERTIES = [
-    "hasIdentifier",
-    "hasStandard",
     "hasVersion",
-    "unitSymbol",
-    "dtype",
-    "domainDescription",
-    "hasValue",
+    "hasUUID",
+    "hasStartTime",
+    "hasEndTime",
+    "hasConfidence",
+    "hasSource",
+    "hasLocation",
 ]
 
 
@@ -122,19 +115,25 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 15, f"Expected 15 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 10, f"Expected 10 classes, found {len(sdata_classes)}"
 
 
-def test_value_domain_is_not_min_nexus(core_graph):
-    assert (SDATA.ValueDomain, RDFS.subClassOf, MIN.Nexus) not in core_graph
+def test_core_uses_min_v2_bases(core_graph):
+    assert (SDATA.Material, RDFS.subClassOf, MIN.Object) in core_graph
+    assert (SDATA.Data, RDFS.subClassOf, MIN.Data) in core_graph
+    assert (SDATA.Person, RDFS.subClassOf, MIN.Agent) in core_graph
 
 
-def _instances_of_class_or_subclass(example_graph: Graph, core_graph: Graph, class_uri: URIRef) -> set[URIRef]:
+def test_core_has_no_opa_dependency(core_graph):
+    assert all("w3id.org/opa" not in str(term) for triple in core_graph for term in triple)
+
+
+def _instances_of_class_or_subclass(example_graph: Graph, class_graph: Graph, class_uri: URIRef) -> set[URIRef]:
     candidate_classes: set[URIRef] = {class_uri}
     queue = [class_uri]
     while queue:
         parent = queue.pop()
-        for child in core_graph.subjects(RDFS.subClassOf, parent):
+        for child in class_graph.subjects(RDFS.subClassOf, parent):
             if isinstance(child, URIRef) and child not in candidate_classes:
                 candidate_classes.add(child)
                 queue.append(child)
@@ -149,49 +148,34 @@ def _instances_of_class_or_subclass(example_graph: Graph, core_graph: Graph, cla
     return instances
 
 
-def test_example_uses_core_categories(example_graph, core_graph):
-    for class_name in ["Object", "Process", "Data", "Agent"]:
-        instances = _instances_of_class_or_subclass(example_graph, core_graph, SDATA[class_name])
-        assert instances, f"No instances of sdata:{class_name} in example"
+def test_example_uses_min_categories(example_graph, core_graph):
+    for class_uri in (MIN.Object, MIN.Process, MIN.Data, MIN.Agent):
+        instances = _instances_of_class_or_subclass(example_graph, core_graph, class_uri)
+        assert instances, f"No instances of {class_uri.n3()} in example"
 
 
 def test_example_uses_representative_domain_classes(example_graph, core_graph):
-    for class_name in [
-        "Material",
-        "Product",
-        "Hardware",
-        "Software",
-        "Data",
-        "Process",
-        "Person",
-        "HardwareAgent",
-        "SoftwareAgent",
-        "Organization",
-        "EnvironmentAgent",
-        "AttributeQuantityValue",
-        "ValueDomain",
-    ]:
+    for class_name in EXPECTED_CLASSES:
         instances = _instances_of_class_or_subclass(example_graph, core_graph, SDATA[class_name])
         assert instances, f"No instances of sdata:{class_name} in example"
 
 
 def test_example_uses_core_lifecycle_relations(example_graph):
-    relation_names = [
-        "hasInput",
-        "hasOutput",
-        "producesData",
-        "describes",
-        "performedBy",
-        "madeOf",
-        "hasDPP",
-        "hasData",
-        "usesHardware",
-        "usesSoftware",
+    relation_iris = [
+        MIN.hasInput,
+        MIN.hasOutput,
+        MIN.generates,
+        MIN.performedBy,
+        MIN.describes,
+        SDATA.hasMaterial,
+        SDATA.hasData,
+        SDATA.usesTool,
+        SDATA.usesSoftware,
+        SDATA.producedBy,
     ]
-    for relation in relation_names:
-        predicate = SDATA[relation]
-        triples = list(example_graph.triples((None, predicate, None)))
-        assert triples, f"No triples using sdata:{relation} in example"
+    for relation in relation_iris:
+        triples = list(example_graph.triples((None, relation, None)))
+        assert triples, f"No triples using {relation.n3()} in example"
 
 
 def test_material_state_module_core_terms_exist(material_state_graph):
@@ -221,7 +205,13 @@ def test_material_state_module_core_terms_exist(material_state_graph):
 def test_material_state_has_environmental_method_concepts(material_state_graph):
     assert (SMS["method.Degradation"], RDF.type, SKOS.Concept) in material_state_graph
     assert (SMS["method.Degradation"], SKOS.broader, SMS["method.Transformative"]) in material_state_graph
-    for concept in ["method.Corrosion", "method.Weathering", "method.NaturalAging", "method.BiologicalDecay", "method.FatigueDamage"]:
+    for concept in [
+        "method.Corrosion",
+        "method.Weathering",
+        "method.NaturalAging",
+        "method.BiologicalDecay",
+        "method.FatigueDamage",
+    ]:
         assert (SMS[concept], SKOS.broader, SMS["method.Degradation"]) in material_state_graph
 
 

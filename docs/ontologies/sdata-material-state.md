@@ -1,6 +1,6 @@
 # sdata-material-state.ttl
 
-State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.10.0`.
+State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.11.0`.
 
 ## Zweck
 
@@ -26,16 +26,14 @@ State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.10.0`.
 
 ## Neu in v0.5.0
 
-- `MethodAxis` hat nun 6 Top-Level-Kategorien:
+- `MethodAxis` hat 6 Top-Level-Kategorien:
   - `Transformative`, `Observational`, `Computational`, `Logistical`, `Administrative`, `Creative`
-- Neue Method-Konzepte:
-  - `Approval`, `Certification`, `QualityGate`, `Design`, `ProcessPlanning`, `MaterialSelection`
 - Neue Umweltmethoden unter `Transformative`:
   - `Degradation` mit `Corrosion`, `Weathering`, `NaturalAging`, `BiologicalDecay`, `FatigueDamage`
 
 ## Kernrelationen
 
-- `sms:hasStateAssignment` (`sdata:Object` oder `sdata:Process` -> `sms:StateAssignment`)
+- `sms:hasStateAssignment` (`min:Nexus` -> `sms:StateAssignment`)
 - `sms:onAxis` (`sms:StateAssignment` -> `sms:StateAxis`)
 - `sms:hasStateValue` (`sms:StateAssignment` -> `skos:Concept`)
 - `sms:hasConceptScheme` (`sms:StateAxis` -> `skos:ConceptScheme`)
@@ -43,6 +41,7 @@ State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.10.0`.
 ## Praxisbeispiele
 
 ```turtle
+@prefix min:   <https://w3id.org/min#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 @prefix ex:    <https://example.org/demo/> .
@@ -56,7 +55,7 @@ ex:Specimen_A1 a sdata:Product ;
   ] .
 
 # Process-Methode
-ex:TensileTest_A1 a sdata:Process ;
+ex:TensileTest_A1 a min:Process ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:MethodAxis ;
