@@ -1,4 +1,5 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix sms:   <https://w3id.org/sdata/material-state/> .
 @prefix ex:    <https://example.org/simulation/> .
 
 ex:Steel_DC04
@@ -8,10 +9,15 @@ ex:Steel_DC04
 ex:Specimen_42
     a sdata:Product ;
     sdata:hasIdentifier "SPEC-42" ;
-    sdata:madeOf ex:Steel_DC04 .
+    sdata:madeOf ex:Steel_DC04 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:RoleAxis ;
+        sms:hasStateValue sms:role.Specimen
+    ] .
 
 ex:ZwickZ100
-    a sdata:Hardware, sdata:MachineAgent ;
+    a sdata:Hardware, sdata:HardwareAgent ;
     sdata:hasIdentifier "HW-ZWICK-Z100" .
 
 ex:LSDYNA_R14
@@ -19,36 +25,60 @@ ex:LSDYNA_R14
     sdata:hasIdentifier "SW-LSDYNA-R14" .
 
 ex:TensileTest_42
-    a sdata:MechanicalTest ;
+    a sdata:Process ;
     sdata:hasInput ex:Specimen_42 ;
     sdata:performedBy ex:ZwickZ100 ;
     sdata:usesHardware ex:ZwickZ100 ;
     sdata:producesData ex:MeasurementData_42 ;
-    sdata:hasStandard "DIN EN ISO 6892-1" .
+    sdata:hasStandard "DIN EN ISO 6892-1" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.TensileTest
+    ] .
 
 ex:CrashSim_v3
-    a sdata:CrashSimulation ;
+    a sdata:Process ;
     sdata:hasInput ex:Specimen_42 ;
     sdata:hasOutput ex:Specimen_42 ;
     sdata:performedBy ex:LSDYNA_R14 ;
     sdata:usesSoftware ex:LSDYNA_R14 ;
-    sdata:producesData ex:SimulationResult_v3 .
+    sdata:producesData ex:SimulationResult_v3 ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.CrashSimulation
+    ] .
 
 ex:MeasurementData_42
     a sdata:Data ;
     sdata:describes ex:Specimen_42 ;
     sdata:producedBy ex:TensileTest_42 ;
     sdata:hasValue 18.5 ;
-    sdata:hasUnit "percent" ;
-    sdata:hasVersion "1.0.0" .
+    sdata:hasVersion "1.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.TestReport
+    ] .
 
 ex:FEModel_v3
     a sdata:Data ;
     sdata:describes ex:Specimen_42 ;
-    sdata:hasVersion "3.0.0" .
+    sdata:hasVersion "3.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.CADModel
+    ] .
 
 ex:SimulationResult_v3
     a sdata:Data ;
     sdata:describes ex:Specimen_42 ;
     sdata:producedBy ex:CrashSim_v3 ;
-    sdata:hasVersion "3.0.0" .
+    sdata:hasVersion "3.0.0" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.SimulationReport
+    ] .

@@ -15,7 +15,7 @@
 #
 #   sdata-material-state — State Space
 #
-#   Erweiterungsmodul fuer sdata v0.9.1
+#   Erweiterungsmodul für sdata v0.6.0
 #
 #   Architekturprinzip:
 #
@@ -42,8 +42,8 @@
 
 <https://w3id.org/sdata/material-state>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/material-state/0.4.0> ;
-    owl:versionInfo  "0.4.0 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.1.0> ;
+    owl:versionInfo  "0.1.0 — 2026-03-01" ;
     owl:imports      <https://w3id.org/sdata/core> ;
 
     dcterms:title    "sdata-material-state — State Space"@en ;
@@ -186,12 +186,9 @@ im selben Muster ausdrückbar."""@de ;
 sms:hasStateAssignment a owl:ObjectProperty ;
     rdfs:subPropertyOf sdata:hasData ;
     rdfs:label "has state assignment"@en , "hat Zustandszuordnung"@de ;
-    rdfs:domain [ owl:unionOf (
-        sdata:Object
-        sdata:Process
-    ) ] ;
+    rdfs:domain sdata:Material ;
     rdfs:range sms:StateAssignment ;
-    rdfs:comment """Verknüpft ein Object oder Process mit einer Zustandszuordnung.
+    rdfs:comment """Verknüpft ein Material mit einer Zustandszuordnung.
 Spezialisierung von sdata:hasData — ein StateAssignment IST Data."""@de .
 
 sms:onAxis a owl:ObjectProperty ;

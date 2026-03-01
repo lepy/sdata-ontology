@@ -26,72 +26,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_process_core {
-		graph [color="#90B5E8",
-			label="sdata-core process classes",
-			style=rounded
-		];
-		"https://w3id.org/sdata/core/AssemblyProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Assembly Process"];
-		"https://w3id.org/sdata/core/ChemicalAnalysis"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Chemical Analysis"];
-		"https://w3id.org/sdata/core/CoatingProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Coating Process"];
-		"https://w3id.org/sdata/core/CrashSimulation"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Crash Simulation"];
-		"https://w3id.org/sdata/core/Experiment"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Experiment];
-		"https://w3id.org/sdata/core/FormingProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Forming Process"];
-		"https://w3id.org/sdata/core/HeatTreatment"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Heat Treatment"];
-		"https://w3id.org/sdata/core/JoiningProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Joining Process"];
-		"https://w3id.org/sdata/core/ManufacturingProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Manufacturing Process"];
-		"https://w3id.org/sdata/core/MechanicalTest"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Mechanical Test"];
-		"https://w3id.org/sdata/core/MetallographicExamination"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Metallographic Examination"];
-		"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Process];
-		"https://w3id.org/sdata/core/RecyclingProcess"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Recycling Process"];
-		"https://w3id.org/sdata/core/Simulation"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Simulation];
-		"https://w3id.org/sdata/core/Transport"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label=Transport];
-	}
 	subgraph cluster_process_proc {
 		graph [color="#B6D7A8",
 			label="sdata-processtypes verb classes",
@@ -126,19 +60,22 @@ digraph "" {
 			fontcolor="#2F5D08",
 			label=Transformation];
 	}
+	subgraph cluster_process_core {
+		graph [color="#90B5E8",
+			label="sdata-core process classes",
+			style=rounded
+		];
+		"https://w3id.org/sdata/core/Process"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label=Process];
+	}
 	"https://w3id.org/sdata/core/Creation" -> "https://w3id.org/sdata/core/Transformation"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",
 		label=sequence,
 		penwidth=2.0,
 		style=dashed];
-	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/ChemicalAnalysis";
-	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/MechanicalTest";
-	"https://w3id.org/sdata/core/Experiment" -> "https://w3id.org/sdata/core/MetallographicExamination";
-	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/CoatingProcess";
-	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/FormingProcess";
-	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/HeatTreatment";
-	"https://w3id.org/sdata/core/ManufacturingProcess" -> "https://w3id.org/sdata/core/JoiningProcess";
 	"https://w3id.org/sdata/core/Observation" -> "https://w3id.org/sdata/core/Preservation"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",
@@ -151,26 +88,19 @@ digraph "" {
 		label=sequence,
 		penwidth=2.0,
 		style=dashed];
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/AssemblyProcess";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Creation";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Destruction";
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Experiment";
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/ManufacturingProcess";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Observation";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Preservation";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Recovery";
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/RecyclingProcess";
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Simulation";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transfer";
 	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transformation";
-	"https://w3id.org/sdata/core/Process" -> "https://w3id.org/sdata/core/Transport";
 	"https://w3id.org/sdata/core/Recovery" -> "https://w3id.org/sdata/core/Destruction"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",
 		label=sequence,
 		penwidth=2.0,
 		style=dashed];
-	"https://w3id.org/sdata/core/Simulation" -> "https://w3id.org/sdata/core/CrashSimulation";
 	"https://w3id.org/sdata/core/Transfer" -> "https://w3id.org/sdata/core/Observation"	[color="#4F8A10",
 		constraint=false,
 		fontcolor="#4F8A10",

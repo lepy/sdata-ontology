@@ -25,26 +25,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_legend {
-		graph [color="#CBD5E0",
-			label=Legend,
-			style=rounded
-		];
-		legend_sdata	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="sdata agent class"];
-		legend_scheme	[color="#2F855A",
-			fillcolor="#E7FFF6",
-			fontcolor="#1C4532",
-			label="SKOS ConceptScheme"];
-		legend_sdata -> legend_scheme	[label="classification scheme"];
-		legend_concept	[color="#2F855A",
-			fillcolor="#F0FFF9",
-			fontcolor="#1C4532",
-			label="SKOS Concept"];
-		legend_scheme -> legend_concept	[label="broader -> narrower"];
-	}
 	subgraph cluster_core {
 		graph [color="#90B5E8",
 			label="sdata-core ontology",
@@ -108,6 +88,26 @@ digraph "" {
 			label="",
 			style=invis,
 			width=0];
+	}
+	subgraph cluster_legend {
+		graph [color="#CBD5E0",
+			label=Legend,
+			style=rounded
+		];
+		legend_sdata	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="sdata agent class"];
+		legend_scheme	[color="#2F855A",
+			fillcolor="#E7FFF6",
+			fontcolor="#1C4532",
+			label="SKOS ConceptScheme"];
+		legend_sdata -> legend_scheme	[label="classification scheme"];
+		legend_concept	[color="#2F855A",
+			fillcolor="#F0FFF9",
+			fontcolor="#1C4532",
+			label="SKOS Concept"];
+		legend_scheme -> legend_concept	[label="broader -> narrower"];
 	}
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[label="classification scheme"];
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/Hardware"	[label="also an"];

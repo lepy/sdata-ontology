@@ -92,7 +92,7 @@
     sdata:hasIdentifier "HW-STANZE-003" ;
     rdfs:label "Probenstanze"@de .
 
-:zwick a sdata:Hardware , sdata:MachineAgent ;
+:zwick a sdata:Hardware , sdata:HardwareAgent ;
     sdata:hasIdentifier "HW-ZWICK-Z250-007" ;
     rdfs:label "Zwick Z250"@de ;
     sdata:hasQuantity [
@@ -109,14 +109,19 @@
 #   PROCESS 1 — Probenfertigung
 # =============================================================================
 
-:probenfertigung a sdata:ManufacturingProcess ;
+:probenfertigung a sdata:Process ;
     rdfs:label "Probenfertigung"@de ;
     sdata:hasInput :coil ;
     sdata:hasOutput :probe ;
     sdata:performedBy :bediener ;
     sdata:usesHardware :stanze ;
     sdata:producesData :fertigung_data ;
-    sdata:hasStandard "DIN 50125" .
+    sdata:hasStandard "DIN 50125" ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.Machining
+    ] .
 
 :fertigung_data a sdata:Data ;
     sdata:describes :probe ;
@@ -137,6 +142,11 @@
         qudt:numericValue 20.0 ;
         sdata:unitSymbol "mm" ;
         sdata:dtype "float"
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.ProcessRecord
     ] .
 
 
@@ -144,7 +154,7 @@
 #   PROCESS 2 — Zugversuch
 # =============================================================================
 
-:zugversuch a sdata:MechanicalTest ;
+:zugversuch a sdata:Process ;
     rdfs:label "Zugversuch Nr. 42"@de ;
     sdata:hasInput :probe ;
     sdata:performedBy :pruefer ;
@@ -167,6 +177,16 @@
         qudt:numericValue 23.0 ;
         sdata:unitSymbol "°C" ;
         sdata:dtype "float"
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:MethodAxis ;
+        sms:hasStateValue sms:method.TensileTest
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DomainAxis ;
+        sms:hasStateValue sms:domain.Structural
     ] .
 
 
@@ -239,6 +259,11 @@
         qudt:numericValue 1.85 ;
         sdata:unitSymbol "-" ;
         sdata:dtype "float"
+    ] ;
+    sms:hasStateAssignment [
+        a sms:StateAssignment ;
+        sms:onAxis sms:DataTypeAxis ;
+        sms:hasStateValue sms:datatype.TestReport
     ] .
 
 

@@ -24,16 +24,17 @@
     dcterms:description
         """7 OWL verb classes, all subClassOf sdata:Process.
 They provide an orthogonal process-verb axis:
-  ex:StampingRun  a  sdata:FormingProcess , sdata:Transformation .
-  ex:CrashSim_v3  a  sdata:Simulation ,     sdata:Observation ."""@en .
+  ex:StampingRun  a  sdata:Process , sdata:Transformation .
+  ex:CrashSim_v3  a  sdata:Process , sdata:Observation ."""@en .
 
 # =============================================================================
 # DESIGN DECISIONS
 # =============================================================================
 #
 # D1. ORTHOGONALITY
-#   Axis 1 (Domain class):   Process subclasses in sdata-core
+#   Axis 1 (Domain class):   sdata:Process (core)
 #   Axis 2 (Verb class):     Creation | Transformation | ... [this file]
+#   Axis 3 (Method detail):  sms:MethodAxis values in sdata-material-state
 #
 # D2. THE 7 UNIVERSAL VERBS — domain-independent
 #
@@ -286,14 +287,14 @@ sdata:Recovery       owl:disjointWith sdata:Destruction .
 # USAGE EXAMPLES (informative)
 # =============================================================================
 #
-# Process subclass × Verb:
-#   ex:MiningDC04     a  sdata:ManufacturingProcess , sdata:Creation .
-#   ex:StampingRun    a  sdata:FormingProcess ,       sdata:Transformation .
-#   ex:ShipToOEM      a  sdata:Transport ,            sdata:Transfer .
-#   ex:TensileTest42  a  sdata:MechanicalTest ,       sdata:Observation .
-#   ex:RepairGearbox  a  sdata:AssemblyProcess ,      sdata:Preservation .
-#   ex:RecyclePP      a  sdata:RecyclingProcess ,     sdata:Recovery .
-#   ex:PurgeOldLogs   a  sdata:Simulation ,           sdata:Destruction .
+# Process instance × Verb:
+#   ex:MiningDC04     a  sdata:Process , sdata:Creation .
+#   ex:StampingRun    a  sdata:Process , sdata:Transformation .
+#   ex:ShipToOEM      a  sdata:Process , sdata:Transfer .
+#   ex:TensileTest42  a  sdata:Process , sdata:Observation .
+#   ex:RepairGearbox  a  sdata:Process , sdata:Preservation .
+#   ex:RecyclePP      a  sdata:Process , sdata:Recovery .
+#   ex:PurgeOldLogs   a  sdata:Process , sdata:Destruction .
 #
 # =============================================================================
 # END — sdata-processtypes.ttl v0.2.0

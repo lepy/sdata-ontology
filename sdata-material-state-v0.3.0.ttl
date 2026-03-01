@@ -13,14 +13,14 @@
 
 # =============================================================================
 #
-#   sdata-material-state — State Space
+#   sdata-material-state — Material State Space
 #
-#   Erweiterungsmodul fuer sdata v0.9.1
+#   Erweiterungsmodul für sdata v0.6.0
 #
 #   Architekturprinzip:
 #
 #     1 generischer Mechanismus  (StateAxis + StateAssignment)
-#     13 vordefinierte Achsen     (Origin, Processing, Condition, ...)
+#     12 vordefinierte Achsen     (Origin, Processing, Condition, ...)
 #     n Achsenwerte pro Achse    (als SKOS-Konzepte, offen erweiterbar)
 #     ∞ benutzerdefinierte Achsen (durch Subklassen von StateAxis)
 #
@@ -31,7 +31,7 @@
 #   Jede StateAssignment ist ein Data-Nexus mit Provenienz.
 #   Der User definiert, welche Achsen er braucht.
 #
-#   v0.4.0 — 2026-03-01
+#   v0.3.0 — 2026-03-01
 #
 # =============================================================================
 
@@ -42,16 +42,16 @@
 
 <https://w3id.org/sdata/material-state>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/material-state/0.4.0> ;
-    owl:versionInfo  "0.4.0 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.1.0> ;
+    owl:versionInfo  "0.1.0 — 2026-03-01" ;
     owl:imports      <https://w3id.org/sdata/core> ;
 
-    dcterms:title    "sdata-material-state — State Space"@en ;
-    dcterms:title    "sdata-material-state — Zustandsraum"@de ;
+    dcterms:title    "sdata-material-state — Material State Space"@en ;
+    dcterms:title    "sdata-material-state — Werkstoff-Zustandsraum"@de ;
     dcterms:description """Generischer Achsen-Mechanismus für den
 multidimensionalen Zustandsraum von Werkstoffen und Produkten.
 
-13 vordefinierte Achsen:
+12 vordefinierte Achsen:
 
   Material-Achsen (beschreiben sdata:Material):
   1. Origin         — woher? (virgin, recycled, bio-based, blended)
@@ -68,17 +68,13 @@ multidimensionalen Zustandsraum von Werkstoffen und Produkten.
  10. Role           — welche Rolle? (production, specimen, prototype, spare)
 
   Process-Achsen (beschreiben sdata:Process):
- 11. Method         — welches Verfahren? (Transformative → Forming → DeepDrawing, ...)
+ 11. Method         — welches Verfahren? (forming, tensile-test, FEM, ...)
  12. Domain         — welche Physik? (structural, thermal, fluid, ...)
-
-
-  Data-Achsen (beschreiben sdata:Data):
- 13. DataType       — was für eine Data? (certificate, DPP, test-report, flow-curve, ...)
 
 Erweiterbar: Neue Achsen durch Subklassen von sms:StateAxis.
              Neue Werte durch SKOS-Konzepte im jeweiligen ConceptScheme.
              13 Lifecycle-Phasen in 5 Top-Level-Gruppen mit Hierarchie.
-             134 vordefinierte Werte insgesamt."""@en ;
+             119 vordefinierte Werte insgesamt."""@en ;
 
     dcterms:creator  "Lepy & Claude" ;
     dcterms:created  "2026-03-01"^^xsd:date ;
@@ -186,12 +182,9 @@ im selben Muster ausdrückbar."""@de ;
 sms:hasStateAssignment a owl:ObjectProperty ;
     rdfs:subPropertyOf sdata:hasData ;
     rdfs:label "has state assignment"@en , "hat Zustandszuordnung"@de ;
-    rdfs:domain [ owl:unionOf (
-        sdata:Object
-        sdata:Process
-    ) ] ;
+    rdfs:domain sdata:Material ;
     rdfs:range sms:StateAssignment ;
-    rdfs:comment """Verknüpft ein Object oder Process mit einer Zustandszuordnung.
+    rdfs:comment """Verknüpft ein Material mit einer Zustandszuordnung.
 Spezialisierung von sdata:hasData — ein StateAssignment IST Data."""@de .
 
 sms:onAxis a owl:ObjectProperty ;
@@ -747,20 +740,13 @@ sms:MethodAxis a owl:Class ;
     rdfs:label "Method Axis"@en , "Verfahrensachse"@de ;
     sms:hasConceptScheme sms:method-values ;
     rdfs:comment """Process-Achse: Spezifisches Verfahren / Methode.
-Dreistufige SKOS-Hierarchie:
+Ersetzt die ehemaligen Process-Subklassen (FormingProcess,
+MechanicalTest, CrashSimulation, ...) durch SKOS-Konzepte.
 
-  Ebene 1 — Natur (4 Top-Level-Konzepte):
-    Transformative  — verändert Materie (Fertigung, Montage, Recycling)
-    Observational   — liest Information ab (Experiment, Inspektion)
-    Computational   — berechnet Information (Simulation, ML)
-    Logistical      — verändert Ort (Transport, Lagerung)
-
-  Ebene 2 — Verfahrensgruppe (Forming, MechanicalTest, FEM, ...)
-  Ebene 3 — Spezifisches Verfahren (DeepDrawing, TensileTest, ...)
-
-Ein SPARQL-Query auf jeder Ebene:
-  ?p sms:hasStateValue/skos:broader* sms:method.Observational .
-  → findet alle Experimente, alle mechanischen Prüfungen, alle Zugversuche.
+3 Hierarchien nach Process-Typ:
+  Manufacturing-Methoden — Forming, Joining, Machining, ...
+  Experiment-Methoden — MechanicalTest, ChemicalAnalysis, ...
+  Simulation-Methoden — FEM, CFD, DEM, ...
 
 User erweitert beliebig:
   ex:method.DeepDrawing skos:broader sms:method.Forming .
@@ -770,50 +756,40 @@ R-Strategien nutzen die Methoden in Prozessketten:
 
 sms:method-values a skos:ConceptScheme ;
     rdfs:label "Method Values"@en , "Verfahrenswerte"@de ;
-    skos:hasTopConcept sms:method.Transformative ,
-                       sms:method.Observational ,
-                       sms:method.Computational ,
-                       sms:method.Logistical .
+    skos:hasTopConcept
+        # --- Manufacturing-Methoden ---
+        sms:method.Forming ,
+        sms:method.Joining ,
+        sms:method.Machining ,
+        sms:method.Coating ,
+        sms:method.HeatTreatment ,
+        sms:method.Casting ,
+        sms:method.AdditiveManufacturing ,
+        sms:method.Assembly ,
+        sms:method.Disassembly ,
+        sms:method.Conditioning ,
+        sms:method.Recycling ,
+        sms:method.Recovery ,
+        sms:method.Disposal ,
+        # --- Experiment-Methoden ---
+        sms:method.MechanicalTest ,
+        sms:method.MetallographicExamination ,
+        sms:method.ChemicalAnalysis ,
+        sms:method.ThermalAnalysis ,
+        sms:method.NonDestructiveTest ,
+        sms:method.DimensionalInspection ,
+        sms:method.SurfaceAnalysis ,
+        # --- Simulation-Methoden ---
+        sms:method.FEM ,
+        sms:method.CFD ,
+        sms:method.DEM ,
+        sms:method.MachineLearning .
 
 
-# --- Ebene 1: Natur (4 Top-Level) ---
-
-sms:method.Transformative a skos:Concept ;
-    skos:inScheme sms:method-values ;
-    skos:topConceptOf sms:method-values ;
-    skos:prefLabel "Transformative"@en , "Transformativ"@de ;
-    skos:definition """Verändert Materie physisch. Fertigung, Montage, Demontage,
-Recycling, Beschichtung, Wärmebehandlung — alles was Kraft, Energie
-oder Temperatur auf ein Object ausübt."""@de .
-
-sms:method.Observational a skos:Concept ;
-    skos:inScheme sms:method-values ;
-    skos:topConceptOf sms:method-values ;
-    skos:prefLabel "Observational"@en , "Beobachtend"@de ;
-    skos:definition """Liest Information aus einem Object ab. Experiment,
-Inspektion, Prüfung, Messung. Der informationale Output (Data)
-ist das Primärziel."""@de .
-
-sms:method.Computational a skos:Concept ;
-    skos:inScheme sms:method-values ;
-    skos:topConceptOf sms:method-values ;
-    skos:prefLabel "Computational"@en , "Rechnerisch"@de ;
-    skos:definition """Berechnet Information. Simulation, ML-Prädiktion,
-Optimierung. Kein physisches Object wird verändert."""@de .
-
-sms:method.Logistical a skos:Concept ;
-    skos:inScheme sms:method-values ;
-    skos:topConceptOf sms:method-values ;
-    skos:prefLabel "Logistical"@en , "Logistisch"@de ;
-    skos:definition """Verändert den Ort eines Objects, aber nicht seine
-Substanz. Transport, Lagerung, Kommissionierung."""@de .
-
-
-# --- Ebene 2+3: Transformative → Verfahrensgruppen → Verfahren ---
+# --- Manufacturing-Methoden (13 Top-Level + Kinder) ---
 
 sms:method.Forming a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Forming"@en , "Umformen"@de ;
     skos:definition "Plastische Formänderung. DIN 8580 HG 2."@de .
 
@@ -849,7 +825,6 @@ sms:method.Bending a skos:Concept ;
 
 sms:method.Joining a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Joining"@en , "Fügen"@de ;
     skos:definition "Verbinden von Teilen. DIN 8580 HG 4."@de .
 
@@ -870,7 +845,6 @@ sms:method.Riveting a skos:Concept ;
 
 sms:method.Machining a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Machining"@en , "Zerspanen"@de ;
     skos:definition "Materialabtrag. DIN 8580 HG 3."@de .
 
@@ -891,13 +865,11 @@ sms:method.Grinding a skos:Concept ;
 
 sms:method.Coating a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Coating"@en , "Beschichten"@de ;
     skos:definition "Schicht aufbringen. DIN 8580 HG 5."@de .
 
 sms:method.HeatTreatment a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Heat Treatment"@en , "Wärmebehandlung"@de ;
     skos:definition "Gezielte Temperaturführung."@de .
 
@@ -918,7 +890,6 @@ sms:method.PressHardening a skos:Concept ;
 
 sms:method.Casting a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Casting"@en , "Urformen/Gießen"@de ;
     skos:definition "Formgebung aus formlosem Zustand. DIN 8580 HG 1."@de .
 
@@ -934,7 +905,6 @@ sms:method.DieCasting a skos:Concept ;
 
 sms:method.AdditiveManufacturing a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Additive Manufacturing"@en , "Additive Fertigung"@de ;
     skos:definition "Schichtweiser Aufbau."@de .
 
@@ -945,13 +915,11 @@ sms:method.SLM a skos:Concept ;
 
 sms:method.Assembly a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Assembly"@en , "Montage"@de ;
     skos:definition "Zusammenbau von Teilen."@de .
 
 sms:method.Disassembly a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Disassembly"@en , "Demontage"@de ;
     skos:definition "Zerlegung in Einzelteile. Inverse der Montage."@de .
 
@@ -960,11 +928,10 @@ sms:method.DestructiveDisassembly a skos:Concept ;
     skos:prefLabel "Destructive Disassembly"@en , "Zerstörende Demontage"@de ;
     skos:broader sms:method.Disassembly .
 
-# --- Kreislaufwirtschaft (R3–R10, unter Transformative) ---
+# --- Kreislaufwirtschaft-Methoden (R3–R10) ---
 
 sms:method.Conditioning a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Conditioning"@en , "Aufbereitung"@de ;
     skos:definition "Vorbereitung für Wiederverwendung (R3–R7)."@de .
 
@@ -985,7 +952,6 @@ sms:method.Refurbishment a skos:Concept ;
 
 sms:method.Recycling a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Recycling"@en , "Recycling"@de ;
     skos:definition "Stoffliche Verwertung (R8)."@de .
 
@@ -1011,22 +977,19 @@ sms:method.MaterialSeparation a skos:Concept ;
 
 sms:method.Recovery a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Energy Recovery"@en , "Energetische Verwertung"@de ;
     skos:definition "Thermische Verwertung (R9)."@de .
 
 sms:method.Disposal a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Transformative ;
     skos:prefLabel "Disposal"@en , "Entsorgung"@de ;
     skos:definition "Endgültige Beseitigung (R10)."@de .
 
 
-# --- Ebene 2+3: Observational → Prüfverfahren ---
+# --- Experiment-Methoden ---
 
 sms:method.MechanicalTest a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Mechanical Test"@en , "Mechanische Prüfung"@de .
 
 sms:method.TensileTest a skos:Concept ;
@@ -1051,22 +1014,18 @@ sms:method.FatigueTest a skos:Concept ;
 
 sms:method.MetallographicExamination a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Metallographic Examination"@en , "Metallographische Untersuchung"@de .
 
 sms:method.ChemicalAnalysis a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Chemical Analysis"@en , "Chemische Analyse"@de .
 
 sms:method.ThermalAnalysis a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Thermal Analysis"@en , "Thermische Analyse"@de .
 
 sms:method.NonDestructiveTest a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Non-Destructive Test"@en , "Zerstörungsfreie Prüfung"@de .
 
 sms:method.Ultrasonic a skos:Concept ;
@@ -1081,20 +1040,17 @@ sms:method.XRay a skos:Concept ;
 
 sms:method.DimensionalInspection a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Dimensional Inspection"@en , "Maßprüfung"@de .
 
 sms:method.SurfaceAnalysis a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Observational ;
     skos:prefLabel "Surface Analysis"@en , "Oberflächenanalyse"@de .
 
 
-# --- Ebene 2+3: Computational → Rechenverfahren ---
+# --- Simulation-Methoden ---
 
 sms:method.FEM a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Computational ;
     skos:prefLabel "Finite Element Method"@en , "Finite-Elemente-Methode"@de .
 
 sms:method.ProcessSimulation a skos:Concept ;
@@ -1109,17 +1065,14 @@ sms:method.CrashSimulation a skos:Concept ;
 
 sms:method.CFD a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Computational ;
     skos:prefLabel "Computational Fluid Dynamics"@en , "Strömungssimulation"@de .
 
 sms:method.DEM a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Computational ;
     skos:prefLabel "Discrete Element Method"@en , "Diskrete-Elemente-Methode"@de .
 
 sms:method.MachineLearning a skos:Concept ;
     skos:inScheme sms:method-values ;
-    skos:broader sms:method.Computational ;
     skos:prefLabel "Machine Learning"@en , "Maschinelles Lernen"@de .
 
 
@@ -1162,101 +1115,6 @@ sms:domain.Electromagnetic a skos:Concept ;
 sms:domain.Chemical a skos:Concept ;
     skos:inScheme sms:domain-values ;
     skos:prefLabel "Chemical"@en , "Chemisch"@de .
-
-
-# =============================================================================
-#   Achse 13: DATA TYPE — Was für eine Data? (Data-Achse)
-# =============================================================================
-
-sms:DataTypeAxis a owl:Class ;
-    rdfs:subClassOf sms:StateAxis ;
-    rdfs:label "Data Type Axis"@en , "Datentyp-Achse"@de ;
-    sms:hasConceptScheme sms:datatype-values ;
-    rdfs:comment """Data-Achse: Art des Informationsartefakts.
-Ersetzt die ehemaligen Data-Subklassen (Certificate,
-DigitalProductPass, MeasurementData, ...) durch SKOS-Konzepte.
-
-Die Art ergibt sich auch aus den Relationen:
-  Data producedBy [method.Observational/*] → TestReport / Messdaten
-  Data producedBy [method.Computational/*] → SimulationReport
-  Data producedBy [method.Transformative/*] → ProcessRecord
-  Data certifiedBy Agent → Certificate
-
-Aber explizite Typisierung über diese Achse ist oft nützlich
-für Queries und DPP-Aggregation."""@de .
-
-sms:datatype-values a skos:ConceptScheme ;
-    rdfs:label "Data Type Values"@en , "Datentypwerte"@de ;
-    skos:hasTopConcept sms:datatype.Certificate ,
-                       sms:datatype.DigitalProductPass ,
-                       sms:datatype.TestReport ,
-                       sms:datatype.ProcessRecord ,
-                       sms:datatype.SimulationReport ,
-                       sms:datatype.MaterialDataSheet ,
-                       sms:datatype.FlowCurve ,
-                       sms:datatype.Drawing ,
-                       sms:datatype.Specification ,
-                       sms:datatype.CADModel ,
-                       sms:datatype.MLModel .
-
-sms:datatype.Certificate a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Certificate"@en , "Zertifikat"@de ;
-    skos:definition """Data mit normativem Status. Werkszeugnis,
-Abnahmeprüfzeugnis, Konformitätserklärung.
-Hat eine zertifizierende Instanz (sdata:certifiedBy)
-und eine Bezugsnorm (sdata:hasStandard)."""@de .
-
-sms:datatype.DigitalProductPass a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Digital Product Pass"@en , "Digitaler Produktpass"@de ;
-    skos:definition """Aggregation aller Data über den gesamten Lebenszyklus
-eines Products. DPP = Σ Data_i. Konform mit EU ESPR."""@de .
-
-sms:datatype.TestReport a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Test Report"@en , "Prüfbericht"@de ;
-    skos:definition "Data erzeugt durch einen observational Process."@de .
-
-sms:datatype.ProcessRecord a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Process Record"@en , "Prozessprotokoll"@de ;
-    skos:definition "Data erzeugt durch einen transformative Process."@de .
-
-sms:datatype.SimulationReport a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Simulation Report"@en , "Simulationsbericht"@de ;
-    skos:definition "Data erzeugt durch einen computational Process."@de .
-
-sms:datatype.MaterialDataSheet a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Material Data Sheet"@en , "Werkstoffdatenblatt"@de ;
-    skos:definition "Zusammenfassung aller Materialkennwerte."@de .
-
-sms:datatype.FlowCurve a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Flow Curve"@en , "Fließkurve"@de ;
-    skos:definition "Spannungs-Dehnungs-Kurve aus Zugversuch oder Extrapolation."@de .
-
-sms:datatype.Drawing a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Drawing"@en , "Zeichnung"@de ;
-    skos:definition "Technische Zeichnung mit Geometrie und Toleranzen."@de .
-
-sms:datatype.Specification a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "Specification"@en , "Spezifikation"@de ;
-    skos:definition "Lastenheft, Pflichtenheft, Anforderungsdokument."@de .
-
-sms:datatype.CADModel a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "CAD Model"@en , "CAD-Modell"@de ;
-    skos:definition "3D-Geometriemodell."@de .
-
-sms:datatype.MLModel a skos:Concept ;
-    skos:inScheme sms:datatype-values ;
-    skos:prefLabel "ML Model"@en , "ML-Modell"@de ;
-    skos:definition "Trainiertes maschinelles Lernmodell."@de .
 
 
 # #############################################################################
@@ -1399,7 +1257,7 @@ sms:datatype.MLModel a skos:Concept ;
 #           sms:hasStateValue sms:phase.Production
 #       ] .
 #
-#   13 Achsen. 8 Assignments. 1 generischer Mechanismus.
+#   12 Achsen. 8 Assignments. 1 generischer Mechanismus.
 #   Jede Achse mit optionaler Provenienz und Detail-AQVs.
 #
 # #############################################################################
@@ -1409,7 +1267,7 @@ sms:datatype.MLModel a skos:Concept ;
 #
 #   EPILOG
 #
-#   sdata-material-state v0.4.0
+#   sdata-material-state v0.3.0
 #
 #   Architektur:
 #
@@ -1417,13 +1275,13 @@ sms:datatype.MLModel a skos:Concept ;
 #     sms:StateAssignment    — die Zuordnung (Data-Nexus mit Provenienz)
 #     skos:Concept           — der Wert (offen erweiterbar)
 #
-#   13 vordefinierte Achsen, 134 vordefinierte Werte.
+#   12 vordefinierte Achsen, 119 vordefinierte Werte.
 #
 #   Erweiterung:
 #     Neue Achse    = 1 Subklasse + 1 ConceptScheme + n Concepts
 #     Neuer Wert    = 1 Concept im bestehenden Scheme
 #     Keine Schemaänderung nötig.
 #
-#   Das ist der State Space.
+#   Das ist der Material State Space.
 #
 # #############################################################################

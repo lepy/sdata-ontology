@@ -1,6 +1,6 @@
 # sdata-material-state.ttl
 
-Material-State-Erweiterung (`v0.2.0`) für `sdata-core v0.8.0`.
+State-Space-Erweiterung (`v0.4.0`) für `sdata-core v0.9.1`.
 
 Modellidee:
 
@@ -8,22 +8,16 @@ Modellidee:
 - Konkrete Werte kommen aus SKOS-ConceptSchemes.
 - Zuordnung erfolgt über `sms:StateAssignment`.
 
-## Enthaltene Achsen
+## Enthaltene Achsen (13)
 
-- `OriginAxis`
-- `ProcessingAxis`
-- `ConditionAxis`
-- `FormAxis`
-- `GradeAxis`
-- `ComplianceAxis`
-- `CompositionAxis`
-- `LifecyclePhaseAxis`
-- `StructureAxis` (neu)
-- `RoleAxis` (neu)
+- Material-Achsen: `OriginAxis`, `ProcessingAxis`, `ConditionAxis`, `FormAxis`, `GradeAxis`, `ComplianceAxis`, `CompositionAxis`, `LifecyclePhaseAxis`
+- Product-Achsen: `StructureAxis`, `RoleAxis`
+- Process-Achsen: `MethodAxis`, `DomainAxis`
+- Data-Achse: `DataTypeAxis`
 
 ## Kernrelationen
 
-- `sms:hasStateAssignment` (`Material`/`Product` -> `StateAssignment`)
+- `sms:hasStateAssignment` (`Object`/`Process` -> `StateAssignment`)
 - `sms:onAxis` (`StateAssignment` -> `StateAxis`)
 - `sms:hasStateValue` (`StateAssignment` -> `skos:Concept`)
 - `sms:hasConceptScheme` (`StateAxis` -> `skos:ConceptScheme`)
@@ -35,28 +29,24 @@ Modellidee:
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 @prefix ex:    <https://example.org/zugversuch/> .
 
-ex:DC04 a sdata:Material ;
-  sms:hasStateAssignment [
-    a sms:StateAssignment ;
-    sms:onAxis sms:OriginAxis ;
-    sms:hasStateValue sms:origin.Virgin
-  ] ;
-  sms:hasStateAssignment [
-    a sms:StateAssignment ;
-    sms:onAxis sms:FormAxis ;
-    sms:hasStateValue sms:form.Sheet
-  ] .
-
 ex:Probe_A1 a sdata:Product ;
-  sdata:madeOf ex:DC04 ;
-  sms:hasStateAssignment [
-    a sms:StateAssignment ;
-    sms:onAxis sms:StructureAxis ;
-    sms:hasStateValue sms:structure.SinglePart
-  ] ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:RoleAxis ;
     sms:hasStateValue sms:role.Specimen
+  ] .
+
+ex:Zugversuch_A1 a sdata:Process ;
+  sms:hasStateAssignment [
+    a sms:StateAssignment ;
+    sms:onAxis sms:MethodAxis ;
+    sms:hasStateValue sms:method.TensileTest
+  ] .
+
+ex:Messdaten_A1 a sdata:Data ;
+  sms:hasStateAssignment [
+    a sms:StateAssignment ;
+    sms:onAxis sms:DataTypeAxis ;
+    sms:hasStateValue sms:datatype.TestReport
   ] .
 ```

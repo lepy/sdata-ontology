@@ -1,17 +1,16 @@
 # sdata-core.ttl
 
-Autarkes Kernmodell (`v0.8.0`) auf MIN/OPA mit:
+Autarkes Kernmodell (`v0.9.1`) auf MIN/OPA mit:
 
-- 30 Klassen
+- 14 Klassen
 - 19 Objekt-Properties
-- 8 Datentyp-Properties
+- 7 Datentyp-Properties
 
-Zentrale Kategorien:
+Kategorien:
 
-- `sdata:Object` (u. a. `Material`, `Product`, `Hardware`, `Software`)
-- `sdata:Process` (u. a. `ManufacturingProcess`, `MechanicalTest`, `Simulation`)
-- `sdata:Data` (u. a. `Certificate`, `DigitalProductPass`)
-- `sdata:Agent` (u. a. `Person`, `MachineAgent`, `SoftwareAgent`, `Organization`)
+- `sdata:Object` (Subklassen: `Material`, `Product`, `Hardware`, `Software`, `Data`)
+- `sdata:Process` (ohne Core-Subklassen; Methodik über `sms:MethodAxis`)
+- `sdata:Agent` (Subklassen: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`)
 
 ## Kurzbeispiel (Zugversuch)
 
@@ -26,10 +25,10 @@ ex:Probe_A1 a sdata:Product ;
   sdata:hasIdentifier "PROD-SPEC-A1" ;
   sdata:madeOf ex:DC04 .
 
-ex:Zwick_Z100 a sdata:Hardware, sdata:MachineAgent ;
+ex:Zwick_Z100 a sdata:Hardware, sdata:HardwareAgent ;
   sdata:hasIdentifier "HW-ZWICK-Z100" .
 
-ex:Zugversuch_A1 a sdata:MechanicalTest ;
+ex:Zugversuch_A1 a sdata:Process ;
   sdata:hasInput ex:Probe_A1 ;
   sdata:performedBy ex:Zwick_Z100 ;
   sdata:usesHardware ex:Zwick_Z100 ;

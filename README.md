@@ -4,16 +4,16 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core version: `sdata-core-v0.8.0.ttl`
+- Core version: `sdata-core-v0.9.1.ttl`
 - Core foundation: `MIN` + `OPA`
-- Material-state extension: `sdata-material-state-v0.2.0.ttl`
+- Material-state extension: `sdata-material-state-v0.4.0.ttl`
 
 ## Main modules
 
-- `sdata-core.ttl` / `sdata-core-v0.8.0.ttl`
-: Core model with 30 classes, 19 object properties, 8 datatype properties.
+- `sdata-core.ttl` / `sdata-core-v0.9.1.ttl`
+: Core model with 14 classes, 19 object properties, 7 datatype properties.
 - `sdata-material-state.ttl`
-: Material state space extension (10 axes incl. `StructureAxis` + `RoleAxis`).
+: State space extension (13 axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`).
 - `sdata-agents.ttl`
 : Agent-type SKOS vocabulary.
 - `sdata-processtypes.ttl`
@@ -30,11 +30,10 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 ```
 
-## Core categories (v0.8.0)
+## Core categories (v0.9.1)
 
 - `sdata:Object`
 - `sdata:Process`
-- `sdata:Data`
 - `sdata:Agent`
 
 Main object classes:
@@ -43,6 +42,14 @@ Main object classes:
 - `sdata:Product`
 - `sdata:Hardware`
 - `sdata:Software`
+- `sdata:Data`
+
+Main agent classes:
+
+- `sdata:Person`
+- `sdata:HardwareAgent`
+- `sdata:SoftwareAgent`
+- `sdata:Organization`
 
 ## Material state space
 
@@ -50,7 +57,7 @@ Main object classes:
 
 - `sms:StateAxis`
 - `sms:StateAssignment`
-- 10 predefined axis classes (`OriginAxis`, `ProcessingAxis`, `ConditionAxis`, ..., `StructureAxis`, `RoleAxis`)
+- 13 predefined axis classes (`OriginAxis`, `ProcessingAxis`, ..., `MethodAxis`, `DomainAxis`, `DataTypeAxis`)
 - SKOS concept schemes per axis (`sms:origin-values`, `sms:phase-values`, ...)
 
 ## Development

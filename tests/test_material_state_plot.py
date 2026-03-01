@@ -21,10 +21,16 @@ def test_extract_contains_axes_and_schemes():
     assert str(SMS.LifecyclePhaseAxis) in nodes
     assert str(SMS.StructureAxis) in nodes
     assert str(SMS.RoleAxis) in nodes
+    assert str(SMS.MethodAxis) in nodes
+    assert str(SMS.DomainAxis) in nodes
+    assert str(SMS.DataTypeAxis) in nodes
     assert str(SMS["origin-values"]) in nodes
     assert str(SMS["phase-values"]) in nodes
     assert str(SMS["structure-values"]) in nodes
     assert str(SMS["role-values"]) in nodes
+    assert str(SMS["method-values"]) in nodes
+    assert str(SMS["domain-values"]) in nodes
+    assert str(SMS["datatype-values"]) in nodes
 
 
 def test_extract_contains_expected_value_concepts():
@@ -38,6 +44,9 @@ def test_extract_contains_expected_value_concepts():
         str(SMS["phase.Recycling"]),
         str(SMS["structure.SinglePart"]),
         str(SMS["role.Specimen"]),
+        str(SMS["method.TensileTest"]),
+        str(SMS["domain.Structural"]),
+        str(SMS["datatype.DigitalProductPass"]),
     }
     assert expected.issubset(concepts)
 
@@ -48,6 +57,12 @@ def test_extract_contains_expected_edges():
     assert (str(SMS.StateAxis), str(SMS.OriginAxis), "subclass") in edges
     assert (str(SMS.StateAxis), str(SMS.StructureAxis), "subclass") in edges
     assert (str(SMS.StateAxis), str(SMS.RoleAxis), "subclass") in edges
+    assert (str(SMS.StateAxis), str(SMS.MethodAxis), "subclass") in edges
+    assert (str(SMS.StateAxis), str(SMS.DomainAxis), "subclass") in edges
+    assert (str(SMS.StateAxis), str(SMS.DataTypeAxis), "subclass") in edges
     assert (str(SMS.OriginAxis), str(SMS["origin-values"]), "scheme") in edges
+    assert (str(SMS.MethodAxis), str(SMS["method-values"]), "scheme") in edges
+    assert (str(SMS.DomainAxis), str(SMS["domain-values"]), "scheme") in edges
+    assert (str(SMS.DataTypeAxis), str(SMS["datatype-values"]), "scheme") in edges
     assert (str(SMS["origin-values"]), str(SMS["origin.Virgin"]), "top") in edges
     assert (str(SMS["phase.Production"]), str(SMS["phase.Processing"]), "broader") in edges
