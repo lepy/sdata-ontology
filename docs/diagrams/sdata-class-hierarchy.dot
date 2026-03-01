@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Class Hierarchy (core v0.9.2 / MIN+OPA based)",
+		label="sdata Class Hierarchy (core v0.10.0 / MIN+OPA based)",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.55,
@@ -42,6 +42,10 @@ digraph "" {
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
 			label=Data];
+		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#2B6CB0",
+			fillcolor="#E8F1FF",
+			fontcolor="#1A365D",
+			label="Environment Agent"];
 		"https://w3id.org/sdata/core/Hardware"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
@@ -98,6 +102,7 @@ digraph "" {
 			label="sdata class"];
 		legend_sdata -> legend_sdata	[label="superclass -> subclass"];
 	}
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Organization";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Person";

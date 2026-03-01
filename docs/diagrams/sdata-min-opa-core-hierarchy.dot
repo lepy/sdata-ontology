@@ -27,20 +27,55 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_sdata {
-		graph [color="#D9B8F7",
-			label="sdata-core classes",
-			rank=sink,
+	subgraph cluster_opa {
+		graph [color="#97D5BA",
+			label="OPA classes",
 			style=rounded
+		];
+		subgraph cluster_opa_rank {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/opa#Agent"	[color="#2F855A",
+				fillcolor="#E8FFF4",
+				fontcolor="#1C4532",
+				label=Agent];
+			"https://w3id.org/opa#Object"	[color="#2F855A",
+				fillcolor="#E8FFF4",
+				fontcolor="#1C4532",
+				label=Object];
+			"https://w3id.org/opa#Process"	[color="#2F855A",
+				fillcolor="#E8FFF4",
+				fontcolor="#1C4532",
+				label=Process];
+		}
+		__rank_anchor_opa	[height=0.01,
+			label="",
+			shape=point,
+			style=invis,
+			width=0.01];
+	}
+	subgraph sdata_rank_top {
+		graph [rank=same,
+			style=invis
 		];
 		"https://w3id.org/sdata/core/Agent"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label=Agent];
-		"https://w3id.org/sdata/core/AttributeQuantityValue"	[color="#6B46C1",
+		"https://w3id.org/sdata/core/Object"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
-			label="Attribute Quantity Value"];
+			label=Object];
+		"https://w3id.org/sdata/core/Process"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Process];
+	}
+	subgraph sdata_rank_object_children {
+		graph [rank=same,
+			style=invis
+		];
 		"https://w3id.org/sdata/core/Data"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
@@ -49,30 +84,10 @@ digraph "" {
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label=Hardware];
-		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label="Hardware Agent"];
 		"https://w3id.org/sdata/core/Material"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label=Material];
-		"https://w3id.org/sdata/core/Object"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Object];
-		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Organization];
-		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Person];
-		"https://w3id.org/sdata/core/Process"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Process];
 		"https://w3id.org/sdata/core/Product"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
@@ -81,42 +96,44 @@ digraph "" {
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label=Software];
+	}
+	subgraph sdata_rank_agent_children {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Environment Agent"];
+		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Hardware Agent"];
+		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Organization];
+		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Person];
 		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label="Software Agent"];
+	}
+	subgraph sdata_rank_infra {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/AttributeQuantityValue"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Attribute Quantity Value"];
 		"https://w3id.org/sdata/core/ValueDomain"	[color="#6B46C1",
 			fillcolor="#F8EEFF",
 			fontcolor="#44337A",
 			label="Value Domain"];
-		__rank_anchor_sdata	[height=0.01,
-			label="",
-			shape=point,
-			style=invis,
-			width=0.01];
-	}
-	subgraph cluster_opa {
-		graph [color="#97D5BA",
-			label="OPA classes",
-			style=rounded
-		];
-		"https://w3id.org/opa#Agent"	[color="#2F855A",
-			fillcolor="#E8FFF4",
-			fontcolor="#1C4532",
-			label=Agent];
-		"https://w3id.org/opa#Object"	[color="#2F855A",
-			fillcolor="#E8FFF4",
-			fontcolor="#1C4532",
-			label=Object];
-		"https://w3id.org/opa#Process"	[color="#2F855A",
-			fillcolor="#E8FFF4",
-			fontcolor="#1C4532",
-			label=Process];
-		__rank_anchor_opa	[height=0.01,
-			label="",
-			shape=point,
-			style=invis,
-			width=0.01];
 	}
 	subgraph cluster_min {
 		graph [color="#8FB7EA",
@@ -152,6 +169,7 @@ digraph "" {
 	"https://w3id.org/opa#Agent" -> "https://w3id.org/sdata/core/Agent";
 	"https://w3id.org/opa#Object" -> "https://w3id.org/sdata/core/Object";
 	"https://w3id.org/opa#Process" -> "https://w3id.org/sdata/core/Process";
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Organization";
 	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/core/Person";
@@ -168,9 +186,13 @@ digraph "" {
 		minlen=2,
 		style=invis,
 		weight=200];
+	__rank_anchor_sdata	[height=0.01,
+		label="",
+		shape=point,
+		style=invis,
+		width=0.01];
 	__rank_anchor_opa -> __rank_anchor_sdata	[color="#FFFFFF",
 		constraint=true,
-		lhead=cluster_sdata,
 		ltail=cluster_opa,
 		minlen=2,
 		style=invis,

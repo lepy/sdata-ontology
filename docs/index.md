@@ -4,11 +4,11 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 ## Included modules
 
-- `sdata-core.ttl` / `sdata-core-v0.9.2.ttl`: core ontology (MIN/OPA-based)
+- `sdata-core.ttl` / `sdata-core-v0.10.0.ttl`: core ontology (MIN/OPA-based)
 - `sdata-material-state.ttl`: material state space extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **14 classes**, **19 object properties**, **7 datatype properties**.
+Current core model: **15 classes**, **19 object properties**, **7 datatype properties**.
 
 ## Read this first
 

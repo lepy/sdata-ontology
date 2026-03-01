@@ -1,9 +1,10 @@
-"""Tests for sdata-core ontology and instance data (v0.9.2)."""
+"""Tests for sdata-core ontology and instance data (v0.10.0)."""
 
 from pathlib import Path
 
 import pytest
 from rdflib import Graph, Namespace, RDF, RDFS, URIRef
+from rdflib.namespace import SKOS
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SMS = Namespace("https://w3id.org/sdata/material-state/")
@@ -56,6 +57,7 @@ EXPECTED_CLASSES = [
     "HardwareAgent",
     "SoftwareAgent",
     "Organization",
+    "EnvironmentAgent",
     "AttributeQuantityValue",
     "ValueDomain",
 ]
@@ -120,7 +122,7 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 14, f"Expected 14 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 15, f"Expected 15 classes, found {len(sdata_classes)}"
 
 
 def test_value_domain_is_not_min_nexus(core_graph):
@@ -165,6 +167,7 @@ def test_example_uses_representative_domain_classes(example_graph, core_graph):
         "HardwareAgent",
         "SoftwareAgent",
         "Organization",
+        "EnvironmentAgent",
         "AttributeQuantityValue",
         "ValueDomain",
     ]:
@@ -213,6 +216,13 @@ def test_material_state_module_core_terms_exist(material_state_graph):
 
     for prop_name in ["hasConceptScheme", "hasStateAssignment", "hasStateValue", "onAxis"]:
         assert (SMS[prop_name], RDF.type, OWL_OBJ_PROP) in material_state_graph
+
+
+def test_material_state_has_environmental_method_concepts(material_state_graph):
+    assert (SMS["method.Degradation"], RDF.type, SKOS.Concept) in material_state_graph
+    assert (SMS["method.Degradation"], SKOS.broader, SMS["method.Transformative"]) in material_state_graph
+    for concept in ["method.Corrosion", "method.Weathering", "method.NaturalAging", "method.BiologicalDecay", "method.FatigueDamage"]:
+        assert (SMS[concept], SKOS.broader, SMS["method.Degradation"]) in material_state_graph
 
 
 def test_example_uses_material_state_assignments(example_graph):
