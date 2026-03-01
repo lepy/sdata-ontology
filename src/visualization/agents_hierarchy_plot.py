@@ -13,6 +13,7 @@ from rdflib.namespace import OWL, SKOS
 
 SDATA = Namespace("https://w3id.org/sdata/core/")
 SAGENTS = Namespace("https://w3id.org/sdata/vocab/agents/")
+SDATA_AGENT = SDATA.Agent
 SDATA_MATERIAL_AGENT = SDATA.MaterialAgent
 SDATA_INFORMATION_AGENT = SDATA.InformationAgent
 SDATA_HASH = "https://w3id.org/sdata/core#"
@@ -124,7 +125,7 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
     edges: set[HierarchyEdge] = set()
 
     agent_roots: list[URIRef] = []
-    for sdata_class in (SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT):
+    for sdata_class in (SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT):
         for alias in _core_aliases(sdata_class):
             if (alias, RDF.type, OWL.Class) in graph:
                 nodes[sdata_class] = "sdata"
@@ -152,6 +153,8 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             nodes[concept] = "concept"
 
         broader_index: dict[URIRef, set[URIRef]] = {}
+        legacy_roots = {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}
+        has_unified_root = SDATA_AGENT in nodes
         for concept in concepts:
             broader_parents = {
                 parent
@@ -171,12 +174,15 @@ def extract_hierarchy(graph: Graph) -> HierarchyModel:
             )
             if is_top:
                 edges.add(HierarchyEdge(parent=scheme, child=concept))
+                if has_unified_root:
+                    edges.add(HierarchyEdge(parent=SDATA_AGENT, child=concept))
 
-            side = _infer_side(graph, concept, broader_index)
-            if side == "material" and SDATA_MATERIAL_AGENT in nodes:
-                edges.add(HierarchyEdge(parent=SDATA_MATERIAL_AGENT, child=concept))
-            if side == "information" and SDATA_INFORMATION_AGENT in nodes:
-                edges.add(HierarchyEdge(parent=SDATA_INFORMATION_AGENT, child=concept))
+            if not has_unified_root and legacy_roots.issubset(nodes):
+                side = _infer_side(graph, concept, broader_index)
+                if side == "material" and SDATA_MATERIAL_AGENT in nodes:
+                    edges.add(HierarchyEdge(parent=SDATA_MATERIAL_AGENT, child=concept))
+                if side == "information" and SDATA_INFORMATION_AGENT in nodes:
+                    edges.add(HierarchyEdge(parent=SDATA_INFORMATION_AGENT, child=concept))
 
     model_nodes = tuple(
         HierarchyNode(iri=iri, label=_best_label(graph, iri), kind=kind)
@@ -205,7 +211,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Agents Hierarchy (autark core agents -> SKOS agent types)",
+        label="sdata Agents Hierarchy (core agents -> SKOS agent types)",
         labelloc="t",
         labeljust="c",
     )
@@ -246,12 +252,12 @@ def build_agraph(model: HierarchyModel):
 
     for edge in model.edges:
         attrs = {"label": ""}
-        if edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT} and edge.child in {
+        if edge.parent in {SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT} and edge.child in {
             URIRef(str(SAGENTS) + "AgentTypeScheme"),
             URIRef(SAGENTS_HASH + "AgentTypeScheme"),
         }:
             attrs["label"] = "typed via sdata:agentType"
-        elif edge.parent in {SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}:
+        elif edge.parent in {SDATA_AGENT, SDATA_MATERIAL_AGENT, SDATA_INFORMATION_AGENT}:
             attrs["label"] = "also an"
         graph.add_edge(str(edge.parent), str(edge.child), **attrs)
 

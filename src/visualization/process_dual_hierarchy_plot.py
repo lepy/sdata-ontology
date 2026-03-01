@@ -1,4 +1,4 @@
-"""Visualize only MaterialProcess/InformationProcess and their subclasses."""
+"""Visualize the Activity hierarchy (core + process verb extensions)."""
 
 from __future__ import annotations
 
@@ -13,8 +13,17 @@ from rdflib.namespace import OWL, SKOS
 
 SDATA_SLASH = "https://w3id.org/sdata/core/"
 SDATA_HASH = "https://w3id.org/sdata/core#"
-MATERIAL_PROCESS = URIRef(SDATA_SLASH + "MaterialProcess")
-INFORMATION_PROCESS = URIRef(SDATA_SLASH + "InformationProcess")
+ACTIVITY = URIRef(SDATA_SLASH + "Activity")
+
+VERB_SEQUENCE = [
+    URIRef(SDATA_SLASH + "Creation"),
+    URIRef(SDATA_SLASH + "Transformation"),
+    URIRef(SDATA_SLASH + "Transfer"),
+    URIRef(SDATA_SLASH + "Observation"),
+    URIRef(SDATA_SLASH + "Preservation"),
+    URIRef(SDATA_SLASH + "Recovery"),
+    URIRef(SDATA_SLASH + "Destruction"),
+]
 
 
 @dataclass(frozen=True)
@@ -130,7 +139,10 @@ def extract_model(core_graph: Graph, proc_graph: Graph, merged: Graph) -> Model:
                 edges_all.add(Edge(parent=parent, child=child))
 
     included: set[URIRef] = set()
-    queue: deque[URIRef] = deque([MATERIAL_PROCESS, INFORMATION_PROCESS])
+    roots: list[URIRef] = [ACTIVITY] if ACTIVITY in all_sdata_classes else []
+    roots.extend([node for node in VERB_SEQUENCE if node in all_sdata_classes])
+
+    queue: deque[URIRef] = deque(roots)
     while queue:
         current = queue.popleft()
         if current in included:
@@ -145,8 +157,10 @@ def extract_model(core_graph: Graph, proc_graph: Graph, merged: Graph) -> Model:
         nodes.append(Node(iri=iri, label=_best_label(merged, iri), kind=kind))
 
     edges = [edge for edge in edges_all if edge.parent in included and edge.child in included]
-    edges_sorted = sorted(edges, key=lambda e: (str(e.parent), str(e.child)))
-    return Model(nodes=tuple(nodes), edges=tuple(edges_sorted))
+    return Model(
+        nodes=tuple(nodes),
+        edges=tuple(sorted(edges, key=lambda e: (str(e.parent), str(e.child)))),
+    )
 
 
 def build_agraph(model: Model):
@@ -169,7 +183,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Process Hierarchy (MaterialProcess/InformationProcess branches only)",
+        label="sdata Activity Hierarchy (core + process verbs)",
         labelloc="t",
         labeljust="c",
     )
@@ -188,121 +202,40 @@ def build_agraph(model: Model):
         fontname="Helvetica",
     )
 
+    core_cluster = graph.add_subgraph(
+        name="cluster_activity_core", label="sdata-core activity classes", color="#90B5E8", style="rounded"
+    )
+    proc_cluster = graph.add_subgraph(
+        name="cluster_activity_proc", label="sdata-processtypes verb classes", color="#B6D7A8", style="rounded"
+    )
+
     style_map = {
         "core": {"fillcolor": "#E8F1FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "proc": {"fillcolor": "#EEF8E7", "color": "#4F8A10", "fontcolor": "#2F5D08"},
     }
 
-    material_branch = graph.add_subgraph(
-        name="cluster_material_branch",
-        label="Material process branch",
-        color="#9DC3E6",
-        style="rounded",
-        rankdir="TB",
-    )
-    information_branch = graph.add_subgraph(
-        name="cluster_information_branch",
-        label="Information process branch",
-        color="#A9D18E",
-        style="rounded",
-        rankdir="TB",
-    )
-    root_branch = graph.add_subgraph(
-        name="cluster_process_roots",
-        label="Process roots",
-        color="#D6D6D6",
-        style="rounded",
-        rank="source",
-    )
-
+    node_ids = {str(node.iri) for node in model.nodes}
     for node in model.nodes:
-        node_id = str(node.iri)
-        graph.add_node(node_id, label=node.label, **style_map[node.kind])
-        local = node_id.rsplit("/", 1)[-1]
-        if node_id == str(MATERIAL_PROCESS) or node_id == str(INFORMATION_PROCESS):
-            root_branch.add_node(node_id)
-            continue
-        if local.startswith("Material"):
-            material_branch.add_node(node_id)
-        elif local.startswith("Information"):
-            information_branch.add_node(node_id)
+        target = core_cluster if node.kind == "core" else proc_cluster
+        target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
 
     for edge in model.edges:
-        parent_id = str(edge.parent)
-        child_id = str(edge.child)
-        attrs = {"label": ""}
-        # Keep TB flow primarily from the temporal sequence edges; root fan-out
-        # edges should not force a wide same-rank spread of all child classes.
-        if parent_id in (str(MATERIAL_PROCESS), str(INFORMATION_PROCESS)):
-            attrs["constraint"] = "false"
-        graph.add_edge(parent_id, child_id, **attrs)
+        graph.add_edge(str(edge.parent), str(edge.child), label="")
 
-    # Connect dual pairs (Material* <-> Information*) among the displayed nodes.
-    node_ids = {str(node.iri) for node in model.nodes}
-    pairs: list[tuple[str, str]] = []
-    for node in model.nodes:
-        left_id = str(node.iri)
-        local = left_id.rsplit("/", 1)[-1]
-        if not local.startswith("Material"):
-            continue
-        suffix = local[len("Material") :]
-        right_id = f"{SDATA_SLASH}Information{suffix}"
-        if right_id in node_ids:
-            pairs.append((left_id, right_id))
-
-    for left_id, right_id in sorted(pairs):
-        graph.add_edge(
-            left_id,
-            right_id,
-            dir="none",
-            style="dashed",
-            color="#6B7280",
-            fontcolor="#6B7280",
-            label="dual",
-            constraint="false",
-        )
-
-    # Keep the two root classes at the top while branches remain TB in their subgraphs.
-    for root_id, first_child in (
-        (str(INFORMATION_PROCESS), f"{SDATA_SLASH}InformationCreation"),
-        (str(MATERIAL_PROCESS), f"{SDATA_SLASH}MaterialCreation"),
-    ):
-        if root_id in node_ids and first_child in node_ids:
+    for left, right in zip(VERB_SEQUENCE, VERB_SEQUENCE[1:]):
+        left_id = str(left)
+        right_id = str(right)
+        if left_id in node_ids and right_id in node_ids:
             graph.add_edge(
-                root_id,
-                first_child,
-                style="invis",
-                color="#FFFFFF",
-                constraint="true",
-                weight="80",
-                minlen="1",
+                left_id,
+                right_id,
+                color="#4F8A10",
+                penwidth="2.0",
+                style="dashed",
+                label="sequence",
+                fontcolor="#4F8A10",
+                constraint="false",
             )
-
-    # Add temporal sequence edges for process subclasses in each branch.
-    sequence = [
-        "Creation",
-        "Transformation",
-        "Transfer",
-        "Observation",
-        "Preservation",
-        "Recovery",
-        "Destruction",
-    ]
-    for prefix, color in (("Information", "#4F8A10"), ("Material", "#2B6CB0")):
-        for left_suffix, right_suffix in zip(sequence, sequence[1:]):
-            left_id = f"{SDATA_SLASH}{prefix}{left_suffix}"
-            right_id = f"{SDATA_SLASH}{prefix}{right_suffix}"
-            if left_id in node_ids and right_id in node_ids:
-                graph.add_edge(
-                    left_id,
-                    right_id,
-                    color=color,
-                    penwidth="2.0",
-                    style="bold",
-                    label="next",
-                    fontcolor=color,
-                    constraint="true",
-                )
 
     return graph
 

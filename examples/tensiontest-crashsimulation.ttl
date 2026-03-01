@@ -1,88 +1,47 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix ex: <https://example.org/simulation/> .
+@prefix ex:    <https://example.org/simulation/> .
 
-ex:LaborHalle3
-    a sdata:MaterialSite ;
-    sdata:name "Labor Halle 3" ;
-    sdata:geoCoordinates "51.0506,13.7375" .
-
-ex:HPCCluster
-    a sdata:InformationSite ;
-    sdata:name "HPC Cluster" ;
-    sdata:endpoint "https://hpc.example.org"^^xsd:anyURI ;
-    sdata:locatedAt ex:LaborHalle3 ;
-    sdata:hostedOn ex:Node42 .
-
-ex:Node42
-    a sdata:MaterialArtifact ;
-    sdata:name "Compute Node 42" ;
-    sdata:locatedAt ex:LaborHalle3 .
+ex:Specimen_42
+    a sdata:Specimen ;
+    sdata:hasIdentifier "SPEC-42" .
 
 ex:ZwickZ100
-    a sdata:MaterialAgent ;
-    sdata:name "Zwick Z100" ;
-    sdata:agentType "Hardware" ;
-    sdata:locatedAt ex:LaborHalle3 .
+    a sdata:MachineAgent ;
+    sdata:hasIdentifier "MCH-ZWICK-Z100" .
 
 ex:LSDYNA_R14
-    a sdata:InformationAgent ;
-    sdata:name "LS-DYNA R14" ;
-    sdata:agentType "Solver" ;
-    sdata:hostedAt ex:HPCCluster .
+    a sdata:SoftwareAgent ;
+    sdata:hasIdentifier "SW-LSDYNA-R14" .
 
-ex:Probe42
-    a sdata:MaterialArtifact ;
-    sdata:name "Probe 42" ;
-    sdata:locatedAt ex:LaborHalle3 .
-
-ex:Messkurve42
-    a sdata:InformationArtifact ;
-    sdata:name "Messkurve 42" ;
-    sdata:version "1.0" ;
-    sdata:represents ex:Probe42 ;
-    sdata:hostedAt ex:HPCCluster .
-
-ex:FE_Mesh_v3
-    a sdata:InformationArtifact ;
-    sdata:name "FE Mesh v3" ;
-    sdata:version "3.0" ;
-    sdata:consistsOf ex:MeshData_v3 ;
-    sdata:represents ex:Probe42 ;
-    sdata:hostedAt ex:HPCCluster .
-
-ex:MeshData_v3
-    a sdata:Information ;
-    sdata:name "Mesh Data v3" ;
-    sdata:description "Node and element bulk data for crash simulation." ;
-    sdata:hostedAt ex:HPCCluster ;
-    sdata:derivedFrom ex:Messkurve42 .
-
-ex:ZugversuchProbe42
-    a sdata:MaterialProcess ;
-    sdata:name "Zugversuch Probe 42" ;
-    sdata:consumes ex:Probe42 ;
-    sdata:generates ex:Messkurve42 ;
-    sdata:wasPerformedBy ex:ZwickZ100 ;
-    sdata:locatedAt ex:LaborHalle3 ;
-    prov:startedAtTime "2026-02-20T09:15:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-02-20T10:15:00Z"^^xsd:dateTimeStamp .
+ex:TensileTest_42
+    a sdata:MechanicalTest ;
+    sdata:hasInput ex:Specimen_42 ;
+    sdata:performedBy ex:ZwickZ100 ;
+    sdata:producesData ex:MeasurementData_42 ;
+    sdata:hasStandard "DIN EN ISO 6892-1" .
 
 ex:CrashSim_v3
-    a sdata:InformationProcess ;
-    sdata:name "Crash-Simulation Bauteil-X v3" ;
-    sdata:consumes ex:FE_Mesh_v3 ;
-    sdata:generates ex:D3plot_v3 ;
-    sdata:wasPerformedBy ex:LSDYNA_R14 ;
-    sdata:hostedAt ex:HPCCluster ;
-    prov:startedAtTime "2026-02-25T14:00:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-02-25T15:00:00Z"^^xsd:dateTimeStamp .
+    a sdata:CrashSimulation ;
+    sdata:hasInput ex:FEModel_v3 ;
+    sdata:performedBy ex:LSDYNA_R14 ;
+    sdata:producesData ex:SimulationResult_v3 .
 
-ex:D3plot_v3
-    a sdata:InformationArtifact ;
-    sdata:name "D3plot v3" ;
-    sdata:version "3.0" ;
-    sdata:represents ex:CrashSim_v3 ;
-    sdata:hostedAt ex:HPCCluster .
+ex:MeasurementData_42
+    a sdata:MeasurementData ;
+    sdata:describes ex:Specimen_42 ;
+    sdata:producedBy ex:TensileTest_42 ;
+    sdata:hasValue 18.5 ;
+    sdata:hasUnit "percent" ;
+    sdata:hasVersion "1.0.0" .
+
+ex:FEModel_v3
+    a sdata:Model ;
+    sdata:describes ex:Specimen_42 ;
+    sdata:hasVersion "3.0.0" .
+
+ex:SimulationResult_v3
+    a sdata:SimulationResult ;
+    sdata:describes ex:Specimen_42 ;
+    sdata:producedBy ex:CrashSim_v3 ;
+    sdata:hasVersion "3.0.0" .
