@@ -49,7 +49,8 @@
 #     v0.7.x            Activity → Process, HumanAgent → Person
 #     v0.8.0            Object: 7 → 4 Subklassen, madeOf, usesSoftware
 #     v0.9.0            Process: 14 → 4 Subklassen, MethodAxis
-#     v0.9.2            3 Kategorien statt 4
+#     v0.9.1            3 Kategorien, Data als Object, NatureAxis → MethodAxis
+#     v0.9.2            Obsolete Module entfernt (agents, processtypes, r-strategies)
 #                        Data: eigene Kategorie → Object-Subklasse
 #                        Certificate, DPP → DataTypeAxis
 #                        Process: 4 → 0 Subklassen → MethodAxis (hierarchisch)
@@ -79,14 +80,12 @@ Integriert: AttributeQuantityValue + ValueDomain
 
 Erweiterungsmodule (separate Dateien, optional importierbar):
   sdata-material-state.ttl  — State Space (13 Achsen, SKOS-Vokabulare)
-  sdata-processtypes.ttl    — 7 Verb-Klassen (Creation, Transformation, ...)
   sdata-vd-interval.ttl     — IntervalDomain
   sdata-vd-enum.ttl         — EnumeratedDomain
   sdata-vd-statistical.ttl  — StatisticalDomain
-  sdata-vd-fuzzy.ttl        — FuzzyDomain
-  sdata-r-strategies.ttl    — 10R Circular-Economy-Strategien"""@en ;
+  sdata-vd-fuzzy.ttl        — FuzzyDomain"""@en ;
 
-    dcterms:creator  "Lepy & Claude" ;
+    dcterms:creator  "Lepy" ;
     dcterms:created  "2026-03-01"^^xsd:date ;
     dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:seeAlso     <https://w3id.org/min> ;

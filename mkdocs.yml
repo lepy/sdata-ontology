@@ -9,9 +9,6 @@ nav:
   - Ontologies:
       - sdata-core: ontologies/sdata-core/index.md
       - sdata-material-state: ontologies/sdata-material-state.md
-      - sdata-agents: ontologies/sdata-agents/index.md
-      - sdata-processtypes: ontologies/sdata-processtypes/index.md
-      - sdata-lifecycle: ontologies/sdata-lifecycle/index.md
       - sdata-quantities: ontologies/sdata-quantities/index.md
       - sdata-vd-interval: ontologies/sdata-vd-interval/index.md
       - sdata-vd-enum: ontologies/sdata-vd-enum/index.md
