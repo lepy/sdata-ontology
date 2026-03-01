@@ -81,7 +81,7 @@ Erweiterungsmodule (separate Dateien, optional importierbar):
   sdata-vd-fuzzy.ttl        — FuzzyDomain
   sdata-r-strategies.ttl    — 10R Circular-Economy-Strategien"""@en ;
 
-    dcterms:creator  "Lepy & Claude" ;
+    dcterms:creator  "Lepy" ;
     dcterms:created  "2026-03-01"^^xsd:date ;
     dcterms:license  <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:seeAlso     <https://w3id.org/min> ;
