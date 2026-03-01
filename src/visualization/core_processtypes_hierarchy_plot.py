@@ -161,7 +161,7 @@ def build_agraph(model: Model):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Core + Processtypes Hierarchy (autark core)",
+        label="sdata Core + Processtypes Hierarchy",
         labelloc="t",
         labeljust="c",
     )
@@ -200,68 +200,6 @@ def build_agraph(model: Model):
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
-
-    core_dual_pairs = [
-        (URIRef(SDATA_SLASH + "MaterialArtifact"), URIRef(SDATA_SLASH + "InformationArtifact")),
-        (URIRef(SDATA_SLASH + "Material"), URIRef(SDATA_SLASH + "Information")),
-        (URIRef(SDATA_SLASH + "MaterialAgent"), URIRef(SDATA_SLASH + "InformationAgent")),
-        (URIRef(SDATA_SLASH + "MaterialProcess"), URIRef(SDATA_SLASH + "InformationProcess")),
-        (URIRef(SDATA_SLASH + "MaterialSite"), URIRef(SDATA_SLASH + "InformationSite")),
-    ]
-    node_ids = {str(node.iri) for node in model.nodes}
-    for left, right in core_dual_pairs:
-        left_id, right_id = str(left), str(right)
-        if left_id in node_ids and right_id in node_ids:
-            pair_rank = core_cluster.add_subgraph(
-                name=f"cluster_core_dual_rank_{left_id.rsplit('/', 1)[-1]}",
-                rank="same",
-                style="invis",
-            )
-            pair_rank.add_node(left_id)
-            pair_rank.add_node(right_id)
-            graph.add_edge(
-                left_id,
-                right_id,
-                dir="none",
-                style="dashed",
-                color="#6B7280",
-                fontcolor="#6B7280",
-                label="dual",
-                constraint="false",
-            )
-
-    proc_nodes = [node for node in model.nodes if node.kind == "proc"]
-    proc_node_ids = {str(node.iri) for node in proc_nodes}
-    proc_pairs: list[tuple[str, str, str]] = []
-    for node in proc_nodes:
-        left_id = str(node.iri)
-        local = left_id.rsplit("/", 1)[-1]
-        if not local.startswith("Material"):
-            continue
-        suffix = local[len("Material") :]
-        right_local = f"Information{suffix}"
-        right_id = f"{SDATA_SLASH}{right_local}"
-        if right_id in proc_node_ids:
-            proc_pairs.append((left_id, right_id, local))
-
-    for left_id, right_id, local in sorted(proc_pairs):
-        pair_rank = proc_cluster.add_subgraph(
-            name=f"cluster_proc_dual_rank_{local}",
-            rank="same",
-            style="invis",
-        )
-        pair_rank.add_node(left_id)
-        pair_rank.add_node(right_id)
-        graph.add_edge(
-            left_id,
-            right_id,
-            dir="none",
-            style="dashed",
-            color="#6B7280",
-            fontcolor="#6B7280",
-            label="dual",
-            constraint="false",
-        )
 
     core_nodes = sorted((str(node.iri) for node in model.nodes if node.kind == "core"))
     proc_nodes_ordered = sorted((str(node.iri) for node in model.nodes if node.kind == "proc"))

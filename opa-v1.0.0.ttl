@@ -1,0 +1,643 @@
+@prefix opa:     <https://w3id.org/opa#> .
+@prefix min:     <https://w3id.org/min#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# =============================================================================
+#
+#   OPA — Object · Process · Agent
+#
+#   Die mittlere Schicht. Die erste Interpretation von MIN.
+#
+#   MIN fragt: Was ist Sein?          → Polarität (Nexus, Material, Information)
+#   OPA fragt: Was gibt es?           → Kategorien (Object, Process, Agent)
+#   sdata fragt: Was gibt es hier?    → Domäne (Werkstoff, Umformen, Messdaten)
+#
+#   OPA beantwortet die Frage: Wenn alles Nexus ist —
+#   welche SORTEN von Nexus lassen sich unterscheiden,
+#   bevor man eine bestimmte Domäne betritt?
+#
+#   Antwort: Drei.
+#
+#     OBJECT  — das, was ist        (material-modal)
+#     PROCESS — das, was geschieht  (balanced)
+#     AGENT   — das, was handelt    (orthogonal zur Modalität)
+#
+#   Object und Process folgen aus dem Modalitätsspektrum.
+#   Agent durchschneidet es — er ist die Einführung von
+#   Handlungsfähigkeit als eigenständige ontologische Dimension.
+#
+#   Philosophische Ahnenreihe:
+#     Aristoteles    — Ousia (Substanz), Kinesis (Bewegung), Aitia (Ursache)
+#     Kant           — Ding, Geschehen, Handelnder (Kategorientafel)
+#     Whitehead      — Actual Entity, Process, Creativity
+#     Latour         — Aktant (menschlich und nichtmenschlich gleichermaßen)
+#
+#   v1.0.0 — 2026-03-01
+#
+# =============================================================================
+
+# —————————————————————————————————————————————————————————————————————————————
+#   ONTOLOGIE-DEKLARATION
+# —————————————————————————————————————————————————————————————————————————————
+
+<https://w3id.org/opa> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/opa/1.0.0> ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <https://w3id.org/min> ;
+    dcterms:title "OPA — Object · Process · Agent"@en ;
+    dcterms:title "OPA — Objekt · Prozess · Agent"@de ;
+    dcterms:description """Mittlere Abstraktionsschicht zwischen MIN
+    (Grundontologie) und domänenspezifischen Ontologien.
+
+    Drei Kategorien, die aus der MIN-Polarität emergieren:
+    Object (Substanz), Process (Transformation), Agent (Handelnder).
+
+    Neun Relationen verbinden die Kategorien zu einem vollständigen
+    Rahmen für die Beschreibung jeder Domäne.
+
+    OPA ist die erste Interpretation von MIN —
+    aber nicht die einzige denkbare."""@de ;
+    dcterms:description """Middle abstraction layer between MIN
+    (foundational ontology) and domain ontologies.
+    Three categories. Nine relations. Domain-independent."""@en ;
+    dcterms:creator "Lepy" ;
+    dcterms:created "2026-03-01"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/min> ;
+    rdfs:seeAlso <https://w3id.org/sdata/core> ;
+    min:layer "abstraction" ;
+    min:designRationale """OPA ist bewusst als EINE Interpretation
+    von MIN konzipiert. MIN erzwingt OPA nicht — aber OPA ist die
+    natürlichste Lesart. Andere Interpretationen (z.B. Thing/Happening,
+    oder Entity/Event/Quality) wären auf derselben MIN-Basis möglich.
+    OPA wählt Object/Process/Agent, weil diese Dreiteilung sowohl
+    philosophisch fundiert als auch ingenieurstechnisch praktikabel ist."""@de .
+
+
+# #############################################################################
+#
+#   TEIL I — DIE DREI KATEGORIEN
+#
+#   Die Beziehung zu MIN-Modalitäten:
+#
+#       MaterialModal         → Object   (das, was IST)
+#       Balanced              → Process  (das, was GESCHIEHT)
+#       InformationalModal    → (kein eigener OPA-Typ — Information
+#                                wird durch Object und Process
+#                                als Aspekt getragen, oder durch
+#                                Domain-Spezialisierung wie sdata:Data)
+#
+#       Agent                 → ORTHOGONAL (kann material- oder
+#                                informational-modal sein)
+#
+#   Warum kein eigener ‹Data›-Typ auf OPA-Ebene?
+#   Weil ‹Data› bereits domänenspezifisch ist. Auf der Abstraktionsebene
+#   von OPA ist Information ein Aspekt (min:Information), kein Ding.
+#   Erst in einer Domäne wird Information zu einem eigenständigen
+#   Gegenstand — dann als sdata:Data oder äquivalent.
+#
+# #############################################################################
+
+# =============================================================================
+#   OBJECT — das, was ist
+# =============================================================================
+
+opa:Object a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Object"@en ;
+    rdfs:label "Objekt"@de ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Das, was ist. Material-modaler Nexus.
+
+    Ein Object ist ein Nexus, der auf materiale Weise ist.
+    Es zeigt sich primär als physisches, räumlich ausgedehntes,
+    kausal wirksames Etwas. Es hat einen informationalen Aspekt
+    (Struktur, Eigenschaften, Identität), aber der primäre
+    Zugang geht über die Materialität.
+
+    Aristotelisch: Ousia — das, was einem Satz als Subjekt zugrunde
+    liegt. ‹Der Stahl ist hart› — der Stahl ist Object, die Härte
+    ist Information über das Object.
+
+    Identitätskriterium: Ein Object ist dasselbe Object, solange
+    seine materiale Kontinuität gegeben ist — auch wenn sich seine
+    Information ändert (ein Coil wird umgeformt, bleibt aber
+    derselbe Stahl).
+
+    Ein Object wird durch Processes transformiert.
+    Ein Object wird durch Agents bewirkt oder behandelt.
+    Ein Object trägt Information als Aspekt, nicht als Substanz.
+
+    Abgrenzung zu Agent: Ein Object hat keine Handlungsfähigkeit.
+    Es ist passiv — es wird bewegt, aber bewegt nicht aus eigenem
+    Antrieb. Ein Roboter, der handelt, ist Agent, nicht Object.
+    Ein abgeschalteter Roboter ist Object."""@de ;
+
+    skos:example """Rohstoff, Coil, Halbzeug, Bauteil, Werkzeug,
+    Maschine (als physisches Gerät, nicht als Handelnder),
+    Gebäude, Fahrzeug, Prüfling, Recyclat."""@de ;
+
+    min:philosophicalBasis "Aristoteles: Ousia (Substanz, Kategorienschrift)" ;
+    min:designRationale """Object ist material-modal, nicht
+    material-exklusiv. Auch ein Stahlblock hat Information
+    (Gefüge, Zusammensetzung). Die Modalität sagt: der primäre
+    Zugang zum Stahlblock ist über seine Materialität."""@de ;
+
+    # --- Modalitätszuordnung ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasModality ;
+        owl:hasValue min:MaterialModal
+    ] .
+
+
+# =============================================================================
+#   PROCESS — das, was geschieht
+# =============================================================================
+
+opa:Process a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Process"@en ;
+    rdfs:label "Prozess"@de ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Das, was geschieht. Balanced Nexus.
+
+    Ein Process ist ein Nexus, der auf ausgewogene Weise ist.
+    Sein materialer Aspekt: Kräfte, Energie, physische
+    Wechselwirkung, Infrastruktur. Sein informationaler Aspekt:
+    Regeln, Parameter, Modell, Intention.
+
+    Ein Process ist weder Ding noch Wissen — er ist TRANSFORMATION.
+    Er nimmt Objects als Input, verändert sie, und erzeugt
+    Objects als Output. Dabei erzeugt oder verändert er Information.
+
+    Aristotelisch: Kinesis — die Veränderung, die vom Möglichen
+    (Dynamis) zum Wirklichen (Energeia) führt.
+
+    Whitehead: Process ist fundamental — ‹the becoming of being›.
+    Nicht: erst gibt es Dinge, dann geschieht etwas mit ihnen.
+    Sondern: Dinge SIND geronnene Prozesse.
+
+    Zeitlichkeit: Ein Process hat notwendig eine zeitliche
+    Ausdehnung — er beginnt und endet. Ein Object kann überdauern;
+    ein Process vergeht. Aber seine Wirkungen bleiben als
+    veränderte Objects und erzeugte Information.
+
+    Abgrenzung zu Agent: Ein Process ist kein Handelnder.
+    Er ist das, was geschieht — nicht das, was es auslöst.
+    Ein Agent FÜHRT einen Process DURCH.
+    Ein Process ohne Agent ist ein Naturvorgang."""@de ;
+
+    skos:example """Umformen, Gießen, Walzen, Fügen, Beschichten,
+    Wärmebehandlung, Zugversuch, Simulation, Transport,
+    Recycling, Montage, Qualitätsprüfung, Kalibrierung."""@de ;
+
+    min:philosophicalBasis "Whitehead: Process and Reality (1929)" ;
+    min:designRationale """Process ist balanced, weil er der ORT ist,
+    an dem Material zu Information wird (Messung) und Information
+    zu Material wird (Fertigung nach Zeichnung). Er ist der
+    Transformator, der die beiden Pole vermittelt."""@de ;
+
+    # --- Modalitätszuordnung ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasModality ;
+        owl:hasValue min:Balanced
+    ] ;
+
+    # --- Strukturelle Axiome ---
+    # Ein Process hat mindestens einen Input
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty opa:hasInput ;
+        owl:someValuesFrom opa:Object
+    ] ;
+    # Ein Process hat mindestens einen Output
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty opa:hasOutput ;
+        owl:someValuesFrom opa:Object
+    ] .
+
+
+# =============================================================================
+#   AGENT — das, was handelt
+# =============================================================================
+
+opa:Agent a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Agent"@en ;
+    rdfs:label "Agent"@de ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Das, was handelt. Der Nexus mit Handlungsfähigkeit.
+
+    Agent ist keine Modalitäts-Kategorie. Agent ist ORTHOGONAL zum
+    Modalitätsspektrum. Ein Agent kann material-modal sein (Mensch,
+    Roboter) oder informational-modal (KI, Software-Agent).
+    Was ihn zum Agent macht, ist nicht seine Seinsweise, sondern
+    seine FÄHIGKEIT ZU HANDELN.
+
+    Handlungsfähigkeit (Agency) bedeutet:
+      1. Kausale Wirksamkeit   — der Agent verursacht Veränderungen
+      2. Selektivität          — der Agent wählt zwischen Alternativen
+      3. Zurechenbarkeit       — die Veränderung ist dem Agent zuzurechnen
+
+    Intentionalität ist NICHT gefordert. Ein Thermostat hat Agency
+    (er wählt: heizen oder nicht heizen), aber keine Intention.
+    Ein Mensch hat beides. Ein ML-Modell hat Agency (es wählt
+    eine Vorhersage), aber seine Intentionalität ist strittig.
+    OPA nimmt dazu keine Stellung — das ist Sache der Philosophie
+    des Geistes, nicht der Ontologie.
+
+    Aristotelisch: Aitia — die Wirkursache (causa efficiens).
+    Nicht das, WAS geschieht, sondern das, WODURCH es geschieht.
+
+    Latour: Aktant — alles, was einen Unterschied macht, egal ob
+    menschlich oder nichtmenschlich. OPA folgt Latour darin, dass
+    Agency nicht auf Menschen beschränkt ist.
+
+    Die Beziehung zu Process: Agent FÜHRT Process DURCH.
+    Ohne Agent ist ein Process ein Naturvorgang (Erosion, Zerfall).
+    Mit Agent ist ein Process ein Handeln (Fertigung, Messung).
+
+    Die Beziehung zu Object: Agent ist NICHT Object.
+    Ein Agent hat materiale Aspekte (Körper, Hardware), aber er
+    ist nicht auf sie reduzierbar. Was ihn vom Object unterscheidet,
+    ist seine Handlungsfähigkeit — nicht seine Materialität."""@de ;
+
+    skos:example """Mensch (Prüfer, Konstrukteur, Werker),
+    Maschine mit Steuerung (CNC-Fräse, Roboterarm),
+    Software-Agent (Simulationssoftware, ML-Modell),
+    Organisation (Unternehmen, Prüfstelle, Zertifizierer),
+    Sensor (autonome Datenerfassung)."""@de ;
+
+    min:philosophicalBasis """Aristoteles: Causa Efficiens.
+    Latour: Akteur-Netzwerk-Theorie (ANT).
+    Dennett: Intentional Stance (1987).""" ;
+    min:designRationale """Agent ist bewusst NICHT als Modalitäts-Kategorie
+    modelliert. Die Versuchung war groß, Agent als ‹dritte Modalität›
+    oder als Subklasse von Object zu definieren. Aber:
+    — Agent als Modalität bricht das Spektrum (es gibt keine
+      ‹Agent-Seinsweise› zwischen Material und Information).
+    — Agent als Sub-Object verliert die Handlungsfähigkeit
+      (ein Object ist per Definition passiv).
+    Agent ist daher eine eigenständige Kategorie, die das
+    Modalitätsspektrum DURCHSCHNEIDET."""@de ;
+
+    # --- Strukturelles Axiom ---
+    # Ein Agent führt mindestens einen Process durch
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty opa:performs ;
+        owl:someValuesFrom opa:Process
+    ] .
+
+
+# #############################################################################
+#
+#   TEIL II — DIE NEUN RELATIONEN
+#
+#   Drei Relationsgruppen zu je drei:
+#
+#   Gruppe A — Transformation (Process ↔ Object)
+#     hasInput, hasOutput, undergoes, resultOf
+#
+#   Gruppe B — Agency (Agent ↔ Process)
+#     performs, performedBy, controls
+#
+#   Gruppe C — Wirkung (Agent ↔ Object)
+#     actsOn, affectedBy, owns
+#
+#                         performs
+#              Agent ─────────────────▶ Process
+#               │  ▲                    │  ▲  │
+#       actsOn  │  │ affectedBy         │  │  │
+#               ▼  │          hasOutput │  │  │ hasInput
+#              Object  ◄────────────────┘  │  │
+#                  │                       │  │
+#                  └───────────────────────┘  │
+#                          undergoes          │
+#                  ◄──────────────────────────┘
+#
+# #############################################################################
+
+# =============================================================================
+#   Gruppe A — Transformation: Process ↔ Object
+# =============================================================================
+
+opa:hasInput a owl:ObjectProperty ;
+    rdfs:label "has input"@en ;
+    rdfs:label "hat Eingabe"@de ;
+    rdfs:domain opa:Process ;
+    rdfs:range opa:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process nimmt ein Object als Input.
+    Das Coil ist Input des Umformprozesses.
+    Der Prüfling ist Input des Zugversuchs.
+    Die Kette hasInput → Process → hasOutput bildet
+    einen Transformationsschritt."""@de .
+
+opa:hasOutput a owl:ObjectProperty ;
+    rdfs:label "has output"@en ;
+    rdfs:label "hat Ausgabe"@de ;
+    rdfs:domain opa:Process ;
+    rdfs:range opa:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process erzeugt ein Object als Output.
+    Das Bauteil ist Output des Umformprozesses.
+    Der zerstörte Prüfling ist Output des Zugversuchs.
+
+    Input-Object und Output-Object können material-identisch sein
+    (derselbe Stahl, andere Form) oder verschieden
+    (Rohstoffe rein, Produkt raus)."""@de .
+
+opa:undergoes a owl:ObjectProperty ;
+    rdfs:label "undergoes"@en ;
+    rdfs:label "durchläuft"@de ;
+    rdfs:domain opa:Object ;
+    rdfs:range opa:Process ;
+    owl:inverseOf opa:hasInput ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Object durchläuft einen Process als dessen Input.
+    Formale Inverse von hasInput."""@de ;
+    min:designRationale """undergoes ist die formale Inverse von hasInput.
+    Auf OPA-Ebene ist die Disambiguierung (Input vs. Output)
+    durch die explizite Inverse gelöst. Von Object aus betrachtet:
+    ‹das Coil durchläuft den Umformprozess› — es ist der Input.
+    Für die Output-Perspektive nutze man opa:resultOf."""@de .
+
+opa:resultOf a owl:ObjectProperty ;
+    rdfs:label "result of"@en ;
+    rdfs:label "Ergebnis von"@de ;
+    rdfs:domain opa:Object ;
+    rdfs:range opa:Process ;
+    owl:inverseOf opa:hasOutput ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Object ist das Ergebnis eines Processes.
+    Inverse von hasOutput. Das Bauteil ist resultOf Umformung."""@de .
+
+
+# =============================================================================
+#   Gruppe B — Agency: Agent ↔ Process
+# =============================================================================
+
+opa:performs a owl:ObjectProperty ;
+    rdfs:label "performs"@en ;
+    rdfs:label "führt durch"@de ;
+    rdfs:domain opa:Agent ;
+    rdfs:range opa:Process ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Agent führt einen Process durch.
+    Der Werker führt die Montage durch.
+    Die CNC-Maschine führt das Fräsen durch.
+    Die Software führt die Simulation durch.
+
+    performs ist die zentrale Agency-Relation:
+    sie verbindet den Handelnden mit dem Geschehen."""@de .
+
+opa:performedBy a owl:ObjectProperty ;
+    rdfs:label "performed by"@en ;
+    rdfs:label "durchgeführt von"@de ;
+    rdfs:domain opa:Process ;
+    rdfs:range opa:Agent ;
+    owl:inverseOf opa:performs ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process wird von einem Agent durchgeführt.
+    Inverse von performs. Die Messung wird vom Prüfer durchgeführt."""@de .
+
+opa:controls a owl:ObjectProperty ;
+    rdfs:label "controls"@en ;
+    rdfs:label "steuert"@de ;
+    rdfs:domain opa:Agent ;
+    rdfs:range opa:Process ;
+    rdfs:subPropertyOf opa:performs ;
+    rdfs:comment """Ein Agent steuert einen Process.
+    Stärker als performs: controls impliziert, dass der Agent
+    die Parameter des Processes bestimmt und anpassen kann.
+
+    Der Regelkreis steuert die Temperatur.
+    Der Konstrukteur steuert den Entwurfsprozess.
+    Die SPS steuert den Fertigungsablauf.
+
+    Nicht jeder, der performs, controls auch.
+    Ein Fließband performs Transport, aber es controls ihn nicht —
+    das tut die Steuerung."""@de .
+
+
+# =============================================================================
+#   Gruppe C — Wirkung: Agent ↔ Object
+# =============================================================================
+
+opa:actsOn a owl:ObjectProperty ;
+    rdfs:label "acts on"@en ;
+    rdfs:label "wirkt auf"@de ;
+    rdfs:domain opa:Agent ;
+    rdfs:range opa:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Agent wirkt auf ein Object.
+    Dies ist die direkte Wirkungsrelation — abgeleitet aus
+    der Kette performs → hasInput, aber als eigenständige
+    Relation modelliert, weil sie praktisch wichtig ist:
+
+    Der Prüfer wirkt auf den Prüfling.
+    Der Roboter wirkt auf das Werkstück.
+
+    actsOn impliziert: der Agent verändert oder beeinflusst
+    das Object — direkt oder über einen Process."""@de .
+
+opa:affectedBy a owl:ObjectProperty ;
+    rdfs:label "affected by"@en ;
+    rdfs:label "betroffen von"@de ;
+    rdfs:domain opa:Object ;
+    rdfs:range opa:Agent ;
+    owl:inverseOf opa:actsOn ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Object wird von einem Agent beeinflusst.
+    Inverse von actsOn."""@de .
+
+opa:owns a owl:ObjectProperty ;
+    rdfs:label "owns"@en ;
+    rdfs:label "besitzt"@de ;
+    rdfs:domain opa:Agent ;
+    rdfs:range opa:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Agent besitzt ein Object.
+    Besitz im weiteren Sinne: Verantwortung, Zuständigkeit,
+    Eigentum, Kontrolle über den Lebenszyklus.
+
+    Das Unternehmen besitzt das Produkt.
+    Der Prüfer besitzt die Prüfeinrichtung.
+    Der Nutzer besitzt das Gerät.
+
+    owns ist wichtig für Provenienz und Verantwortlichkeit
+    in Produktpässen und Lieferketten."""@de .
+
+
+# #############################################################################
+#
+#   TEIL III — DISJUNKTHEIT UND BEZIEHUNGEN ZWISCHEN KATEGORIEN
+#
+# #############################################################################
+
+# --- Object und Process sind disjunkt ---
+# (Was ist, geschieht nicht. Was geschieht, ist nicht.)
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( opa:Object opa:Process ) .
+
+# --- Agent ist NICHT disjunkt mit Object oder Process ---
+# Ein Agent kann zugleich Object sein (ein Roboter ist ein physisches Ding
+# UND ein Handelnder). Das ist gewollt.
+#
+# min:designRationale: Die Nicht-Disjunktheit von Agent mit Object
+# ist die formale Umsetzung der Einsicht, dass Handlungsfähigkeit
+# keine SUBSTANZ ist, sondern eine FÄHIGKEIT, die materialen
+# Entitäten zukommen kann.
+
+
+# #############################################################################
+#
+#   TEIL IV — PROPERTY CHAIN AXIOME
+#
+#   Abgeleitete Beziehungen, die aus den Grundrelationen folgen.
+#
+# #############################################################################
+
+# Wenn ein Agent einen Process performs und der Process hasInput ein Object,
+# dann actsOn der Agent das Object.
+
+opa:actsOn owl:propertyChainAxiom ( opa:performs opa:hasInput ) .
+
+# Wenn ein Agent einen Process performs und der Process hasOutput ein Object,
+# dann gibt es eine indirekte Wirkung — modellierbar als produces.
+
+opa:produces a owl:ObjectProperty ;
+    rdfs:label "produces"@en ;
+    rdfs:label "erzeugt"@de ;
+    rdfs:domain opa:Agent ;
+    rdfs:range opa:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    owl:propertyChainAxiom ( opa:performs opa:hasOutput ) ;
+    rdfs:comment """Ein Agent erzeugt ein Object.
+    Abgeleitete Relation: Agent performs Process, Process hasOutput Object.
+    Der Werker erzeugt das Bauteil.
+    Die Software erzeugt die Simulation."""@de .
+
+
+# #############################################################################
+#
+#   TEIL V — MINIMALE DATATYPE PROPERTIES
+#
+#   OPA definiert nur die Properties, die für JEDE Kategorie gelten.
+#   Domänenspezifische Properties gehören in sdata oder tiefer.
+#
+# #############################################################################
+
+opa:hasIdentifier a owl:DatatypeProperty ;
+    rdfs:label "has identifier"@en ;
+    rdfs:label "hat Identifikator"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Eindeutige Identifikation.
+    UUID, URI, Seriennummer, Personalnummer, Maschinenkennung.
+    Jedes identifizierbare Ding in jeder Kategorie."""@de .
+
+opa:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:label "hat Name"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Menschenlesbarer Name."@de .
+
+opa:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "has timestamp"@en ;
+    rdfs:label "hat Zeitstempel"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:dateTime ;
+    rdfs:comment """Zeitpunkt der Existenz, des Geschehens,
+    oder der Handlung. Für Objects: Entstehungszeitpunkt.
+    Für Processes: Start/Ende. Für Agents: Registrierung."""@de .
+
+opa:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:label "hat Beschreibung"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Freitextbeschreibung."@de .
+
+opa:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:label "hat Status"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Zustand des Nexus.
+    Für Objects: ‹raw›, ‹processed›, ‹end-of-life›.
+    Für Processes: ‹planned›, ‹running›, ‹completed›, ‹failed›.
+    Für Agents: ‹active›, ‹inactive›, ‹decommissioned›.
+    Wertebereiche sind Sache der Domänenschicht."""@de .
+
+
+# #############################################################################
+#
+#   TEIL VI — BRÜCKE ZU SDATA
+#
+#   OPA definiert NICHT, was sdata definiert.
+#   Aber OPA deklariert die Anschlussstellen.
+#
+#   sdata:Object   rdfs:subClassOf opa:Object .
+#   sdata:Activity rdfs:subClassOf opa:Process .
+#   sdata:Data     rdfs:subClassOf min:Nexus .   ← (informational-modal)
+#   sdata:Agent    rdfs:subClassOf opa:Agent .
+#
+#   Der bemerkenswerte Punkt: sdata:Data sitzt auf min:Nexus,
+#   nicht auf opa:Object. Daten SIND zwar Nexus (sie haben
+#   Bytes und Semantik), aber sie sind informational-modal —
+#   ihr primärer Zugang geht über die Information, nicht über
+#   die Materialität. OPA lässt diese Stelle bewusst offen.
+#
+# #############################################################################
+
+# (keine Klassen hier — nur Dokumentation der Schnittstelle)
+
+
+# #############################################################################
+#
+#   EPILOG
+#
+#   OPA sagt:
+#
+#     Es gibt Dinge    (Object)  — sie werden transformiert
+#     Es gibt Vorgänge (Process) — sie transformieren
+#     Es gibt Handelnde (Agent)  — sie bewirken
+#
+#   Diese drei Kategorien sind nicht willkürlich.
+#   Object und Process folgen aus dem MIN-Modalitätsspektrum.
+#   Agent folgt aus der Einsicht, dass Kausalität allein
+#   nicht erklärt, WARUM etwas geschieht — dazu braucht
+#   man einen Handelnden.
+#
+#   Object und Process sind disjunkt.
+#   Agent ist nicht disjunkt — er kann zugleich Object sein.
+#   Das ist kein Fehler, sondern die Anerkennung, dass
+#   Handlungsfähigkeit eine Eigenschaft ist, keine Substanz.
+#
+#   3 Kategorien. 9 + 2 Relationen. 5 Datatype Properties.
+#   1 Property Chain. Keine Domänenannahmen.
+#
+#   OPA v1.0.0 — die erste Interpretation von MIN.
+#
+# #############################################################################

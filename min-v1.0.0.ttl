@@ -1,0 +1,522 @@
+@prefix min:     <https://w3id.org/min#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# =============================================================================
+#
+#   MIN — Material · Information · Nexus
+#
+#   Die Grundontologie.
+#
+#   Alles, was existiert, ist Nexus.
+#   Nexus hat zwei Aspekte: Material und Information.
+#   Kein Material ohne Information. Keine Information ohne Material.
+#   Das ist kein Dualismus. Das ist Polarität.
+#
+#   Philosophische Ahnenreihe:
+#     Aristoteles    — Hyle und Morphe, vereint im Synolon
+#     Spinoza        — Eine Substanz, zwei Attribute (Extensio, Cogitatio)
+#     Whitehead      — Actual Entity mit physischem und konzeptuellem Pol
+#     Simondon       — Individuation als Phasenübergang von Metastabilität
+#
+#   MIN ist keine Klassifikation der Welt.
+#   MIN ist die Grammatik, in der Klassifikationen geschrieben werden.
+#
+#   v1.0.0 — 2026-03-01
+#
+# =============================================================================
+
+# —————————————————————————————————————————————————————————————————————————————
+#   ONTOLOGIE-DEKLARATION
+# —————————————————————————————————————————————————————————————————————————————
+
+<https://w3id.org/min> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/min/1.0.0> ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:title "MIN — Material · Information · Nexus"@en ;
+    dcterms:title "MIN — Material · Information · Nexus"@de ;
+    dcterms:description """Grundontologie, die jede Entität als Einheit
+    eines materialen und eines informationalen Aspekts begreift.
+    Nicht zwei Welten, die verbunden werden müssen —
+    sondern eine Welt, die in zwei Perspektiven zerfällt,
+    wenn man sie betrachtet.
+
+    MIN definiert drei Konzepte und sechs Relationen.
+    Alles andere ist Spezialisierung."""@de ;
+    dcterms:description """Foundational ontology positing every entity
+    as an indissoluble unity of a material and an informational aspect.
+    Three concepts. Six relations. Everything else is specialisation."""@en ;
+    dcterms:creator "Lepy & Claude" ;
+    dcterms:created "2026-03-01"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/sdata/core> .
+
+
+# #############################################################################
+#
+#   TEIL I — DIE DREI KONZEPTE
+#
+#   Nexus ist das Ganze.
+#   Material und Information sind seine Pole.
+#
+#   Denke an einen Magneten: Nord und Süd sind nicht zwei Dinge.
+#   Sie sind zwei Enden desselben Dings. Schneide den Magneten —
+#   du bekommst nicht Nord und Süd getrennt, sondern zwei
+#   vollständige Magnete. So ist Nexus.
+#
+# #############################################################################
+
+# =============================================================================
+#   NEXUS — das Ganze
+# =============================================================================
+
+min:Nexus a owl:Class ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Nexus"@en ;
+    rdfs:label "Nexus"@de ;
+    rdfs:label "ネクサス"@ja ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Nexus ist das, was ist.
+
+    Nicht im Sinne einer leeren Abstraktion wie ‹Entity› oder ‹Thing›,
+    sondern im Sinne einer Konstitutionsaussage: Alles, was existiert,
+    existiert als Einheit von materialem und informationalem Aspekt.
+
+    Der materiale Aspekt: kausale Wirksamkeit, Raumzeitlichkeit,
+    Widerständigkeit, Energiegehalt. Das, was stößt und gestoßen wird.
+
+    Der informationale Aspekt: Struktur, Bestimmtheit, Unterscheidbarkeit,
+    Muster, Form. Das, was erkannt und beschrieben werden kann.
+
+    Nexus ist nicht der Container, der beides enthält.
+    Nexus IST beides — so wie Wasser nicht ein Container für
+    Wasserstoff und Sauerstoff ist, sondern deren Verbindung.
+
+    Formal: Nexus ist die kleinste ontologische Einheit, die zugleich
+    kausale Wirksamkeit (materialer Pol) und strukturelle Bestimmtheit
+    (informationaler Pol) aufweist.
+
+    Grenzbegriffe: Reine Materia Prima (Stoff ohne jede Form) und
+    reiner Logos (Form ohne jeden Träger) sind als Grenzbegriffe
+    denkbar, aber nicht als Wirklichkeiten instantiierbar.
+    Jeder reale Nexus liegt zwischen diesen Polen."""@de ;
+
+    skos:example """Ein Stahlblock ist Nexus: seine Atome sind Material,
+    sein Gefüge ist Information. Ein Messwert ist Nexus: seine Bytes
+    sind Material, seine Semantik ist Information. Ein Prozess ist Nexus:
+    seine Energieflüsse sind Material, seine Parameter sind Information.
+    Ein Mensch ist Nexus. Eine Organisation ist Nexus.
+    Ein Gedanke ist Nexus — denn auch er hat einen neuronalen Träger."""@de ;
+
+    # --- AXIOM 1: Konstitution (jeder Nexus hat beide Aspekte) ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasMaterialAspect ;
+        owl:someValuesFrom min:Material
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasInformationalAspect ;
+        owl:someValuesFrom min:Information
+    ] .
+
+
+# =============================================================================
+#   MATERIAL — der materiale Pol
+# =============================================================================
+
+min:Material a owl:Class ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Material"@en ;
+    rdfs:label "Material"@de ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Der materiale Aspekt eines Nexus.
+
+    Material ist NICHT eine eigenständige Entität.
+    Material ist die Perspektive auf Nexus, die seine kausale
+    Wirksamkeit, seine Raumzeitlichkeit, seine physische
+    Widerständigkeit erfasst.
+
+    Aristotelisch: Hyle — aber nicht die unbestimmte Prima Materia,
+    sondern immer schon geformte Hyle (ἔνυλον εἶδος).
+
+    Spinozisch: Das Attribut der Extensio — Ausdehnung, Körperlichkeit,
+    raumzeitliche Lokalisierung.
+
+    Informationstheoretisch: Der Träger, das Substrat, der Channel.
+    Ohne Material keine Realisierung, keine Kausalität, keine Energie.
+
+    Material ohne Information ist undenkbar.
+    Es wäre strukturloses Etwas — ein Grenzbegriff,
+    der nur als Negation existiert, nie als Wirklichkeit.
+
+    In der Praxis:
+      Bei einem Stahlblock — die Atome, die Masse, die Ausdehnung.
+      Bei einer Datei — die Bytes, der Speicherchip, der Magnetismus.
+      Bei einem Prozess — die Kräfte, die Energie, die Maschine.
+      Bei einem Menschen — der Körper, die Neuronen, der Stoffwechsel."""@de ;
+
+    # --- AXIOM 2a: Untrennbarkeit (Material existiert nur als Aspekt) ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:isAspectOf ;
+        owl:someValuesFrom min:Nexus
+    ] .
+
+
+# =============================================================================
+#   INFORMATION — der informationale Pol
+# =============================================================================
+
+min:Information a owl:Class ;
+
+    # --- Bezeichnungen ---
+    rdfs:label "Information"@en ;
+    rdfs:label "Information"@de ;
+
+    # --- Kernbestimmung ---
+    rdfs:comment """Der informationale Aspekt eines Nexus.
+
+    Information ist NICHT eine eigenständige Entität.
+    Information ist die Perspektive auf Nexus, die seine Struktur,
+    seine Bestimmtheit, seine Unterscheidbarkeit erfasst.
+
+    Aristotelisch: Morphe — die Form, die den Stoff bestimmt und
+    erkennbar macht. Eidos — das Wesen, das sagt, WAS etwas ist.
+
+    Spinozisch: Das Attribut der Cogitatio — Denken, Ordnung, Gesetz.
+
+    Informationstheoretisch: Das Muster, die Struktur, der Code.
+    Ohne Information keine Unterscheidung, keine Identität, kein Wissen.
+
+    Information ohne Material ist undenkbar.
+    Es wäre ein Muster ohne Träger — platonische Form ohne
+    Teilhabe an der Wirklichkeit, die nur als Abstraktion existiert,
+    nie als konkretes Etwas.
+
+    In der Praxis:
+      Bei einem Stahlblock — das Gefüge, die Zusammensetzung, die Geometrie.
+      Bei einer Datei — die Semantik, das Schema, der Inhalt.
+      Bei einem Prozess — die Parameter, die Regeln, das Modell.
+      Bei einem Menschen — das Wissen, die Erinnerung, die Identität."""@de ;
+
+    # --- AXIOM 2b: Untrennbarkeit (Information existiert nur als Aspekt) ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:isAspectOf ;
+        owl:someValuesFrom min:Nexus
+    ] .
+
+
+# #############################################################################
+#
+#   TEIL II — DIE SECHS RELATIONEN
+#
+#   Zwei Konstitutionsrelationen   (Nexus → Aspekt)
+#   Zwei Rückbindungen             (Aspekt → Nexus)
+#   Zwei Inter-Nexus-Relationen    (Nexus → Nexus)
+#
+# #############################################################################
+
+# =============================================================================
+#   Konstitutionsrelationen: Nexus → Aspekte
+# =============================================================================
+
+min:hasMaterialAspect a owl:ObjectProperty ;
+    rdfs:label "has material aspect"@en ;
+    rdfs:label "hat materialen Aspekt"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Material ;
+    owl:inverseOf min:isMaterialAspectOf ;
+    rdfs:comment """Verbindet einen Nexus mit seinem materialen Aspekt.
+    Jeder Nexus hat mindestens einen materialen Aspekt (Axiom 1).
+    Dies ist keine Teil-Ganzes-Beziehung — Material ist kein TEIL
+    des Nexus, sondern eine PERSPEKTIVE auf das Ganze."""@de .
+
+min:hasInformationalAspect a owl:ObjectProperty ;
+    rdfs:label "has informational aspect"@en ;
+    rdfs:label "hat informationalen Aspekt"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Information ;
+    owl:inverseOf min:isInformationalAspectOf ;
+    rdfs:comment """Verbindet einen Nexus mit seinem informationalen Aspekt.
+    Jeder Nexus hat mindestens einen informationalen Aspekt (Axiom 1).
+    Dies ist keine Teil-Ganzes-Beziehung — Information ist kein TEIL
+    des Nexus, sondern eine PERSPEKTIVE auf das Ganze."""@de .
+
+
+# =============================================================================
+#   Rückbindungen: Aspekte → Nexus
+# =============================================================================
+
+min:isMaterialAspectOf a owl:ObjectProperty ;
+    rdfs:label "is material aspect of"@en ;
+    rdfs:label "ist materialer Aspekt von"@de ;
+    rdfs:domain min:Material ;
+    rdfs:range min:Nexus ;
+    owl:inverseOf min:hasMaterialAspect ;
+    rdfs:comment """Bindet einen materialen Aspekt an seinen Nexus zurück.
+    Inverse von hasMaterialAspect."""@de .
+
+min:isInformationalAspectOf a owl:ObjectProperty ;
+    rdfs:label "is informational aspect of"@en ;
+    rdfs:label "ist informationaler Aspekt von"@de ;
+    rdfs:domain min:Information ;
+    rdfs:range min:Nexus ;
+    owl:inverseOf min:hasInformationalAspect ;
+    rdfs:comment """Bindet einen informationalen Aspekt an seinen Nexus zurück.
+    Inverse von hasInformationalAspect."""@de .
+
+
+# =============================================================================
+#   Die generische Aspekt-Relation (Superrelation)
+# =============================================================================
+
+min:isAspectOf a owl:ObjectProperty ;
+    rdfs:label "is aspect of"@en ;
+    rdfs:label "ist Aspekt von"@de ;
+    rdfs:domain [
+        a owl:Class ;
+        owl:unionOf (
+            min:Material
+            min:Information
+        )
+    ] ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Generische Superrelation für alle Aspekt-Rückbindungen.
+    Material isAspectOf Nexus. Information isAspectOf Nexus.
+    Dient der axiomatischen Formulierung der Untrennbarkeit."""@de .
+
+min:isMaterialAspectOf rdfs:subPropertyOf min:isAspectOf .
+min:isInformationalAspectOf rdfs:subPropertyOf min:isAspectOf .
+
+
+# =============================================================================
+#   Inter-Nexus-Relationen: Nexus → Nexus
+# =============================================================================
+
+min:nexusWith a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:label "nexus with"@en ;
+    rdfs:label "verbunden mit"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Die primordiale Verbindung zwischen Nexus-Instanzen.
+    Symmetrisch: Wenn A nexusWith B, dann B nexusWith A.
+
+    Dies ist die allgemeinste Beziehung zwischen Existierenden.
+    Alle spezifischeren Relationen (hasInput, describes, performedBy...)
+    sind Spezialisierungen dieser Ur-Relation.
+
+    Whitehead: ‹The many become one, and are increased by one.›
+    Nexus existieren nicht isoliert. Sie sind immer schon
+    in Beziehung — das Beziehungsnetz IST die Wirklichkeit."""@de .
+
+min:hasComponent a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "has component"@en ;
+    rdfs:label "hat Bestandteil"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Nexus enthält einen anderen Nexus als Bestandteil.
+    Transitiv: Wenn A hasComponent B und B hasComponent C,
+    dann A hasComponent C.
+
+    Dies ermöglicht Mereologie: Ein Produkt hat Bauteile.
+    Ein Bauteil hat Werkstoffbereiche. Ein Experiment hat Schritte.
+    Ein Datensatz hat Datenpunkte.
+
+    Nicht zu verwechseln mit den Aspekt-Relationen:
+    Material und Information sind keine Komponenten des Nexus,
+    sondern seine Pole. hasComponent verbindet Nexus mit Nexus,
+    nicht Nexus mit seinen Aspekten."""@de .
+
+
+# #############################################################################
+#
+#   TEIL III — AXIOM 3: MODALITÄT (Seinsweise)
+#
+#   Jeder Nexus hat beide Pole. Aber nicht bei jedem Nexus
+#   zeigt sich derselbe Pol zuerst. Die Modalität bestimmt,
+#   AUF WELCHE WEISE der Nexus ist.
+#
+#   Nicht: was überwiegt (das wäre Dominanz).
+#   Nicht: was zuerst kommt (das wäre Primat).
+#   Sondern: WIE ist er (Seinsweise, tropos tou einai).
+#
+#   Das Modalitätsspektrum:
+#
+#       Material ◄━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━► Information
+#       ■■■■■■■■░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+#       Stahlblock                          Messdatei
+#                       Maschine
+#                      (balanced)
+#
+#   Drei Modalitäten ermöglichen die Spezialisierung
+#   in darüberliegenden Ontologien (OPA, sdata).
+#
+#   Philosophisch: Modalität im Sinne von Seinsweise,
+#   nicht im logischen Sinne von Möglichkeit/Notwendigkeit.
+#     Husserl: Gegebenheitsweise (Logische Untersuchungen)
+#     Heidegger: Seinsart (Sein und Zeit, §3)
+#     Aristoteles: tropos tou einai (Metaphysik, Δ)
+#
+# #############################################################################
+
+min:Modality a owl:Class ;
+    rdfs:label "Modality"@en ;
+    rdfs:label "Modalität"@de ;
+    rdfs:comment """Die Seinsweise eines Nexus.
+
+    Modalität fragt nicht ‹was überwiegt?›, sondern
+    ‹auf welche Weise IST dieser Nexus?›
+
+    Drei kanonische Positionen im Polaritätsspektrum:
+    — MaterialModal: auf materiale Weise seiend
+    — Balanced: auf ausgewogene Weise seiend
+    — InformationalModal: auf informationale Weise seiend
+
+    Die Modalität ist keine Messgröße, sondern eine qualitative
+    Bestimmung des primären Zugangswegs: Wie begegnet uns
+    dieser Nexus zuerst? Als physisches Ding? Als Geschehen?
+    Als Struktur?"""@de ;
+    min:philosophicalBasis """Husserl: Gegebenheitsweise (Logische Untersuchungen).
+    Heidegger: Seinsart (Sein und Zeit, §3).
+    Aristoteles: tropos tou einai (Metaphysik, Δ).""" ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            min:MaterialModal
+            min:Balanced
+            min:InformationalModal
+        )
+    ] .
+
+min:MaterialModal a min:Modality , owl:NamedIndividual ;
+    rdfs:label "material-modal"@en ;
+    rdfs:label "material-modal"@de ;
+    rdfs:comment """Auf materiale Weise seiend.
+    Der Nexus zeigt sich primär als physisches, kausales,
+    raumzeitlich ausgedehntes Etwas. Seine Information ist real,
+    aber der primäre Zugang geht über die Materialität.
+    Beispiele: Rohstoff, Coil, Bauteil, Werkzeug."""@de .
+
+min:Balanced a min:Modality , owl:NamedIndividual ;
+    rdfs:label "balanced"@en ;
+    rdfs:label "ausgewogen"@de ;
+    rdfs:comment """Auf ausgewogene Weise seiend.
+    Beide Pole sind gleich gewichtig. Der Nexus ist weder
+    primär physisch noch primär informational — er ist
+    Transformator, Vermittler, Übersetzer zwischen den Polen.
+    Beispiele: Fertigungsprozess, Experiment, Maschine, Mensch."""@de .
+
+min:InformationalModal a min:Modality , owl:NamedIndividual ;
+    rdfs:label "informational-modal"@en ;
+    rdfs:label "informational-modal"@de ;
+    rdfs:comment """Auf informationale Weise seiend.
+    Der Nexus zeigt sich primär als Struktur, Muster, Wissen.
+    Sein Material ist real (Speichermedium), aber der primäre
+    Zugang geht über die Information.
+    Beispiele: Messdaten, Modell, Zertifikat, Produktpass."""@de .
+
+min:hasModality a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label "has modality"@en ;
+    rdfs:label "hat Modalität"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Modality ;
+    rdfs:comment """Ordnet einem Nexus seine Seinsweise zu.
+    Funktional: Jeder Nexus hat genau eine Modalität.
+    Diese Zuordnung ermöglicht die Brücke zur OPA/sdata-Ebene:
+      MaterialModal       → opa:Object    → sdata:Object
+      Balanced            → opa:Process   → sdata:Activity
+      InformationalModal  → (Domäne)      → sdata:Data"""@de .
+
+
+# #############################################################################
+#
+#   TEIL IV — DISJUNKTHEIT UND ABSCHLUSS
+#
+# #############################################################################
+
+# --- Material und Information sind disjunkt ---
+# (Man kann nicht zugleich reiner Stoff-Aspekt und reiner Form-Aspekt sein)
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( min:Material min:Information ) .
+
+# --- Die drei Modalitäten sind verschieden ---
+
+min:MaterialModal owl:differentFrom min:Balanced .
+min:MaterialModal owl:differentFrom min:InformationalModal .
+min:Balanced owl:differentFrom min:InformationalModal .
+
+
+# #############################################################################
+#
+#   TEIL V — ANNOTATION PROPERTIES FÜR ERWEITERUNGEN
+#
+#   MIN selbst definiert keine Datatype Properties.
+#   Daten (Werte, Einheiten, Zeitstempel) sind Sache der
+#   darüberliegenden Schichten (OPA, sdata).
+#
+#   MIN stellt nur die Annotationsvokabeln bereit,
+#   mit denen Erweiterungen sich selbst beschreiben.
+#
+# #############################################################################
+
+min:designRationale a owl:AnnotationProperty ;
+    rdfs:label "design rationale"@en ;
+    rdfs:label "Entwurfsbegründung"@de ;
+    rdfs:comment """Warum eine Entwurfsentscheidung so und nicht
+    anders getroffen wurde. Dokumentation der Intentionalität."""@de .
+
+min:philosophicalBasis a owl:AnnotationProperty ;
+    rdfs:label "philosophical basis"@en ;
+    rdfs:label "philosophische Grundlage"@de ;
+    rdfs:comment """Verweis auf die philosophische Tradition oder
+    den Denker, der eine Modellierungsentscheidung motiviert."""@de .
+
+min:layer a owl:AnnotationProperty ;
+    rdfs:label "layer"@en ;
+    rdfs:label "Schicht"@de ;
+    rdfs:comment """Die Schicht im Drei-Schichten-Modell:
+    'foundation' (MIN), 'abstraction' (OPA), 'domain' (sdata)."""@de .
+
+min:Nexus min:layer "foundation" .
+min:Material min:layer "foundation" .
+min:Information min:layer "foundation" .
+
+
+# #############################################################################
+#
+#   EPILOG
+#
+#   Was MIN ist:
+#     — Eine Grammatik, keine Enzyklopädie
+#     — Ein Koordinatensystem, keine Landkarte
+#     — Das Prisma, nicht die Farben
+#
+#   Was MIN sagt:
+#     — Es gibt eine Sorte von Existierendem: Nexus
+#     — Jeder Nexus hat zwei Aspekte: Material und Information
+#     — Die Aspekte sind untrennbar (Axiom der Polarität)
+#     — Die Seinsweise bestimmt den Charakter (Modalität)
+#     — Nexus stehen in Beziehung zueinander (nexusWith, hasComponent)
+#
+#   Was MIN NICHT sagt:
+#     — Welche konkreten Klassen es gibt (Sache von OPA, sdata)
+#     — Welche Attribute Dinge haben (Sache der Domain-Schicht)
+#     — Wie Prozesse ablaufen (Sache der Activity-Modellierung)
+#     — Was wahr oder falsch ist (Sache der Instanzebene)
+#
+#   3 Konzepte. 6 Relationen. 3 Axiome. 3 Modalitäten.
+#   Das ist MIN.
+#
+# #############################################################################

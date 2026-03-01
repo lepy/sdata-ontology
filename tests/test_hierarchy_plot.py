@@ -13,34 +13,29 @@ def _model():
     return extract_hierarchy(graph)
 
 
-def test_extract_contains_all_expected_sdata_classes():
+def test_extract_contains_expected_v060_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes if node.kind == "sdata"}
     expected = {
-        str(SDATA.Tangible),
-        str(SDATA.Intangible),
-        str(SDATA.Artifact),
-        str(SDATA.Substance),
+        str(SDATA.Object),
+        str(SDATA.Activity),
+        str(SDATA.Data),
         str(SDATA.Agent),
-        str(SDATA.Process),
-        str(SDATA.Site),
-        str(SDATA.MaterialArtifact),
-        str(SDATA.Material),
-        str(SDATA.MaterialAgent),
-        str(SDATA.MaterialProcess),
-        str(SDATA.MaterialSite),
-        str(SDATA.InformationArtifact),
-        str(SDATA.Information),
-        str(SDATA.Role),
-        str(SDATA.Identifier),
-        str(SDATA.InformationAgent),
-        str(SDATA.InformationProcess),
-        str(SDATA.InformationSite),
+        str(SDATA.Product),
+        str(SDATA.Component),
+        str(SDATA.FormingProcess),
+        str(SDATA.MechanicalTest),
+        str(SDATA.Simulation),
+        str(SDATA.Passport),
+        str(SDATA.MachineAgent),
+        str(SDATA.SoftwareAgent),
+        str(SDATA.AttributeQuantityValue),
+        str(SDATA.ValueDomain),
     }
     assert expected.issubset(classes)
 
 
-def test_extract_is_sdata_only_for_autark_core():
+def test_extract_is_sdata_only():
     model = _model()
     assert {node.kind for node in model.nodes} == {"sdata"}
 
@@ -55,8 +50,12 @@ def test_edges_only_target_sdata_nodes():
         assert kinds[str(edge.parent)] == "sdata"
 
 
-def test_leaf_classes_are_linked_to_domain_classes():
+def test_expected_subclass_edges_exist():
     model = _model()
     edges = {(str(edge.child), str(edge.parent)) for edge in model.edges}
-    assert (str(SDATA.MaterialAgent), str(SDATA.Tangible)) in edges
-    assert (str(SDATA.InformationAgent), str(SDATA.Intangible)) in edges
+    assert (str(SDATA.Component), str(SDATA.Object)) in edges
+    assert (str(SDATA.ManufacturingProcess), str(SDATA.Activity)) in edges
+    assert (str(SDATA.FormingProcess), str(SDATA.ManufacturingProcess)) in edges
+    assert (str(SDATA.MechanicalTest), str(SDATA.Experiment)) in edges
+    assert (str(SDATA.SoftwareAgent), str(SDATA.Agent)) in edges
+    assert (str(SDATA.Passport), str(SDATA.Data)) in edges

@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Agents Hierarchy (autark core agents -> SKOS agent types)",
+		label="sdata Agents Hierarchy (core agents -> SKOS agent types)",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.55,
@@ -30,14 +30,10 @@ digraph "" {
 			label="sdata-core ontology",
 			style=rounded
 		];
-		"https://w3id.org/sdata/core/InformationAgent"	[color="#2B6CB0",
+		"https://w3id.org/sdata/core/Agent"	[color="#2B6CB0",
 			fillcolor="#E8F1FF",
 			fontcolor="#1A365D",
-			label="Information Agent"];
-		"https://w3id.org/sdata/core/MaterialAgent"	[color="#2B6CB0",
-			fillcolor="#E8F1FF",
-			fontcolor="#1A365D",
-			label="Material Agent"];
+			label=Agent];
 		__anchor_core	[height=0,
 			label="",
 			style=invis,
@@ -113,12 +109,11 @@ digraph "" {
 			label="SKOS Concept"];
 		legend_scheme -> legend_concept	[label="broader -> narrower"];
 	}
-	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[label="typed via sdata:agentType"];
-	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/Organization"	[label="also an"];
-	"https://w3id.org/sdata/core/InformationAgent" -> "https://w3id.org/sdata/vocab/agents/Software"	[label="also an"];
-	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[label="typed via sdata:agentType"];
-	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/vocab/agents/Hardware"	[label="also an"];
-	"https://w3id.org/sdata/core/MaterialAgent" -> "https://w3id.org/sdata/vocab/agents/Person"	[label="also an"];
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/AgentTypeScheme"	[label="typed via sdata:agentType"];
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/Hardware"	[label="also an"];
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/Organization"	[label="also an"];
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/Person"	[label="also an"];
+	"https://w3id.org/sdata/core/Agent" -> "https://w3id.org/sdata/vocab/agents/Software"	[label="also an"];
 	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Hardware";
 	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Organization";
 	"https://w3id.org/sdata/vocab/agents/AgentTypeScheme" -> "https://w3id.org/sdata/vocab/agents/Person";

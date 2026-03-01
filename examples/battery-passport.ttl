@@ -1,174 +1,180 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix ex: <https://example.org/battery/> .
+@prefix ex:    <https://example.org/battery/> .
 
 # =============================================================================
-# Example: Battery Pack Product Passport (sdata core 0.5.1)
+# Example: Battery Pack Product Passport (sdata core 0.6.0)
 # =============================================================================
 
-# Material Agents
+# --- Objects -----------------------------------------------------------------
+
+ex:SteelCoil_001
+    a sdata:SemiFinishedProduct ;
+    sdata:hasIdentifier "COIL-001" .
+
+ex:DoorBeam_001
+    a sdata:Component ;
+    sdata:hasIdentifier "PART-DOORBEAM-001" .
+
+ex:DoorModule_001
+    a sdata:Assembly ;
+    sdata:hasIdentifier "ASM-DOOR-001" .
+
+ex:BatteryPack_001
+    a sdata:Product, sdata:Object ;
+    sdata:hasIdentifier "VP-BAT-2026-000001" .
+
+ex:DC04
+    a sdata:Material ;
+    sdata:hasIdentifier "MAT-DC04" .
+
+ex:Zugprobe_A1
+    a sdata:Specimen ;
+    sdata:hasIdentifier "SPEC-A1" .
+
+ex:TensileTool
+    a sdata:Tool ;
+    sdata:hasIdentifier "TOOL-TENSILE-01" .
+
+ex:RecycledSteel_Batch_7
+    a sdata:Recyclate ;
+    sdata:hasIdentifier "REC-STEEL-007" .
+
+# --- Agents ------------------------------------------------------------------
+
 ex:OperatorMueller
-    a sdata:MaterialAgent ;
-    sdata:name "Max Mueller" ;
-    sdata:agentType "Person" ;
-    sdata:locatedAt ex:PackAssembly .
+    a sdata:HumanAgent ;
+    sdata:hasIdentifier "HUM-042" .
 
-ex:ZwickZ100
-    a sdata:MaterialAgent ;
-    sdata:name "Zwick Z100" ;
-    sdata:agentType "Hardware" ;
-    sdata:locatedAt ex:PackAssembly .
-
-# Information Agents
-ex:VoltPackAG
-    a sdata:InformationAgent ;
-    sdata:name "VoltPack AG" ;
-    sdata:agentType "Organization" ;
-    sdata:hostedAt ex:DPPBackend .
+ex:PressLine_A1
+    a sdata:MachineAgent ;
+    sdata:hasIdentifier "MCH-PRESS-A1" .
 
 ex:LSDYNA_R14
-    a sdata:InformationAgent ;
-    sdata:name "LS-DYNA R14" ;
-    sdata:agentType "Solver" ;
-    sdata:hostedAt ex:HPCCluster .
+    a sdata:SoftwareAgent ;
+    sdata:hasIdentifier "SW-LSDYNA-R14" .
 
-# Material Sites
-ex:PackAssembly
-    a sdata:MaterialSite ;
-    sdata:name "VoltPack Montage Dresden" ;
-    sdata:geoCoordinates "51.0504,13.7373" ;
-    sdata:address "Tesla Str. 19, 01309 Dresden, Germany" ;
-    sdata:containsSite ex:PackAssemblyHall3 .
+ex:VoltPackAG
+    a sdata:Organization, sdata:Agent ;
+    sdata:hasIdentifier "ORG-VOLTPACK" .
 
-ex:PackAssemblyHall3
-    a sdata:MaterialSite ;
-    sdata:name "Halle 3" ;
-    sdata:geoCoordinates "51.0506,13.7375" .
+# --- Activities ---------------------------------------------------------------
 
-# Information Sites
-ex:DPPBackend
-    a sdata:InformationSite ;
-    sdata:name "DPP Backend" ;
-    sdata:endpoint "https://dpp.voltpack.example/api"^^xsd:anyURI ;
-    sdata:locatedAt ex:PackAssembly ;
-    sdata:hostedOn ex:ServerRack01 .
+ex:StampingRun_01
+    a sdata:FormingProcess, sdata:Activity ;
+    sdata:hasInput ex:SteelCoil_001 ;
+    sdata:hasOutput ex:DoorBeam_001 ;
+    sdata:performedBy ex:PressLine_A1 ;
+    sdata:usesTool ex:TensileTool ;
+    sdata:producesData ex:StampingData_01 ;
+    sdata:hasStandard "DIN 8584-3" .
 
-ex:HPCCluster
-    a sdata:InformationSite ;
-    sdata:name "HPC Cluster" ;
-    sdata:endpoint "https://hpc.voltpack.example"^^xsd:anyURI ;
-    sdata:locatedAt ex:PackAssembly ;
-    sdata:hostedOn ex:ServerRack01 .
+ex:TensileTest_A1
+    a sdata:MechanicalTest ;
+    sdata:hasInput ex:Zugprobe_A1 ;
+    sdata:performedBy ex:OperatorMueller ;
+    sdata:performedBy ex:PressLine_A1 ;
+    sdata:usesTool ex:TensileTool ;
+    sdata:producesData ex:TensileResult_A1 ;
+    sdata:hasStandard "DIN EN ISO 6892-1" .
 
-# Materials
-ex:NMC811Cathode
-    a sdata:Material ;
-    sdata:name "NMC 811 Kathodenmaterial" ;
-    sdata:description "LiNi0.8Mn0.1Co0.1O2" .
+ex:CrashSimulation_v3
+    a sdata:Simulation ;
+    sdata:hasInput ex:BatteryModel_v3 ;
+    sdata:performedBy ex:LSDYNA_R14 ;
+    sdata:producesData ex:CrashResult_v3 ;
+    sdata:hasStandard "OEM Crash Protocol 3.2" .
 
-ex:RecycledNickel
-    a sdata:Material ;
-    sdata:name "Recyceltes Nickelsulfat" ;
-    sdata:recoveredFrom ex:BatteryPack001 .
+ex:PackAssembly_01
+    a sdata:AssemblyProcess ;
+    sdata:hasInput ex:DoorBeam_001 ;
+    sdata:hasOutput ex:DoorModule_001 ;
+    sdata:performedBy ex:OperatorMueller ;
+    sdata:producesData ex:AssemblyData_01 .
 
-# Information (non-discrete info substance)
-ex:SensorRawData
-    a sdata:Information ;
-    sdata:name "Raw Sensor Data Stream" ;
-    sdata:description "High-frequency vibration telemetry stream." ;
-    sdata:hostedAt ex:HPCCluster ;
-    sdata:derivedFrom ex:BatteryPassport001 .
+ex:SteelRecovery_01
+    a sdata:RecyclingProcess ;
+    sdata:hasInput ex:DoorBeam_001 ;
+    sdata:hasOutput ex:RecycledSteel_Batch_7 ;
+    sdata:performedBy ex:VoltPackAG ;
+    sdata:producesData ex:RecoveryData_01 .
 
-# Identifiers
-ex:BatteryPack001Serial
-    a sdata:Identifier ;
-    sdata:identifierType "Serial" ;
-    sdata:identifierValue "VP-BAT-2026-000001" ;
-    sdata:validFrom "2026-01-15T08:00:00Z"^^xsd:dateTimeStamp .
+# --- Data --------------------------------------------------------------------
 
-ex:DPPUriId
-    a sdata:Identifier ;
-    sdata:identifierType "URI" ;
-    sdata:identifierValue "urn:voltpack:dpp:VP-BAT-2026-000001" .
+ex:StampingData_01
+    a sdata:ProcessData ;
+    sdata:describes ex:DoorBeam_001 ;
+    sdata:producedBy ex:StampingRun_01 ;
+    sdata:hasValue 1850.0 ;
+    sdata:hasUnit "kN" ;
+    sdata:hasVersion "1.0.0" .
 
-# Material Artifacts
-ex:ServerRack01
-    a sdata:MaterialArtifact ;
-    sdata:name "Server Rack 01" ;
-    sdata:hasIdentifier ex:DPPUriId ;
-    sdata:locatedAt ex:PackAssembly .
+ex:TensileResult_A1
+    a sdata:MeasurementData ;
+    sdata:describes ex:Zugprobe_A1 ;
+    sdata:producedBy ex:TensileTest_A1 ;
+    sdata:hasQuantity ex:YieldStrength_AQV ;
+    sdata:hasVersion "1.0.0" .
 
-ex:BatteryPack001
-    a sdata:MaterialArtifact ;
-    sdata:name "VoltPack 96S Battery Pack" ;
-    sdata:description "Automotive battery pack" ;
-    sdata:hasIdentifier ex:BatteryPack001Serial ;
-    sdata:consistsOf ex:NMC811Cathode ;
-    sdata:hasPart ex:ModuleM01 ;
-    sdata:locatedAt ex:PackAssembly .
+ex:CrashResult_v3
+    a sdata:SimulationResult ;
+    sdata:describes ex:BatteryPack_001 ;
+    sdata:producedBy ex:CrashSimulation_v3 ;
+    sdata:hasVersion "3.0.0" .
 
-ex:ModuleM01
-    a sdata:MaterialArtifact ;
-    sdata:name "Module M01" ;
-    sdata:hasIdentifier ex:BatteryPack001Serial ;
-    sdata:locatedAt ex:PackAssemblyHall3 .
+ex:BatteryModel_v3
+    a sdata:Model ;
+    sdata:describes ex:BatteryPack_001 ;
+    sdata:hasVersion "3.0.0" .
 
-# Roles
-ex:ManufacturerRole
-    a sdata:Role ;
-    sdata:roleType "Manufacturer" ;
-    sdata:description "Hersteller des Battery Packs" .
+ex:Passport_001
+    a sdata:Passport, sdata:Data ;
+    sdata:describes ex:BatteryPack_001 ;
+    sdata:hasVersion "0.6.0" .
 
-ex:ProductPassportRole
-    a sdata:Role ;
-    sdata:roleType "ProductPassport" .
+ex:InspectionCertificate_001
+    a sdata:Certificate ;
+    sdata:describes ex:BatteryPack_001 ;
+    sdata:certifiedBy ex:VoltPackAG ;
+    sdata:hasStandard "EN 10204 3.1" ;
+    sdata:hasVersion "2026-03" .
 
-# Role realizations
-ex:VoltPackAG sdata:realizes ex:ManufacturerRole .
+ex:YieldStrengthData
+    a sdata:MaterialProperty ;
+    sdata:describes ex:DC04 ;
+    sdata:hasValue 340.0 ;
+    sdata:hasUnit "MPa" ;
+    sdata:hasVersion "1.0.0" .
 
-# Information Artifacts
-ex:BatteryPassport001
-    a sdata:InformationArtifact ;
-    sdata:name "Battery Passport VP-BAT-2026-000001" ;
-    sdata:version "0.3.0" ;
-    sdata:description "EU Digital Product Passport" ;
-    sdata:represents ex:BatteryPack001 ;
-    sdata:consistsOf ex:SensorRawData ;
-    sdata:realizes ex:ProductPassportRole ;
-    sdata:hasIdentifier ex:DPPUriId ;
-    sdata:hostedAt ex:DPPBackend ;
-    sdata:validFrom "2026-01-15T08:00:00Z"^^xsd:dateTimeStamp .
+ex:Meta_StampingData
+    a sdata:Metadata ;
+    sdata:describes ex:StampingData_01 ;
+    sdata:hasVersion "1.0.0" .
 
-# Material Process
-ex:PackAssemblyProcess
-    a sdata:MaterialProcess ;
-    sdata:name "Pack-Montage VP-BAT-2026-000001" ;
-    sdata:wasPerformedBy ex:OperatorMueller ;
-    sdata:consumes ex:NMC811Cathode ;
-    sdata:generates ex:BatteryPack001 ;
-    sdata:locatedAt ex:PackAssemblyHall3 ;
-    prov:startedAtTime "2026-01-15T07:00:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-01-15T15:30:00Z"^^xsd:dateTimeStamp .
+ex:MechanicalTestReport
+    a sdata:Table ;
+    sdata:describes ex:TensileTest_A1 ;
+    sdata:hasVersion "1.0.0" .
 
-# Information Process
-ex:CrashSimulationV3
-    a sdata:InformationProcess ;
-    sdata:name "Crash-Simulation v3" ;
-    sdata:wasPerformedBy ex:LSDYNA_R14 ;
-    sdata:consumes ex:BatteryPassport001 ;
-    sdata:generates ex:SimulationReportV3 ;
-    sdata:hostedAt ex:HPCCluster ;
-    prov:startedAtTime "2026-02-25T14:00:00Z"^^xsd:dateTimeStamp ;
-    prov:endedAtTime "2026-02-25T16:00:00Z"^^xsd:dateTimeStamp .
+# --- AQV / ValueDomain -------------------------------------------------------
 
-ex:SimulationReportV3
-    a sdata:InformationArtifact ;
-    sdata:name "Simulation Report v3" ;
-    sdata:version "3.0" ;
-    sdata:represents ex:CrashSimulationV3 ;
-    sdata:hostedAt ex:HPCCluster .
+ex:YieldStrength_AQV
+    a sdata:AttributeQuantityValue ;
+    sdata:unitSymbol "MPa" ;
+    sdata:dtype "float" ;
+    sdata:hasValueDomain ex:YieldStrengthSpec .
+
+ex:YieldStrengthSpec
+    a sdata:ValueDomain ;
+    sdata:domainDescription "Yield strength must be between 270 and 410 MPa." .
+
+# --- Object to Data aggregation ---------------------------------------------
+
+ex:BatteryPack_001
+    sdata:hasPassport ex:Passport_001 ;
+    sdata:hasData ex:CrashResult_v3 ;
+    sdata:hasData ex:InspectionCertificate_001 .
 
 # =============================================================================
 # END — Battery Passport Example

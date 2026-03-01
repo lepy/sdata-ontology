@@ -17,8 +17,7 @@ def _model():
 def test_extract_contains_root_nodes():
     model = _model()
     kinds = {str(node.iri): node.kind for node in model.nodes}
-    assert str(SDATA.MaterialAgent) in kinds
-    assert str(SDATA.InformationAgent) in kinds
+    assert str(SDATA.Agent) in kinds
     assert str(SAGENTS.AgentTypeScheme) in kinds
 
 
@@ -40,9 +39,8 @@ def test_extract_contains_expected_agent_concepts():
 def test_extract_contains_expected_hierarchy_edges():
     model = _model()
     edges = {(str(edge.parent), str(edge.child)) for edge in model.edges}
-    assert (str(SDATA.MaterialAgent), str(SAGENTS.AgentTypeScheme)) in edges
-    assert (str(SDATA.InformationAgent), str(SAGENTS.AgentTypeScheme)) in edges
-    assert (str(SDATA.MaterialAgent), str(SAGENTS.Person)) in edges
-    assert (str(SDATA.MaterialAgent), str(SAGENTS.Hardware)) in edges
-    assert (str(SDATA.InformationAgent), str(SAGENTS.Software)) in edges
+    assert (str(SDATA.Agent), str(SAGENTS.AgentTypeScheme)) in edges
+    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Person)) in edges
     assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Hardware)) in edges
+    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Organization)) in edges
+    assert (str(SAGENTS.AgentTypeScheme), str(SAGENTS.Software)) in edges

@@ -34,7 +34,7 @@ class HierarchyModel:
 
 
 def load_graph(core_path: Path, alignment_path: Path | None = None) -> Graph:
-    """Load autark core ontology and optional alignment module into one RDF graph."""
+    """Load core ontology and an optional overlay module into one RDF graph."""
     if not core_path.exists():
         raise FileNotFoundError(f"Core ontology not found: {core_path}")
 
@@ -113,7 +113,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Class Hierarchy (autark core)",
+        label="sdata Class Hierarchy (core v0.6.0 / MIN+OPA based)",
         labelloc="t",
         labeljust="c",
     )
@@ -142,35 +142,6 @@ def build_agraph(model: HierarchyModel):
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
-
-    dual_pairs = [
-        (SDATA.MaterialArtifact, SDATA.InformationArtifact),
-        (SDATA.Material, SDATA.Information),
-        (SDATA.MaterialAgent, SDATA.InformationAgent),
-        (SDATA.MaterialProcess, SDATA.InformationProcess),
-        (SDATA.MaterialSite, SDATA.InformationSite),
-    ]
-    node_ids = {str(node.iri) for node in model.nodes}
-    for left, right in dual_pairs:
-        left_id, right_id = str(left), str(right)
-        if left_id in node_ids and right_id in node_ids:
-            pair_rank = sdata_cluster.add_subgraph(
-                name=f"cluster_dual_rank_{left_id.rsplit('/', 1)[-1]}",
-                rank="same",
-                style="invis",
-            )
-            pair_rank.add_node(left_id)
-            pair_rank.add_node(right_id)
-            graph.add_edge(
-                left_id,
-                right_id,
-                dir="none",
-                style="dashed",
-                color="#6B7280",
-                fontcolor="#6B7280",
-                label="dual",
-                constraint="false",
-            )
 
     legend = graph.add_subgraph(name="cluster_legend", label="Legend", color="#CBD5E0", style="rounded")
     legend.add_node(
