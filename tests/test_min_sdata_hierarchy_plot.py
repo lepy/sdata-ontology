@@ -32,6 +32,7 @@ def test_extract_contains_expected_bridge_edges():
     assert (str(SDATA.Hardware), str(MIN.Object)) in edges
     assert (str(SDATA.Software), str(MIN.Object)) in edges
     assert (str(SDATA.Data), str(MIN.Data)) in edges
+    assert (str(SDATA.Process), str(MIN.Process)) in edges
 
     assert (str(SDATA.Person), str(MIN.Agent)) in edges
     assert (str(SDATA.HardwareAgent), str(MIN.Agent)) in edges

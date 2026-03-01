@@ -103,7 +103,7 @@ ex:AmbientMarineAir
 # --- Processes ----------------------------------------------------------------
 
 ex:CathodeProduction_01
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:NMC811 ;
     min:hasOutput ex:CathodeFoil_01 ;
     min:performedBy ex:OperatorMueller ;
@@ -117,7 +117,7 @@ ex:CathodeProduction_01
     ] .
 
 ex:CellAssembly_01
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:CathodeFoil_01 ;
     min:hasOutput ex:BatteryCell_01 ;
     min:performedBy ex:OperatorMueller ;
@@ -130,7 +130,7 @@ ex:CellAssembly_01
     ] .
 
 ex:TensileTest_01
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:BatteryCell_01 ;
     min:performedBy ex:OperatorMueller ;
     min:performedBy ex:PressLine_A1 ;
@@ -149,7 +149,7 @@ ex:TensileTest_01
     ] .
 
 ex:CrashSimulation_v3
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:BatteryPack_001 ;
     min:hasOutput ex:BatteryPack_001 ;
     min:performedBy ex:LSDYNA_R14 ;
@@ -162,7 +162,7 @@ ex:CrashSimulation_v3
     ] .
 
 ex:PackAssembly_01
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:BatteryCell_01 ;
     min:hasOutput ex:BatteryPack_001 ;
     min:performedBy ex:OperatorMueller ;
@@ -175,7 +175,7 @@ ex:PackAssembly_01
     ] .
 
 ex:StorageCorrosion_01
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:BatteryPack_001 ;
     min:hasOutput ex:BatteryPack_001_Corroded ;
     min:performedBy ex:AmbientMarineAir ;

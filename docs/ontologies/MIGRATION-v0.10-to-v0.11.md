@@ -52,6 +52,17 @@ VORHER (3 Schichten):     NACHHER (2 Schichten):
 **Konsequenz:** `sdata:Data` ist nicht mehr unter `min:Object`.
 SPARQL-Queries wie `?x a min:Object` liefern keine Data-Instanzen mehr.
 
+### 3b. Prozessprofil im sdata-Repository
+
+Zusätzlich verwendet dieses Repository ein Domänenprofil mit:
+
+- `sdata:Process rdfs:subClassOf min:Process`
+- Prozesssemantik über State Space:
+  - `sms:hasStateAssignment` auf `sms:MethodAxis` und `sms:DomainAxis`
+
+Damit bleibt MIN top-level, aber sdata bekommt eine explizite
+Domänenklasse für Prozesse.
+
 ### 4. Entfernte MIN/OPA-Konzepte
 
 | Konzept                         | Ersatz                          |

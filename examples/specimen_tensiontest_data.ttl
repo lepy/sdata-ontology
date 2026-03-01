@@ -109,7 +109,7 @@
 #   PROCESS 1 — Probenfertigung
 # =============================================================================
 
-:probenfertigung a min:Process ;
+:probenfertigung a sdata:Process ;
     rdfs:label "Probenfertigung"@de ;
     min:hasInput :coil ;
     min:hasOutput :probe ;
@@ -154,7 +154,7 @@
 #   PROCESS 2 — Zugversuch
 # =============================================================================
 
-:zugversuch a min:Process ;
+:zugversuch a sdata:Process ;
     rdfs:label "Zugversuch Nr. 42"@de ;
     min:hasInput :probe ;
     min:performedBy :pruefer ;

@@ -2,6 +2,12 @@
 
 sdata is a modular ontology suite for Product Passports, Circular Economy and Digital Twins.
 
+## Start here
+
+1. [Quickstart](quickstart.md)
+2. [Modeling Cheat Sheet](modeling-cheatsheet.md)
+3. [Migration v0.10 -> v0.11](ontologies/MIGRATION-v0.10-to-v0.11.md)
+
 ## Included modules
 
 - `sdata-core.ttl` / `sdata-core-v0.11.0.ttl`: core ontology (MIN v2 based)
@@ -9,7 +15,7 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 - `sdata-material-state.ttl`: material state space extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **10 classes**, **10 object properties**, **7 datatype properties**.
+Current core model: **11 classes**, **10 object properties**, **7 datatype properties**.
 
 ## Read this first
 
@@ -63,6 +69,12 @@ make viz-examples
 ```
 
 `viz-examples` renders every Turtle file in `examples/`.
+
+Key diagrams:
+
+- `docs/diagrams/sdata-min-core-hierarchy.svg`
+- `docs/diagrams/sdata-class-hierarchy.svg`
+- `docs/diagrams/sdata-material-state.svg`
 
 ## Build docs
 

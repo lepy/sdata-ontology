@@ -5,7 +5,10 @@ theme:
   name: material
 nav:
   - Home: index.md
+  - Quickstart: quickstart.md
+  - Modeling Cheat Sheet: modeling-cheatsheet.md
   - Examples: examples.md
+  - Migration v0.10 -> v0.11: ontologies/MIGRATION-v0.10-to-v0.11.md
   - Ontologies:
       - sdata-core: ontologies/sdata-core/index.md
       - sdata-material-state: ontologies/sdata-material-state.md
