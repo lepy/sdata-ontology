@@ -8,6 +8,12 @@ Wesentliche Relationen:
 - `sdata:precedes` / `sdata:follows` (Instanz-Level zwischen Prozessen)
 - `sdata:observes` (Beobachtungsprozess zu Zielprozess)
 
+Typischer Einsatz:
+
+- Verb-Kette per `sdata:Creation -> ... -> sdata:Recovery`
+- Konkrete Prozessinstanzen per `sdata:precedes` verbinden
+- Beobachtungsprozesse (`sdata:Observation`) mit `sdata:observes` ankoppeln
+
 ## Kurzbeispiel
 
 ```turtle

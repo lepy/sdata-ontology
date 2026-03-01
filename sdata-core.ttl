@@ -41,7 +41,7 @@
 #   Data ist ein Object — identifizierbar, versionierbar, speicherbar.
 #   Spezifische Prozess-Methoden und -Typen leben im State Space.
 #
-#   v0.9.1 — 2026-03-01
+#   v0.9.2 — 2026-03-01
 #
 #   EVOLUTION:
 #     v0.3.0 → v0.6.0  BFO → MIN/OPA
@@ -49,7 +49,7 @@
 #     v0.7.x            Activity → Process, HumanAgent → Person
 #     v0.8.0            Object: 7 → 4 Subklassen, madeOf, usesSoftware
 #     v0.9.0            Process: 14 → 4 Subklassen, MethodAxis
-#     v0.9.1            3 Kategorien statt 4
+#     v0.9.2            3 Kategorien statt 4
 #                        Data: eigene Kategorie → Object-Subklasse
 #                        Certificate, DPP → DataTypeAxis
 #                        Process: 4 → 0 Subklassen → MethodAxis (hierarchisch)
@@ -65,8 +65,8 @@
 
 <https://w3id.org/sdata/core>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/core/0.9.1> ;
-    owl:versionInfo  "0.9.1 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/core/0.9.2> ;
+    owl:versionInfo  "0.9.2 — 2026-03-01" ;
     owl:imports      <https://w3id.org/opa> ;
 
     dcterms:title    "sdata — Structured Scientific and Technical Data"@en ;
@@ -94,7 +94,7 @@ Erweiterungsmodule (separate Dateien, optional importierbar):
     rdfs:seeAlso     <https://w3id.org/sdata/material-state> ;
     min:layer        "domain" ;
 
-    min:designRationale """v0.9.1 reduziert auf 3 Kategorien und 9 Domänenklassen.
+    min:designRationale """v0.9.2 reduziert auf 3 Kategorien und 9 Domänenklassen.
 
 Von 36 Klassen (v0.6.0) auf 9. Alles Domänenspezifische lebt in
 SKOS-Vokabularen des State Space, erweiterbar durch den User.
@@ -116,11 +116,14 @@ Schlüsselentscheidungen:
 2. Process ohne Subklassen
    ManufacturingProcess, Experiment, Simulation, Transport → MethodAxis.
    Die Natur eines Process (transformativ, beobachtend, rechnerisch,
-   logistisch) ist die oberste Ebene der MethodAxis-Hierarchie:
+   logistisch, administrativ, kreativ) ist die oberste Ebene der
+   MethodAxis-Hierarchie:
      method.Transformative → Forming → DeepDrawing
      method.Observational → MechanicalTest → TensileTest
      method.Computational → FEM → CrashSimulation
      method.Logistical
+     method.Administrative → Approval, Certification, QualityGate
+     method.Creative → Design, ProcessPlanning, MaterialSelection
    Die Methode (Tiefziehen, Zugversuch, FEM) lebt in Ebene 2+3.
    Die physikalische Domäne in DomainAxis.
 
@@ -229,7 +232,9 @@ Die ART der Data wird über sms:DataTypeAxis modelliert:
 Die ART ergibt sich auch aus den Relationen:
   Data producedBy [method.Observational/*] → Messdaten
   Data producedBy [method.Computational/*] → Simulationsergebnis
-  Data producedBy [method.Transformative/*] → Prozessdaten"""@de ;
+  Data producedBy [method.Transformative/*] → Prozessdaten
+  Data producedBy [method.Administrative/*] → Zertifikat, Freigabe
+  Data producedBy [method.Creative/*] → Zeichnung, CAD-Modell"""@de ;
     skos:example "Zugversuchsergebnis, Prüfbericht, DPP, Fließkurve."@de .
 
 
@@ -259,8 +264,10 @@ Keine Subklassen. 2 Dimensionen im State Space:
       Observational    — liest Information ab
       Computational    — berechnet Information
       Logistical       — verändert Ort
-    Ebene 2 — Verfahrensgruppe (Forming, MechanicalTest, FEM, ...)
-    Ebene 3 — Spezifisches Verfahren (DeepDrawing, TensileTest, ...)
+      Administrative   — bewertet und entscheidet
+      Creative         — entwirft und plant
+    Ebene 2 — Verfahrensgruppe (Forming, MechanicalTest, FEM, Approval, Design, ...)
+    Ebene 3 — Spezifisches Verfahren (DeepDrawing, TensileTest, QualityGate, ...)
     Beliebig erweiterbar durch User.
 
   sms:DomainAxis — WELCHE Physik?
@@ -585,7 +592,7 @@ sdata:hasValue a owl:DatatypeProperty ;
 
 # #############################################################################
 #
-#   TEIL V — BEISPIEL: ZUGVERSUCH (v0.9.1)
+#   TEIL V — BEISPIEL: ZUGVERSUCH (v0.9.2)
 #
 #   :dc04           a sdata:Material .
 #                   # + sms:OriginAxis(virgin), sms:FormAxis(sheet)
@@ -688,7 +695,7 @@ sdata:hasValue a owl:DatatypeProperty ;
 #
 #   EPILOG
 #
-#   sdata v0.9.1 auf dem Drei-Schichten-Fundament MIN/OPA.
+#   sdata v0.9.2 auf dem Drei-Schichten-Fundament MIN/OPA.
 #
 #     min:MaterialModal       → opa:Object  → sdata:Object  (5 Subkl.)
 #     min:Balanced            → opa:Process → sdata:Process  (0 Subkl.)
@@ -704,8 +711,8 @@ sdata:hasValue a owl:DatatypeProperty ;
 #                        Hardware (opt.)
 #                        Software (opt.)
 #
-#   Von 36 Klassen (v0.6.0) auf 9 (v0.9.1).
-#   Das Wissen lebt in 13 SKOS-Achsen mit 134 Werten.
+#   Von 36 Klassen (v0.6.0) auf 9 (v0.9.2).
+#   Das Wissen lebt in 13 SKOS-Achsen mit 142 Werten.
 #
 #   Das ist sdata.
 #

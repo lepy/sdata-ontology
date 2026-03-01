@@ -8,7 +8,7 @@
  viewBox="0.00 0.00 1426.90 287.40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 262.2)">
 <polygon fill="#fafbfc" stroke="transparent" points="-25.2,25.2 -25.2,-262.2 1401.7,-262.2 1401.7,25.2 -25.2,25.2"/>
-<text text-anchor="middle" x="688.25" y="-217" font-family="Helvetica,sans-Serif" font-size="20.00">sdata Class Hierarchy (core v0.9.1 / MIN+OPA based)</text>
+<text text-anchor="middle" x="688.25" y="-217" font-family="Helvetica,sans-Serif" font-size="20.00">sdata Class Hierarchy (core v0.9.2 / MIN+OPA based)</text>
 <g id="clust1" class="cluster">
 <title>cluster_sdata</title>
 <path fill="#fafbfc" stroke="#90b5e8" d="M20,-8C20,-8 1061,-8 1061,-8 1067,-8 1073,-14 1073,-20 1073,-20 1073,-187 1073,-187 1073,-193 1067,-199 1061,-199 1061,-199 20,-199 20,-199 14,-199 8,-193 8,-187 8,-187 8,-20 8,-20 8,-14 14,-8 20,-8"/>

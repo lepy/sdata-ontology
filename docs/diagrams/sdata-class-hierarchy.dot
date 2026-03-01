@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=20,
-		label="sdata Class Hierarchy (core v0.9.1 / MIN+OPA based)",
+		label="sdata Class Hierarchy (core v0.9.2 / MIN+OPA based)",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.55,

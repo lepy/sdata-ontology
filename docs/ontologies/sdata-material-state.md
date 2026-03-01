@@ -1,52 +1,83 @@
 # sdata-material-state.ttl
 
-State-Space-Erweiterung (`v0.4.0`) für `sdata-core v0.9.1`.
+State-Space-Erweiterung (`v0.4.1`) fuer `sdata-core v0.9.2`.
 
-Modellidee:
+## Zweck
 
-- Zustand wird als Vektor über Achsen modelliert (`sms:StateAxis`).
-- Konkrete Werte kommen aus SKOS-ConceptSchemes.
-- Zuordnung erfolgt über `sms:StateAssignment`.
+`sdata-core` bleibt bewusst klein. Fachliche Auspraegungen werden ueber Achsenwerte modelliert.
 
-## Enthaltene Achsen (13)
+- `sms:StateAxis`
+: beschreibt die Dimension.
+- `sms:StateAssignment`
+: verbindet Resource + Achse + Wert.
+- `skos:Concept`
+: konkreter Wert (hierarchisch erweiterbar).
 
-- Material-Achsen: `OriginAxis`, `ProcessingAxis`, `ConditionAxis`, `FormAxis`, `GradeAxis`, `ComplianceAxis`, `CompositionAxis`, `LifecyclePhaseAxis`
-- Product-Achsen: `StructureAxis`, `RoleAxis`
-- Process-Achsen: `MethodAxis`, `DomainAxis`
-- Data-Achse: `DataTypeAxis`
+## Achsen (13)
+
+- Material:
+  - `OriginAxis`, `ProcessingAxis`, `ConditionAxis`, `FormAxis`, `GradeAxis`, `ComplianceAxis`, `CompositionAxis`, `LifecyclePhaseAxis`
+- Product:
+  - `StructureAxis`, `RoleAxis`
+- Process:
+  - `MethodAxis`, `DomainAxis`
+- Data:
+  - `DataTypeAxis`
+
+## Neu in v0.4.1
+
+- `MethodAxis` hat nun 6 Top-Level-Kategorien:
+  - `Transformative`, `Observational`, `Computational`, `Logistical`, `Administrative`, `Creative`
+- Neue Method-Konzepte:
+  - `Approval`, `Certification`, `QualityGate`, `Design`, `ProcessPlanning`, `MaterialSelection`
 
 ## Kernrelationen
 
-- `sms:hasStateAssignment` (`Object`/`Process` -> `StateAssignment`)
-- `sms:onAxis` (`StateAssignment` -> `StateAxis`)
-- `sms:hasStateValue` (`StateAssignment` -> `skos:Concept`)
-- `sms:hasConceptScheme` (`StateAxis` -> `skos:ConceptScheme`)
+- `sms:hasStateAssignment` (`sdata:Object` oder `sdata:Process` -> `sms:StateAssignment`)
+- `sms:onAxis` (`sms:StateAssignment` -> `sms:StateAxis`)
+- `sms:hasStateValue` (`sms:StateAssignment` -> `skos:Concept`)
+- `sms:hasConceptScheme` (`sms:StateAxis` -> `skos:ConceptScheme`)
 
-## Kurzbeispiel
+## Praxisbeispiele
 
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
-@prefix ex:    <https://example.org/zugversuch/> .
+@prefix ex:    <https://example.org/demo/> .
 
-ex:Probe_A1 a sdata:Product ;
+# Product-Rolle
+ex:Specimen_A1 a sdata:Product ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:RoleAxis ;
     sms:hasStateValue sms:role.Specimen
   ] .
 
-ex:Zugversuch_A1 a sdata:Process ;
+# Process-Methode
+ex:TensileTest_A1 a sdata:Process ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:MethodAxis ;
     sms:hasStateValue sms:method.TensileTest
+  ] ;
+  sms:hasStateAssignment [
+    a sms:StateAssignment ;
+    sms:onAxis sms:DomainAxis ;
+    sms:hasStateValue sms:domain.Structural
   ] .
 
-ex:Messdaten_A1 a sdata:Data ;
+# Data-Typ
+ex:Report_A1 a sdata:Data ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:DataTypeAxis ;
     sms:hasStateValue sms:datatype.TestReport
   ] .
 ```
+
+## Modellierungshinweise
+
+- Nutze Core-Klassen fuer Struktur.
+- Nutze State-Achsen fuer Semantik und Fachdetail.
+- Erweitere Werte als SKOS-Konzepte im passenden `*-values` Scheme.
+- Erweitere Achsen nur, wenn bestehende Achsen fachlich nicht ausreichen.

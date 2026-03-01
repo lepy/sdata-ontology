@@ -12,6 +12,12 @@ Definiert die 7 Verb-Klassen:
 
 Die Verb-Klassen sind orthogonal zur Core-Klasse `sdata:Process` und werden per Multi-Typing genutzt.
 
+In `v0.9.x` gilt:
+
+- Core-Prozesse bleiben `sdata:Process`.
+- Verb-Typ (`Observation`, `Transformation`, ...) kommt aus diesem Modul.
+- Fachmethode (`TensileTest`, `CrashSimulation`, ...) kommt aus `sms:MethodAxis`.
+
 ## Kurzbeispiel
 
 ```turtle

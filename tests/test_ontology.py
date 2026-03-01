@@ -1,4 +1,4 @@
-"""Tests for sdata-core ontology and instance data (v0.9.1)."""
+"""Tests for sdata-core ontology and instance data (v0.9.2)."""
 
 from pathlib import Path
 
