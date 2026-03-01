@@ -50,7 +50,7 @@
     dcterms:description """Foundational ontology positing every entity
     as an indissoluble unity of a material and an informational aspect.
     Three concepts. Six relations. Everything else is specialisation."""@en ;
-    dcterms:creator "Lepy & Claude" ;
+    dcterms:creator "Lepy" ;
     dcterms:created "2026-03-01"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:seeAlso <https://w3id.org/sdata/core> .
