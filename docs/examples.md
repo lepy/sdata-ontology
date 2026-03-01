@@ -14,6 +14,7 @@ This repository ships executable Turtle examples under `examples/`.
 : focused AQV and value-domain modeling sample.
 - `examples/min-opa-examples.ttl`
 : three MIN-v2 modalities (`Object`, `Process`, `Data`) in separate example roots.
+: filename is legacy; content is OPA-free and MIN-v2 based.
 
 ## Render all example graphs
 
@@ -39,6 +40,12 @@ uv run python -m src.visualization.specimen_tensiontest_data_plot
 make viz-min-opa-examples
 uv run python -m src.visualization.min_opa_examples_plot
 ```
+
+This generates 3 filtered views:
+
+- `Object / material-dominant`
+- `Process / balanced`
+- `Data / informational-dominant`
 
 ## Typical output files
 

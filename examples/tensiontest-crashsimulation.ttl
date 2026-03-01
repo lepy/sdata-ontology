@@ -26,7 +26,7 @@ ex:LSDYNA_R14
     min:hasIdentifier "SW-LSDYNA-R14" .
 
 ex:TensileTest_42
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:Specimen_42 ;
     min:performedBy ex:ZwickZ100 ;
     sdata:usesTool ex:ZwickZ100 ;
@@ -39,7 +39,7 @@ ex:TensileTest_42
     ] .
 
 ex:CrashSim_v3
-    a min:Process ;
+    a sdata:Process ;
     min:hasInput ex:Specimen_42 ;
     min:hasOutput ex:Specimen_42 ;
     min:performedBy ex:LSDYNA_R14 ;

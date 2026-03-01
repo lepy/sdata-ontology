@@ -41,6 +41,10 @@ digraph "" {
 			fillcolor="#E7F0FF",
 			fontcolor="#1A365D",
 			label=Object];
+		"https://w3id.org/min#Process"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Process];
 	}
 	subgraph cluster_legend {
 		graph [color="#CBD5E0",
@@ -107,4 +111,9 @@ digraph "" {
 		fontcolor="#44337A",
 		label=Software];
 	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Software";
+	"https://w3id.org/sdata/core/Process"	[color="#6B46C1",
+		fillcolor="#F8EEFF",
+		fontcolor="#44337A",
+		label=Process];
+	"https://w3id.org/min#Process" -> "https://w3id.org/sdata/core/Process";
 }

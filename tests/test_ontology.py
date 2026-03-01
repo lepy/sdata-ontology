@@ -57,6 +57,7 @@ EXPECTED_CLASSES = [
     "Hardware",
     "Software",
     "Data",
+    "Process",
     "Person",
     "HardwareAgent",
     "SoftwareAgent",
@@ -115,12 +116,13 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 10, f"Expected 10 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}"
 
 
 def test_core_uses_min_v2_bases(core_graph):
     assert (SDATA.Material, RDFS.subClassOf, MIN.Object) in core_graph
     assert (SDATA.Data, RDFS.subClassOf, MIN.Data) in core_graph
+    assert (SDATA.Process, RDFS.subClassOf, MIN.Process) in core_graph
     assert (SDATA.Person, RDFS.subClassOf, MIN.Agent) in core_graph
 
 

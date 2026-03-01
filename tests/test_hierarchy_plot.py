@@ -23,6 +23,7 @@ def test_extract_contains_expected_v110_classes():
         str(SDATA.Hardware),
         str(SDATA.Software),
         str(SDATA.Data),
+        str(SDATA.Process),
         str(SDATA.Person),
         str(SDATA.HardwareAgent),
         str(SDATA.SoftwareAgent),
@@ -30,6 +31,7 @@ def test_extract_contains_expected_v110_classes():
         str(SDATA.EnvironmentAgent),
         str(MIN.Object),
         str(MIN.Data),
+        str(MIN.Process),
         str(MIN.Agent),
     }
     assert expected.issubset(classes)
@@ -55,6 +57,7 @@ def test_expected_subclass_edges_exist():
     assert (str(SDATA.Hardware), str(MIN.Object)) in edges
     assert (str(SDATA.Software), str(MIN.Object)) in edges
     assert (str(SDATA.Data), str(MIN.Data)) in edges
+    assert (str(SDATA.Process), str(MIN.Process)) in edges
     assert (str(SDATA.Person), str(MIN.Agent)) in edges
     assert (str(SDATA.HardwareAgent), str(MIN.Agent)) in edges
     assert (str(SDATA.EnvironmentAgent), str(MIN.Agent)) in edges

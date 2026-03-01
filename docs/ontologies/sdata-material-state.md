@@ -55,7 +55,7 @@ ex:Specimen_A1 a sdata:Product ;
   ] .
 
 # Process-Methode
-ex:TensileTest_A1 a min:Process ;
+ex:TensileTest_A1 a sdata:Process ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:MethodAxis ;

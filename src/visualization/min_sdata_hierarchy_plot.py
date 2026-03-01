@@ -18,6 +18,8 @@ MIN_OBJECT = "https://w3id.org/min#Object"
 MIN_PROCESS = "https://w3id.org/min#Process"
 MIN_DATA = "https://w3id.org/min#Data"
 MIN_AGENT = "https://w3id.org/min#Agent"
+SDATA_PROCESS = "https://w3id.org/sdata/core/Process"
+SDATA_DATA = "https://w3id.org/sdata/core/Data"
 SDATA_OBJECT_CHILDREN = (
     "https://w3id.org/sdata/core/Material",
     "https://w3id.org/sdata/core/Product",
@@ -197,6 +199,7 @@ def build_agraph(model: Model):
             container.add_subgraph(present, name=name, rank="same", style="invis")
 
     _rank_same(min_cluster, "cluster_min_rank", (MIN_OBJECT, MIN_PROCESS, MIN_DATA, MIN_AGENT))
+    _rank_same(graph, "sdata_rank_process_data", (SDATA_PROCESS, SDATA_DATA))
     _rank_same(graph, "sdata_rank_object_children", SDATA_OBJECT_CHILDREN)
     _rank_same(graph, "sdata_rank_agent_children", SDATA_AGENT_CHILDREN)
 

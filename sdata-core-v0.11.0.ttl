@@ -58,7 +58,7 @@
     sdata spezialisiert die vier MIN-Kategorien:
       min:Object  → Material, Product, Hardware, Software
       min:Data    → (direkt genutzt, domänenspezifische Typen via State Space)
-      min:Process → (keine Kern-Subklassen, Methode/Domäne via State Space)
+      min:Process → Process (Methode/Domäne via State Space)
       min:Agent   → Person, HardwareAgent, SoftwareAgent, Organization,
                      EnvironmentAgent"""@de ;
     dcterms:creator "Lepy" ;
@@ -198,7 +198,32 @@ sdata:Data a owl:Class ;
 
 # #############################################################################
 #
-#   TEIL II — AGENT-HIERARCHIE
+#   TEIL II — PROCESS
+#
+#   sdata:Process spezialisiert min:Process als Domänenprozess.
+#   Methode und Domäne werden über den State Space modelliert
+#   (sms:MethodAxis, sms:DomainAxis).
+#
+# #############################################################################
+
+sdata:Process a owl:Class ;
+    rdfs:subClassOf min:Process ;
+    rdfs:label "Process"@en ;
+    rdfs:label "Prozess"@de ;
+    rdfs:comment """Domänenspezifischer Prozess in sdata.
+
+    MIN bleibt Top-Level-Ontologie. sdata:Process ist die
+    Domänenklasse für alle Prozessinstanzen im sdata-Kontext.
+    Methodik und Domäne werden über sdata-material-state
+    (MethodAxis, DomainAxis) ausgedrückt."""@de ;
+    min:designRationale """Reintroduziert in sdata-core zur klaren
+    Domänensignatur und API-Stabilität bei gleichzeitiger
+    Beibehaltung von MIN als top-level Fundament."""@de .
+
+
+# #############################################################################
+#
+#   TEIL III — AGENT-HIERARCHIE
 #
 #   sdata:Agent spezialisiert min:Agent für die Domäne.
 #   Fünf Subklassen unterscheiden die Art der Handlungsfähigkeit.
@@ -301,22 +326,6 @@ sdata:EnvironmentAgent a owl:Class ;
 
 # #############################################################################
 #
-#   TEIL III — PROCESS
-#
-#   sdata:Process spezialisiert min:Process.
-#   Keine Kern-Subklassen in v0.11.0.
-#   Methode und Domäne werden über den State Space modelliert
-#   (sms:MethodAxis, sms:DomainAxis).
-#
-# #############################################################################
-
-# Keine eigenen Process-Subklassen.
-# sdata nutzt min:Process direkt.
-# Spezialisierung über sdata-material-state MethodAxis/DomainAxis.
-
-
-# #############################################################################
-#
 #   TEIL IV — SDATA-SPEZIFISCHE OBJECT PROPERTIES
 #
 #   MIN v2 bringt bereits die Kernrelationen mit:
@@ -352,7 +361,7 @@ sdata:hasProduct a owl:ObjectProperty ;
 sdata:usesTool a owl:ObjectProperty ;
     rdfs:label "uses tool"@en ;
     rdfs:label "verwendet Werkzeug"@de ;
-    rdfs:domain min:Process ;
+    rdfs:domain sdata:Process ;
     rdfs:range sdata:Hardware ;
     rdfs:subPropertyOf min:nexusWith ;
     rdfs:comment """Ein Process verwendet ein Hardware-Werkzeug.
@@ -362,7 +371,7 @@ sdata:usesTool a owl:ObjectProperty ;
 sdata:usesSoftware a owl:ObjectProperty ;
     rdfs:label "uses software"@en ;
     rdfs:label "verwendet Software"@de ;
-    rdfs:domain min:Process ;
+    rdfs:domain sdata:Process ;
     rdfs:range sdata:Software ;
     rdfs:subPropertyOf min:nexusWith ;
     rdfs:comment """Ein Process verwendet Software.
@@ -391,8 +400,8 @@ sdata:certifies a owl:ObjectProperty ;
 sdata:succeeds a owl:ObjectProperty ;
     rdfs:label "succeeds"@en ;
     rdfs:label "folgt auf"@de ;
-    rdfs:domain min:Process ;
-    rdfs:range min:Process ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
     rdfs:subPropertyOf min:nexusWith ;
     rdfs:comment """Prozessverkettung: ein Process folgt auf einen
     anderen. Umformen succeeds Walzen. Montage succeeds Fertigung.
@@ -401,8 +410,8 @@ sdata:succeeds a owl:ObjectProperty ;
 sdata:precedes a owl:ObjectProperty ;
     rdfs:label "precedes"@en ;
     rdfs:label "geht voraus"@de ;
-    rdfs:domain min:Process ;
-    rdfs:range min:Process ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
     owl:inverseOf sdata:succeeds ;
     rdfs:subPropertyOf min:nexusWith .
 
@@ -426,7 +435,7 @@ sdata:producedBy a owl:ObjectProperty ;
     rdfs:label "produced by"@en ;
     rdfs:label "erzeugt durch"@de ;
     rdfs:domain sdata:Data ;
-    rdfs:range min:Process ;
+    rdfs:range sdata:Process ;
     rdfs:subPropertyOf min:generatedBy ;
     rdfs:comment """Data wurde durch einen Process erzeugt.
     Domänenspezifische Spezialisierung von min:generatedBy.
@@ -464,14 +473,14 @@ sdata:hasUUID a owl:DatatypeProperty ;
 sdata:hasStartTime a owl:DatatypeProperty ;
     rdfs:label "has start time"@en ;
     rdfs:label "hat Startzeit"@de ;
-    rdfs:domain min:Process ;
+    rdfs:domain sdata:Process ;
     rdfs:range xsd:dateTime ;
     rdfs:comment "Startzeitpunkt eines Prozesses."@de .
 
 sdata:hasEndTime a owl:DatatypeProperty ;
     rdfs:label "has end time"@en ;
     rdfs:label "hat Endzeit"@de ;
-    rdfs:domain min:Process ;
+    rdfs:domain sdata:Process ;
     rdfs:range xsd:dateTime ;
     rdfs:comment "Endzeitpunkt eines Prozesses."@de .
 
@@ -560,11 +569,10 @@ sdata:hasLocation a owl:DatatypeProperty ;
 #
 #   INVENTAR v0.11.0
 #
-#   Klassen:          11  (Material, Product, Hardware, Software, Data,
+#   Klassen:          11  (Material, Product, Hardware, Software, Data, Process,
 #                          Person, HardwareAgent, SoftwareAgent,
 #                          Organization, EnvironmentAgent)
 #                          + min:Object, min:Process, min:Data, min:Agent
-#                          werden direkt genutzt (nicht re-deklariert)
 #
 #   Object Properties: 10  (hasMaterial, hasProduct, usesTool, usesSoftware,
 #                           derivedFrom, certifies, succeeds, precedes,
