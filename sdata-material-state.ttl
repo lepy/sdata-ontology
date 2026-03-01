@@ -15,7 +15,7 @@
 #
 #   sdata-material-state — State Space
 #
-#   Erweiterungsmodul fuer sdata v0.9.1
+#   Erweiterungsmodul für sdata v0.9.2
 #
 #   Architekturprinzip:
 #
@@ -31,7 +31,7 @@
 #   Jede StateAssignment ist ein Data-Nexus mit Provenienz.
 #   Der User definiert, welche Achsen er braucht.
 #
-#   v0.4.0 — 2026-03-01
+#   v0.4.1 — 2026-03-01
 #
 # =============================================================================
 
@@ -42,8 +42,8 @@
 
 <https://w3id.org/sdata/material-state>
     rdf:type         owl:Ontology ;
-    owl:versionIRI   <https://w3id.org/sdata/material-state/0.4.0> ;
-    owl:versionInfo  "0.4.0 — 2026-03-01" ;
+    owl:versionIRI   <https://w3id.org/sdata/material-state/0.4.1> ;
+    owl:versionInfo  "0.4.1 — 2026-03-01" ;
     owl:imports      <https://w3id.org/sdata/core> ;
 
     dcterms:title    "sdata-material-state — State Space"@en ;
@@ -78,7 +78,7 @@ multidimensionalen Zustandsraum von Werkstoffen und Produkten.
 Erweiterbar: Neue Achsen durch Subklassen von sms:StateAxis.
              Neue Werte durch SKOS-Konzepte im jeweiligen ConceptScheme.
              13 Lifecycle-Phasen in 5 Top-Level-Gruppen mit Hierarchie.
-             134 vordefinierte Werte insgesamt."""@en ;
+             142 vordefinierte Werte insgesamt."""@en ;
 
     dcterms:creator  "Lepy & Claude" ;
     dcterms:created  "2026-03-01"^^xsd:date ;
@@ -214,7 +214,7 @@ Kann mehrwertig sein — z.B. Compliance: REACH + RoHS gleichzeitig."""@de .
 
 # #############################################################################
 #
-#   TEIL II — 8 VORDEFINIERTE ACHSEN
+#   TEIL II — 13 VORDEFINIERTE ACHSEN
 #
 #   Jede Achse besteht aus:
 #     1. Einer Subklasse von sms:StateAxis
@@ -749,11 +749,13 @@ sms:MethodAxis a owl:Class ;
     rdfs:comment """Process-Achse: Spezifisches Verfahren / Methode.
 Dreistufige SKOS-Hierarchie:
 
-  Ebene 1 — Natur (4 Top-Level-Konzepte):
+  Ebene 1 — Natur (6 Top-Level-Konzepte):
     Transformative  — verändert Materie (Fertigung, Montage, Recycling)
     Observational   — liest Information ab (Experiment, Inspektion)
     Computational   — berechnet Information (Simulation, ML)
     Logistical      — verändert Ort (Transport, Lagerung)
+    Administrative  — bewertet und entscheidet (Freigabe, Zertifizierung)
+    Creative        — entwirft und plant (Konstruktion, Werkstoffauswahl)
 
   Ebene 2 — Verfahrensgruppe (Forming, MechanicalTest, FEM, ...)
   Ebene 3 — Spezifisches Verfahren (DeepDrawing, TensileTest, ...)
@@ -773,7 +775,9 @@ sms:method-values a skos:ConceptScheme ;
     skos:hasTopConcept sms:method.Transformative ,
                        sms:method.Observational ,
                        sms:method.Computational ,
-                       sms:method.Logistical .
+                       sms:method.Logistical ,
+                       sms:method.Administrative ,
+                       sms:method.Creative .
 
 
 # --- Ebene 1: Natur (4 Top-Level) ---
@@ -807,6 +811,58 @@ sms:method.Logistical a skos:Concept ;
     skos:prefLabel "Logistical"@en , "Logistisch"@de ;
     skos:definition """Verändert den Ort eines Objects, aber nicht seine
 Substanz. Transport, Lagerung, Kommissionierung."""@de .
+
+sms:method.Administrative a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:topConceptOf sms:method-values ;
+    skos:prefLabel "Administrative"@en , "Administrativ"@de ;
+    skos:definition """Bewertet und entscheidet. Verändert nicht die Materie,
+misst nicht, berechnet nicht. Verändert den STATUS eines Objects
+oder einer Data. Freigabe, Genehmigung, Zertifizierung, Audit."""@de .
+
+sms:method.Approval a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Administrative ;
+    skos:prefLabel "Approval"@en , "Freigabe"@de ;
+    skos:definition "Formale Freigabe eines Products oder Process."@de .
+
+sms:method.Certification a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Administrative ;
+    skos:prefLabel "Certification"@en , "Zertifizierung"@de ;
+    skos:definition "Zertifizierungsaudit, Konformitätsbewertung."@de .
+
+sms:method.QualityGate a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Administrative ;
+    skos:prefLabel "Quality Gate"@en , "Qualitätsgate"@de ;
+    skos:definition "SPC-Gate, PPAP-Freigabe, Wareneingangsprüfung."@de .
+
+sms:method.Creative a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:topConceptOf sms:method-values ;
+    skos:prefLabel "Creative"@en , "Kreativ"@de ;
+    skos:definition """Entwirft und plant. Konstruktion, Design, Planung.
+Erzeugt Data (CAD-Modell, Zeichnung, Spezifikation) durch
+menschliche Kreativität, oft unterstützt durch Software."""@de .
+
+sms:method.Design a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Creative ;
+    skos:prefLabel "Design"@en , "Konstruktion"@de ;
+    skos:definition "Produktkonstruktion, CAD-Modellierung."@de .
+
+sms:method.ProcessPlanning a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Creative ;
+    skos:prefLabel "Process Planning"@en , "Prozessplanung"@de ;
+    skos:definition "Fertigungsplanung, Werkzeugauslegung, Methodenplanung."@de .
+
+sms:method.MaterialSelection a skos:Concept ;
+    skos:inScheme sms:method-values ;
+    skos:broader sms:method.Creative ;
+    skos:prefLabel "Material Selection"@en , "Werkstoffauswahl"@de ;
+    skos:definition "Auswahl und Spezifikation des Werkstoffs."@de .
 
 
 # --- Ebene 2+3: Transformative → Verfahrensgruppen → Verfahren ---
@@ -1409,7 +1465,7 @@ sms:datatype.MLModel a skos:Concept ;
 #
 #   EPILOG
 #
-#   sdata-material-state v0.4.0
+#   sdata-material-state v0.4.1
 #
 #   Architektur:
 #
@@ -1417,7 +1473,7 @@ sms:datatype.MLModel a skos:Concept ;
 #     sms:StateAssignment    — die Zuordnung (Data-Nexus mit Provenienz)
 #     skos:Concept           — der Wert (offen erweiterbar)
 #
-#   13 vordefinierte Achsen, 134 vordefinierte Werte.
+#   13 vordefinierte Achsen, 142 vordefinierte Werte.
 #
 #   Erweiterung:
 #     Neue Achse    = 1 Subklasse + 1 ConceptScheme + n Concepts

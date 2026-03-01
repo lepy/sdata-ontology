@@ -45,6 +45,8 @@ def test_extract_contains_expected_value_concepts():
         str(SMS["structure.SinglePart"]),
         str(SMS["role.Specimen"]),
         str(SMS["method.TensileTest"]),
+        str(SMS["method.Administrative"]),
+        str(SMS["method.Creative"]),
         str(SMS["domain.Structural"]),
         str(SMS["datatype.DigitalProductPass"]),
     }

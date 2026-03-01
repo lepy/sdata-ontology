@@ -15,14 +15,14 @@
 <text text-anchor="middle" x="2033.5" y="-308" font-family="Helvetica,sans-Serif" font-size="20.00">sdata&#45;processtypes verb classes</text>
 </g>
 <g id="clust2" class="cluster">
-<title>cluster_agents</title>
-<path fill="#fafbfc" stroke="#9ad9bf" d="M1094,-8C1094,-8 1582,-8 1582,-8 1588,-8 1594,-14 1594,-20 1594,-20 1594,-316 1594,-316 1594,-322 1588,-328 1582,-328 1582,-328 1094,-328 1094,-328 1088,-328 1082,-322 1082,-316 1082,-316 1082,-20 1082,-20 1082,-14 1088,-8 1094,-8"/>
-<text text-anchor="middle" x="1338" y="-308" font-family="Helvetica,sans-Serif" font-size="20.00">sdata&#45;agents vocabulary</text>
-</g>
-<g id="clust3" class="cluster">
 <title>cluster_core</title>
 <path fill="#fafbfc" stroke="#90b5e8" d="M20,-246C20,-246 1062,-246 1062,-246 1068,-246 1074,-252 1074,-258 1074,-258 1074,-445 1074,-445 1074,-451 1068,-457 1062,-457 1062,-457 20,-457 20,-457 14,-457 8,-451 8,-445 8,-445 8,-258 8,-258 8,-252 14,-246 20,-246"/>
 <text text-anchor="middle" x="541" y="-437" font-family="Helvetica,sans-Serif" font-size="20.00">sdata&#45;core classes</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_agents</title>
+<path fill="#fafbfc" stroke="#9ad9bf" d="M1094,-8C1094,-8 1582,-8 1582,-8 1588,-8 1594,-14 1594,-20 1594,-20 1594,-316 1594,-316 1594,-322 1588,-328 1582,-328 1582,-328 1094,-328 1094,-328 1088,-328 1082,-322 1082,-316 1082,-316 1082,-20 1082,-20 1082,-14 1088,-8 1094,-8"/>
+<text text-anchor="middle" x="1338" y="-308" font-family="Helvetica,sans-Serif" font-size="20.00">sdata&#45;agents vocabulary</text>
 </g>
 <!-- https://w3id.org/sdata/core/Creation -->
 <g id="node1" class="node">
@@ -66,144 +66,14 @@
 <path fill="#eef8e7" stroke="#4f8a10" stroke-width="1.6" d="M2445.5,-290C2445.5,-290 2358.5,-290 2358.5,-290 2352.5,-290 2346.5,-284 2346.5,-278 2346.5,-278 2346.5,-266 2346.5,-266 2346.5,-260 2352.5,-254 2358.5,-254 2358.5,-254 2445.5,-254 2445.5,-254 2451.5,-254 2457.5,-260 2457.5,-266 2457.5,-266 2457.5,-278 2457.5,-278 2457.5,-284 2451.5,-290 2445.5,-290"/>
 <text text-anchor="middle" x="2402" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#2f5d08">Transformation</text>
 </g>
-<!-- https://w3id.org/sdata/vocab/agents/Actuator -->
-<g id="node8" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Actuator</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1150,-52C1150,-52 1102,-52 1102,-52 1096,-52 1090,-46 1090,-40 1090,-40 1090,-28 1090,-28 1090,-22 1096,-16 1102,-16 1102,-16 1150,-16 1150,-16 1156,-16 1162,-22 1162,-28 1162,-28 1162,-40 1162,-40 1162,-46 1156,-52 1150,-52"/>
-<text text-anchor="middle" x="1126" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Actuator</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Hardware -->
-<g id="node9" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Hardware</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1189,-171C1189,-171 1135,-171 1135,-171 1129,-171 1123,-165 1123,-159 1123,-159 1123,-147 1123,-147 1123,-141 1129,-135 1135,-135 1135,-135 1189,-135 1189,-135 1195,-135 1201,-141 1201,-147 1201,-147 1201,-159 1201,-159 1201,-165 1195,-171 1189,-171"/>
-<text text-anchor="middle" x="1162" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Hardware</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Actuator -->
-<g id="edge1" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Actuator</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1156.77,-134.99C1150.69,-115.23 1140.61,-82.47 1133.65,-59.86"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1136.27,-58.86 1131.24,-52.03 1130.92,-60.5 1136.27,-58.86"/>
-<text text-anchor="middle" x="1164" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Processor -->
-<g id="node12" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Processor</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1268,-52C1268,-52 1214,-52 1214,-52 1208,-52 1202,-46 1202,-40 1202,-40 1202,-28 1202,-28 1202,-22 1208,-16 1214,-16 1214,-16 1268,-16 1268,-16 1274,-16 1280,-22 1280,-28 1280,-28 1280,-40 1280,-40 1280,-46 1274,-52 1268,-52"/>
-<text text-anchor="middle" x="1241" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Processor</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Processor -->
-<g id="edge2" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Processor</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1173.49,-134.99C1187.06,-114.88 1209.73,-81.32 1225.01,-58.68"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1227.34,-60.23 1229.5,-52.03 1222.7,-57.1 1227.34,-60.23"/>
-<text text-anchor="middle" x="1222" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Sensor -->
-<g id="node13" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Sensor</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1370,-52C1370,-52 1332,-52 1332,-52 1326,-52 1320,-46 1320,-40 1320,-40 1320,-28 1320,-28 1320,-22 1326,-16 1332,-16 1332,-16 1370,-16 1370,-16 1376,-16 1382,-22 1382,-28 1382,-28 1382,-40 1382,-40 1382,-46 1376,-52 1370,-52"/>
-<text text-anchor="middle" x="1351" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Sensor</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Sensor -->
-<g id="edge3" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Sensor</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1191.4,-134.81C1208.82,-124.55 1231.26,-111.19 1251,-99 1273.49,-85.11 1298.55,-69.07 1317.95,-56.53"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1319.63,-58.77 1324.83,-52.08 1316.59,-54.07 1319.63,-58.77"/>
-<text text-anchor="middle" x="1286" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Organization -->
-<g id="node10" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Organization</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1325,-171C1325,-171 1253,-171 1253,-171 1247,-171 1241,-165 1241,-159 1241,-159 1241,-147 1241,-147 1241,-141 1247,-135 1253,-135 1253,-135 1325,-135 1325,-135 1331,-135 1337,-141 1337,-147 1337,-147 1337,-159 1337,-159 1337,-165 1331,-171 1325,-171"/>
-<text text-anchor="middle" x="1289" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Organization</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Person -->
-<g id="node11" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Person</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1426.5,-171C1426.5,-171 1389.5,-171 1389.5,-171 1383.5,-171 1377.5,-165 1377.5,-159 1377.5,-159 1377.5,-147 1377.5,-147 1377.5,-141 1383.5,-135 1389.5,-135 1389.5,-135 1426.5,-135 1426.5,-135 1432.5,-135 1438.5,-141 1438.5,-147 1438.5,-147 1438.5,-159 1438.5,-159 1438.5,-165 1432.5,-171 1426.5,-171"/>
-<text text-anchor="middle" x="1408" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Person</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Service -->
-<g id="node14" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Service</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1475.5,-52C1475.5,-52 1434.5,-52 1434.5,-52 1428.5,-52 1422.5,-46 1422.5,-40 1422.5,-40 1422.5,-28 1422.5,-28 1422.5,-22 1428.5,-16 1434.5,-16 1434.5,-16 1475.5,-16 1475.5,-16 1481.5,-16 1487.5,-22 1487.5,-28 1487.5,-28 1487.5,-40 1487.5,-40 1487.5,-46 1481.5,-52 1475.5,-52"/>
-<text text-anchor="middle" x="1455" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Service</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Software -->
-<g id="node15" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Software</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1539.5,-171C1539.5,-171 1490.5,-171 1490.5,-171 1484.5,-171 1478.5,-165 1478.5,-159 1478.5,-159 1478.5,-147 1478.5,-147 1478.5,-141 1484.5,-135 1490.5,-135 1490.5,-135 1539.5,-135 1539.5,-135 1545.5,-135 1551.5,-141 1551.5,-147 1551.5,-147 1551.5,-159 1551.5,-159 1551.5,-165 1545.5,-171 1539.5,-171"/>
-<text text-anchor="middle" x="1515" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Software</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Service -->
-<g id="edge4" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Service</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1505.38,-134.93C1499.63,-124.6 1492.25,-111.12 1486,-99 1479.37,-86.13 1472.3,-71.61 1466.6,-59.67"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1469.02,-58.25 1463.06,-52.23 1463.97,-60.66 1469.02,-58.25"/>
-<text text-anchor="middle" x="1505" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Solver -->
-<g id="node16" class="node">
-<title>https://w3id.org/sdata/vocab/agents/Solver</title>
-<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1574,-52C1574,-52 1540,-52 1540,-52 1534,-52 1528,-46 1528,-40 1528,-40 1528,-28 1528,-28 1528,-22 1534,-16 1540,-16 1540,-16 1574,-16 1574,-16 1580,-16 1586,-22 1586,-28 1586,-28 1586,-40 1586,-40 1586,-46 1580,-52 1574,-52"/>
-<text text-anchor="middle" x="1557" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Solver</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Solver -->
-<g id="edge5" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Solver</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1521.11,-134.99C1528.23,-115.14 1540.06,-82.18 1548.18,-59.56"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1550.82,-60.51 1550.89,-52.03 1545.55,-58.62 1550.82,-60.51"/>
-<text text-anchor="middle" x="1556" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme -->
-<g id="node17" class="node">
-<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme</title>
-<path fill="#e7fff6" stroke="#2f855a" stroke-width="1.6" d="M1323,-290C1323,-290 1255,-290 1255,-290 1249,-290 1243,-284 1243,-278 1243,-278 1243,-266 1243,-266 1243,-260 1249,-254 1255,-254 1255,-254 1323,-254 1323,-254 1329,-254 1335,-260 1335,-266 1335,-266 1335,-278 1335,-278 1335,-284 1329,-290 1323,-290"/>
-<text text-anchor="middle" x="1289" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Agent types</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Hardware -->
-<g id="edge6" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Hardware</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1265.26,-254C1251.83,-244.02 1234.99,-230.87 1221,-218 1207.18,-205.28 1192.86,-189.81 1181.8,-177.28"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1183.7,-175.2 1176.33,-171.02 1179.48,-178.88 1183.7,-175.2"/>
-<text text-anchor="middle" x="1250" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Organization -->
-<g id="edge7" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Organization</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1289,-253.99C1289,-234.32 1289,-201.76 1289,-179.16"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1291.8,-179.03 1289,-171.03 1286.2,-179.03 1291.8,-179.03"/>
-<text text-anchor="middle" x="1318" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Person -->
-<g id="edge8" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Person</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1313.31,-253.8C1326.52,-243.96 1342.81,-231.02 1356,-218 1368.55,-205.61 1381.06,-190.33 1390.67,-177.8"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1393.1,-179.23 1395.69,-171.16 1388.63,-175.85 1393.1,-179.23"/>
-<text text-anchor="middle" x="1394" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
-</g>
-<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Software -->
-<g id="edge9" class="edge">
-<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Software</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1335.01,-258.08C1364.1,-248.96 1401.92,-235.29 1433,-218 1453.71,-206.48 1474.74,-189.95 1490.32,-176.57"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1492.45,-178.43 1496.64,-171.06 1488.77,-174.2 1492.45,-178.43"/>
-<text text-anchor="middle" x="1478" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
-</g>
 <!-- https://w3id.org/sdata/core/Agent -->
-<g id="node18" class="node">
+<g id="node8" class="node">
 <title>https://w3id.org/sdata/core/Agent</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M742,-419C742,-419 710,-419 710,-419 704,-419 698,-413 698,-407 698,-407 698,-395 698,-395 698,-389 704,-383 710,-383 710,-383 742,-383 742,-383 748,-383 754,-389 754,-395 754,-395 754,-407 754,-407 754,-413 748,-419 742,-419"/>
 <text text-anchor="middle" x="726" y="-397.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Agent</text>
 </g>
-<!-- https://w3id.org/sdata/core/Agent&#45;&gt;https://w3id.org/sdata/vocab/agents/AgentTypeScheme -->
-<g id="edge10" class="edge">
-<title>https://w3id.org/sdata/core/Agent&#45;&gt;https://w3id.org/sdata/vocab/agents/AgentTypeScheme</title>
-<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="5,2" d="M754.14,-387.67C790.49,-372.4 856.1,-347.06 915,-336 988.9,-322.12 1009.7,-339.59 1084,-328 1136.16,-319.87 1194.14,-303.61 1235.1,-290.87"/>
-<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1236,-293.52 1242.8,-288.45 1234.32,-288.18 1236,-293.52"/>
-<text text-anchor="middle" x="980" y="-339" font-family="Helvetica,sans-Serif" font-size="10.00">typed via sdata:agentType</text>
-</g>
 <!-- https://w3id.org/sdata/core/HardwareAgent -->
-<g id="node22" class="node">
+<g id="node12" class="node">
 <title>https://w3id.org/sdata/core/HardwareAgent</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1053.5,-290C1053.5,-290 960.5,-290 960.5,-290 954.5,-290 948.5,-284 948.5,-278 948.5,-278 948.5,-266 948.5,-266 948.5,-260 954.5,-254 960.5,-254 960.5,-254 1053.5,-254 1053.5,-254 1059.5,-254 1065.5,-260 1065.5,-266 1065.5,-266 1065.5,-278 1065.5,-278 1065.5,-284 1059.5,-290 1053.5,-290"/>
 <text text-anchor="middle" x="1007" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Hardware Agent</text>
@@ -215,7 +85,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="983.69,-297.45 988.11,-290.22 980.14,-293.12 983.69,-297.45"/>
 </g>
 <!-- https://w3id.org/sdata/core/Organization -->
-<g id="node25" class="node">
+<g id="node15" class="node">
 <title>https://w3id.org/sdata/core/Organization</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M642,-290C642,-290 570,-290 570,-290 564,-290 558,-284 558,-278 558,-278 558,-266 558,-266 558,-260 564,-254 570,-254 570,-254 642,-254 642,-254 648,-254 654,-260 654,-266 654,-266 654,-278 654,-278 654,-284 648,-290 642,-290"/>
 <text text-anchor="middle" x="606" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Organization</text>
@@ -227,7 +97,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="629.84,-294.15 622.31,-290.26 625.77,-298 629.84,-294.15"/>
 </g>
 <!-- https://w3id.org/sdata/core/Person -->
-<g id="node26" class="node">
+<g id="node16" class="node">
 <title>https://w3id.org/sdata/core/Person</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M743.5,-290C743.5,-290 706.5,-290 706.5,-290 700.5,-290 694.5,-284 694.5,-278 694.5,-278 694.5,-266 694.5,-266 694.5,-260 700.5,-254 706.5,-254 706.5,-254 743.5,-254 743.5,-254 749.5,-254 755.5,-260 755.5,-266 755.5,-266 755.5,-278 755.5,-278 755.5,-284 749.5,-290 743.5,-290"/>
 <text text-anchor="middle" x="725" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Person</text>
@@ -239,7 +109,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="728,-298.24 725.14,-290.26 722.4,-298.28 728,-298.24"/>
 </g>
 <!-- https://w3id.org/sdata/core/SoftwareAgent -->
-<g id="node30" class="node">
+<g id="node20" class="node">
 <title>https://w3id.org/sdata/core/SoftwareAgent</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M896,-290C896,-290 808,-290 808,-290 802,-290 796,-284 796,-278 796,-278 796,-266 796,-266 796,-260 802,-254 808,-254 808,-254 896,-254 896,-254 902,-254 908,-260 908,-266 908,-266 908,-278 908,-278 908,-284 902,-290 896,-290"/>
 <text text-anchor="middle" x="852" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Software Agent</text>
@@ -250,32 +120,45 @@
 <path fill="none" stroke="#4a5568" stroke-width="1.5" d="M742.99,-382.87C765.26,-360.43 804.37,-321 829.2,-295.99"/>
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="831.23,-297.91 834.87,-290.26 827.25,-293.97 831.23,-297.91"/>
 </g>
+<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme -->
+<g id="node31" class="node">
+<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme</title>
+<path fill="#e7fff6" stroke="#2f855a" stroke-width="1.6" d="M1323,-290C1323,-290 1255,-290 1255,-290 1249,-290 1243,-284 1243,-278 1243,-278 1243,-266 1243,-266 1243,-260 1249,-254 1255,-254 1255,-254 1323,-254 1323,-254 1329,-254 1335,-260 1335,-266 1335,-266 1335,-278 1335,-278 1335,-284 1329,-290 1323,-290"/>
+<text text-anchor="middle" x="1289" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Agent types</text>
+</g>
+<!-- https://w3id.org/sdata/core/Agent&#45;&gt;https://w3id.org/sdata/vocab/agents/AgentTypeScheme -->
+<g id="edge10" class="edge">
+<title>https://w3id.org/sdata/core/Agent&#45;&gt;https://w3id.org/sdata/vocab/agents/AgentTypeScheme</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="5,2" d="M754.14,-387.67C790.49,-372.4 856.1,-347.06 915,-336 988.9,-322.12 1009.7,-339.59 1084,-328 1136.16,-319.87 1194.14,-303.61 1235.1,-290.87"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1236,-293.52 1242.8,-288.45 1234.32,-288.18 1236,-293.52"/>
+<text text-anchor="middle" x="980" y="-339" font-family="Helvetica,sans-Serif" font-size="10.00">typed via sdata:agentType</text>
+</g>
 <!-- https://w3id.org/sdata/core/AttributeQuantityValue -->
-<g id="node19" class="node">
+<g id="node9" class="node">
 <title>https://w3id.org/sdata/core/AttributeQuantityValue</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M947.5,-419C947.5,-419 806.5,-419 806.5,-419 800.5,-419 794.5,-413 794.5,-407 794.5,-407 794.5,-395 794.5,-395 794.5,-389 800.5,-383 806.5,-383 806.5,-383 947.5,-383 947.5,-383 953.5,-383 959.5,-389 959.5,-395 959.5,-395 959.5,-407 959.5,-407 959.5,-413 953.5,-419 947.5,-419"/>
 <text text-anchor="middle" x="877" y="-397.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Attribute Quantity Value</text>
 </g>
 <!-- https://w3id.org/sdata/core/Data -->
-<g id="node20" class="node">
+<g id="node10" class="node">
 <title>https://w3id.org/sdata/core/Data</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M172,-290C172,-290 142,-290 142,-290 136,-290 130,-284 130,-278 130,-278 130,-266 130,-266 130,-260 136,-254 142,-254 142,-254 172,-254 172,-254 178,-254 184,-260 184,-266 184,-266 184,-278 184,-278 184,-284 178,-290 172,-290"/>
 <text text-anchor="middle" x="157" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Data</text>
 </g>
 <!-- https://w3id.org/sdata/core/Hardware -->
-<g id="node21" class="node">
+<g id="node11" class="node">
 <title>https://w3id.org/sdata/core/Hardware</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M290,-290C290,-290 236,-290 236,-290 230,-290 224,-284 224,-278 224,-278 224,-266 224,-266 224,-260 230,-254 236,-254 236,-254 290,-254 290,-254 296,-254 302,-260 302,-266 302,-266 302,-278 302,-278 302,-284 296,-290 290,-290"/>
 <text text-anchor="middle" x="263" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Hardware</text>
 </g>
 <!-- https://w3id.org/sdata/core/Material -->
-<g id="node23" class="node">
+<g id="node13" class="node">
 <title>https://w3id.org/sdata/core/Material</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M399.5,-290C399.5,-290 354.5,-290 354.5,-290 348.5,-290 342.5,-284 342.5,-278 342.5,-278 342.5,-266 342.5,-266 342.5,-260 348.5,-254 354.5,-254 354.5,-254 399.5,-254 399.5,-254 405.5,-254 411.5,-260 411.5,-266 411.5,-266 411.5,-278 411.5,-278 411.5,-284 405.5,-290 399.5,-290"/>
 <text text-anchor="middle" x="377" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Material</text>
 </g>
 <!-- https://w3id.org/sdata/core/Object -->
-<g id="node24" class="node">
+<g id="node14" class="node">
 <title>https://w3id.org/sdata/core/Object</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M281,-419C281,-419 245,-419 245,-419 239,-419 233,-413 233,-407 233,-407 233,-395 233,-395 233,-389 239,-383 245,-383 245,-383 281,-383 281,-383 287,-383 293,-389 293,-395 293,-395 293,-407 293,-407 293,-413 287,-419 281,-419"/>
 <text text-anchor="middle" x="263" y="-397.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Object</text>
@@ -299,7 +182,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="358.24,-298.09 361.5,-290.26 354.08,-294.34 358.24,-298.09"/>
 </g>
 <!-- https://w3id.org/sdata/core/Product -->
-<g id="node28" class="node">
+<g id="node18" class="node">
 <title>https://w3id.org/sdata/core/Product</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M506,-290C506,-290 464,-290 464,-290 458,-290 452,-284 452,-278 452,-278 452,-266 452,-266 452,-260 458,-254 464,-254 464,-254 506,-254 506,-254 512,-254 518,-260 518,-266 518,-266 518,-278 518,-278 518,-284 512,-290 506,-290"/>
 <text text-anchor="middle" x="485" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Product</text>
@@ -311,7 +194,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="468.13,-297.99 471.31,-290.13 463.93,-294.29 468.13,-297.99"/>
 </g>
 <!-- https://w3id.org/sdata/core/Software -->
-<g id="node29" class="node">
+<g id="node19" class="node">
 <title>https://w3id.org/sdata/core/Software</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M77.5,-290C77.5,-290 28.5,-290 28.5,-290 22.5,-290 16.5,-284 16.5,-278 16.5,-278 16.5,-266 16.5,-266 16.5,-260 22.5,-254 28.5,-254 28.5,-254 77.5,-254 77.5,-254 83.5,-254 89.5,-260 89.5,-266 89.5,-266 89.5,-278 89.5,-278 89.5,-284 83.5,-290 77.5,-290"/>
 <text text-anchor="middle" x="53" y="-268.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Software</text>
@@ -323,7 +206,7 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="75.51,-294.05 67.97,-290.16 71.44,-297.9 75.51,-294.05"/>
 </g>
 <!-- https://w3id.org/sdata/core/Process -->
-<g id="node27" class="node">
+<g id="node17" class="node">
 <title>https://w3id.org/sdata/core/Process</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M1054,-419C1054,-419 1012,-419 1012,-419 1006,-419 1000,-413 1000,-407 1000,-407 1000,-395 1000,-395 1000,-389 1006,-383 1012,-383 1012,-383 1054,-383 1054,-383 1060,-383 1066,-389 1066,-395 1066,-395 1066,-407 1066,-407 1066,-413 1060,-419 1054,-419"/>
 <text text-anchor="middle" x="1033" y="-397.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Process</text>
@@ -371,10 +254,127 @@
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.5" points="2380.37,-297.44 2384.55,-290.06 2376.69,-293.22 2380.37,-297.44"/>
 </g>
 <!-- https://w3id.org/sdata/core/ValueDomain -->
-<g id="node31" class="node">
+<g id="node21" class="node">
 <title>https://w3id.org/sdata/core/ValueDomain</title>
 <path fill="#e8f1ff" stroke="#2b6cb0" stroke-width="1.6" d="M145,-419C145,-419 65,-419 65,-419 59,-419 53,-413 53,-407 53,-407 53,-395 53,-395 53,-389 59,-383 65,-383 65,-383 145,-383 145,-383 151,-383 157,-389 157,-395 157,-395 157,-407 157,-407 157,-413 151,-419 145,-419"/>
 <text text-anchor="middle" x="105" y="-397.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1a365d">Value Domain</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Actuator -->
+<g id="node22" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Actuator</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1150,-52C1150,-52 1102,-52 1102,-52 1096,-52 1090,-46 1090,-40 1090,-40 1090,-28 1090,-28 1090,-22 1096,-16 1102,-16 1102,-16 1150,-16 1150,-16 1156,-16 1162,-22 1162,-28 1162,-28 1162,-40 1162,-40 1162,-46 1156,-52 1150,-52"/>
+<text text-anchor="middle" x="1126" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Actuator</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Hardware -->
+<g id="node23" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Hardware</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1189,-171C1189,-171 1135,-171 1135,-171 1129,-171 1123,-165 1123,-159 1123,-159 1123,-147 1123,-147 1123,-141 1129,-135 1135,-135 1135,-135 1189,-135 1189,-135 1195,-135 1201,-141 1201,-147 1201,-147 1201,-159 1201,-159 1201,-165 1195,-171 1189,-171"/>
+<text text-anchor="middle" x="1162" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Hardware</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Actuator -->
+<g id="edge1" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Actuator</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1156.77,-134.99C1150.69,-115.23 1140.61,-82.47 1133.65,-59.86"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1136.27,-58.86 1131.24,-52.03 1130.92,-60.5 1136.27,-58.86"/>
+<text text-anchor="middle" x="1164" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Processor -->
+<g id="node26" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Processor</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1268,-52C1268,-52 1214,-52 1214,-52 1208,-52 1202,-46 1202,-40 1202,-40 1202,-28 1202,-28 1202,-22 1208,-16 1214,-16 1214,-16 1268,-16 1268,-16 1274,-16 1280,-22 1280,-28 1280,-28 1280,-40 1280,-40 1280,-46 1274,-52 1268,-52"/>
+<text text-anchor="middle" x="1241" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Processor</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Processor -->
+<g id="edge2" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Processor</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1173.49,-134.99C1187.06,-114.88 1209.73,-81.32 1225.01,-58.68"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1227.34,-60.23 1229.5,-52.03 1222.7,-57.1 1227.34,-60.23"/>
+<text text-anchor="middle" x="1222" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Sensor -->
+<g id="node27" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Sensor</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1370,-52C1370,-52 1332,-52 1332,-52 1326,-52 1320,-46 1320,-40 1320,-40 1320,-28 1320,-28 1320,-22 1326,-16 1332,-16 1332,-16 1370,-16 1370,-16 1376,-16 1382,-22 1382,-28 1382,-28 1382,-40 1382,-40 1382,-46 1376,-52 1370,-52"/>
+<text text-anchor="middle" x="1351" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Sensor</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Sensor -->
+<g id="edge3" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/Hardware&#45;&gt;https://w3id.org/sdata/vocab/agents/Sensor</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1191.4,-134.81C1208.82,-124.55 1231.26,-111.19 1251,-99 1273.49,-85.11 1298.55,-69.07 1317.95,-56.53"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1319.63,-58.77 1324.83,-52.08 1316.59,-54.07 1319.63,-58.77"/>
+<text text-anchor="middle" x="1286" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Organization -->
+<g id="node24" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Organization</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1325,-171C1325,-171 1253,-171 1253,-171 1247,-171 1241,-165 1241,-159 1241,-159 1241,-147 1241,-147 1241,-141 1247,-135 1253,-135 1253,-135 1325,-135 1325,-135 1331,-135 1337,-141 1337,-147 1337,-147 1337,-159 1337,-159 1337,-165 1331,-171 1325,-171"/>
+<text text-anchor="middle" x="1289" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Organization</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Person -->
+<g id="node25" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Person</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1426.5,-171C1426.5,-171 1389.5,-171 1389.5,-171 1383.5,-171 1377.5,-165 1377.5,-159 1377.5,-159 1377.5,-147 1377.5,-147 1377.5,-141 1383.5,-135 1389.5,-135 1389.5,-135 1426.5,-135 1426.5,-135 1432.5,-135 1438.5,-141 1438.5,-147 1438.5,-147 1438.5,-159 1438.5,-159 1438.5,-165 1432.5,-171 1426.5,-171"/>
+<text text-anchor="middle" x="1408" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Person</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Service -->
+<g id="node28" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Service</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1475.5,-52C1475.5,-52 1434.5,-52 1434.5,-52 1428.5,-52 1422.5,-46 1422.5,-40 1422.5,-40 1422.5,-28 1422.5,-28 1422.5,-22 1428.5,-16 1434.5,-16 1434.5,-16 1475.5,-16 1475.5,-16 1481.5,-16 1487.5,-22 1487.5,-28 1487.5,-28 1487.5,-40 1487.5,-40 1487.5,-46 1481.5,-52 1475.5,-52"/>
+<text text-anchor="middle" x="1455" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Service</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Software -->
+<g id="node29" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Software</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1539.5,-171C1539.5,-171 1490.5,-171 1490.5,-171 1484.5,-171 1478.5,-165 1478.5,-159 1478.5,-159 1478.5,-147 1478.5,-147 1478.5,-141 1484.5,-135 1490.5,-135 1490.5,-135 1539.5,-135 1539.5,-135 1545.5,-135 1551.5,-141 1551.5,-147 1551.5,-147 1551.5,-159 1551.5,-159 1551.5,-165 1545.5,-171 1539.5,-171"/>
+<text text-anchor="middle" x="1515" y="-149.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Software</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Service -->
+<g id="edge4" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Service</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1505.38,-134.93C1499.63,-124.6 1492.25,-111.12 1486,-99 1479.37,-86.13 1472.3,-71.61 1466.6,-59.67"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1469.02,-58.25 1463.06,-52.23 1463.97,-60.66 1469.02,-58.25"/>
+<text text-anchor="middle" x="1505" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Solver -->
+<g id="node30" class="node">
+<title>https://w3id.org/sdata/vocab/agents/Solver</title>
+<path fill="#f0fff9" stroke="#2f855a" stroke-width="1.6" d="M1574,-52C1574,-52 1540,-52 1540,-52 1534,-52 1528,-46 1528,-40 1528,-40 1528,-28 1528,-28 1528,-22 1534,-16 1540,-16 1540,-16 1574,-16 1574,-16 1580,-16 1586,-22 1586,-28 1586,-28 1586,-40 1586,-40 1586,-46 1580,-52 1574,-52"/>
+<text text-anchor="middle" x="1557" y="-30.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#1c4532">Solver</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Solver -->
+<g id="edge5" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/Software&#45;&gt;https://w3id.org/sdata/vocab/agents/Solver</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1521.11,-134.99C1528.23,-115.14 1540.06,-82.18 1548.18,-59.56"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1550.82,-60.51 1550.89,-52.03 1545.55,-58.62 1550.82,-60.51"/>
+<text text-anchor="middle" x="1556" y="-91" font-family="Helvetica,sans-Serif" font-size="10.00">broader</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Hardware -->
+<g id="edge6" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Hardware</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1265.26,-254C1251.83,-244.02 1234.99,-230.87 1221,-218 1207.18,-205.28 1192.86,-189.81 1181.8,-177.28"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1183.7,-175.2 1176.33,-171.02 1179.48,-178.88 1183.7,-175.2"/>
+<text text-anchor="middle" x="1250" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Organization -->
+<g id="edge7" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Organization</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1289,-253.99C1289,-234.32 1289,-201.76 1289,-179.16"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1291.8,-179.03 1289,-171.03 1286.2,-179.03 1291.8,-179.03"/>
+<text text-anchor="middle" x="1318" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Person -->
+<g id="edge8" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Person</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1313.31,-253.8C1326.52,-243.96 1342.81,-231.02 1356,-218 1368.55,-205.61 1381.06,-190.33 1390.67,-177.8"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1393.1,-179.23 1395.69,-171.16 1388.63,-175.85 1393.1,-179.23"/>
+<text text-anchor="middle" x="1394" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
+</g>
+<!-- https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Software -->
+<g id="edge9" class="edge">
+<title>https://w3id.org/sdata/vocab/agents/AgentTypeScheme&#45;&gt;https://w3id.org/sdata/vocab/agents/Software</title>
+<path fill="none" stroke="#2f855a" stroke-width="1.5" stroke-dasharray="1,5" d="M1335.01,-258.08C1364.1,-248.96 1401.92,-235.29 1433,-218 1453.71,-206.48 1474.74,-189.95 1490.32,-176.57"/>
+<polygon fill="#2f855a" stroke="#2f855a" stroke-width="1.5" points="1492.45,-178.43 1496.64,-171.06 1488.77,-174.2 1492.45,-178.43"/>
+<text text-anchor="middle" x="1478" y="-210" font-family="Helvetica,sans-Serif" font-size="10.00">top concept</text>
 </g>
 </g>
 </svg>

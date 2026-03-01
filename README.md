@@ -4,24 +4,46 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core version: `sdata-core-v0.9.1.ttl`
-- Core foundation: `MIN` + `OPA`
-- Material-state extension: `sdata-material-state-v0.4.0.ttl`
+- Core: `sdata-core-v0.9.2.ttl`
+- Foundation: `MIN` + `OPA`
+- State Space: `sdata-material-state-v0.4.1.ttl`
 
-## Main modules
+## Module overview
 
-- `sdata-core.ttl` / `sdata-core-v0.9.1.ttl`
-: Core model with 14 classes, 19 object properties, 7 datatype properties.
-- `sdata-material-state.ttl`
-: State space extension (13 axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`).
+- `sdata-core.ttl` (`v0.9.2`)
+: 14 classes, 19 object properties, 7 datatype properties.
+- `sdata-material-state.ttl` (`v0.4.1`)
+: 13 state axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
 - `sdata-agents.ttl`
-: Agent-type SKOS vocabulary.
+: SKOS vocabulary for agent classifications.
 - `sdata-processtypes.ttl`
-: Process verb-axis extension.
+: 7 orthogonal verb classes (`Creation` ... `Destruction`).
 - `sdata-lifecycle.ttl`
-: Lifecycle flow model.
+: flow relations (`precedes`, `follows`, `observes`).
 - `shapes/sdata-core-shapes.ttl`
-: SHACL validation shapes.
+: SHACL checks for example data.
+
+## Core model in 60 seconds
+
+- 3 categories:
+  - `sdata:Object`
+  - `sdata:Process`
+  - `sdata:Agent`
+- `sdata:Object` subtypes:
+  - `Material`, `Product`, `Hardware`, `Software`, `Data`
+- `sdata:Agent` subtypes:
+  - `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`
+- `sdata:Process` has no core subclasses in `v0.9.2`.
+: method and domain are modeled via `sms:MethodAxis` and `sms:DomainAxis`.
+
+## Core modeling pattern
+
+```text
+Product + Data -> Process -> Product + Data
+                    ^
+                 Agent(s)
+             + optional Hardware/Software
+```
 
 ## Namespaces
 
@@ -30,37 +52,7 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 ```
 
-## Core categories (v0.9.1)
-
-- `sdata:Object`
-- `sdata:Process`
-- `sdata:Agent`
-
-Main object classes:
-
-- `sdata:Material`
-- `sdata:Product`
-- `sdata:Hardware`
-- `sdata:Software`
-- `sdata:Data`
-
-Main agent classes:
-
-- `sdata:Person`
-- `sdata:HardwareAgent`
-- `sdata:SoftwareAgent`
-- `sdata:Organization`
-
-## Material state space
-
-`sdata-material-state` adds:
-
-- `sms:StateAxis`
-- `sms:StateAssignment`
-- 13 predefined axis classes (`OriginAxis`, `ProcessingAxis`, ..., `MethodAxis`, `DomainAxis`, `DataTypeAxis`)
-- SKOS concept schemes per axis (`sms:origin-values`, `sms:phase-values`, ...)
-
-## Development
+## Quickstart
 
 ```bash
 make setup
@@ -71,36 +63,36 @@ make lint
 
 ## Visualizations
 
-Generate all ontology diagrams:
+Build all ontology plots:
 
 ```bash
 make viz-all
 ```
 
-Includes:
-
-- class hierarchy
-- agents hierarchy
-- core + processtypes
-- process hierarchy plot
-- combined hierarchy
-- lifecycle flow
-- material state hierarchy
-
-Generate example instance graphs:
+Build all example plots:
 
 ```bash
 make viz-examples
 ```
 
-Dedicated specimen visualization:
+Build specimen example with dedicated module:
 
 ```bash
 make viz-specimen
+uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
-## Docs
+## Migration notes (v0.8 -> v0.9.2)
+
+- `Data` moved into `Object` hierarchy.
+- Process subclasses removed from core.
+: use `sms:MethodAxis` and `sms:DomainAxis` instead.
+- `MachineAgent` renamed to `HardwareAgent`.
+- `Certificate`/`DigitalProductPass` moved to `sms:DataTypeAxis` concepts.
+- `sdata:hasUnit` removed from core datatype properties.
+
+## Documentation
 
 ```bash
-uv run mkdocs build
+uv run --group docs mkdocs build
 ```

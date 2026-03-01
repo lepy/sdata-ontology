@@ -5,6 +5,7 @@ theme:
   name: material
 nav:
   - Home: index.md
+  - Examples: examples.md
   - Ontologies:
       - sdata-core: ontologies/sdata-core/index.md
       - sdata-material-state: ontologies/sdata-material-state.md

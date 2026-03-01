@@ -4,13 +4,20 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 ## Included modules
 
-- `sdata-core.ttl` / `sdata-core-v0.9.1.ttl`: core ontology (MIN/OPA-based)
+- `sdata-core.ttl` / `sdata-core-v0.9.2.ttl`: core ontology (MIN/OPA-based)
 - `sdata-material-state.ttl`: material state space extension
 - `sdata-agents.ttl`: SKOS vocabulary for agent typing
 - `sdata-processtypes.ttl`: verb-axis process extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
 Current core model: **14 classes**, **19 object properties**, **7 datatype properties**.
+
+## Read this first
+
+1. `sdata-core` for base classes and properties.
+2. `sdata-material-state` for method/domain/datatype/value typing.
+3. `sdata-processtypes` for lifecycle verb typing.
+4. `sdata-core-shapes` to validate your instance data.
 
 ## Ontology docs
 
@@ -27,6 +34,10 @@ Current core model: **14 classes**, **19 object properties**, **7 datatype prope
 - [sdata-r-strategies](ontologies/sdata-r-strategies/index.md)
 - [sdata-core-shapes](ontologies/sdata-core-shapes/index.md)
 
+## Example datasets
+
+- [Examples](examples.md)
+
 ## Local development
 
 ```bash
@@ -42,6 +53,8 @@ make lint
 make viz-all
 ```
 
+This generates ontology-level diagrams into `docs/diagrams/`.
+
 Individual targets:
 
 ```bash
@@ -56,6 +69,8 @@ make viz-material-state
 make viz-specimen
 make viz-examples
 ```
+
+`viz-examples` renders every Turtle file in `examples/`.
 
 ## Build docs
 
