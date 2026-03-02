@@ -1,6 +1,6 @@
 # shapes/sdata-core-shapes.ttl
 
-SHACL-Regeln fuer das aktuelle `sdata`-Modell (`v0.11.0`, MIN v2-basiert).
+SHACL-Regeln fuer das aktuelle `sdata`-Modell (`v0.12.0`, MIN v2.1-basiert).
 
 Die Shapes pruefen u. a.:
 

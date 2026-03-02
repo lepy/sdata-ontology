@@ -11,7 +11,7 @@ SDATA = Namespace("https://w3id.org/sdata/core/")
 
 def _model():
     min_g, core_g, merged_g = load_graphs(
-        ROOT / "min-v2.0.0.ttl",
+        ROOT / "min-v2.1.0.ttl",
         ROOT / "sdata-core.ttl",
     )
     return extract_model(min_g, core_g, merged_g)
@@ -32,8 +32,6 @@ def test_extract_contains_expected_bridge_edges():
     assert (str(SDATA.Hardware), str(MIN.Object)) in edges
     assert (str(SDATA.Software), str(MIN.Object)) in edges
     assert (str(SDATA.Data), str(MIN.Data)) in edges
-    assert (str(SDATA.Process), str(MIN.Process)) in edges
-
     assert (str(SDATA.Person), str(MIN.Agent)) in edges
     assert (str(SDATA.HardwareAgent), str(MIN.Agent)) in edges
     assert (str(SDATA.SoftwareAgent), str(MIN.Agent)) in edges

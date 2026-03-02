@@ -1,4 +1,4 @@
-"""Render three category-modality plots for examples/min-opa-examples.ttl."""
+"""Render three category-modality plots for examples/min-v2.1.0-examples.ttl."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from rdflib import BNode, Graph, Namespace, RDF, URIRef
 
 from src.visualization.example_ttl_plot import build_agraph, load_graph, render
 
-EX = Namespace("https://example.org/instances#")
+EX_PREFIX = "https://example.org/"
 MIN = Namespace("https://w3id.org/min#")
 MODALITIES: tuple[tuple[str, str, URIRef], ...] = (
     ("material-modal", "Object / material-dominant", URIRef("https://w3id.org/min#Object")),
@@ -18,13 +18,13 @@ MODALITIES: tuple[tuple[str, str, URIRef], ...] = (
     ("informational-modal", "Data / informational-dominant", URIRef("https://w3id.org/min#Data")),
 )
 
-DEFAULT_INPUT = Path("examples/min-opa-examples.ttl")
+DEFAULT_INPUT = Path("examples/min-v2.1.0-examples.ttl")
 DEFAULT_OUT_DIR = Path("docs/diagrams")
-DEFAULT_BASE = "min-opa-examples"
+DEFAULT_BASE = "min-v2.1.0-examples"
 
 
-def _is_in_namespace(term, namespace: Namespace) -> bool:
-    return isinstance(term, URIRef) and str(term).startswith(str(namespace))
+def _is_example_uri(term) -> bool:
+    return isinstance(term, URIRef) and str(term).startswith(EX_PREFIX)
 
 
 def _empty_like(source: Graph) -> Graph:
@@ -51,7 +51,7 @@ def extract_modality_view(source: Graph, modality: URIRef) -> Graph:
 
         for pred, obj in source.predicate_objects(subject):
             view.add((subject, pred, obj))
-            if isinstance(obj, URIRef) and _is_in_namespace(obj, EX):
+            if isinstance(obj, URIRef) and _is_example_uri(obj):
                 queue.append(obj)
             elif isinstance(obj, BNode):
                 queue.append(obj)

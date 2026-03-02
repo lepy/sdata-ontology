@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-core viz-min-opa-core viz-material-state viz-specimen viz-min-opa-examples viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-core viz-min-opa-core viz-material-state viz-specimen viz-min-v21-examples viz-min-opa-examples viz-all viz-examples clean
 
 UV ?= uv
 
@@ -63,9 +63,12 @@ viz-material-state: check-uv
 viz-specimen: check-uv
 	$(UV) run python -m src.visualization.specimen_tensiontest_data_plot
 
-# ─── Visualize min-opa-examples with three dedicated views ───────────────────
-viz-min-opa-examples: check-uv
-	$(UV) run python -m src.visualization.min_opa_examples_plot
+# ─── Visualize min-v2.1.0 examples with three dedicated views ────────────────
+viz-min-v21-examples: check-uv
+	$(UV) run python -m src.visualization.min_v21_examples_plot
+
+# Backward-compatible alias
+viz-min-opa-examples: viz-min-v21-examples
 
 # ─── Generate all main ontology visualizations ───────────────────────────────
 viz-all: viz-hierarchy viz-min-core viz-material-state

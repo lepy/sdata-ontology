@@ -4,36 +4,35 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core: `sdata-core-v0.11.0.ttl`
-- Foundation: `MIN v2.0.0` (`min-v2.0.0.ttl`)
-- OPA: removed (absorbed into MIN v2)
+- Core: `sdata-core-v0.12.0.ttl`
+- Foundation: `MIN v2.1.0` (`min-v2.1.0.ttl`)
+- OPA: removed
 - State Space: `sdata-material-state-v0.5.0.ttl`
 
-## Module overview
+## Module Overview
 
-- `sdata-core.ttl` (`v0.11.0`)
-: 11 classes, 10 object properties, 7 datatype properties.
+- `sdata-core.ttl` (`v0.12.0`)
+: 10 classes, 10 object properties, 7 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
-: 13 state axes incl. `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
+: 13 state axes including `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
 - `shapes/sdata-core-shapes.ttl`
 : SHACL checks for example data.
 
-## Core model in 60 seconds
+## Core Model In 60 Seconds
 
-- Base categories come from MIN v2:
+- Base categories come from MIN:
   - `min:Object`
   - `min:Process`
   - `min:Data`
   - `min:Agent`
 - sdata core classes:
   - Objects: `Material`, `Product`, `Hardware`, `Software`
-  - Process: `Process` (subClassOf `min:Process`)
   - Data: `Data`
   - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
-- Process typing is done with `sdata:Process` on top of `min:Process`.
-: method/domain semantics are modeled via `sms:MethodAxis` and `sms:DomainAxis`.
+- Process instances are modeled as `min:Process`.
+: method/domain semantics are typed via `sms:MethodAxis` and `sms:DomainAxis`.
 
-## Core modeling pattern
+## Core Modeling Pattern
 
 ```text
 Object + Data -> Process -> Object + Data
@@ -63,18 +62,7 @@ make lint
 
 - `docs/quickstart.md`
 - `docs/modeling-cheatsheet.md`
-- `docs/ontologies/MIGRATION-v0.10-to-v0.11.md`
-
-## Modeling Cheat Sheet (v0.11)
-
-- Use MIN for generic structure:
-  - `min:hasInput`, `min:hasOutput`, `min:performedBy`, `min:generates`, `min:describes`
-  - `min:hasIdentifier`, `min:hasName`, `min:hasTimestamp`
-- Use sdata for domain semantics:
-  - `sdata:hasMaterial`, `sdata:usesTool`, `sdata:usesSoftware`
-  - `sdata:hasData`, `sdata:producedBy`, `sdata:certifies`
-- Use `sdata:Process` in the sdata domain model (`min:Process` remains top-level in MIN).
-- Use `sms:*Axis` for method/domain/datatype classification.
+- `docs/ontologies/MIGRATION-v0.10-to-v0.12.md`
 
 ## Visualizations
 
@@ -105,21 +93,21 @@ make viz-specimen
 uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
-Build `min-opa-examples.ttl` via dedicated 3-plot module
+Build `min-v2.1.0-examples.ttl` via dedicated 3-plot module
 (`Object`, `Process`, `Data` modalities):
 
 ```bash
-make viz-min-opa-examples
-uv run python -m src.visualization.min_opa_examples_plot
+make viz-min-v21-examples
+uv run python -m src.visualization.min_v21_examples_plot
 ```
 
-## Migration notes (v0.10.0 -> v0.11.0)
+## Migration Notes (v0.10.0 -> v0.12.0)
 
 - OPA dependency removed.
-- `sdata:Data` moved from Object hierarchy to `min:Data`.
-- `sdata:Process` is defined again as domain class (`subClassOf min:Process`).
-- Core identifier/lifecycle relations are provided by MIN v2.
-- sdata keeps only domain-specific relations (`hasMaterial`, `usesTool`, `certifies`, ...).
+- MIN upgraded to `v2.1.0`.
+- `sdata:Data` is `subClassOf min:Data`.
+- No `sdata:Process` class in core; use `min:Process` and type method/domain via state assignments.
+- MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.
 
 ## Documentation
 

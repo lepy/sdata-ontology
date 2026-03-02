@@ -1,6 +1,6 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.11.0` auf `MIN v2.0.0`.
+Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v2.1.0`.
 
 ## 1. Setup
 
@@ -31,7 +31,7 @@ ex:Specimen_42 a sdata:Product ;
   min:hasIdentifier "SPEC-42" ;
   sdata:hasMaterial ex:Steel_DC04 .
 
-ex:TensileTest_42 a sdata:Process ;
+ex:TensileTest_42 a min:Process ;
   min:hasInput ex:Specimen_42 ;
   min:generates ex:TensileData_42 .
 
@@ -57,6 +57,7 @@ ex:TensileTest_42
 ```bash
 make viz-all
 make viz-examples
+make viz-min-v21-examples
 ```
 
 Wichtige Outputs:
@@ -69,4 +70,4 @@ Wichtige Outputs:
 
 Nutze die Checkliste in:
 
-- `docs/ontologies/MIGRATION-v0.10-to-v0.11.md`
+- `docs/ontologies/MIGRATION-v0.10-to-v0.12.md`

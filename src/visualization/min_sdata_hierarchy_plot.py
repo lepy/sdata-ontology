@@ -18,8 +18,6 @@ MIN_OBJECT = "https://w3id.org/min#Object"
 MIN_PROCESS = "https://w3id.org/min#Process"
 MIN_DATA = "https://w3id.org/min#Data"
 MIN_AGENT = "https://w3id.org/min#Agent"
-SDATA_PROCESS = "https://w3id.org/sdata/core/Process"
-SDATA_DATA = "https://w3id.org/sdata/core/Data"
 SDATA_OBJECT_CHILDREN = (
     "https://w3id.org/sdata/core/Material",
     "https://w3id.org/sdata/core/Product",
@@ -199,7 +197,6 @@ def build_agraph(model: Model):
             container.add_subgraph(present, name=name, rank="same", style="invis")
 
     _rank_same(min_cluster, "cluster_min_rank", (MIN_OBJECT, MIN_PROCESS, MIN_DATA, MIN_AGENT))
-    _rank_same(graph, "sdata_rank_process_data", (SDATA_PROCESS, SDATA_DATA))
     _rank_same(graph, "sdata_rank_object_children", SDATA_OBJECT_CHILDREN)
     _rank_same(graph, "sdata_rank_agent_children", SDATA_AGENT_CHILDREN)
 
@@ -237,7 +234,7 @@ def render(
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v2.0.0.ttl"))
+    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v2.1.0.ttl"))
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-min-core-hierarchy")

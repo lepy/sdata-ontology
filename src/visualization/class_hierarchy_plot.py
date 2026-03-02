@@ -121,7 +121,7 @@ def build_agraph(model: HierarchyModel):
         nodesep="0.55",
         fontname="Helvetica",
         fontsize="20",
-        label="sdata Class Hierarchy (core v0.11.0 / MIN v2 based)",
+        label="sdata Class Hierarchy (core v0.12.0 / MIN v2.1 based)",
         labelloc="t",
         labeljust="c",
     )

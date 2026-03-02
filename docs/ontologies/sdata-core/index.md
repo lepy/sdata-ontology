@@ -1,10 +1,10 @@
 # sdata-core.ttl
 
-Autarkes Kernmodell (`v0.11.0`) auf `MIN v2.0.0`.
+Autarkes Kernmodell (`v0.12.0`) auf `MIN v2.1.0`.
 
 ## Umfang
 
-- 11 Klassen
+- 10 Klassen
 - 10 Objekt-Properties
 - 7 Datentyp-Properties
 
@@ -14,10 +14,10 @@ Autarkes Kernmodell (`v0.11.0`) auf `MIN v2.0.0`.
   - `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
 - Datenklasse (`min:Data`):
   - `sdata:Data`
-- Prozessklasse (`min:Process`):
-  - `sdata:Process`
 - Agent-Subklassen (`min:Agent`):
   - `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
+
+Hinweis: `sdata:Process` ist in v0.12 nicht als Klasse definiert. Prozesse werden als `min:Process` modelliert.
 
 ## Wichtigste Relationen
 
@@ -28,19 +28,19 @@ Autarkes Kernmodell (`v0.11.0`) auf `MIN v2.0.0`.
   - `sdata:producedBy`, `sdata:derivedFrom`, `sdata:certifies`
   - `sdata:succeeds`, `sdata:precedes`, `sdata:hasProduct`
 
-## Schnelle Migration (v0.10 -> v0.11)
+## Schnelle Migration (v0.10 -> v0.12)
 
-- `sdata:Process` bleibt als Domainklasse erhalten (`subClassOf min:Process`)
 - `sdata:hasInput` -> `min:hasInput`
 - `sdata:hasOutput` -> `min:hasOutput`
 - `sdata:performedBy` -> `min:performedBy`
 - `sdata:producesData` -> `min:generates`
 - `sdata:describes` -> `min:describes`
 - `sdata:hasIdentifier` -> `min:hasIdentifier`
+- `sdata:Process`-Instanzen -> `min:Process`-Instanzen
 
 ## Modellierungsregeln
 
-- Prozessinstanzen als `sdata:Process` modellieren.
+- Prozessinstanzen als `min:Process` modellieren.
 - Prozessart nicht als Core-Subklasse modellieren.
 : stattdessen `sms:MethodAxis`/`sms:DomainAxis` nutzen.
 - Datenart (`Certificate`, `DigitalProductPass`, `TestReport` ...) ueber `sms:DataTypeAxis` modellieren.
@@ -64,7 +64,7 @@ ex:Probe_A1 a sdata:Product ;
 ex:Zwick_Z100 a sdata:Hardware, sdata:HardwareAgent ;
   min:hasIdentifier "HW-ZWICK-Z100" .
 
-ex:Zugversuch_A1 a sdata:Process ;
+ex:Zugversuch_A1 a min:Process ;
   min:hasInput ex:Probe_A1 ;
   min:performedBy ex:Zwick_Z100 ;
   sdata:usesTool ex:Zwick_Z100 ;

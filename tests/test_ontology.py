@@ -1,4 +1,4 @@
-"""Tests for sdata-core ontology and instance data (v0.11.0)."""
+"""Tests for sdata-core ontology and instance data (v0.12.0)."""
 
 from pathlib import Path
 
@@ -25,7 +25,7 @@ def core_graph():
 @pytest.fixture(scope="session")
 def min_graph():
     g = Graph()
-    g.parse(ROOT / "min-v2.0.0.ttl", format="turtle")
+    g.parse(ROOT / "min-v2.1.0.ttl", format="turtle")
     return g
 
 
@@ -57,7 +57,6 @@ EXPECTED_CLASSES = [
     "Hardware",
     "Software",
     "Data",
-    "Process",
     "Person",
     "HardwareAgent",
     "SoftwareAgent",
@@ -116,18 +115,21 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 10, f"Expected 10 classes, found {len(sdata_classes)}"
 
 
-def test_core_uses_min_v2_bases(core_graph):
+def test_core_uses_min_v21_bases(core_graph):
     assert (SDATA.Material, RDFS.subClassOf, MIN.Object) in core_graph
     assert (SDATA.Data, RDFS.subClassOf, MIN.Data) in core_graph
-    assert (SDATA.Process, RDFS.subClassOf, MIN.Process) in core_graph
     assert (SDATA.Person, RDFS.subClassOf, MIN.Agent) in core_graph
 
 
 def test_core_has_no_opa_dependency(core_graph):
     assert all("w3id.org/opa" not in str(term) for triple in core_graph for term in triple)
+
+
+def test_core_has_no_sdata_process_class(core_graph):
+    assert (SDATA.Process, RDF.type, OWL_CLASS) not in core_graph
 
 
 def _instances_of_class_or_subclass(example_graph: Graph, class_graph: Graph, class_uri: URIRef) -> set[URIRef]:

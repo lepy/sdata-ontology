@@ -1,6 +1,6 @@
 # sdata-material-state.ttl
 
-State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.11.0`.
+State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.12.0`.
 
 ## Zweck
 
@@ -55,7 +55,7 @@ ex:Specimen_A1 a sdata:Product ;
   ] .
 
 # Process-Methode
-ex:TensileTest_A1 a sdata:Process ;
+ex:TensileTest_A1 a min:Process ;
   sms:hasStateAssignment [
     a sms:StateAssignment ;
     sms:onAxis sms:MethodAxis ;
