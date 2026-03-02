@@ -10,8 +10,8 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 ## Included Modules
 
-- `sdata-core.ttl` / `sdata-core-v0.12.0.ttl`: core ontology (MIN v2.1 based)
-- `min-v2.1.0.ttl`: foundation ontology
+- `sdata-core.ttl` / `sdata-core-v0.12.0.ttl`: core ontology (MIN v3.0 based)
+- `min-v3.0.0.ttl`: foundation ontology
 - `sdata-material-state.ttl`: material state space extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
@@ -64,7 +64,7 @@ make viz-hierarchy
 make viz-min-core
 make viz-material-state
 make viz-specimen
-make viz-min-v21-examples
+make viz-min-v3-examples
 make viz-examples
 ```
 

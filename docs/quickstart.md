@@ -1,6 +1,6 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v2.1.0`.
+Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v3.0.0`.
 
 ## 1. Setup
 
@@ -57,7 +57,7 @@ ex:TensileTest_42
 ```bash
 make viz-all
 make viz-examples
-make viz-min-v21-examples
+make viz-min-v3-examples
 ```
 
 Wichtige Outputs:

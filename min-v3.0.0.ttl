@@ -1,0 +1,1085 @@
+@prefix min:     <https://w3id.org/min#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# =============================================================================
+#
+#   MIN — Material · Information · Nexus
+#
+#   Die Grundontologie. Version 3.0.0
+#
+#   Zwei Wurzeln unter Entity:
+#
+#     Nexus  — das Aktuale. Was kausal wirksam ist.
+#     Forma  — das Formale. Was konstitutiv bestimmt.
+#
+#   Nexus: Object, Process, Data, Agent.
+#     Existenzkriterium: kausale Wirksamkeit.
+#     Polarität auf Schema-Ebene (materialProperty / informationalProperty).
+#     Flacher Graph. Direkte Queries.
+#
+#   Forma: Lex, Structura, Possibile, Norma, Institutio.
+#     Existenzkriterium: konstitutive Bestimmung.
+#     Forma-Instanzen wirken nicht, aber sie bestimmen,
+#     was möglich, notwendig oder gültig ist.
+#
+#   Brückenrelationen verbinden Nexus und Forma:
+#     realizes, constrains, governs, formalizes,
+#     evaluates, concerns, constitutes, recognizes, encodes.
+#
+#   Philosophische Ahnenreihe:
+#     Aristoteles    — Hyle/Morphe (Polarität), Ousia/Kinesis/Aitia
+#     Spinoza        — Eine Substanz, zwei Attribute
+#     Whitehead      — Actual Entity, Eternal Object, Process
+#     Latour         — Aktant (menschlich und nichtmenschlich)
+#     Searle         — Institutional Facts, Constitutive Rules
+#     Kripke/Lewis   — Possible Worlds (Possibile)
+#
+#   v3.0.0 — 2026-03-02
+#
+# =============================================================================
+
+<https://w3id.org/min> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/min/3.0.0> ;
+    owl:versionInfo "3.0.0" ;
+    dcterms:title "MIN — Material · Information · Nexus"@en ;
+    dcterms:title "MIN — Material · Information · Nexus"@de ;
+    dcterms:description """Grundontologie mit zwei Zweigen: Nexus (das Aktuale)
+    und Forma (das Formale).
+
+    Nexus modelliert Dinge, die kausal wirksam sind: Objects, Processes,
+    Data, Agents. Polarität auf Schema-Ebene. Flacher Graph.
+
+    Forma modelliert das, was nicht wirkt, aber bestimmt: Naturgesetze,
+    mathematische Strukturen, Möglichkeiten, Normen, Institutionen.
+
+    Brückenrelationen verbinden die Zweige: ein Process (Nexus) realisiert
+    ein Naturgesetz (Forma). Eine Norm (Forma) bewertet ein Object (Nexus).
+    Ein Agent (Nexus) konstituiert eine Institution (Forma).
+
+    Zweischicht-Architektur: MIN → sdata.
+
+    1 Wurzel (Entity). 2 Zweige (Nexus, Forma).
+    4 Nexus-Kategorien. 5 Forma-Kategorien.
+    2 Polaritäts-Superproperties. 2 Inter-Nexus-Relationen.
+    15 Kategorienrelationen. 9 Brückenrelationen.
+    5 Datatype Properties. 2 Annotations."""@de ;
+    dcterms:creator "Dr. Ingolf Lepenies" ;
+    dcterms:created "2026-03-02"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/sdata/core> ;
+    min:designRationale """v3.0 erweitert MIN um den Forma-Zweig. Begründung:
+
+    1. MIN v2.1 modelliert nur das Aktuale — Dinge mit kausaler
+       Wirksamkeit. Aber die Welt enthält auch Naturgesetze,
+       mathematische Strukturen, Möglichkeiten, Normen und
+       Institutionen. Diese sind nicht kausal wirksam, aber
+       konstitutiv bestimmend.
+
+    2. In v2.1 wurde alles Formale als min:Data modelliert.
+       Aber ein Naturgesetz ist nicht dasselbe wie das Lehrbuch,
+       das es beschreibt. Eine Norm ist nicht dasselbe wie das
+       DIN-Dokument, das sie enthält. Data kodiert Forma —
+       aber Data IST nicht Forma.
+
+    3. Forma ist KEIN Superset von Data. Data ist ein Nexus —
+       ein Informationsartefakt mit Bytes, Speicherort, Eigentümer.
+       Forma hat keine materiale Seite. Forma existiert nicht
+       raumzeitlich. Forma bestimmt.
+
+    4. Whitehead unterscheidet Actual Entities (≈ Nexus) und
+       Eternal Objects (≈ Forma). Searle unterscheidet Brute
+       Facts (≈ Nexus) und Institutional Facts (≈ Institutio).
+       Kripke/Lewis unterscheiden Actual World (≈ Nexus) und
+       Possible Worlds (≈ Possibile). MIN vereint diese
+       Traditionen unter einer Architektur.
+
+    Ergebnis: Entity als neue Wurzel. Nexus und Forma als
+    zwei Zweige. 9 Brückenrelationen verbinden sie."""@de .
+
+
+# =============================================================================
+#
+#                              ENTITY
+#                             ╱      ╲
+#                        Nexus        Forma
+#                       ╱│╲  ╲       ╱│╲ ╲ ╲
+#                Object │ Data    Lex │ Norma
+#                  Process Agent  Structura │
+#                                 Possibile │
+#                                   Institutio
+#
+#              ◄── realizes ──►
+#              ◄── constrains ──►
+#              ◄── encodes ──►
+#
+# =============================================================================
+
+
+# #############################################################################
+#
+#   TEIL I — ENTITY (Absolute Wurzel)
+#
+# #############################################################################
+
+min:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    rdfs:label "Entität"@de ;
+    rdfs:comment """Absolute Wurzel. Alles, was in MIN existiert,
+    ist Entity. Zwei Zweige:
+
+    Nexus — das Aktuale. Existenzkriterium: kausale Wirksamkeit.
+    Forma — das Formale. Existenzkriterium: konstitutive Bestimmung.
+
+    Entity selbst wird nicht direkt instantiiert.
+    Jede Instanz ist Nexus oder Forma."""@de ;
+    min:philosophicalBasis """Aristoteles: to on — das Seiende.
+    Der allgemeinste Begriff, unter dem alles fällt,
+    was auf irgendeine Weise ist."""@de .
+
+
+# #############################################################################
+#
+#   TEIL II — NEXUS (Zweig des Aktualen)
+#
+#   Das, was kausal wirksam ist. Existenzkriterium:
+#   Macht es einen Unterschied? Hat es messbare Eigenschaften?
+#
+#   Vier Subklassen bestimmen die Seinsweise:
+#     Object   — material-dominant      (das, was IST)
+#     Process  — ausgewogen             (das, was GESCHIEHT)
+#     Data     — informational-dominant  (das, was BESCHREIBT)
+#     Agent    — handlungsfähig          (das, was HANDELT)
+#
+#   Object, Process, Data sind paarweise disjunkt.
+#   Agent ist NICHT disjunkt — kann zugleich Object sein.
+#
+#   Polarität auf Schema-Ebene:
+#     ex:masse_kg rdfs:subPropertyOf min:materialProperty .
+#     Instanzen sind flach. Kein Blank Node. Direkter Query.
+#
+# #############################################################################
+
+min:Nexus a owl:Class ;
+    rdfs:subClassOf min:Entity ;
+    rdfs:label "Nexus"@en ;
+    rdfs:label "Nexus"@de ;
+    rdfs:comment """Zweig des Aktualen. Gemeinsame Superklasse der vier
+    Kategorien Object, Process, Data, Agent.
+
+    Existenzkriterium: kausale Wirksamkeit.
+    Nicht ‹Besteht es aus Materie?› sondern ‹Ist es kausal wirksam?›
+    Ein Schatten besteht aus nichts — aber er legt einen Sensor lahm.
+    Das reicht.
+
+    Technischer Zweck:
+    — Domain/Range für geteilte Properties
+    — Query-Anker: ?x a min:Nexus findet alle aktualen Entitäten
+
+    Polarität: Jede Eigenschaft eines Nexus hat eine Natur —
+    material (kausal, raumzeitlich) oder informational (strukturell,
+    bestimmt). Deklariert in der Property-Definition, nicht in der Instanz.
+
+    Nexus selbst wird nicht direkt instantiiert.
+    Jede Instanz ist Object, Process, Data oder Agent."""@de ;
+    min:philosophicalBasis """Whitehead: Actual Entity — das, was wirklich ist.
+    Latour: Aktant — alles, was einen Unterschied macht."""@de .
+
+
+# =============================================================================
+#   OBJECT — das, was ist
+# =============================================================================
+
+min:Object a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Object"@en ;
+    rdfs:label "Objekt"@de ;
+    rdfs:comment """Das, was ist. Material-dominanter Nexus.
+
+    Zeigt sich primär als physisches, räumlich ausgedehntes,
+    kausal wirksames Etwas. Seine informationalen Eigenschaften
+    sind real (Struktur, Zusammensetzung), aber der primäre
+    Zugang geht über die Materialität.
+
+    Aristotelisch: Ousia — das Zugrundeliegende.
+
+    Identitätskriterium: materiale Kontinuität.
+    Ein Coil wird umgeformt, bleibt aber derselbe Stahl.
+
+    Ein Object wird durch Processes transformiert.
+    Ein Object wird durch Agents behandelt.
+    Ein Object hat keine Handlungsfähigkeit (→ Agent)."""@de ;
+    skos:example "Rohstoff, Coil, Bauteil, Werkzeug, Maschine (passiv), Prüfling, Recyclat, Vakuum, EM-Feld, Schatten."@de .
+
+
+# =============================================================================
+#   PROCESS — das, was geschieht
+# =============================================================================
+
+min:Process a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Process"@en ;
+    rdfs:label "Prozess"@de ;
+    rdfs:comment """Das, was geschieht. Ausgewogener Nexus.
+
+    Beide Pole sind gleich gewichtig. Material: Kräfte,
+    Energie, physische Wechselwirkung. Informational:
+    Regeln, Parameter, Modell.
+
+    Process ist Transformation — er nimmt Objects als Input,
+    verändert sie, erzeugt Objects als Output und generiert Data.
+
+    Whitehead: ‹the becoming of being›.
+
+    Zeitlichkeit: ein Process beginnt und endet.
+    Ein Process ohne Agent ist Naturvorgang.
+    Ein Process mit Agent ist Handlung.
+
+    Ein Process realisiert Forma-Instanzen: ein Tiefziehprozess
+    realisiert die von-Mises-Fließfläche (Structura) und
+    gehorcht der Energieerhaltung (Lex)."""@de ;
+    skos:example "Umformen, Gießen, Zugversuch, Simulation, Recycling, Montage, Schall, Tornado."@de ;
+
+    # --- Strukturelle Axiome ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasInput ;
+        owl:someValuesFrom min:Object
+    ] ;
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:hasOutput ;
+        owl:someValuesFrom min:Object
+    ] .
+
+
+# =============================================================================
+#   DATA — das, was beschreibt
+# =============================================================================
+
+min:Data a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Data"@en ;
+    rdfs:label "Daten"@de ;
+    rdfs:comment """Das, was beschreibt. Informational-dominanter Nexus.
+
+    Zeigt sich primär als Struktur, Muster, Wissen.
+    Seine materialen Eigenschaften sind real (Bytes, Speicher,
+    Signal), aber der primäre Zugang geht über die Information.
+
+    Data ist der Nexus, dessen Existenzberechtigung in seiner
+    informationalen Bestimmtheit liegt — nicht in seiner
+    physischen Präsenz. Eine Datei existiert als Datei wegen
+    ihrer Semantik, nicht wegen ihrer Bytes.
+
+    Abgrenzung zu Forma: Data ist ein AKTUALES Artefakt — es
+    hat Bytes, einen Speicherort, einen Eigentümer. Data kodiert
+    Forma (ein Lehrbuch kodiert ein Naturgesetz), aber Data IST
+    nicht Forma. Wenn man das Lehrbuch löscht, ist das Naturgesetz
+    noch da. Wenn man alle Kopien löscht, ist das Gesetz immer
+    noch da. Forma ist nicht aktuell — Forma bestimmt."""@de ;
+    skos:example "Messdaten, Simulationsergebnis, Produktpass, Zertifikat, Fehlerbericht, DIN-Dokument."@de ;
+    min:designRationale """Abgrenzung Data vs. Forma: Data KODIERT Forma.
+    Ein DIN-Dokument (Data) kodiert eine Anforderung (Norma).
+    Ein Lehrbuch (Data) kodiert ein Gesetz (Lex).
+    Ein Simulationsmodell (Data) kodiert eine Struktur (Structura).
+    Die Relation min:encodes macht diese Verbindung explizit."""@de .
+
+
+# =============================================================================
+#   AGENT — das, was handelt
+# =============================================================================
+
+min:Agent a owl:Class ;
+    rdfs:subClassOf min:Nexus ;
+    rdfs:label "Agent"@en ;
+    rdfs:label "Agent"@de ;
+    rdfs:comment """Das, was handelt. Handlungsfähiger Nexus.
+
+    Agent ist ORTHOGONAL zu Object/Process/Data.
+    Ein Agent kann material-dominant sein (Mensch, Roboter)
+    oder informational-dominant (KI, Software-Agent).
+    Was ihn zum Agent macht, ist seine Handlungsfähigkeit:
+
+    1. Kausale Wirksamkeit — verursacht Veränderungen
+    2. Selektivität — Wirkung ist lokal, nicht universal
+    3. Zurechenbarkeit — Veränderung ist ihm zuzurechnen
+
+    Intentionalität ist NICHT gefordert. Ein Thermostat hat
+    Agency, aber keine Intention.
+
+    Latour: Aktant — alles, was einen Unterschied macht.
+    Agency ist nicht auf Menschen beschränkt.
+
+    Abgrenzung zu Forma: Ein Agent kann Institutionen
+    konstituieren (min:constitutes) und anerkennen
+    (min:recognizes). Die Institution selbst ist Forma,
+    nicht Nexus."""@de ;
+    skos:example "Mensch, CNC-Maschine, Roboterarm, Software-Agent, ML-Modell, Organisation, Schatten, Korrosion."@de ;
+
+    # --- Strukturelles Axiom ---
+    rdfs:subClassOf [
+        a owl:Restriction ;
+        owl:onProperty min:performs ;
+        owl:someValuesFrom min:Process
+    ] .
+
+
+# --- Disjunktheit (Nexus-intern) ---
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( min:Object min:Process min:Data ) .
+
+# Agent ist NICHT disjunkt mit Object, Process oder Data.
+
+
+# #############################################################################
+#
+#   TEIL III — FORMA (Zweig des Formalen)
+#
+#   Das, was nicht wirkt, aber bestimmt. Existenzkriterium:
+#   Bestimmt es, was möglich, notwendig oder gültig ist?
+#
+#   Fünf Subklassen:
+#     Lex         — Naturgesetze, universelle Regularitäten
+#     Structura   — mathematische/formale Strukturen
+#     Possibile   — Möglichkeiten, Kontrafaktisches
+#     Norma       — Sollens-Aussagen, Bewertungskriterien
+#     Institutio  — Soziale Konstrukte, kollektive Anerkennung
+#
+#   Alle fünf sind paarweise disjunkt.
+#   Forma hat KEINE Polarität — keine materiale Seite.
+#   Forma-Instanzen existieren nicht raumzeitlich.
+#
+# #############################################################################
+
+min:Forma a owl:Class ;
+    rdfs:subClassOf min:Entity ;
+    rdfs:label "Forma"@en ;
+    rdfs:label "Forma"@de ;
+    rdfs:comment """Zweig des Formalen. Gemeinsame Superklasse der fünf
+    Kategorien Lex, Structura, Possibile, Norma, Institutio.
+
+    Existenzkriterium: konstitutive Bestimmung.
+    Nicht ‹Ist es kausal wirksam?› sondern ‹Bestimmt es,
+    was möglich, notwendig oder gültig ist?›
+
+    Forma-Instanzen wirken nicht. Die Gravitation beschleunigt
+    keine Körper — das tut die Gewichtskraft (ein materialProperty
+    am Object). Die Gravitation als Lex bestimmt, WIE Gewichtskraft
+    wirkt. Forma bestimmt, Nexus wirkt.
+
+    Forma hat KEINE Polarität. Es gibt keine materiale Seite eines
+    Naturgesetzes. materialProperty und informationalProperty gelten
+    nur für Nexus.
+
+    Forma wird von Data KODIERT (min:encodes), aber Forma IST nicht
+    Data. Das Lehrbuch (Data) kann gelöscht werden — das Gesetz (Lex)
+    bleibt.
+
+    Forma wird nicht direkt instantiiert.
+    Jede Instanz ist Lex, Structura, Possibile, Norma oder
+    Institutio."""@de ;
+    min:philosophicalBasis """Whitehead: Eternal Objects — die reinen
+    Möglichkeiten, die in aktualen Entitäten realisiert werden.
+    Platon: Eidea — die Formen.
+    Aber ohne platonischen Himmel: Forma existiert nicht ‹irgendwo›.
+    Forma bestimmt."""@de .
+
+
+# =============================================================================
+#   LEX — das, was gilt
+# =============================================================================
+
+min:Lex a owl:Class ;
+    rdfs:subClassOf min:Forma ;
+    rdfs:label "Lex"@en ;
+    rdfs:label "Lex"@de ;
+    rdfs:comment """Das, was gilt. Naturgesetze, universelle Regularitäten,
+    Erhaltungssätze.
+
+    Lex ist nicht kausal wirksam — die Gravitation TUT nichts.
+    Lex BESTIMMT, was passiert, wenn Nexus-Instanzen interagieren.
+
+    Lex ist nicht Data. Das Lehrbuch, das F = ma enthält, ist Data.
+    Das Gesetz selbst — die Regularität in der Natur — ist Lex.
+    Das Lehrbuch kodiert die Lex (min:encodes).
+
+    Lex ist universell: sie gilt immer, überall, ohne Ausnahme
+    (innerhalb ihres Gültigkeitsbereichs). Genau deshalb ist
+    Gravitation kein Agent — Universalität disqualifiziert für
+    Agency, aber qualifiziert für Lex.
+
+    Relationen:
+    — constrains Nexus (beschränkt, was möglich ist)
+    — governs Process (bestimmt, wie Processes ablaufen)
+    — Nexus realizes Lex (ein Process gehorcht dem Gesetz)"""@de ;
+    skos:example "Gravitation, Energieerhaltung, Thermodynamik, Massenerhaltung, Coulomb-Gesetz."@de ;
+    min:philosophicalBasis """Naturgesetzliche Regularitäten.
+    Humean: Gesetze sind Regularitäten.
+    Non-Humean: Gesetze sind konstitutive Kräfte.
+    MIN nimmt keine Stellung — Lex bestimmt, wie genau ist
+    der Domänenontologie überlassen."""@de .
+
+
+# =============================================================================
+#   STRUCTURA — das, was formt
+# =============================================================================
+
+min:Structura a owl:Class ;
+    rdfs:subClassOf min:Forma ;
+    rdfs:label "Structura"@en ;
+    rdfs:label "Structura"@de ;
+    rdfs:comment """Das, was formt. Mathematische Objekte, formale Strukturen,
+    Modellierungsrahmen.
+
+    Die Gruppe SO(3) existiert nicht raumzeitlich. Aber sie
+    bestimmt, welche Rotationen in drei Dimensionen möglich sind.
+    Die von-Mises-Fließfläche existiert nicht physisch. Aber sie
+    bestimmt, wann Stahl plastisch zu fließen beginnt.
+
+    Structura ist nicht Data. Die FEM-Implementierung der
+    Fließfläche ist Data. Die Fläche selbst — die mathematische
+    Struktur — ist Structura. Die Implementierung kodiert die
+    Structura (min:encodes).
+
+    Relationen:
+    — formalizes Nexus (ist das formale Modell eines Nexus)
+    — Nexus realizes Structura (ein System realisiert die Struktur)"""@de ;
+    skos:example "SO(3), von-Mises-Fließfläche, Fourier-Transformation, Differentialgleichungssystem, Graphentheorie."@de ;
+    min:philosophicalBasis """Mathematischer Strukturalismus.
+    Strukturen existieren nicht raumzeitlich, aber sie bestimmen,
+    welche Formen in der aktualen Welt möglich sind."""@de .
+
+
+# =============================================================================
+#   POSSIBILE — das, was sein könnte
+# =============================================================================
+
+min:Possibile a owl:Class ;
+    rdfs:subClassOf min:Forma ;
+    rdfs:label "Possibile"@en ;
+    rdfs:label "Possibile"@de ;
+    rdfs:comment """Das, was sein könnte. Möglichkeiten, kontrafaktische
+    Szenarien, Möglichkeitsräume.
+
+    Das Bauteil HÄTTE versagen können. Unter anderen Bedingungen
+    WÄRE das Ergebnis anders. Modale Aussagen über Nicht-Aktuales.
+
+    Possibile ist nicht Data. Die FMEA-Tabelle ist Data. Das
+    Versagensszenario selbst — die Möglichkeit — ist Possibile.
+    Die FMEA-Tabelle kodiert das Possibile (min:encodes).
+
+    Possibile ist nicht Process. Ein Process geschieht.
+    Ein Possibile geschieht NICHT — es KÖNNTE geschehen.
+    Wenn ein Possibile eintritt, wird es zum Process (realisiert).
+
+    Relationen:
+    — concerns Nexus (betrifft einen aktualen Nexus)
+    — alternativeTo Nexus (ist Alternative zu aktualem Zustand)"""@de ;
+    skos:example "Versagensszenario, Risikofall, Designalternative, What-if-Szenario, kontrafaktische Historie."@de ;
+    min:philosophicalBasis """Kripke: Possible Worlds.
+    Lewis: Modal Realism (ohne die ontologische Verpflichtung).
+    MIN sagt nicht, dass Möglichkeiten ‹existieren› wie Dinge.
+    MIN sagt: sie bestimmen, was als Risiko oder Alternative gilt."""@de .
+
+
+# =============================================================================
+#   NORMA — das, was gelten soll
+# =============================================================================
+
+min:Norma a owl:Class ;
+    rdfs:subClassOf min:Forma ;
+    rdfs:label "Norma"@en ;
+    rdfs:label "Norma"@de ;
+    rdfs:comment """Das, was gelten soll. Sollens-Aussagen, Bewertungskriterien,
+    Qualitätsanforderungen.
+
+    ‹Die Zugfestigkeit soll mindestens 340 MPa betragen.›
+    Das ist kein Fakt über die Welt — es ist eine Forderung AN die Welt.
+    Norma existiert nicht als Ding. Norma bestimmt, was als
+    Erfolg oder Versagen gilt.
+
+    Norma ist nicht Data. Das DIN-Dokument ist Data. Die Anforderung
+    selbst — das Soll — ist Norma. Das Dokument kodiert die Norma
+    (min:encodes).
+
+    Norma ist nicht Lex. Lex gilt universell (Gravitation gilt immer).
+    Norma gilt konventionell (EN 10025-2 gilt, weil Menschen es so
+    beschlossen haben). Lex kann nicht verletzt werden. Norma kann
+    verletzt werden — und genau das macht sie zur Norma.
+
+    Relationen:
+    — evaluates Nexus (bewertet einen Nexus)
+    — Data encodes Norma (Dokument kodiert die Anforderung)"""@de ;
+    skos:example "Mindestzugfestigkeit, Toleranzanforderung, Umweltgrenzwert, Qualitätskriterium, Sicherheitsanforderung."@de ;
+    min:philosophicalBasis """Kants Unterscheidung: Sein vs. Sollen.
+    Lex beschreibt, was IST (deskriptiv).
+    Norma beschreibt, was sein SOLL (normativ).
+    Humes Guillotine: aus Sein folgt kein Sollen.
+    Deshalb sind Lex und Norma getrennte Klassen."""@de .
+
+
+# =============================================================================
+#   INSTITUTIO — das, was anerkannt wird
+# =============================================================================
+
+min:Institutio a owl:Class ;
+    rdfs:subClassOf min:Forma ;
+    rdfs:label "Institutio"@en ;
+    rdfs:label "Institution"@de ;
+    rdfs:comment """Das, was anerkannt wird. Soziale Konstrukte, die nur
+    durch kollektive Anerkennung existieren.
+
+    Geld, Grenzen, Patente, Zertifizierungen, Organisationsformen,
+    Rechte, Verträge. Ein Euro ist kein Object (die Münze schon,
+    aber nicht der Wert). Eine Staatsgrenze ist kein Object (der
+    Zaun schon, aber nicht die Jurisdiktion).
+
+    Institutio existiert, weil Agenten es anerkennen.
+    Ohne EZB kein Euro. Ohne DPMA kein Patent.
+
+    Institutio ist nicht Agent. Ein Unternehmen als Handelnder
+    ist Agent. Dasselbe Unternehmen als juristische Person —
+    als soziales Konstrukt — ist Institutio. Die beiden sind
+    verschiedene Entitäten, verbunden durch Relationen.
+
+    Relationen:
+    — constitutedBy Agent (wurde von diesem Agent geschaffen)
+    — recognizedBy Agent (wird von diesem Agent anerkannt)"""@de ;
+    skos:example "Euro, Patent, Zertifizierung, GmbH-Form, Grenze, Vertrag, Recht, Lizenz."@de ;
+    min:philosophicalBasis """Searle: Institutional Facts.
+    ‹X counts as Y in context C.›
+    Ein Stück Papier (Object) zählt als Geld (Institutio)
+    im Kontext einer Volkswirtschaft.
+    Institutio ist Searles Y — das, was durch konstitutive
+    Regeln entsteht."""@de .
+
+
+# --- Disjunktheit (Forma-intern) ---
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( min:Lex min:Structura min:Possibile min:Norma min:Institutio ) .
+
+
+# --- Disjunktheit (Zweige) ---
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( min:Nexus min:Forma ) .
+
+
+# #############################################################################
+#
+#   TEIL IV — POLARITÄT (Schema-Ebene, nur Nexus)
+#
+#   Polarität gilt NUR für Nexus-Instanzen.
+#   Forma hat keine materiale Seite.
+#
+# #############################################################################
+
+min:materialProperty a rdf:Property ;
+    rdfs:label "material property"@en ;
+    rdfs:label "materiale Eigenschaft"@de ;
+    rdfs:comment """Superproperty für alle kausal-räumlichen Eigenschaften
+    von Nexus-Instanzen.
+
+    Domänen-Properties, die das Physische, Kausale, Raumzeitliche
+    eines Nexus erfassen, deklarieren sich als subPropertyOf
+    min:materialProperty.
+
+    Gilt NUR für Nexus. Forma hat keine materiale Seite.
+
+    Nutzung:
+      ex:masse_kg a owl:DatatypeProperty ;
+          rdfs:subPropertyOf min:materialProperty ;
+          rdfs:domain min:Object ;
+          rdfs:range xsd:float ."""@de ;
+    min:philosophicalBasis """Aristoteles: Hyle — der Stoff.
+    Spinoza: Attribut der Ausdehnung."""@de .
+
+min:informationalProperty a rdf:Property ;
+    rdfs:label "informational property"@en ;
+    rdfs:label "informationale Eigenschaft"@de ;
+    rdfs:comment """Superproperty für alle strukturell-bestimmten Eigenschaften
+    von Nexus-Instanzen.
+
+    Domänen-Properties, die das Strukturelle, Bestimmte, Erkennbare
+    eines Nexus erfassen, deklarieren sich als subPropertyOf
+    min:informationalProperty.
+
+    Gilt NUR für Nexus. Forma hat keine Polarität.
+
+    Nutzung:
+      ex:werkstoffNr a owl:DatatypeProperty ;
+          rdfs:subPropertyOf min:informationalProperty ;
+          rdfs:domain min:Object ;
+          rdfs:range xsd:string ."""@de ;
+    min:philosophicalBasis """Aristoteles: Morphe — die Form.
+    Spinoza: Attribut des Denkens."""@de .
+
+
+# #############################################################################
+#
+#   TEIL V — INTER-NEXUS-RELATIONEN
+#
+# #############################################################################
+
+min:nexusWith a owl:ObjectProperty , owl:SymmetricProperty ;
+    rdfs:label "nexus with"@en ;
+    rdfs:label "verbunden mit"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Primordiale Verbindung zwischen Nexus-Instanzen.
+    Symmetrisch. Alle Nexus-internen Relationen sind
+    Spezialisierungen dieser Ur-Relation."""@de .
+
+min:hasComponent a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "has component"@en ;
+    rdfs:label "hat Bestandteil"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Mereologische Relation: Nexus enthält Nexus.
+    Transitiv. Komposition nach außen."""@de .
+
+
+# #############################################################################
+#
+#   TEIL VI — KATEGORIENRELATIONEN (Nexus-intern)
+#
+#              Agent
+#             ╱  │  ╲
+#       actsOn│  │performs
+#             │  │  │
+#             ▼  │  ▼
+#          Object│ Process
+#             ▲  │  │  ▲
+#    resultOf │  │  │  │ undergoes
+#             │  ▼  ▼  │
+#             hasOutput │
+#             hasInput──┘
+#
+#             describes
+#       Data ──────────▶ Nexus
+#       ▲
+#       │ generates
+#       Process
+#
+# #############################################################################
+
+# --- Transformation: Process ↔ Object ---
+
+min:hasInput a owl:ObjectProperty ;
+    rdfs:label "has input"@en ;
+    rdfs:label "hat Eingabe"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:hasOutput a owl:ObjectProperty ;
+    rdfs:label "has output"@en ;
+    rdfs:label "hat Ausgabe"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:undergoes a owl:ObjectProperty ;
+    rdfs:label "undergoes"@en ;
+    rdfs:label "durchläuft"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:hasInput ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:resultOf a owl:ObjectProperty ;
+    rdfs:label "result of"@en ;
+    rdfs:label "Ergebnis von"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:hasOutput ;
+    rdfs:subPropertyOf min:nexusWith .
+
+# --- Agency: Agent ↔ Process ---
+
+min:performs a owl:ObjectProperty ;
+    rdfs:label "performs"@en ;
+    rdfs:label "führt durch"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:performedBy a owl:ObjectProperty ;
+    rdfs:label "performed by"@en ;
+    rdfs:label "durchgeführt von"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Agent ;
+    owl:inverseOf min:performs ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:controls a owl:ObjectProperty ;
+    rdfs:label "controls"@en ;
+    rdfs:label "steuert"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:performs ;
+    rdfs:comment """Stärker als performs: der Agent bestimmt
+    die Parameter des Processes."""@de .
+
+# --- Wirkung: Agent ↔ Object ---
+
+min:actsOn a owl:ObjectProperty ;
+    rdfs:label "acts on"@en ;
+    rdfs:label "wirkt auf"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    owl:propertyChainAxiom ( min:performs min:hasInput ) .
+
+min:affectedBy a owl:ObjectProperty ;
+    rdfs:label "affected by"@en ;
+    rdfs:label "betroffen von"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range min:Agent ;
+    owl:inverseOf min:actsOn ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:owns a owl:ObjectProperty ;
+    rdfs:label "owns"@en ;
+    rdfs:label "besitzt"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Verantwortung, Zuständigkeit, Eigentum.
+    Wichtig für Provenienz und Produktpässe."""@de .
+
+# --- Data-Relationen ---
+
+min:describes a owl:ObjectProperty ;
+    rdfs:label "describes"@en ;
+    rdfs:label "beschreibt"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Data beschreibt einen Nexus.
+    Ein Werkstoffdatenblatt describes ein Object.
+    Ein Protokoll describes einen Process.
+    Ein Zertifikat describes einen Agent."""@de .
+
+min:describedBy a owl:ObjectProperty ;
+    rdfs:label "described by"@en ;
+    rdfs:label "beschrieben durch"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Data ;
+    owl:inverseOf min:describes ;
+    rdfs:subPropertyOf min:nexusWith .
+
+min:generates a owl:ObjectProperty ;
+    rdfs:label "generates"@en ;
+    rdfs:label "erzeugt"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range min:Data ;
+    rdfs:subPropertyOf min:nexusWith ;
+    rdfs:comment """Ein Process erzeugt Data.
+    Der Zugversuch generates Messdaten.
+    Die Simulation generates Simulationsergebnis."""@de .
+
+min:generatedBy a owl:ObjectProperty ;
+    rdfs:label "generated by"@en ;
+    rdfs:label "erzeugt durch"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range min:Process ;
+    owl:inverseOf min:generates ;
+    rdfs:subPropertyOf min:nexusWith .
+
+# --- Abgeleitete Nexus-Relation ---
+
+min:produces a owl:ObjectProperty ;
+    rdfs:label "produces"@en ;
+    rdfs:label "produziert"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Object ;
+    rdfs:subPropertyOf min:nexusWith ;
+    owl:propertyChainAxiom ( min:performs min:hasOutput ) ;
+    rdfs:comment """Abgeleitet: Agent performs Process hasOutput Object."""@de .
+
+
+# #############################################################################
+#
+#   TEIL VII — BRÜCKENRELATIONEN (Nexus ↔ Forma)
+#
+#   Diese Relationen verbinden die beiden Zweige.
+#   Sie sind die ontologische Brücke zwischen dem Aktualen
+#   und dem Formalen.
+#
+#              Nexus ◄── realizes ──► Forma
+#              Forma ── constrains ──► Nexus
+#              Forma ── governs ─────► Process
+#              Forma ── formalizes ──► Nexus
+#              Forma ── evaluates ───► Nexus
+#              Forma ── concerns ────► Nexus
+#              Agent ── constitutes ─► Institutio
+#              Agent ── recognizes ──► Institutio
+#              Data  ── encodes ─────► Forma
+#
+# #############################################################################
+
+# --- Die zentrale Brücke ---
+
+min:realizes a owl:ObjectProperty ;
+    rdfs:label "realizes"@en ;
+    rdfs:label "realisiert"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range min:Forma ;
+    rdfs:comment """Ein Nexus realisiert eine Forma.
+
+    Ein Tiefziehprozess realisiert die von-Mises-Fließfläche.
+    Ein Bauteil realisiert (oder verletzt) eine Norma.
+    Ein Münzwurf realisiert ein Possibile.
+    Eine GmbH-Gründung realisiert die GmbH-Form.
+
+    Realizes ist die zentrale Brücke: das Formale wird im
+    Aktualen wirklich. Whitehead: ‹ingression of eternal
+    objects into actual entities›."""@de ;
+    min:philosophicalBasis """Whitehead: Ingression.
+    Aristoteles: Verwirklichung (Energeia) der Form (Morphe)
+    im Stoff (Hyle)."""@de .
+
+min:realizedBy a owl:ObjectProperty ;
+    rdfs:label "realized by"@en ;
+    rdfs:label "realisiert durch"@de ;
+    rdfs:domain min:Forma ;
+    rdfs:range min:Nexus ;
+    owl:inverseOf min:realizes .
+
+# --- Forma → Nexus (Bestimmung) ---
+
+min:constrains a owl:ObjectProperty ;
+    rdfs:label "constrains"@en ;
+    rdfs:label "beschränkt"@de ;
+    rdfs:domain min:Forma ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Forma beschränkt, was für Nexus möglich ist.
+
+    Die Energieerhaltung constrains jeden Process.
+    Eine Toleranzanforderung constrains ein Object.
+    Allgemeinste Bestimmungsrelation."""@de .
+
+min:governs a owl:ObjectProperty ;
+    rdfs:label "governs"@en ;
+    rdfs:label "regiert"@de ;
+    rdfs:domain min:Lex ;
+    rdfs:range min:Process ;
+    rdfs:subPropertyOf min:constrains ;
+    rdfs:comment """Spezialisierung von constrains für Lex → Process.
+    Ein Naturgesetz bestimmt, WIE ein Process abläuft.
+
+    Die Energieerhaltung governs den Tiefziehprozess.
+    Die Thermodynamik governs die Wärmebehandlung."""@de .
+
+min:formalizes a owl:ObjectProperty ;
+    rdfs:label "formalizes"@en ;
+    rdfs:label "formalisiert"@de ;
+    rdfs:domain min:Structura ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:constrains ;
+    rdfs:comment """Eine Structura ist das formale Modell eines Nexus.
+
+    Die von-Mises-Fließfläche formalizes plastische Verformung.
+    SO(3) formalizes Rotationsdynamik."""@de .
+
+min:evaluates a owl:ObjectProperty ;
+    rdfs:label "evaluates"@en ;
+    rdfs:label "bewertet"@de ;
+    rdfs:domain min:Norma ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:constrains ;
+    rdfs:comment """Eine Norma bewertet einen Nexus.
+
+    Mindestzugfestigkeit ≥ 470 MPa evaluates Object.
+    Prozesszeit ≤ 120 s evaluates Process.
+
+    Bewertung heißt: der Nexus kann die Norma erfüllen
+    oder verletzen. Lex kann nicht verletzt werden —
+    Norma schon. Das ist der Unterschied."""@de .
+
+min:concerns a owl:ObjectProperty ;
+    rdfs:label "concerns"@en ;
+    rdfs:label "betrifft"@de ;
+    rdfs:domain min:Possibile ;
+    rdfs:range min:Nexus ;
+    rdfs:comment """Ein Possibile betrifft einen aktualen Nexus.
+
+    Das Versagensszenario concerns ein Bauteil.
+    Die Designalternative concerns einen Process."""@de .
+
+min:alternativeTo a owl:ObjectProperty ;
+    rdfs:label "alternative to"@en ;
+    rdfs:label "Alternative zu"@de ;
+    rdfs:domain min:Possibile ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:concerns ;
+    rdfs:comment """Stärker als concerns: dieses Possibile ist eine
+    Alternative zu einem aktualen Zustand oder Process."""@de .
+
+# --- Agent → Institutio (Konstitution) ---
+
+min:constitutes a owl:ObjectProperty ;
+    rdfs:label "constitutes"@en ;
+    rdfs:label "konstituiert"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Institutio ;
+    rdfs:comment """Ein Agent erschafft eine Institution.
+
+    Die EZB constitutes den Euro.
+    Das DPMA constitutes ein Patent.
+    Gründer constitutes eine GmbH.
+
+    Searle: ‹X counts as Y in context C.›
+    Der Agent (X) erschafft die Institution (Y)."""@de .
+
+min:recognizes a owl:ObjectProperty ;
+    rdfs:label "recognizes"@en ;
+    rdfs:label "erkennt an"@de ;
+    rdfs:domain min:Agent ;
+    rdfs:range min:Institutio ;
+    rdfs:comment """Ein Agent erkennt eine Institution an.
+
+    EU-Mitgliedstaaten recognize den Euro.
+    Unternehmen recognize eine Zertifizierung.
+
+    Ohne Anerkennung keine Institutio. Wenn alle
+    Agenten aufhören, den Euro anzuerkennen, hört
+    der Euro auf zu existieren. Nexus nicht —
+    der Stahl bleibt, auch wenn niemand hinschaut."""@de .
+
+# --- Data → Forma (Kodierung) ---
+
+min:encodes a owl:ObjectProperty ;
+    rdfs:label "encodes"@en ;
+    rdfs:label "kodiert"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range min:Forma ;
+    rdfs:comment """Data kodiert Forma.
+
+    Ein Lehrbuch (Data) encodes das Gravitationsgesetz (Lex).
+    Ein FEM-Modell (Data) encodes die Fließfläche (Structura).
+    Eine FMEA-Tabelle (Data) encodes ein Versagensszenario (Possibile).
+    Ein DIN-Dokument (Data) encodes eine Anforderung (Norma).
+    Eine Satzung (Data) encodes eine Organisationsform (Institutio).
+
+    Encodes ist die Schlüsselrelation für die Abgrenzung
+    Data vs. Forma. Wenn man Data löscht, ist Forma noch da.
+    Data ist der aktuale Träger. Forma ist das Getragene."""@de ;
+    min:designRationale """Encodes ersetzt den v2.1-Workaround, bei dem
+    Gesetze, Normen und Möglichkeiten als Data modelliert wurden.
+    Jetzt: das DIN-Dokument IST Data und ENCODES die Norma.
+    Zwei Entitäten statt einer, aber ontologisch sauber."""@de .
+
+min:encodedBy a owl:ObjectProperty ;
+    rdfs:label "encoded by"@en ;
+    rdfs:label "kodiert durch"@de ;
+    rdfs:domain min:Forma ;
+    rdfs:range min:Data ;
+    owl:inverseOf min:encodes .
+
+
+# #############################################################################
+#
+#   TEIL VIII — DATATYPE PROPERTIES
+#
+#   Domain: min:Entity (gilt für Nexus UND Forma).
+#   Auch ein Naturgesetz hat einen Namen und eine Beschreibung.
+#
+# #############################################################################
+
+min:hasIdentifier a owl:DatatypeProperty ;
+    rdfs:label "has identifier"@en ;
+    rdfs:domain min:Entity ;
+    rdfs:range xsd:string .
+
+min:hasName a owl:DatatypeProperty ;
+    rdfs:label "has name"@en ;
+    rdfs:domain min:Entity ;
+    rdfs:range xsd:string .
+
+min:hasTimestamp a owl:DatatypeProperty ;
+    rdfs:label "has timestamp"@en ;
+    rdfs:domain min:Entity ;
+    rdfs:range xsd:dateTime .
+
+min:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "has description"@en ;
+    rdfs:domain min:Entity ;
+    rdfs:range xsd:string .
+
+min:hasStatus a owl:DatatypeProperty ;
+    rdfs:label "has status"@en ;
+    rdfs:domain min:Entity ;
+    rdfs:range xsd:string .
+
+
+# #############################################################################
+#
+#   TEIL IX — ANNOTATION PROPERTIES
+#
+# #############################################################################
+
+min:designRationale a owl:AnnotationProperty ;
+    rdfs:label "design rationale"@en .
+
+min:philosophicalBasis a owl:AnnotationProperty ;
+    rdfs:label "philosophical basis"@en .
+
+
+# #############################################################################
+#
+#   INVENTAR v3.0.0
+#
+#   Klassen:               11  (Entity, Nexus, Object, Process, Data, Agent,
+#                               Forma, Lex, Structura, Possibile, Norma,
+#                               Institutio)
+#   Polaritäts-Properties:  2  (materialProperty, informationalProperty)
+#   Inter-Nexus:            2  (nexusWith, hasComponent)
+#   Kategorienrelationen:  15  (hasInput, hasOutput, undergoes, resultOf,
+#                               performs, performedBy, controls,
+#                               actsOn, affectedBy, owns,
+#                               describes, describedBy, generates,
+#                               generatedBy, produces)
+#   Brückenrelationen:     11  (realizes, realizedBy,
+#                               constrains, governs, formalizes,
+#                               evaluates, concerns, alternativeTo,
+#                               constitutes, recognizes,
+#                               encodes, encodedBy)
+#   Datatype Properties:    5  (hasIdentifier, hasName, hasTimestamp,
+#                               hasDescription, hasStatus)
+#   Annotations:            2  (designRationale, philosophicalBasis)
+#
+#   Gesamt:                48  Terme
+#
+#   Neu gegenüber v2.1.0:
+#   — Entity (Klasse — neue absolute Wurzel)
+#   — Forma + 5 Subklassen (6 Klassen)
+#   — 11 Brückenrelationen
+#   — Nexus rdfs:subClassOf Entity (statt Wurzel)
+#   — Datatype Properties: Domain Entity statt Nexus
+#   — 3 Disjunktheitsaxiome statt 1
+#
+#   Unverändert gegenüber v2.1.0:
+#   — Alle 4 Nexus-Kategorien (Object, Process, Data, Agent)
+#   — Alle 15 Nexus-internen Relationen
+#   — Beide Polaritäts-Superproperties
+#   — Beide Inter-Nexus-Relationen
+#   — Agent bleibt nichtdisjunkt
+#   — Flacher Graph, Schema-Ebene Polarität
+#
+#   Abwärtskompatibilität:
+#   — Jeder gültige v2.1-Graph ist ein gültiger v3.0-Graph.
+#   — Nexus-interne Queries bleiben unverändert.
+#   — Forma-Zweig ist optional — wer ihn nicht braucht,
+#     ignoriert ihn. Die Nexus-Semantik ändert sich nicht.
+#
+# #############################################################################

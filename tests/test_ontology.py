@@ -25,7 +25,7 @@ def core_graph():
 @pytest.fixture(scope="session")
 def min_graph():
     g = Graph()
-    g.parse(ROOT / "min-v2.1.0.ttl", format="turtle")
+    g.parse(ROOT / "min-v3.0.0.ttl", format="turtle")
     return g
 
 
@@ -119,7 +119,7 @@ def test_core_class_count(core_graph):
     assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}"
 
 
-def test_core_uses_min_v21_bases(core_graph):
+def test_core_uses_min_v3_bases(core_graph):
     assert (SDATA.Material, RDFS.subClassOf, MIN.Object) in core_graph
     assert (SDATA.Data, RDFS.subClassOf, MIN.Data) in core_graph
     assert (SDATA.Process, RDFS.subClassOf, MIN.Process) in core_graph

@@ -12,7 +12,7 @@ This repository ships executable Turtle examples under `examples/`.
 : compact testing + simulation flow for product/data provenance.
 - `examples/AttributeQuantityValue_sheetthickness.ttl`
 : focused AQV and value-domain modeling sample.
-- `examples/min-v2.1.0-examples.ttl`
+- `examples/min-v3.0.0-examples.ttl`
 : three MIN modalities (`Object`, `Process`, `Data`) in separate example roots.
 
 ## Render All Example Graphs
@@ -36,8 +36,8 @@ uv run python -m src.visualization.specimen_tensiontest_data_plot
 ## Render Modality Example (3 Dedicated Plots)
 
 ```bash
-make viz-min-v21-examples
-uv run python -m src.visualization.min_v21_examples_plot
+make viz-min-v3-examples
+uv run python -m src.visualization.min_v3_examples_plot
 ```
 
 This generates 3 filtered views:
@@ -52,9 +52,9 @@ This generates 3 filtered views:
 - `docs/diagrams/battery-passport-graph.svg`
 - `docs/diagrams/tensiontest-crashsimulation-graph.svg`
 - `docs/diagrams/AttributeQuantityValue_sheetthickness-graph.svg`
-- `docs/diagrams/min-v2.1.0-examples-material-modal.svg`
-- `docs/diagrams/min-v2.1.0-examples-balanced-modal.svg`
-- `docs/diagrams/min-v2.1.0-examples-informational-modal.svg`
+- `docs/diagrams/min-v3.0.0-examples-material-modal.svg`
+- `docs/diagrams/min-v3.0.0-examples-balanced-modal.svg`
+- `docs/diagrams/min-v3.0.0-examples-informational-modal.svg`
 
 ## Validation
 
