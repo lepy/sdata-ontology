@@ -19,7 +19,8 @@
 <https://w3id.org/sdata/quantities>
     a owl:Ontology ;
     owl:imports <https://w3id.org/sdata/core> ;
-    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    owl:imports <https://w3id.org/min> ;
+    owl:versionInfo "0.1.1 — 03 March 2026" ;
     rdfs:label "sdata Quantities extension"@en ,
                "sdata Größen-Erweiterung"@de ;
     dcterms:description
