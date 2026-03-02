@@ -8,6 +8,7 @@
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix min:     <https://w3id.org/min#> .
 @prefix qudt:    <http://qudt.org/schema/qudt/> .
 @prefix sdata:   <https://w3id.org/sdata/core/> .
 
@@ -37,26 +38,27 @@ distribution, fuzzy numbers, etc.).
 # ─── AttributeQuantityValue ──────────────────────────────────────────────────
 sdata:AttributeQuantityValue
     rdf:type       owl:Class ;
-    rdfs:subClassOf qudt:QuantityValue ;
+    rdfs:subClassOf qudt:QuantityValue ,
+                    sdata:Data ;
     rdfs:label     "Attribute Quantity Value"@en ,
                    "Attribut-Mengenwert"@de ;
     rdfs:comment   """Reified attribute descriptor combining schema metadata and
-a concrete value. Describes a single typed field of an InformationArtifact.
+a concrete value. Describes a single typed field of a nexus.
 
 Inherited from qudt:QuantityValue:
   · qudt:numericValue  — the concrete value
   · qudt:unit          — machine-readable QUDT unit URI
 
 Added by sdata:
-  · sdata:name         — field name (technical key)
+  · min:hasName        — field name (technical key)
   · rdfs:label         — human-readable name (multilingual)
-  · sdata:description  — explanatory text
+  · min:hasDescription — explanatory text
   · sdata:unitSymbol   — human-readable unit string (MPa, %, -)
   · sdata:dtype        — logical datatype (closed enum)
   · sdata:hasValueDomain — link to value space constraint"""@en ,
                    """Reifizierter Attribut-Deskriptor, der Schema-Metadaten und
 einen konkreten Wert vereint. Beschreibt ein einzelnes typisiertes
-Feld eines InformationArtifact."""@de .
+Feld eines Nexus."""@de .
 
 # ─── ValueDomain ─────────────────────────────────────────────────────────────
 sdata:ValueDomain
@@ -91,22 +93,20 @@ sdata:AttributeQuantityValue  owl:disjointWith sdata:ValueDomain .
 
 sdata:hasQuantity
     rdf:type       owl:ObjectProperty ;
-    rdfs:domain    [ owl:unionOf (
-        sdata:MaterialArtifact
-        sdata:Material
-        sdata:InformationArtifact
-        sdata:Information
-        sdata:MaterialProcess
-        sdata:InformationProcess
-    ) ] ;
+    rdfs:domain    min:Nexus ;
     rdfs:range     sdata:AttributeQuantityValue ;
+    rdfs:subPropertyOf sdata:hasData ;
     rdfs:label     "has quantity"@en ,
                    "hat Größe"@de ;
-    rdfs:comment   "Attaches a typed attribute to a sdata entity."@en .
+    rdfs:comment   """Attaches a typed quantity attribute to any sdata nexus.
+Specialization of sdata:hasData."""@en .
 
 sdata:isQuantityOf
     rdf:type       owl:ObjectProperty ;
     owl:inverseOf  sdata:hasQuantity ;
+    rdfs:domain    sdata:AttributeQuantityValue ;
+    rdfs:range     min:Nexus ;
+    rdfs:subPropertyOf min:describes ;
     rdfs:label     "is quantity of"@en ,
                    "ist Größe von"@de .
 
@@ -168,7 +168,7 @@ sdata:domainDescription
 # D1. AttributeQuantityValue subClassOf qudt:QuantityValue
 #     → inherits qudt:numericValue + qudt:unit for free
 #
-# D2. sdata:name + rdfs:label + sdata:description reused from sdata-core
+# D2. min:hasName + rdfs:label + min:hasDescription reused from MIN/sdata-core
 #     → no new properties needed for metadata
 #
 # D3. dtype is a closed enum, not xsd:anyURI
@@ -180,8 +180,8 @@ sdata:domainDescription
 # D5. ValueDomain instances are reusable across attributes
 #     → e.g. one [0,1] interval for all normalized quantities
 #
-# D6. hasQuantity domain spans both Material and Information
-#     → attributes attach to artifacts, substances, and processes
+# D6. hasQuantity domain is min:Nexus
+#     → attributes attach to objects, data, processes, and agents
 #
 # =============================================================================
 # END — sdata-quantities.ttl v0.1.0
