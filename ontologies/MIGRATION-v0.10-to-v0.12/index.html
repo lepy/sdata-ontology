@@ -1,0 +1,1498 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Semantic Data Ontology for Product Passports, Circular Economy and Digital Twins">
+      
+      
+      
+      
+        <link rel="prev" href="../../examples/">
+      
+      
+        <link rel="next" href="../sdata-core/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Migration v0.10 -> v0.12 - sdata Ontology</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#migration-guide-sdata-core-v0100-v0120" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="sdata Ontology" class="md-header__button md-logo" aria-label="sdata Ontology" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            sdata Ontology
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Migration v0.10 -> v0.12
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/lepy/sdata-ontology" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="sdata Ontology" class="md-nav__button md-logo" aria-label="sdata Ontology" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    sdata Ontology
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/lepy/sdata-ontology" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modeling-cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modeling Cheat Sheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration v0.10 -> v0.12
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Migration v0.10 -> v0.12
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ubersicht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Übersicht
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breaking Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-opa-import-entfallt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. OPA-Import entfällt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-namespace-migration-opa-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Namespace-Migration (opa: → min:)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-data-verschoben" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data verschoben
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-entfernte-minopa-konzepte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Entfernte MIN/OPA-Konzepte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-neue-min-konzepte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Neue MIN-Konzepte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-neue-sdata-core-properties-v0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Neue sdata-core Properties (v0.12.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6b-prozess-typisierung-im-sdata-kontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6b. Prozess-Typisierung im sdata-Kontext
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparql-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPARQL-Migration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SPARQL-Migration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-opa-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf opa: Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-data-unter-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf Data unter Object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-materialinformation-aspekte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf Material/Information-Aspekte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#min-v20-v21-blank-nodes-entfallen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIN v2.0 → v2.1: Blank Nodes entfallen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shacl-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SHACL-Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dateien-die-angepasst-werden-mussen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dateien die angepasst werden müssen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ontologies
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ontologies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-material-state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-material-state
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-quantities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-quantities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-vd-interval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-vd-interval
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-vd-enum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-vd-enum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-vd-statistical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-vd-statistical
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-vd-fuzzy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-vd-fuzzy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-r-strategies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-r-strategies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sdata-core-shapes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sdata-core-shapes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ubersicht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Übersicht
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Breaking Changes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Breaking Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-opa-import-entfallt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. OPA-Import entfällt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-namespace-migration-opa-min" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Namespace-Migration (opa: → min:)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-data-verschoben" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data verschoben
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-entfernte-minopa-konzepte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Entfernte MIN/OPA-Konzepte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-neue-min-konzepte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Neue MIN-Konzepte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-neue-sdata-core-properties-v0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Neue sdata-core Properties (v0.12.0)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6b-prozess-typisierung-im-sdata-kontext" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6b. Prozess-Typisierung im sdata-Kontext
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sparql-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPARQL-Migration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SPARQL-Migration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-opa-namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf opa: Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-data-unter-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf Data unter Object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#queries-auf-materialinformation-aspekte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queries auf Material/Information-Aspekte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#min-v20-v21-blank-nodes-entfallen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIN v2.0 → v2.1: Blank Nodes entfallen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shacl-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SHACL-Migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dateien-die-angepasst-werden-mussen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dateien die angepasst werden müssen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="migration-guide-sdata-core-v0100-v0120">Migration Guide: sdata-core v0.10.0 → v0.12.0</h1>
+<h2 id="ubersicht">Übersicht</h2>
+<p>v0.12.0 migriert auf MIN v2.1.0. Die OPA-Zwischenschicht entfällt.
+Blank-Node-Aspekte (v2.0) sind durch flache Properties ersetzt.</p>
+<pre><code>VORHER (3 Schichten):     NACHHER (2 Schichten):
+  MIN  ←  OPA  ←  sdata      MIN  ←  sdata
+</code></pre>
+<h2 id="breaking-changes">Breaking Changes</h2>
+<h3 id="1-opa-import-entfallt">1. OPA-Import entfällt</h3>
+<pre><code class="language-diff">- owl:imports &lt;https://w3id.org/opa&gt; .
+  owl:imports &lt;https://w3id.org/min&gt; .
+</code></pre>
+<h3 id="2-namespace-migration-opa-min">2. Namespace-Migration (opa: → min:)</h3>
+<table>
+<thead>
+<tr>
+<th>v0.10.0 (opa:)</th>
+<th>v0.12.0 (min:)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>opa:Object</code></td>
+<td><code>min:Object</code></td>
+</tr>
+<tr>
+<td><code>opa:Process</code></td>
+<td><code>min:Process</code></td>
+</tr>
+<tr>
+<td><code>opa:Agent</code></td>
+<td><code>min:Agent</code></td>
+</tr>
+<tr>
+<td><code>opa:hasInput</code></td>
+<td><code>min:hasInput</code></td>
+</tr>
+<tr>
+<td><code>opa:hasOutput</code></td>
+<td><code>min:hasOutput</code></td>
+</tr>
+<tr>
+<td><code>opa:performs</code></td>
+<td><code>min:performs</code></td>
+</tr>
+<tr>
+<td><code>opa:performedBy</code></td>
+<td><code>min:performedBy</code></td>
+</tr>
+<tr>
+<td><code>opa:controls</code></td>
+<td><code>min:controls</code></td>
+</tr>
+<tr>
+<td><code>opa:actsOn</code></td>
+<td><code>min:actsOn</code></td>
+</tr>
+<tr>
+<td><code>opa:affectedBy</code></td>
+<td><code>min:affectedBy</code></td>
+</tr>
+<tr>
+<td><code>opa:owns</code></td>
+<td><code>min:owns</code></td>
+</tr>
+<tr>
+<td><code>opa:undergoes</code></td>
+<td><code>min:undergoes</code></td>
+</tr>
+<tr>
+<td><code>opa:resultOf</code></td>
+<td><code>min:resultOf</code></td>
+</tr>
+<tr>
+<td><code>opa:produces</code></td>
+<td><code>min:produces</code></td>
+</tr>
+<tr>
+<td><code>opa:hasIdentifier</code></td>
+<td><code>min:hasIdentifier</code></td>
+</tr>
+<tr>
+<td><code>opa:hasName</code></td>
+<td><code>min:hasName</code></td>
+</tr>
+<tr>
+<td><code>opa:hasTimestamp</code></td>
+<td><code>min:hasTimestamp</code></td>
+</tr>
+<tr>
+<td><code>opa:hasDescription</code></td>
+<td><code>min:hasDescription</code></td>
+</tr>
+<tr>
+<td><code>opa:hasStatus</code></td>
+<td><code>min:hasStatus</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-data-verschoben">3. Data verschoben</h3>
+<pre><code class="language-diff">- sdata:Data rdfs:subClassOf sdata:Object .   # material-dominant
++ sdata:Data rdfs:subClassOf min:Data .        # informational-dominant
+</code></pre>
+<p><strong>Konsequenz:</strong> <code>sdata:Data</code> ist nicht mehr unter <code>min:Object</code>.
+SPARQL-Queries wie <code>?x a min:Object</code> liefern keine Data-Instanzen mehr.</p>
+<h3 id="4-entfernte-minopa-konzepte">4. Entfernte MIN/OPA-Konzepte</h3>
+<table>
+<thead>
+<tr>
+<th>Konzept</th>
+<th>Ersatz</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>min:Material</code> (Klasse)</td>
+<td>Blank Node via <code>min:materialAspect</code></td>
+</tr>
+<tr>
+<td><code>min:Information</code> (Klasse)</td>
+<td>Blank Node via <code>min:informationalAspect</code></td>
+</tr>
+<tr>
+<td><code>min:Modality</code></td>
+<td>Klasse IST Modalität</td>
+</tr>
+<tr>
+<td><code>min:hasModality</code></td>
+<td>entfällt</td>
+</tr>
+<tr>
+<td><code>min:hasMaterialAspect</code></td>
+<td><code>min:materialAspect</code></td>
+</tr>
+<tr>
+<td><code>min:hasInformationalAspect</code></td>
+<td><code>min:informationalAspect</code></td>
+</tr>
+<tr>
+<td><code>min:isAspectOf</code></td>
+<td>entfällt (Blank Nodes)</td>
+</tr>
+<tr>
+<td><code>min:isMaterialAspectOf</code></td>
+<td>entfällt (Blank Nodes)</td>
+</tr>
+<tr>
+<td><code>min:isInformationalAspectOf</code></td>
+<td>entfällt (Blank Nodes)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-neue-min-konzepte">5. Neue MIN-Konzepte</h3>
+<table>
+<thead>
+<tr>
+<th>Konzept</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>min:Data</code></td>
+<td>Erstklassige Kategorie für Daten</td>
+</tr>
+<tr>
+<td><code>min:describes</code></td>
+<td>Data beschreibt Nexus</td>
+</tr>
+<tr>
+<td><code>min:describedBy</code></td>
+<td>Nexus wird beschrieben durch Data</td>
+</tr>
+<tr>
+<td><code>min:generates</code></td>
+<td>Process erzeugt Data</td>
+</tr>
+<tr>
+<td><code>min:generatedBy</code></td>
+<td>Data wird erzeugt durch Process</td>
+</tr>
+<tr>
+<td><code>min:materialAspect</code></td>
+<td>Blank-Node-Pol (ersetzt hasMaterialAspect)</td>
+</tr>
+<tr>
+<td><code>min:informationalAspect</code></td>
+<td>Blank-Node-Pol (ersetzt hasInformationalAspect)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-neue-sdata-core-properties-v0120">6. Neue sdata-core Properties (v0.12.0)</h3>
+<table>
+<thead>
+<tr>
+<th>Konzept</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sdata:hasData</code></td>
+<td>Nexus hat zugehörige Data (subProp von min:describedBy)</td>
+</tr>
+<tr>
+<td><code>sdata:producedBy</code></td>
+<td>Data wurde durch Process erzeugt (subProp von min:generatedBy)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6b-prozess-typisierung-im-sdata-kontext">6b. Prozess-Typisierung im sdata-Kontext</h3>
+<p><code>sdata:Process</code> ist als Domänenklasse verfügbar und bleibt
+<code>rdfs:subClassOf min:Process</code>. Für sdata-Instanzen wird daher
+<code>a sdata:Process</code> empfohlen.</p>
+<h2 id="sparql-migration">SPARQL-Migration</h2>
+<h3 id="queries-auf-opa-namespace">Queries auf opa: Namespace</h3>
+<pre><code class="language-diff">- SELECT ?obj WHERE { ?obj a opa:Object }
++ SELECT ?obj WHERE { ?obj a min:Object }
+</code></pre>
+<h3 id="queries-auf-data-unter-object">Queries auf Data unter Object</h3>
+<pre><code class="language-diff">  # VORHER: Data war unter Object → diese Query fand auch Data
+- SELECT ?x WHERE { ?x a min:Object }
+
+  # NACHHER: Data ist eigene Kategorie
++ SELECT ?x WHERE { { ?x a min:Object } UNION { ?x a min:Data } }
+  # oder für alle Nexus:
++ SELECT ?x WHERE { ?x a min:Nexus }
+</code></pre>
+<h3 id="queries-auf-materialinformation-aspekte">Queries auf Material/Information-Aspekte</h3>
+<pre><code class="language-diff">  # VORHER (v0.10 — Named Individuals):
+- SELECT ?m WHERE { ex:Coil min:hasMaterialAspect ?mat .
+-                   ?mat ex:masse_kg ?m }
+
+  # NACHHER (v2.1 — flach, direkt):
++ SELECT ?m WHERE { ex:Coil ex:masse_kg ?m }
+
+  # Alle materialen Properties eines Nexus:
++ SELECT ?prop ?val WHERE {
++     ex:Coil ?prop ?val .
++     ?prop rdfs:subPropertyOf* min:materialProperty .
++ }
+</code></pre>
+<h3 id="min-v20-v21-blank-nodes-entfallen">MIN v2.0 → v2.1: Blank Nodes entfallen</h3>
+<p>Wer bereits auf v2.0 (Blank-Node-Pattern) migriert hat:</p>
+<pre><code class="language-diff">  # v2.0 (Blank Nodes):
+- ex:Coil min:materialAspect [ ex:masse_kg 12500 ] .
+- SELECT ?m WHERE { ex:Coil min:materialAspect/ex:masse_kg ?m }
+
+  # v2.1 (flach):
++ ex:Coil ex:masse_kg 12500 .
++ SELECT ?m WHERE { ex:Coil ex:masse_kg ?m }
+
+  # Property-Definition (einmalig im Schema):
++ ex:masse_kg rdfs:subPropertyOf min:materialProperty .
+</code></pre>
+<p><code>min:materialAspect</code> und <code>min:informationalAspect</code> existieren in v2.1 nicht mehr.
+Ersetzt durch <code>min:materialProperty</code> und <code>min:informationalProperty</code> als
+Schema-Ebene Superproperties.</p>
+<h2 id="shacl-migration">SHACL-Migration</h2>
+<p>Alle Shapes die <code>opa:</code> referenzieren, müssen auf <code>min:</code> umgestellt werden.
+Zusätzlich: Shapes die <code>sdata:Data</code> als <code>min:Object</code>-Subklasse erwarten,
+müssen angepasst werden. Shapes die <code>min:materialAspect</code>/<code>min:informationalAspect</code>
+referenzieren (v2.0), müssen auf direkte Property-Pfade umgestellt werden.</p>
+<h2 id="dateien-die-angepasst-werden-mussen">Dateien die angepasst werden müssen</h2>
+<table>
+<thead>
+<tr>
+<th>Datei</th>
+<th>Änderung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sdata-core.ttl</code></td>
+<td>→ <code>sdata-core-v0.12.0.ttl</code></td>
+</tr>
+<tr>
+<td><code>shapes/sdata-core-shapes.ttl</code></td>
+<td>opa: → min:, Data-Shapes, Aspekt-Pfade</td>
+</tr>
+<tr>
+<td><code>sdata-material-state.ttl</code></td>
+<td><code>@prefix opa:</code> entfernen, <code>min:layer</code> entfernen</td>
+</tr>
+<tr>
+<td><code>examples/*.ttl</code></td>
+<td>opa: → min:, Blank Nodes → flach</td>
+</tr>
+<tr>
+<td><code>tests/*.py</code></td>
+<td>Namespace-Updates</td>
+</tr>
+<tr>
+<td><code>src/visualization/*.py</code></td>
+<td>OPA-Referenzen entfernen</td>
+</tr>
+<tr>
+<td><code>min-v1.0.0.ttl</code></td>
+<td>→ <code>min-v2.1.0.ttl</code> (ersetzen)</td>
+</tr>
+<tr>
+<td><code>opa-v1.0.0.ttl</code></td>
+<td>→ entfernen</td>
+</tr>
+<tr>
+<td><code>Makefile</code></td>
+<td>viz-min-opa-core → viz-min-core</td>
+</tr>
+<tr>
+<td><code>README.md</code></td>
+<td>Architektur-Doku aktualisieren</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
