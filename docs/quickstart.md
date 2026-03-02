@@ -31,7 +31,7 @@ ex:Specimen_42 a sdata:Product ;
   min:hasIdentifier "SPEC-42" ;
   sdata:hasMaterial ex:Steel_DC04 .
 
-ex:TensileTest_42 a min:Process ;
+ex:TensileTest_42 a sdata:Process ;
   min:hasInput ex:Specimen_42 ;
   min:generates ex:TensileData_42 .
 

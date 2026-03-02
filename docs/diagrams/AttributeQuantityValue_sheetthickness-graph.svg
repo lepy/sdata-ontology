@@ -9,416 +9,416 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 1715.2)">
 <polygon fill="#fafbfc" stroke="transparent" points="-25.2,25.2 -25.2,-1715.2 634.2,-1715.2 634.2,25.2 -25.2,25.2"/>
 <text text-anchor="middle" x="304.5" y="-1671.6" font-family="Helvetica,sans-Serif" font-size="18.00">TTL Graph: AttributeQuantityValue_sheetthickness.ttl</text>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy -->
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness -->
 <g id="node1" class="node">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy</title>
-<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M132.5,-231C132.5,-231 17.5,-231 17.5,-231 11.5,-231 5.5,-225 5.5,-219 5.5,-219 5.5,-207 5.5,-207 5.5,-201 11.5,-195 17.5,-195 17.5,-195 132.5,-195 132.5,-195 138.5,-195 144.5,-201 144.5,-207 144.5,-207 144.5,-219 144.5,-219 144.5,-225 138.5,-231 132.5,-231"/>
-<text text-anchor="middle" x="75" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_fuzzy</text>
+<title>uri::https://example.org/tensile&#45;test/attr_thickness</title>
+<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M114.5,-590C114.5,-590 35.5,-590 35.5,-590 29.5,-590 23.5,-584 23.5,-578 23.5,-578 23.5,-566 23.5,-566 23.5,-560 29.5,-554 35.5,-554 35.5,-554 114.5,-554 114.5,-554 120.5,-554 126.5,-560 126.5,-566 126.5,-566 126.5,-578 126.5,-578 126.5,-584 120.5,-590 114.5,-590"/>
+<text text-anchor="middle" x="75" y="-569.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:attr_thickness</text>
 </g>
-<!-- lit::1.35::http://www.w3.org/2001/XMLSchema#double:: -->
+<!-- lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de -->
 <g id="node2" class="node">
-<title>lit::1.35::http://www.w3.org/2001/XMLSchema#double::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-426 442,-426 442,-390 496,-390 496,-420 490,-426"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-426 490,-420 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-420 490,-420 "/>
-<text text-anchor="middle" x="469" y="-405.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.35</text>
+<title>lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="598.5,-557 333.5,-557 333.5,-521 604.5,-521 604.5,-551 598.5,-557"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="598.5,-557 598.5,-551 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="604.5,-551 598.5,-551 "/>
+<text text-anchor="middle" x="469" y="-536.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Ausgangsblechdicke der Zugprobe vor dem Versuch</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.35::http://www.w3.org/2001/XMLSchema#double:: -->
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de -->
 <g id="edge1" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.35::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M90.16,-231.03C109.13,-254.14 144.85,-294.2 183,-319 263.94,-371.62 377.95,-394.78 434.08,-403.5"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.79,-406.11 441.6,-404.63 434.58,-400.92 433.79,-406.11"/>
-<text text-anchor="middle" x="239.5" y="-372.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyRight</text>
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.85,-567.72C177.11,-563.49 256.36,-556.82 325.83,-550.97"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="326.13,-553.58 333.39,-550.33 325.69,-548.35 326.13,-553.58"/>
+<text text-anchor="middle" x="239.5" y="-564.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:description</text>
 </g>
-<!-- lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en -->
+<!-- lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
 <g id="node3" class="node">
-<title>lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="595.5,-361 336.5,-361 336.5,-325 601.5,-325 601.5,-355 595.5,-361"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-361 595.5,-355 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-355 595.5,-355 "/>
-<text text-anchor="middle" x="469" y="-340.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness 1.2 mm — soft tolerance for sim...</text>
+<title>lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-297 442,-297 442,-261 496,-261 496,-291 490,-297"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-297 490,-291 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-291 490,-291 "/>
+<text text-anchor="middle" x="469" y="-276.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.2</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en -->
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
 <g id="edge2" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M108.1,-231.06C129,-242.35 157.11,-256.66 183,-267 243.87,-291.32 315.12,-310.32 371.16,-323.24"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="370.71,-325.83 378.61,-324.94 371.88,-320.71 370.71,-325.83"/>
-<text text-anchor="middle" x="239.5" y="-304.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M80.22,-553.86C90.57,-513.37 121.01,-414.9 183,-361 256.1,-297.44 375.7,-283.01 433.96,-279.83"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.4,-282.44 441.76,-279.45 434.14,-277.2 434.4,-282.44"/>
+<text text-anchor="middle" x="239.5" y="-363.8" font-family="Helvetica,sans-Serif" font-size="9.00">qudt:numericValue</text>
 </g>
-<!-- uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain -->
+<!-- lit::float:::: -->
 <g id="node4" class="node">
-<title>uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain</title>
-<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M542,-296C542,-296 396,-296 396,-296 390,-296 384,-290 384,-284 384,-284 384,-272 384,-272 384,-266 390,-260 396,-260 396,-260 542,-260 542,-260 548,-260 554,-266 554,-272 554,-272 554,-284 554,-284 554,-290 548,-296 542,-296"/>
-<text text-anchor="middle" x="469" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:TrapezoidalFuzzyDomain</text>
+<title>lit::float::::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-492 442,-492 442,-456 496,-456 496,-486 490,-492"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-492 490,-486 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-486 490,-486 "/>
+<text text-anchor="middle" x="469" y="-471.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">float</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain -->
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::float:::: -->
 <g id="edge3" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-224.4C209.03,-235.06 305.52,-251.06 376.35,-262.8"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="376.16,-265.43 383.99,-264.07 377.02,-260.25 376.16,-265.43"/>
-<text text-anchor="middle" x="239.5" y="-252.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::float::::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M125.73,-554C143.65,-547.85 164.11,-541.22 183,-536 272.79,-511.21 380.7,-490.03 434.32,-480.08"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.93,-482.63 441.83,-478.69 433.98,-477.47 434.93,-482.63"/>
+<text text-anchor="middle" x="239.5" y="-538.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:dtype</text>
 </g>
-<!-- lit::1.05::http://www.w3.org/2001/XMLSchema#double:: -->
+<!-- uri::https://w3id.org/sdata/core/AttributeQuantityValue -->
 <g id="node5" class="node">
-<title>lit::1.05::http://www.w3.org/2001/XMLSchema#double::</title>
+<title>uri::https://w3id.org/sdata/core/AttributeQuantityValue</title>
+<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M537,-427C537,-427 401,-427 401,-427 395,-427 389,-421 389,-415 389,-415 389,-403 389,-403 389,-397 395,-391 401,-391 401,-391 537,-391 537,-391 543,-391 549,-397 549,-403 549,-403 549,-415 549,-415 549,-421 543,-427 537,-427"/>
+<text text-anchor="middle" x="469" y="-406.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:AttributeQuantityValue</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::https://w3id.org/sdata/core/AttributeQuantityValue -->
+<g id="edge4" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::https://w3id.org/sdata/core/AttributeQuantityValue</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M96.4,-553.67C117.01,-535.91 150.39,-509.23 183,-492 245.6,-458.93 323.08,-437.45 381.45,-424.65"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="382.06,-427.2 388.83,-423.05 380.95,-422.07 382.06,-427.2"/>
+<text text-anchor="middle" x="239.5" y="-494.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
+</g>
+<!-- lit::Sheet Thickness::::en -->
+<g id="node6" class="node">
+<title>lit::Sheet Thickness::::en</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="512,-362 420,-362 420,-326 518,-326 518,-356 512,-362"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="512,-362 512,-356 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="518,-356 512,-356 "/>
+<text text-anchor="middle" x="469" y="-341.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet Thickness</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Sheet Thickness::::en -->
+<g id="edge5" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Sheet Thickness::::en</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M85.41,-553.97C101.6,-524.54 137.44,-466.08 183,-432 251.7,-380.61 350.83,-358.88 412.24,-349.94"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="412.85,-352.51 419.91,-348.87 412.12,-347.31 412.85,-352.51"/>
+<text text-anchor="middle" x="239.5" y="-434.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdfs:label</text>
+</g>
+<!-- lit::Blechdicke::::de -->
+<g id="node7" class="node">
+<title>lit::Blechdicke::::de</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="498.5,-882 433.5,-882 433.5,-846 504.5,-846 504.5,-876 498.5,-882"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="498.5,-882 498.5,-876 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="504.5,-876 498.5,-876 "/>
+<text text-anchor="middle" x="469" y="-861.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Blechdicke::::de -->
+<g id="edge6" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Blechdicke::::de</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M80.43,-590.13C91.11,-630.13 122.03,-726.65 183,-780 252.8,-841.08 365.15,-857.8 425.84,-862.34"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="425.67,-864.96 433.34,-862.86 426.04,-859.72 425.67,-864.96"/>
+<text text-anchor="middle" x="239.5" y="-840.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdfs:label</text>
+</g>
+<!-- uri::http://qudt.org/vocab/unit/MilliM -->
+<g id="node8" class="node">
+<title>uri::http://qudt.org/vocab/unit/MilliM</title>
+<path fill="#ffffff" stroke="#78909c" stroke-width="1.2" d="M492,-817C492,-817 446,-817 446,-817 440,-817 434,-811 434,-805 434,-805 434,-793 434,-793 434,-787 440,-781 446,-781 446,-781 492,-781 492,-781 498,-781 504,-787 504,-793 504,-793 504,-805 504,-805 504,-811 498,-817 492,-817"/>
+<text text-anchor="middle" x="469" y="-796.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#37474f">unit:MilliM</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::http://qudt.org/vocab/unit/MilliM -->
+<g id="edge7" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::http://qudt.org/vocab/unit/MilliM</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M85.81,-590.04C102.34,-618.89 138.32,-675.53 183,-709 257.32,-764.67 367.01,-786.49 426.3,-794.58"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="426.19,-797.21 433.97,-795.59 426.88,-792.01 426.19,-797.21"/>
+<text text-anchor="middle" x="239.5" y="-765.8" font-family="Helvetica,sans-Serif" font-size="9.00">qudt:unit</text>
+</g>
+<!-- lit::mm:::: -->
+<g id="node9" class="node">
+<title>lit::mm::::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-752 442,-752 442,-716 496,-716 496,-746 490,-752"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-752 490,-746 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-746 490,-746 "/>
+<text text-anchor="middle" x="469" y="-731.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">mm</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::mm:::: -->
+<g id="edge8" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::mm::::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M97.38,-590.11C118.18,-607.06 151.23,-632.22 183,-649 267.64,-693.71 379.15,-718.24 434.23,-728.37"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.09,-731.01 441.93,-729.76 435.02,-725.85 434.09,-731.01"/>
+<text text-anchor="middle" x="239.5" y="-694.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:unitSymbol</text>
+</g>
+<!-- lit::t:::: -->
+<g id="node10" class="node">
+<title>lit::t::::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-687 442,-687 442,-651 496,-651 496,-681 490,-687"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-687 490,-681 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-681 490,-681 "/>
+<text text-anchor="middle" x="469" y="-666.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">t</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::t:::: -->
+<g id="edge9" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::t::::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.61,-589.11C144.35,-594.83 164.46,-601.02 183,-606 273.02,-630.2 380.83,-652.15 434.38,-662.59"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.01,-665.19 441.87,-664.04 435.01,-660.04 434.01,-665.19"/>
+<text text-anchor="middle" x="239.5" y="-634.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:name</text>
+</g>
+<!-- lit::Initial sheet thickness of the tensile specimen before testing::::en -->
+<g id="node11" class="node">
+<title>lit::Initial sheet thickness of the tensile specimen before testing::::en</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="589.5,-622 342.5,-622 342.5,-586 595.5,-586 595.5,-616 589.5,-622"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="589.5,-622 589.5,-616 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-616 589.5,-616 "/>
+<text text-anchor="middle" x="469" y="-601.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Initial sheet thickness of the tensile specimen...</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Initial sheet thickness of the tensile specimen before testing::::en -->
+<g id="edge10" class="edge">
+<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Initial sheet thickness of the tensile specimen before testing::::en</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.85,-576.15C179.21,-580.43 263.03,-587.27 334.48,-593.1"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="334.55,-595.74 342.24,-593.73 334.98,-590.51 334.55,-595.74"/>
+<text text-anchor="middle" x="239.5" y="-591.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:description</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal -->
+<g id="node12" class="node">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal</title>
+<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M136.5,-166C136.5,-166 13.5,-166 13.5,-166 7.5,-166 1.5,-160 1.5,-154 1.5,-154 1.5,-142 1.5,-142 1.5,-136 7.5,-130 13.5,-130 13.5,-130 136.5,-130 136.5,-130 142.5,-130 148.5,-136 148.5,-142 148.5,-142 148.5,-154 148.5,-154 148.5,-160 142.5,-166 136.5,-166"/>
+<text text-anchor="middle" x="75" y="-145.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_normal</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge12" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M108.08,-166.11C128.97,-177.42 157.07,-191.74 183,-202 270.89,-236.79 380.06,-261.42 434.24,-272.47"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.95,-275.09 441.82,-274 434.99,-269.94 433.95,-275.09"/>
+<text text-anchor="middle" x="239.5" y="-240.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:mu</text>
+</g>
+<!-- lit::0.033::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node13" class="node">
+<title>lit::0.033::http://www.w3.org/2001/XMLSchema#double::</title>
 <polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-231 442,-231 442,-195 496,-195 496,-225 490,-231"/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-231 490,-225 "/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-225 490,-225 "/>
-<text text-anchor="middle" x="469" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.05</text>
+<text text-anchor="middle" x="469" y="-210.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">0.033</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.05::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge4" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.05::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-213C229.38,-213 369.83,-213 434.06,-213"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.37,-215.63 441.87,-213 434.37,-210.38 434.37,-215.63"/>
-<text text-anchor="middle" x="239.5" y="-215.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyLeft</text>
-</g>
-<!-- lit::1.15::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node6" class="node">
-<title>lit::1.15::http://www.w3.org/2001/XMLSchema#double::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-166 442,-166 442,-130 496,-130 496,-160 490,-166"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-166 490,-160 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-160 490,-160 "/>
-<text text-anchor="middle" x="469" y="-145.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.15</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.15::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge5" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.15::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-201.6C229.55,-187.54 370.4,-164.18 434.45,-153.56"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.9,-156.15 441.87,-152.33 434.04,-150.97 434.9,-156.15"/>
-<text text-anchor="middle" x="239.5" y="-196.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyCoreLeft</text>
-</g>
-<!-- lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de -->
-<g id="node7" class="node">
-<title>lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="601.5,-101 330.5,-101 330.5,-65 607.5,-65 607.5,-95 601.5,-101"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-101 601.5,-95 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="607.5,-95 601.5,-95 "/>
-<text text-anchor="middle" x="469" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke 1.2 mm — weiche Toleranz für Simulation</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de -->
-<g id="edge6" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M109.1,-194.88C129.93,-183.91 157.58,-170.14 183,-160 244.74,-135.38 317.06,-115.95 373.4,-102.76"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="374.18,-105.27 380.89,-101.02 372.99,-100.16 374.18,-105.27"/>
-<text text-anchor="middle" x="239.5" y="-162.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
-</g>
-<!-- lit::1.25::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node8" class="node">
-<title>lit::1.25::http://www.w3.org/2001/XMLSchema#double::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-36 442,-36 442,0 496,0 496,-30 490,-36"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-36 490,-30 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-30 490,-30 "/>
-<text text-anchor="middle" x="469" y="-15.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.25</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.25::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge7" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.25::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M90.55,-194.79C109.67,-171.88 145.26,-132.56 183,-108 263.99,-55.28 377.98,-31.63 434.09,-22.66"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.6,-25.24 441.61,-21.49 433.8,-20.05 434.6,-25.24"/>
-<text text-anchor="middle" x="239.5" y="-110.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyCoreRight</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval -->
-<g id="node9" class="node">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval</title>
-<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M138,-621C138,-621 12,-621 12,-621 6,-621 0,-615 0,-609 0,-609 0,-597 0,-597 0,-591 6,-585 12,-585 12,-585 138,-585 138,-585 144,-585 150,-591 150,-597 150,-597 150,-609 150,-609 150,-615 144,-621 138,-621"/>
-<text text-anchor="middle" x="75" y="-600.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_interval</text>
-</g>
-<!-- lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de -->
-<g id="node10" class="node">
-<title>lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="595.5,-751 336.5,-751 336.5,-715 601.5,-715 601.5,-745 595.5,-751"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-751 595.5,-745 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-745 595.5,-745 "/>
-<text text-anchor="middle" x="469" y="-730.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de -->
-<g id="edge8" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M109.1,-621.12C129.93,-632.09 157.58,-645.86 183,-656 244.74,-680.62 317.06,-700.05 373.4,-713.24"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="372.99,-715.84 380.89,-714.98 374.18,-710.73 372.99,-715.84"/>
-<text text-anchor="middle" x="239.5" y="-693.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
-</g>
-<!-- lit::1.3::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node11" class="node">
-<title>lit::1.3::http://www.w3.org/2001/XMLSchema#double::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-686 442,-686 442,-650 496,-650 496,-680 490,-686"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-686 490,-680 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-680 490,-680 "/>
-<text text-anchor="middle" x="469" y="-665.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.3</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.3::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge9" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.3::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-615.3C235.34,-629.42 371.29,-651.96 434.12,-662.38"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.95,-665.01 441.78,-663.65 434.81,-659.84 433.95,-665.01"/>
-<text text-anchor="middle" x="239.5" y="-641.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:maxValue</text>
-</g>
-<!-- lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en -->
-<g id="node12" class="node">
-<title>lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="596.5,-621 335.5,-621 335.5,-585 602.5,-585 602.5,-615 596.5,-621"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="596.5,-621 596.5,-615 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="602.5,-615 596.5,-615 "/>
-<text text-anchor="middle" x="469" y="-600.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness 1.2 ± 0.1 mm — hard tolerance l...</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en -->
-<g id="edge10" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-603C200.21,-603 267.77,-603 327.74,-603"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="327.89,-605.63 335.39,-603 327.89,-600.38 327.89,-605.63"/>
-<text text-anchor="middle" x="239.5" y="-605.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
-</g>
-<!-- uri::https://w3id.org/sdata/core/IntervalDomain -->
-<g id="node13" class="node">
-<title>uri::https://w3id.org/sdata/core/IntervalDomain</title>
-<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M519,-556C519,-556 419,-556 419,-556 413,-556 407,-550 407,-544 407,-544 407,-532 407,-532 407,-526 413,-520 419,-520 419,-520 519,-520 519,-520 525,-520 531,-526 531,-532 531,-532 531,-544 531,-544 531,-550 525,-556 519,-556"/>
-<text text-anchor="middle" x="469" y="-535.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:IntervalDomain</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;uri::https://w3id.org/sdata/core/IntervalDomain -->
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::0.033::http://www.w3.org/2001/XMLSchema#double:: -->
 <g id="edge11" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;uri::https://w3id.org/sdata/core/IntervalDomain</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-590.7C221.94,-578.8 329.75,-560.92 399.51,-549.36"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="400.01,-551.94 406.98,-548.12 399.15,-546.76 400.01,-551.94"/>
-<text text-anchor="middle" x="239.5" y="-585.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
-</g>
-<!-- lit::1.1::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node14" class="node">
-<title>lit::1.1::http://www.w3.org/2001/XMLSchema#double::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-491 442,-491 442,-455 496,-455 496,-485 490,-491"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-491 490,-485 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-485 490,-485 "/>
-<text text-anchor="middle" x="469" y="-470.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.1</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.1::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge12" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.1::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M108.08,-584.89C128.97,-573.58 157.07,-559.26 183,-549 270.81,-514.24 380.02,-490.12 434.22,-479.35"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.95,-481.88 441.81,-477.86 433.94,-476.73 434.95,-481.88"/>
-<text text-anchor="middle" x="239.5" y="-551.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:minValue</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal -->
-<g id="node15" class="node">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal</title>
-<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M136.5,-1532C136.5,-1532 13.5,-1532 13.5,-1532 7.5,-1532 1.5,-1526 1.5,-1520 1.5,-1520 1.5,-1508 1.5,-1508 1.5,-1502 7.5,-1496 13.5,-1496 13.5,-1496 136.5,-1496 136.5,-1496 142.5,-1496 148.5,-1502 148.5,-1508 148.5,-1508 148.5,-1520 148.5,-1520 148.5,-1526 142.5,-1532 136.5,-1532"/>
-<text text-anchor="middle" x="75" y="-1511.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_normal</text>
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::0.033::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-160.07C233.75,-174.16 370.58,-196.85 433.87,-207.34"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.75,-209.98 441.58,-208.62 434.61,-204.8 433.75,-209.98"/>
+<text text-anchor="middle" x="239.5" y="-187.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:sigma</text>
 </g>
 <!-- lit::Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::de -->
-<g id="node16" class="node">
+<g id="node14" class="node">
 <title>lit::Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::de</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="603,-1662 329,-1662 329,-1626 609,-1626 609,-1656 603,-1662"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="603,-1662 603,-1656 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="609,-1656 603,-1656 "/>
-<text text-anchor="middle" x="469" y="-1641.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm...</text>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="603,-166 329,-166 329,-130 609,-130 609,-160 603,-166"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="603,-166 603,-160 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="609,-160 603,-160 "/>
+<text text-anchor="middle" x="469" y="-145.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm...</text>
 </g>
 <!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::de -->
 <g id="edge13" class="edge">
 <title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Blechdicke normalverteilt, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::de</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-148C197.23,-148 262.5,-148 321.4,-148"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="321.42,-150.63 328.92,-148 321.42,-145.38 321.42,-150.63"/>
+<text text-anchor="middle" x="239.5" y="-150.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+</g>
+<!-- lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en -->
+<g id="node15" class="node">
+<title>lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="597,-101 335,-101 335,-65 603,-65 603,-95 597,-101"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="597,-101 597,-95 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="603,-95 597,-95 "/>
+<text text-anchor="middle" x="469" y="-80.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness normally distributed, μ=1.2 mm,...</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en -->
+<g id="edge14" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-135.93C205.74,-126.49 285.97,-113.18 351.76,-102.27"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="352.33,-104.84 359.3,-101.02 351.47,-99.66 352.33,-104.84"/>
+<text text-anchor="middle" x="239.5" y="-131.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+</g>
+<!-- uri::https://w3id.org/sdata/core/NormalDomain -->
+<g id="node16" class="node">
+<title>uri::https://w3id.org/sdata/core/NormalDomain</title>
+<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M518.5,-36C518.5,-36 419.5,-36 419.5,-36 413.5,-36 407.5,-30 407.5,-24 407.5,-24 407.5,-12 407.5,-12 407.5,-6 413.5,0 419.5,0 419.5,0 518.5,0 518.5,0 524.5,0 530.5,-6 530.5,-12 530.5,-12 530.5,-24 530.5,-24 530.5,-30 524.5,-36 518.5,-36"/>
+<text text-anchor="middle" x="469" y="-15.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:NormalDomain</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;uri::https://w3id.org/sdata/core/NormalDomain -->
+<g id="edge15" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;uri::https://w3id.org/sdata/core/NormalDomain</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M109.1,-129.88C129.93,-118.91 157.58,-105.14 183,-95 255.02,-66.28 341.45,-44.62 400.1,-31.7"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="400.7,-34.25 407.47,-30.09 399.58,-29.12 400.7,-34.25"/>
+<text text-anchor="middle" x="239.5" y="-97.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy -->
+<g id="node17" class="node">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy</title>
+<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M132.5,-1142C132.5,-1142 17.5,-1142 17.5,-1142 11.5,-1142 5.5,-1136 5.5,-1130 5.5,-1130 5.5,-1118 5.5,-1118 5.5,-1112 11.5,-1106 17.5,-1106 17.5,-1106 132.5,-1106 132.5,-1106 138.5,-1106 144.5,-1112 144.5,-1118 144.5,-1118 144.5,-1130 144.5,-1130 144.5,-1136 138.5,-1142 132.5,-1142"/>
+<text text-anchor="middle" x="75" y="-1121.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_fuzzy</text>
+</g>
+<!-- lit::1.15::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node18" class="node">
+<title>lit::1.15::http://www.w3.org/2001/XMLSchema#double::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1337 442,-1337 442,-1301 496,-1301 496,-1331 490,-1337"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1337 490,-1331 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1331 490,-1331 "/>
+<text text-anchor="middle" x="469" y="-1316.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.15</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.15::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge16" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.15::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M90.55,-1142.21C109.67,-1165.12 145.26,-1204.44 183,-1229 263.99,-1281.72 377.98,-1305.37 434.09,-1314.34"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.8,-1316.95 441.61,-1315.51 434.6,-1311.76 433.8,-1316.95"/>
+<text text-anchor="middle" x="239.5" y="-1282.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyCoreLeft</text>
+</g>
+<!-- lit::1.25::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node19" class="node">
+<title>lit::1.25::http://www.w3.org/2001/XMLSchema#double::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1272 442,-1272 442,-1236 496,-1236 496,-1266 490,-1272"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1272 490,-1266 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1266 490,-1266 "/>
+<text text-anchor="middle" x="469" y="-1251.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.25</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.25::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge17" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.25::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M109.1,-1142.12C129.93,-1153.09 157.58,-1166.86 183,-1177 270.8,-1212.01 380.01,-1236.54 434.22,-1247.52"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.94,-1250.14 441.81,-1249.04 434.97,-1244.99 433.94,-1250.14"/>
+<text text-anchor="middle" x="239.5" y="-1214.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyCoreRight</text>
+</g>
+<!-- lit::1.05::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node20" class="node">
+<title>lit::1.05::http://www.w3.org/2001/XMLSchema#double::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1207 442,-1207 442,-1171 496,-1171 496,-1201 490,-1207"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1207 490,-1201 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1201 490,-1201 "/>
+<text text-anchor="middle" x="469" y="-1186.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.05</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.05::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge18" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.05::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-1135.4C229.55,-1149.46 370.4,-1172.82 434.45,-1183.44"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.04,-1186.03 441.87,-1184.67 434.9,-1180.85 434.04,-1186.03"/>
+<text text-anchor="middle" x="239.5" y="-1162.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyLeft</text>
+</g>
+<!-- lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en -->
+<g id="node21" class="node">
+<title>lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="595.5,-1142 336.5,-1142 336.5,-1106 601.5,-1106 601.5,-1136 595.5,-1142"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-1142 595.5,-1136 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-1136 595.5,-1136 "/>
+<text text-anchor="middle" x="469" y="-1121.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness 1.2 mm — soft tolerance for sim...</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en -->
+<g id="edge19" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Sheet thickness 1.2 mm — soft tolerance for simulation::::en</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-1124C195.48,-1124 266.27,-1124 328.68,-1124"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="328.75,-1126.63 336.25,-1124 328.75,-1121.38 328.75,-1126.63"/>
+<text text-anchor="middle" x="239.5" y="-1126.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+</g>
+<!-- lit::1.35::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node22" class="node">
+<title>lit::1.35::http://www.w3.org/2001/XMLSchema#double::</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1077 442,-1077 442,-1041 496,-1041 496,-1071 490,-1077"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1077 490,-1071 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1071 490,-1071 "/>
+<text text-anchor="middle" x="469" y="-1056.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.35</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.35::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge20" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::1.35::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M144.73,-1112.6C229.55,-1098.54 370.4,-1075.18 434.45,-1064.56"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.9,-1067.15 441.87,-1063.33 434.04,-1061.97 434.9,-1067.15"/>
+<text text-anchor="middle" x="239.5" y="-1106.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:fuzzyRight</text>
+</g>
+<!-- lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de -->
+<g id="node23" class="node">
+<title>lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="601.5,-1012 330.5,-1012 330.5,-976 607.5,-976 607.5,-1006 601.5,-1012"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-1012 601.5,-1006 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="607.5,-1006 601.5,-1006 "/>
+<text text-anchor="middle" x="469" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke 1.2 mm — weiche Toleranz für Simulation</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de -->
+<g id="edge21" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;lit::Blechdicke 1.2 mm — weiche Toleranz für Simulation::::de</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M108.08,-1105.89C128.97,-1094.58 157.07,-1080.26 183,-1070 244.18,-1045.79 315.73,-1026.73 371.84,-1013.76"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="372.58,-1016.29 379.3,-1012.05 371.41,-1011.17 372.58,-1016.29"/>
+<text text-anchor="middle" x="239.5" y="-1072.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+</g>
+<!-- uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain -->
+<g id="node24" class="node">
+<title>uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain</title>
+<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M542,-947C542,-947 396,-947 396,-947 390,-947 384,-941 384,-935 384,-935 384,-923 384,-923 384,-917 390,-911 396,-911 396,-911 542,-911 542,-911 548,-911 554,-917 554,-923 554,-923 554,-935 554,-935 554,-941 548,-947 542,-947"/>
+<text text-anchor="middle" x="469" y="-926.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:TrapezoidalFuzzyDomain</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain -->
+<g id="edge22" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_fuzzy&#45;&gt;uri::https://w3id.org/sdata/core/TrapezoidalFuzzyDomain</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M90.08,-1105.72C108.96,-1082.3 144.59,-1041.78 183,-1017 241.74,-979.11 317.77,-956.72 376.52,-944.01"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="377.17,-946.55 383.96,-942.43 376.08,-941.42 377.17,-946.55"/>
+<text text-anchor="middle" x="239.5" y="-1019.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval -->
+<g id="node25" class="node">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval</title>
+<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M138,-1532C138,-1532 12,-1532 12,-1532 6,-1532 0,-1526 0,-1520 0,-1520 0,-1508 0,-1508 0,-1502 6,-1496 12,-1496 12,-1496 138,-1496 138,-1496 144,-1496 150,-1502 150,-1508 150,-1508 150,-1520 150,-1520 150,-1526 144,-1532 138,-1532"/>
+<text text-anchor="middle" x="75" y="-1511.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:dom_thickness_interval</text>
+</g>
+<!-- lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en -->
+<g id="node26" class="node">
+<title>lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="596.5,-1662 335.5,-1662 335.5,-1626 602.5,-1626 602.5,-1656 596.5,-1662"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="596.5,-1662 596.5,-1656 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="602.5,-1656 596.5,-1656 "/>
+<text text-anchor="middle" x="469" y="-1641.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness 1.2 ± 0.1 mm — hard tolerance l...</text>
+</g>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en -->
+<g id="edge23" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Sheet thickness 1.2 ± 0.1 mm — hard tolerance limits::::en</title>
 <path fill="none" stroke="#4a5568" stroke-width="1.2" d="M109.1,-1532.12C129.93,-1543.09 157.58,-1556.86 183,-1567 244.74,-1591.62 317.06,-1611.05 373.4,-1624.24"/>
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="372.99,-1626.84 380.89,-1625.98 374.18,-1621.73 372.99,-1626.84"/>
 <text text-anchor="middle" x="239.5" y="-1604.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
 </g>
-<!-- lit::0.033::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node17" class="node">
-<title>lit::0.033::http://www.w3.org/2001/XMLSchema#double::</title>
+<!-- lit::1.3::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node27" class="node">
+<title>lit::1.3::http://www.w3.org/2001/XMLSchema#double::</title>
 <polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1597 442,-1597 442,-1561 496,-1561 496,-1591 490,-1597"/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1597 490,-1591 "/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1591 490,-1591 "/>
-<text text-anchor="middle" x="469" y="-1576.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">0.033</text>
+<text text-anchor="middle" x="469" y="-1576.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.3</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::0.033::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge14" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::0.033::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-1526.07C233.75,-1540.16 370.58,-1562.85 433.87,-1573.34"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.75,-1575.98 441.58,-1574.62 434.61,-1570.8 433.75,-1575.98"/>
-<text text-anchor="middle" x="239.5" y="-1552.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:sigma</text>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.3::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge24" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.3::http://www.w3.org/2001/XMLSchema#double::</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-1526.3C235.34,-1540.42 371.29,-1562.96 434.12,-1573.38"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="433.95,-1576.01 441.78,-1574.65 434.81,-1570.84 433.95,-1576.01"/>
+<text text-anchor="middle" x="239.5" y="-1552.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:maxValue</text>
 </g>
-<!-- lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en -->
-<g id="node18" class="node">
-<title>lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="597,-1532 335,-1532 335,-1496 603,-1496 603,-1526 597,-1532"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="597,-1532 597,-1526 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="603,-1526 597,-1526 "/>
-<text text-anchor="middle" x="469" y="-1511.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet thickness normally distributed, μ=1.2 mm,...</text>
+<!-- uri::https://w3id.org/sdata/core/IntervalDomain -->
+<g id="node28" class="node">
+<title>uri::https://w3id.org/sdata/core/IntervalDomain</title>
+<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M519,-1532C519,-1532 419,-1532 419,-1532 413,-1532 407,-1526 407,-1520 407,-1520 407,-1508 407,-1508 407,-1502 413,-1496 419,-1496 419,-1496 519,-1496 519,-1496 525,-1496 531,-1502 531,-1508 531,-1508 531,-1520 531,-1520 531,-1526 525,-1532 519,-1532"/>
+<text text-anchor="middle" x="469" y="-1511.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:IntervalDomain</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en -->
-<g id="edge15" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::Sheet thickness normally distributed, μ=1.2 mm, σ=0.033 mm (3σ=0.1 mm)::::en</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-1514C198.82,-1514 266.81,-1514 327.19,-1514"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="327.4,-1516.63 334.9,-1514 327.4,-1511.38 327.4,-1516.63"/>
-<text text-anchor="middle" x="239.5" y="-1516.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;uri::https://w3id.org/sdata/core/IntervalDomain -->
+<g id="edge25" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;uri::https://w3id.org/sdata/core/IntervalDomain</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-1514C221.79,-1514 329.32,-1514 399.08,-1514"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="399.48,-1516.63 406.98,-1514 399.48,-1511.38 399.48,-1516.63"/>
+<text text-anchor="middle" x="239.5" y="-1516.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
 </g>
-<!-- uri::https://w3id.org/sdata/core/NormalDomain -->
-<g id="node19" class="node">
-<title>uri::https://w3id.org/sdata/core/NormalDomain</title>
-<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M518.5,-1467C518.5,-1467 419.5,-1467 419.5,-1467 413.5,-1467 407.5,-1461 407.5,-1455 407.5,-1455 407.5,-1443 407.5,-1443 407.5,-1437 413.5,-1431 419.5,-1431 419.5,-1431 518.5,-1431 518.5,-1431 524.5,-1431 530.5,-1437 530.5,-1443 530.5,-1443 530.5,-1455 530.5,-1455 530.5,-1461 524.5,-1467 518.5,-1467"/>
-<text text-anchor="middle" x="469" y="-1446.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:NormalDomain</text>
+<!-- lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de -->
+<g id="node29" class="node">
+<title>lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de</title>
+<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="595.5,-1467 336.5,-1467 336.5,-1431 601.5,-1431 601.5,-1461 595.5,-1467"/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-1467 595.5,-1461 "/>
+<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="601.5,-1461 595.5,-1461 "/>
+<text text-anchor="middle" x="469" y="-1446.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;uri::https://w3id.org/sdata/core/NormalDomain -->
-<g id="edge16" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;uri::https://w3id.org/sdata/core/NormalDomain</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M148.81,-1501.93C220.7,-1490.01 329.76,-1471.92 399.95,-1460.28"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="400.49,-1462.85 407.46,-1459.04 399.64,-1457.68 400.49,-1462.85"/>
-<text text-anchor="middle" x="239.5" y="-1496.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de -->
+<g id="edge26" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::Blechdicke 1.2 ± 0.1 mm — harte Toleranzgrenzen::::de</title>
+<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M150.19,-1501.7C207.04,-1492.27 286.55,-1479.09 351.81,-1468.27"/>
+<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="352.32,-1470.84 359.29,-1467.03 351.46,-1465.66 352.32,-1470.84"/>
+<text text-anchor="middle" x="239.5" y="-1496.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:domainDescription</text>
 </g>
-<!-- lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="node20" class="node">
-<title>lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
+<!-- lit::1.1::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="node30" class="node">
+<title>lit::1.1::http://www.w3.org/2001/XMLSchema#double::</title>
 <polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1402 442,-1402 442,-1366 496,-1366 496,-1396 490,-1402"/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1402 490,-1396 "/>
 <polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1396 490,-1396 "/>
-<text text-anchor="middle" x="469" y="-1381.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.2</text>
+<text text-anchor="middle" x="469" y="-1381.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">1.1</text>
 </g>
-<!-- uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge17" class="edge">
-<title>uri::https://example.org/tensile&#45;test/dom_thickness_normal&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
+<!-- uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.1::http://www.w3.org/2001/XMLSchema#double:: -->
+<g id="edge27" class="edge">
+<title>uri::https://example.org/tensile&#45;test/dom_thickness_interval&#45;&gt;lit::1.1::http://www.w3.org/2001/XMLSchema#double::</title>
 <path fill="none" stroke="#4a5568" stroke-width="1.2" d="M108.08,-1495.89C128.97,-1484.58 157.07,-1470.26 183,-1460 270.81,-1425.24 380.02,-1401.12 434.22,-1390.35"/>
 <polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.95,-1392.88 441.81,-1388.86 433.94,-1387.73 434.95,-1392.88"/>
-<text text-anchor="middle" x="239.5" y="-1462.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:mu</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness -->
-<g id="node21" class="node">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness</title>
-<path fill="#e3f2fd" stroke="#1976d2" stroke-width="1.2" d="M114.5,-1109C114.5,-1109 35.5,-1109 35.5,-1109 29.5,-1109 23.5,-1103 23.5,-1097 23.5,-1097 23.5,-1085 23.5,-1085 23.5,-1079 29.5,-1073 35.5,-1073 35.5,-1073 114.5,-1073 114.5,-1073 120.5,-1073 126.5,-1079 126.5,-1085 126.5,-1085 126.5,-1097 126.5,-1097 126.5,-1103 120.5,-1109 114.5,-1109"/>
-<text text-anchor="middle" x="75" y="-1088.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#0d47a1">ex:attr_thickness</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double:: -->
-<g id="edge22" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::1.2::http://www.w3.org/2001/XMLSchema#double::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M80.43,-1109.13C91.11,-1149.13 122.03,-1245.65 183,-1299 256.11,-1362.98 375.7,-1378.83 433.96,-1382.73"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.11,-1385.37 441.76,-1383.21 434.43,-1380.13 434.11,-1385.37"/>
-<text text-anchor="middle" x="239.5" y="-1357.8" font-family="Helvetica,sans-Serif" font-size="9.00">qudt:numericValue</text>
-</g>
-<!-- uri::https://w3id.org/sdata/core/AttributeQuantityValue -->
-<g id="node22" class="node">
-<title>uri::https://w3id.org/sdata/core/AttributeQuantityValue</title>
-<path fill="#f3e8ff" stroke="#7e57c2" stroke-width="1.2" d="M537,-1336C537,-1336 401,-1336 401,-1336 395,-1336 389,-1330 389,-1324 389,-1324 389,-1312 389,-1312 389,-1306 395,-1300 401,-1300 401,-1300 537,-1300 537,-1300 543,-1300 549,-1306 549,-1312 549,-1312 549,-1324 549,-1324 549,-1330 543,-1336 537,-1336"/>
-<text text-anchor="middle" x="469" y="-1315.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#4527a0">sdata:AttributeQuantityValue</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::https://w3id.org/sdata/core/AttributeQuantityValue -->
-<g id="edge18" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::https://w3id.org/sdata/core/AttributeQuantityValue</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M85.81,-1109.04C102.34,-1137.89 138.32,-1194.53 183,-1228 241.14,-1271.56 320.94,-1294.39 381.31,-1306.14"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="381.09,-1308.77 388.94,-1307.59 382.06,-1303.61 381.09,-1308.77"/>
-<text text-anchor="middle" x="239.5" y="-1284.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdf:type</text>
-</g>
-<!-- lit::float:::: -->
-<g id="node23" class="node">
-<title>lit::float::::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1271 442,-1271 442,-1235 496,-1235 496,-1265 490,-1271"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1271 490,-1265 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1265 490,-1265 "/>
-<text text-anchor="middle" x="469" y="-1250.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">float</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::float:::: -->
-<g id="edge19" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::float::::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M97.38,-1109.11C118.18,-1126.06 151.23,-1151.22 183,-1168 267.64,-1212.71 379.15,-1237.24 434.23,-1247.37"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.09,-1250.01 441.93,-1248.76 435.02,-1244.85 434.09,-1250.01"/>
-<text text-anchor="middle" x="239.5" y="-1213.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:dtype</text>
-</g>
-<!-- lit::Initial sheet thickness of the tensile specimen before testing::::en -->
-<g id="node24" class="node">
-<title>lit::Initial sheet thickness of the tensile specimen before testing::::en</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="589.5,-1206 342.5,-1206 342.5,-1170 595.5,-1170 595.5,-1200 589.5,-1206"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="589.5,-1206 589.5,-1200 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="595.5,-1200 589.5,-1200 "/>
-<text text-anchor="middle" x="469" y="-1185.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Initial sheet thickness of the tensile specimen...</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Initial sheet thickness of the tensile specimen before testing::::en -->
-<g id="edge20" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Initial sheet thickness of the tensile specimen before testing::::en</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.61,-1108.11C144.35,-1113.83 164.46,-1120.02 183,-1125 244.34,-1141.49 313.95,-1156.94 369.01,-1168.41"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="368.81,-1171.05 376.68,-1170 369.87,-1165.91 368.81,-1171.05"/>
-<text text-anchor="middle" x="239.5" y="-1153.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:description</text>
-</g>
-<!-- lit::t:::: -->
-<g id="node25" class="node">
-<title>lit::t::::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-1141 442,-1141 442,-1105 496,-1105 496,-1135 490,-1141"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-1141 490,-1135 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-1135 490,-1135 "/>
-<text text-anchor="middle" x="469" y="-1120.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">t</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::t:::: -->
-<g id="edge21" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::t::::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.85,-1095.15C208.23,-1101.79 365.58,-1114.64 434.4,-1120.26"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.26,-1122.88 441.95,-1120.87 434.69,-1117.65 434.26,-1122.88"/>
-<text text-anchor="middle" x="239.5" y="-1110.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:name</text>
-</g>
-<!-- uri::http://qudt.org/vocab/unit/MilliM -->
-<g id="node26" class="node">
-<title>uri::http://qudt.org/vocab/unit/MilliM</title>
-<path fill="#ffffff" stroke="#78909c" stroke-width="1.2" d="M492,-1076C492,-1076 446,-1076 446,-1076 440,-1076 434,-1070 434,-1064 434,-1064 434,-1052 434,-1052 434,-1046 440,-1040 446,-1040 446,-1040 492,-1040 492,-1040 498,-1040 504,-1046 504,-1052 504,-1052 504,-1064 504,-1064 504,-1070 498,-1076 492,-1076"/>
-<text text-anchor="middle" x="469" y="-1055.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#37474f">unit:MilliM</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::http://qudt.org/vocab/unit/MilliM -->
-<g id="edge23" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;uri::http://qudt.org/vocab/unit/MilliM</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M126.85,-1086.72C205.2,-1080.12 353.96,-1067.6 426.34,-1061.51"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="426.69,-1064.11 433.95,-1060.87 426.25,-1058.88 426.69,-1064.11"/>
-<text text-anchor="middle" x="239.5" y="-1083.8" font-family="Helvetica,sans-Serif" font-size="9.00">qudt:unit</text>
-</g>
-<!-- lit::Sheet Thickness::::en -->
-<g id="node27" class="node">
-<title>lit::Sheet Thickness::::en</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="512,-1011 420,-1011 420,-975 518,-975 518,-1005 512,-1011"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="512,-1011 512,-1005 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="518,-1005 512,-1005 "/>
-<text text-anchor="middle" x="469" y="-990.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Sheet Thickness</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Sheet Thickness::::en -->
-<g id="edge24" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Sheet Thickness::::en</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M125.73,-1073C143.65,-1066.85 164.11,-1060.22 183,-1055 261.83,-1033.24 354.62,-1014.26 412.39,-1003.21"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="413.08,-1005.75 419.95,-1001.77 412.09,-1000.6 413.08,-1005.75"/>
-<text text-anchor="middle" x="239.5" y="-1057.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdfs:label</text>
-</g>
-<!-- lit::Blechdicke::::de -->
-<g id="node28" class="node">
-<title>lit::Blechdicke::::de</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="498.5,-946 433.5,-946 433.5,-910 504.5,-910 504.5,-940 498.5,-946"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="498.5,-946 498.5,-940 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="504.5,-940 498.5,-940 "/>
-<text text-anchor="middle" x="469" y="-925.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Blechdicke</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Blechdicke::::de -->
-<g id="edge25" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Blechdicke::::de</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M96.4,-1072.67C117.01,-1054.91 150.39,-1028.23 183,-1011 263.46,-968.5 368.51,-945.14 425.95,-934.74"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="426.47,-937.31 433.4,-933.41 425.55,-932.14 426.47,-937.31"/>
-<text text-anchor="middle" x="239.5" y="-1013.8" font-family="Helvetica,sans-Serif" font-size="9.00">rdfs:label</text>
-</g>
-<!-- lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de -->
-<g id="node29" class="node">
-<title>lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="598.5,-881 333.5,-881 333.5,-845 604.5,-845 604.5,-875 598.5,-881"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="598.5,-881 598.5,-875 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="604.5,-875 598.5,-875 "/>
-<text text-anchor="middle" x="469" y="-860.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">Ausgangsblechdicke der Zugprobe vor dem Versuch</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de -->
-<g id="edge26" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::Ausgangsblechdicke der Zugprobe vor dem Versuch::::de</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M85.38,-1072.94C101.54,-1043.47 137.33,-984.95 183,-951 229.04,-916.77 288.61,-895.69 341.38,-882.78"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="342.09,-885.31 348.77,-881.02 340.87,-880.21 342.09,-885.31"/>
-<text text-anchor="middle" x="239.5" y="-953.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:description</text>
-</g>
-<!-- lit::mm:::: -->
-<g id="node30" class="node">
-<title>lit::mm::::</title>
-<polygon fill="#fff9db" stroke="#b08900" stroke-width="1.2" points="490,-816 442,-816 442,-780 496,-780 496,-810 490,-816"/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="490,-816 490,-810 "/>
-<polyline fill="none" stroke="#b08900" stroke-width="1.2" points="496,-810 490,-810 "/>
-<text text-anchor="middle" x="469" y="-795.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#5c4500">mm</text>
-</g>
-<!-- uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::mm:::: -->
-<g id="edge27" class="edge">
-<title>uri::https://example.org/tensile&#45;test/attr_thickness&#45;&gt;lit::mm::::</title>
-<path fill="none" stroke="#4a5568" stroke-width="1.2" d="M80.2,-1072.84C90.5,-1032.28 120.85,-933.71 183,-880 256.3,-816.66 375.8,-802.13 434,-798.88"/>
-<polygon fill="#4a5568" stroke="#4a5568" stroke-width="1.2" points="434.43,-801.49 441.79,-798.49 434.17,-796.24 434.43,-801.49"/>
-<text text-anchor="middle" x="239.5" y="-882.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:unitSymbol</text>
+<text text-anchor="middle" x="239.5" y="-1462.8" font-family="Helvetica,sans-Serif" font-size="9.00">sdata:minValue</text>
 </g>
 </g>
 </svg>

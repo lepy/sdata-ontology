@@ -12,6 +12,7 @@ Kompakte Referenz fuer die Modellierung mit `MIN v2.1 + sdata-core v0.12.0`.
 sdata-Spezialisierungen:
 
 - Objekte: `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
+- Prozesse: `sdata:Process` (subClassOf `min:Process`)
 - Daten: `sdata:Data`
 - Agenten: `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
 
@@ -53,7 +54,7 @@ Nutze `sms:hasStateAssignment` fuer fachliche Typisierung statt Core-Subklassen:
 
 ## Haeufige Fehler
 
-- `sdata:Process` verwenden (in v0.12 nicht vorhanden)
+- Prozesse nur als `sdata:Process` typisieren, wenn du im sdata-Kontext arbeitest
 - `sdata:hasInput`/`sdata:hasOutput` verwenden statt `min:hasInput`/`min:hasOutput`
 - `sdata:hasIdentifier` verwenden statt `min:hasIdentifier`
 - `sdata:Data` implizit als `min:Object` behandeln (ist falsch seit v0.11)
@@ -67,7 +68,7 @@ Nutze `sms:hasStateAssignment` fuer fachliche Typisierung statt Core-Subklassen:
 @prefix ex:    <https://example.org/x/> .
 
 ex:input a sdata:Material ; min:hasIdentifier "MAT-1" .
-ex:proc  a min:Process ;
+ex:proc  a sdata:Process ;
   min:hasInput ex:input ;
   min:generates ex:data .
 ex:data  a sdata:Data ; min:describes ex:input ; sdata:producedBy ex:proc .

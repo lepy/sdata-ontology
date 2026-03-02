@@ -4,7 +4,7 @@ Autarkes Kernmodell (`v0.12.0`) auf `MIN v2.1.0`.
 
 ## Umfang
 
-- 10 Klassen
+- 11 Klassen
 - 10 Objekt-Properties
 - 7 Datentyp-Properties
 
@@ -12,12 +12,12 @@ Autarkes Kernmodell (`v0.12.0`) auf `MIN v2.1.0`.
 
 - Objekt-Subklassen (`min:Object`):
   - `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
+- Prozessklasse (`min:Process`):
+  - `sdata:Process`
 - Datenklasse (`min:Data`):
   - `sdata:Data`
 - Agent-Subklassen (`min:Agent`):
   - `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
-
-Hinweis: `sdata:Process` ist in v0.12 nicht als Klasse definiert. Prozesse werden als `min:Process` modelliert.
 
 ## Wichtigste Relationen
 
@@ -36,11 +36,10 @@ Hinweis: `sdata:Process` ist in v0.12 nicht als Klasse definiert. Prozesse werde
 - `sdata:producesData` -> `min:generates`
 - `sdata:describes` -> `min:describes`
 - `sdata:hasIdentifier` -> `min:hasIdentifier`
-- `sdata:Process`-Instanzen -> `min:Process`-Instanzen
 
 ## Modellierungsregeln
 
-- Prozessinstanzen als `min:Process` modellieren.
+- Prozessinstanzen als `sdata:Process` modellieren.
 - Prozessart nicht als Core-Subklasse modellieren.
 : stattdessen `sms:MethodAxis`/`sms:DomainAxis` nutzen.
 - Datenart (`Certificate`, `DigitalProductPass`, `TestReport` ...) ueber `sms:DataTypeAxis` modellieren.
@@ -64,7 +63,7 @@ ex:Probe_A1 a sdata:Product ;
 ex:Zwick_Z100 a sdata:Hardware, sdata:HardwareAgent ;
   min:hasIdentifier "HW-ZWICK-Z100" .
 
-ex:Zugversuch_A1 a min:Process ;
+ex:Zugversuch_A1 a sdata:Process ;
   min:hasInput ex:Probe_A1 ;
   min:performedBy ex:Zwick_Z100 ;
   sdata:usesTool ex:Zwick_Z100 ;

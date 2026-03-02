@@ -86,6 +86,12 @@ SPARQL-Queries wie `?x a min:Object` liefern keine Data-Instanzen mehr.
 | `sdata:hasData`        | Nexus hat zugehörige Data (subProp von min:describedBy) |
 | `sdata:producedBy`     | Data wurde durch Process erzeugt (subProp von min:generatedBy) |
 
+### 6b. Prozess-Typisierung im sdata-Kontext
+
+`sdata:Process` ist als Domänenklasse verfügbar und bleibt
+`rdfs:subClassOf min:Process`. Für sdata-Instanzen wird daher
+`a sdata:Process` empfohlen.
+
 ## SPARQL-Migration
 
 ### Queries auf opa: Namespace

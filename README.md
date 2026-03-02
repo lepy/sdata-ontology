@@ -12,7 +12,7 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 ## Module Overview
 
 - `sdata-core.ttl` (`v0.12.0`)
-: 10 classes, 10 object properties, 7 datatype properties.
+: 11 classes, 10 object properties, 7 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
 : 13 state axes including `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
 - `shapes/sdata-core-shapes.ttl`
@@ -27,9 +27,10 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
   - `min:Agent`
 - sdata core classes:
   - Objects: `Material`, `Product`, `Hardware`, `Software`
+  - Process: `Process`
   - Data: `Data`
   - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
-- Process instances are modeled as `min:Process`.
+- Process instances are modeled as `sdata:Process` (`subClassOf min:Process`).
 : method/domain semantics are typed via `sms:MethodAxis` and `sms:DomainAxis`.
 
 ## Core Modeling Pattern
@@ -106,7 +107,7 @@ uv run python -m src.visualization.min_v21_examples_plot
 - OPA dependency removed.
 - MIN upgraded to `v2.1.0`.
 - `sdata:Data` is `subClassOf min:Data`.
-- No `sdata:Process` class in core; use `min:Process` and type method/domain via state assignments.
+- `sdata:Process` is available as domain class (`subClassOf min:Process`).
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.
 
 ## Documentation

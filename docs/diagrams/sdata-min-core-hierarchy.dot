@@ -128,6 +128,11 @@ digraph "" {
 	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Material";
 	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Product";
 	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Software";
+	"https://w3id.org/sdata/core/Process"	[color="#6B46C1",
+		fillcolor="#F8EEFF",
+		fontcolor="#44337A",
+		label=Process];
+	"https://w3id.org/min#Process" -> "https://w3id.org/sdata/core/Process";
 	__rank_anchor_sdata	[height=0.01,
 		label="",
 		shape=point,

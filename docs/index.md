@@ -15,7 +15,7 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 - `sdata-material-state.ttl`: material state space extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **10 classes**, **10 object properties**, **7 datatype properties**.
+Current core model: **11 classes**, **10 object properties**, **7 datatype properties**.
 
 ## Read This First
 
