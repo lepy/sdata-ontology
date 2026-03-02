@@ -241,6 +241,54 @@ ex:Bauteil_2026_042 a min:Object ;
     min:resultOf ex:Tiefziehen_2026_017 .
 
 
+# =============================================================================
+#   6. FORMA — exemplarische Nutzung der fünf FORMA-Klassen
+# =============================================================================
+
+ex:Energieerhaltung a min:Lex ;
+    min:hasIdentifier "LEX-ENERGY-CONSERVATION" ;
+    min:hasName "Energieerhaltung" ;
+    min:governs ex:Tiefziehen_2026_017 ;
+    min:constrains ex:Tiefziehen_2026_017 .
+
+ex:VonMisesFliessflaeche a min:Structura ;
+    min:hasIdentifier "STR-VON-MISES" ;
+    min:hasName "von-Mises-Fließfläche" ;
+    min:formalizes ex:Tiefziehen_2026_017 .
+
+ex:RissbildungAnBiegeradius a min:Possibile ;
+    min:hasIdentifier "POSS-CRACK-BEND-RADIUS" ;
+    min:hasName "Rissbildung am Biegeradius" ;
+    min:concerns ex:Bauteil_2026_042 ;
+    min:alternativeTo ex:Bauteil_2026_042 .
+
+ex:MindestStreckgrenze340MPa a min:Norma ;
+    min:hasIdentifier "NOR-RP02-MIN-340" ;
+    min:hasName "Mindeststreckgrenze Rp0.2 >= 340 MPa" ;
+    min:evaluates ex:Bauteil_2026_042 .
+
+ex:DIN_EN_ISO_6892_1_Zertifizierungsregime a min:Institutio ;
+    min:hasIdentifier "INST-DIN-EN-ISO-6892-1" ;
+    min:hasName "DIN EN ISO 6892-1 Zertifizierungsregime" .
+
+# Nexus ↔ Forma Brücken (Richtung gemäß MIN v3)
+ex:Tiefziehen_2026_017
+    min:realizes ex:Energieerhaltung , ex:VonMisesFliessflaeche .
+
+ex:Bauteil_2026_042
+    min:realizes ex:MindestStreckgrenze340MPa .
+
+ex:Presswerk_Agent_001
+    min:recognizes ex:DIN_EN_ISO_6892_1_Zertifizierungsregime ;
+    min:constitutes ex:DIN_EN_ISO_6892_1_Zertifizierungsregime .
+
+ex:Zugversuchsdaten_2026_042
+    min:encodes ex:VonMisesFliessflaeche ,
+                ex:RissbildungAnBiegeradius ,
+                ex:MindestStreckgrenze340MPa ,
+                ex:DIN_EN_ISO_6892_1_Zertifizierungsregime .
+
+
 # #############################################################################
 #
 #   SPARQL-BEISPIELE
