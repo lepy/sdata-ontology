@@ -61,11 +61,13 @@ ex:TensileTest_42
 make viz-all
 make viz-examples
 make viz-min-v3-examples
+make viz-min-core-interactive
 ```
 
 Wichtige Outputs:
 
 - `docs/diagrams/sdata-min-core-hierarchy.svg`
+- `docs/diagrams/sdata-min-core-hierarchy-interactive.html`
 - `docs/diagrams/sdata-class-hierarchy.svg`
 - `docs/diagrams/sdata-material-state.svg`
 

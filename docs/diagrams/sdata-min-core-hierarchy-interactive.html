@@ -1,0 +1,938 @@
+        <!doctype html>
+        <html lang="en">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Interactive Class Hierarchy: MIN v3.2.0 -> sdata-core</title>
+          <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+          <style>
+            :root {
+              --bg: #f6f7fb;
+              --panel: #ffffff;
+              --text: #1f2937;
+              --muted: #6b7280;
+              --border: #d1d5db;
+            }
+            body {
+              margin: 0;
+              font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+              color: var(--text);
+              background: linear-gradient(160deg, #eff6ff 0%, #f8fafc 45%, #fef7ff 100%);
+            }
+            .layout {
+              display: grid;
+              grid-template-columns: 320px minmax(0, 1fr);
+              min-height: 100vh;
+              gap: 0;
+            }
+            .sidebar {
+              background: var(--panel);
+              border-right: 1px solid var(--border);
+              padding: 16px;
+              box-sizing: border-box;
+            }
+            h1 {
+              font-size: 18px;
+              margin: 0 0 12px 0;
+            }
+            .meta {
+              color: var(--muted);
+              font-size: 13px;
+              margin-bottom: 16px;
+            }
+            .controls {
+              display: grid;
+              gap: 12px;
+            }
+            label {
+              font-size: 14px;
+              display: block;
+              margin-bottom: 4px;
+            }
+            input[type="text"] {
+              width: 100%;
+              padding: 8px 10px;
+              border: 1px solid var(--border);
+              border-radius: 8px;
+              box-sizing: border-box;
+            }
+            .check-row {
+              display: flex;
+              gap: 12px;
+              align-items: center;
+              font-size: 14px;
+            }
+            .btn-row {
+              display: flex;
+              gap: 8px;
+              flex-wrap: wrap;
+            }
+            button {
+              border: 1px solid var(--border);
+              background: #ffffff;
+              border-radius: 8px;
+              padding: 7px 10px;
+              cursor: pointer;
+              font-size: 13px;
+            }
+            button:hover {
+              background: #f3f4f6;
+            }
+            .details {
+              margin-top: 14px;
+              padding-top: 12px;
+              border-top: 1px solid var(--border);
+              font-size: 13px;
+              line-height: 1.35;
+            }
+            .details .dim {
+              color: var(--muted);
+            }
+            #network {
+              width: 100%;
+              height: 100vh;
+              background: transparent;
+            }
+            @media (max-width: 980px) {
+              .layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto minmax(0, 1fr);
+              }
+              .sidebar {
+                border-right: 0;
+                border-bottom: 1px solid var(--border);
+              }
+              #network {
+                height: calc(100vh - 280px);
+                min-height: 520px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="layout">
+            <aside class="sidebar">
+              <h1>Interactive Class Hierarchy: MIN v3.2.0 -> sdata-core</h1>
+              <div class="meta">
+                Interactive class hierarchy for MIN v3.2.0 and sdata-core.
+              </div>
+              <div class="controls">
+                <div>
+                  <label for="search">Search class</label>
+                  <input id="search" type="text" placeholder="Type label or IRI fragment..." />
+                </div>
+                <div class="check-row">
+                  <label><input id="toggle-min" type="checkbox" checked /> MIN</label>
+                  <label><input id="toggle-sdata" type="checkbox" checked /> sdata</label>
+                </div>
+                <div class="btn-row">
+                  <button id="fit-btn" type="button">Fit graph</button>
+                  <button id="expand-btn" type="button">Show all</button>
+                  <button id="collapse-btn" type="button">Show selected branch</button>
+                </div>
+              </div>
+              <div class="details" id="details">
+                <div class="dim">Click a node to inspect details.</div>
+              </div>
+            </aside>
+            <main id="network" aria-label="Interactive hierarchy graph"></main>
+          </div>
+
+          <script>
+            const allNodes = [
+  {
+    "id": "https://w3id.org/min#Agent",
+    "label": "Agent",
+    "title": "https://w3id.org/min#Agent",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Boundary",
+    "label": "Boundary",
+    "title": "https://w3id.org/min#Boundary",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Data",
+    "label": "Data",
+    "title": "https://w3id.org/min#Data",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Entity",
+    "label": "Entity",
+    "title": "https://w3id.org/min#Entity",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Forma",
+    "label": "Forma",
+    "title": "https://w3id.org/min#Forma",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Institutio",
+    "label": "Institutio",
+    "title": "https://w3id.org/min#Institutio",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Lex",
+    "label": "Lex",
+    "title": "https://w3id.org/min#Lex",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Nexus",
+    "label": "Nexus",
+    "title": "https://w3id.org/min#Nexus",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Norma",
+    "label": "Norma",
+    "title": "https://w3id.org/min#Norma",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Object",
+    "label": "Object",
+    "title": "https://w3id.org/min#Object",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Possibile",
+    "label": "Possibile",
+    "title": "https://w3id.org/min#Possibile",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Process",
+    "label": "Process",
+    "title": "https://w3id.org/min#Process",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#Structura",
+    "label": "Structura",
+    "title": "https://w3id.org/min#Structura",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Accreditation",
+    "label": "Accreditation",
+    "title": "https://w3id.org/sdata/core/Accreditation",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/AssessmentResult",
+    "label": "Assessment Result",
+    "title": "https://w3id.org/sdata/core/AssessmentResult",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Boundary",
+    "label": "Boundary",
+    "title": "https://w3id.org/sdata/core/Boundary",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Certification",
+    "label": "Certification",
+    "title": "https://w3id.org/sdata/core/Certification",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/CryptographicKey",
+    "label": "Cryptographic Key",
+    "title": "https://w3id.org/sdata/core/CryptographicKey",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Data",
+    "label": "Data",
+    "title": "https://w3id.org/sdata/core/Data",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Database",
+    "label": "Database",
+    "title": "https://w3id.org/sdata/core/Database",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/DigitalTwin",
+    "label": "Digital Twin",
+    "title": "https://w3id.org/sdata/core/DigitalTwin",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/EnvironmentAgent",
+    "label": "Environment Agent",
+    "title": "https://w3id.org/sdata/core/EnvironmentAgent",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Hardware",
+    "label": "Hardware",
+    "title": "https://w3id.org/sdata/core/Hardware",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/HardwareAgent",
+    "label": "Hardware Agent",
+    "title": "https://w3id.org/sdata/core/HardwareAgent",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Identifier",
+    "label": "Identifier",
+    "title": "https://w3id.org/sdata/core/Identifier",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Law",
+    "label": "Law",
+    "title": "https://w3id.org/sdata/core/Law",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/LifecyclePhase",
+    "label": "Lifecycle Phase",
+    "title": "https://w3id.org/sdata/core/LifecyclePhase",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Material",
+    "label": "Material",
+    "title": "https://w3id.org/sdata/core/Material",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Model",
+    "label": "Model",
+    "title": "https://w3id.org/sdata/core/Model",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Organization",
+    "label": "Organization",
+    "title": "https://w3id.org/sdata/core/Organization",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Person",
+    "label": "Person",
+    "title": "https://w3id.org/sdata/core/Person",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Process",
+    "label": "Process",
+    "title": "https://w3id.org/sdata/core/Process",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Product",
+    "label": "Product",
+    "title": "https://w3id.org/sdata/core/Product",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/ProductPassport",
+    "label": "Product Passport",
+    "title": "https://w3id.org/sdata/core/ProductPassport",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Proof",
+    "label": "Proof",
+    "title": "https://w3id.org/sdata/core/Proof",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Registry",
+    "label": "Registry",
+    "title": "https://w3id.org/sdata/core/Registry",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Regulation",
+    "label": "Regulation",
+    "title": "https://w3id.org/sdata/core/Regulation",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Requirement",
+    "label": "Requirement",
+    "title": "https://w3id.org/sdata/core/Requirement",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Result",
+    "label": "Result",
+    "title": "https://w3id.org/sdata/core/Result",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/ResultFile",
+    "label": "Result File",
+    "title": "https://w3id.org/sdata/core/ResultFile",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Scenario",
+    "label": "Scenario",
+    "title": "https://w3id.org/sdata/core/Scenario",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Site",
+    "label": "Site",
+    "title": "https://w3id.org/sdata/core/Site",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Software",
+    "label": "Software",
+    "title": "https://w3id.org/sdata/core/Software",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/SoftwareAgent",
+    "label": "Software Agent",
+    "title": "https://w3id.org/sdata/core/SoftwareAgent",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Specification",
+    "label": "Specification",
+    "title": "https://w3id.org/sdata/core/Specification",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/TrustFramework",
+    "label": "Trust Framework",
+    "title": "https://w3id.org/sdata/core/TrustFramework",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/VerifiableCredential",
+    "label": "Verifiable Credential",
+    "title": "https://w3id.org/sdata/core/VerifiableCredential",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/VerifiablePresentation",
+    "label": "Verifiable Presentation",
+    "title": "https://w3id.org/sdata/core/VerifiablePresentation",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  }
+];
+            const allEdges = [
+  {
+    "from": "https://w3id.org/min#Agent",
+    "to": "https://w3id.org/sdata/core/EnvironmentAgent",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Agent",
+    "to": "https://w3id.org/sdata/core/HardwareAgent",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Agent",
+    "to": "https://w3id.org/sdata/core/Organization",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Agent",
+    "to": "https://w3id.org/sdata/core/Person",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Agent",
+    "to": "https://w3id.org/sdata/core/SoftwareAgent",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Boundary",
+    "to": "https://w3id.org/sdata/core/Boundary",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Data",
+    "to": "https://w3id.org/sdata/core/Data",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Entity",
+    "to": "https://w3id.org/min#Forma",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Entity",
+    "to": "https://w3id.org/min#Nexus",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Forma",
+    "to": "https://w3id.org/min#Institutio",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Forma",
+    "to": "https://w3id.org/min#Lex",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Forma",
+    "to": "https://w3id.org/min#Norma",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Forma",
+    "to": "https://w3id.org/min#Possibile",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Forma",
+    "to": "https://w3id.org/min#Structura",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Institutio",
+    "to": "https://w3id.org/sdata/core/Accreditation",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Institutio",
+    "to": "https://w3id.org/sdata/core/Certification",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Institutio",
+    "to": "https://w3id.org/sdata/core/Registry",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Institutio",
+    "to": "https://w3id.org/sdata/core/TrustFramework",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Lex",
+    "to": "https://w3id.org/sdata/core/Law",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Nexus",
+    "to": "https://w3id.org/min#Agent",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Nexus",
+    "to": "https://w3id.org/min#Boundary",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Nexus",
+    "to": "https://w3id.org/min#Data",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Nexus",
+    "to": "https://w3id.org/min#Object",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Nexus",
+    "to": "https://w3id.org/min#Process",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Norma",
+    "to": "https://w3id.org/sdata/core/LifecyclePhase",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Norma",
+    "to": "https://w3id.org/sdata/core/Regulation",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Norma",
+    "to": "https://w3id.org/sdata/core/Requirement",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Norma",
+    "to": "https://w3id.org/sdata/core/Specification",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Hardware",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Material",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Product",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Site",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Software",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Possibile",
+    "to": "https://w3id.org/sdata/core/Scenario",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Process",
+    "to": "https://w3id.org/sdata/core/Process",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Structura",
+    "to": "https://w3id.org/sdata/core/Model",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/CryptographicKey",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/DigitalTwin",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/Identifier",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/ProductPassport",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/Proof",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/Result",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/ResultFile",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/VerifiableCredential",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/VerifiablePresentation",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Result",
+    "to": "https://w3id.org/sdata/core/AssessmentResult",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Software",
+    "to": "https://w3id.org/sdata/core/Database",
+    "arrows": "to"
+  }
+];
+
+            const nodeById = new Map(allNodes.map(n => [n.id, n]));
+            const parentsByChild = new Map();
+            const childrenByParent = new Map();
+            for (const edge of allEdges) {
+              if (!parentsByChild.has(edge.to)) parentsByChild.set(edge.to, []);
+              if (!childrenByParent.has(edge.from)) childrenByParent.set(edge.from, []);
+              parentsByChild.get(edge.to).push(edge.from);
+              childrenByParent.get(edge.from).push(edge.to);
+            }
+
+            const nodes = new vis.DataSet([]);
+            const edges = new vis.DataSet([]);
+
+            const container = document.getElementById("network");
+            const details = document.getElementById("details");
+            const search = document.getElementById("search");
+            const toggleMin = document.getElementById("toggle-min");
+            const toggleSdata = document.getElementById("toggle-sdata");
+
+            const options = {
+              nodes: {
+                shape: "box",
+                margin: 8,
+                borderWidth: 1.6,
+                font: { face: "Helvetica", size: 13 },
+              },
+              groups: {
+                min: {
+                  color: {
+                    background: "#E7F0FF",
+                    border: "#2B6CB0",
+                    highlight: { background: "#d3e6ff", border: "#2B6CB0" },
+                  },
+                },
+                sdata: {
+                  color: {
+                    background: "#F8EEFF",
+                    border: "#6B46C1",
+                    highlight: { background: "#efd8ff", border: "#6B46C1" },
+                  },
+                },
+              },
+              edges: {
+                arrows: { to: { enabled: true, scaleFactor: 0.75 } },
+                color: { color: "#4A5568", highlight: "#111827" },
+                smooth: { enabled: true, type: "cubicBezier", roundness: 0.2 },
+              },
+              layout: {
+                hierarchical: {
+                  enabled: true,
+                  direction: "UD",
+                  sortMethod: "directed",
+                  levelSeparation: 120,
+                  nodeSpacing: 185,
+                  treeSpacing: 240,
+                },
+              },
+              interaction: {
+                hover: true,
+                dragNodes: true,
+                dragView: true,
+                zoomView: true,
+                navigationButtons: true,
+                keyboard: true,
+              },
+              physics: false,
+            };
+
+            const network = new vis.Network(container, { nodes, edges }, options);
+
+            function filterNodes() {
+              const q = search.value.trim().toLowerCase();
+              const allow = new Set();
+              if (toggleMin.checked) allow.add("min");
+              if (toggleSdata.checked) allow.add("sdata");
+
+              return allNodes.filter(n => {
+                if (!allow.has(n.kind)) return false;
+                if (!q) return true;
+                return n.label.toLowerCase().includes(q) || n.id.toLowerCase().includes(q);
+              });
+            }
+
+            function renderGraph(visibleNodes) {
+              const ids = new Set(visibleNodes.map(n => n.id));
+              const visibleEdges = allEdges.filter(e => ids.has(e.from) && ids.has(e.to));
+              nodes.clear();
+              edges.clear();
+              nodes.add(visibleNodes);
+              edges.add(visibleEdges);
+            }
+
+            function showAll() {
+              renderGraph(filterNodes());
+              network.fit({ animation: { duration: 250, easingFunction: "easeInOutQuad" } });
+            }
+
+            function branchFrom(seedId) {
+              const allowedKinds = new Set();
+              if (toggleMin.checked) allowedKinds.add("min");
+              if (toggleSdata.checked) allowedKinds.add("sdata");
+
+              const keep = new Set([seedId]);
+              const queue = [seedId];
+              while (queue.length) {
+                const id = queue.shift();
+                for (const p of (parentsByChild.get(id) || [])) {
+                  const node = nodeById.get(p);
+                  if (node && allowedKinds.has(node.kind) && !keep.has(p)) {
+                    keep.add(p);
+                    queue.push(p);
+                  }
+                }
+                for (const c of (childrenByParent.get(id) || [])) {
+                  const node = nodeById.get(c);
+                  if (node && allowedKinds.has(node.kind) && !keep.has(c)) {
+                    keep.add(c);
+                    queue.push(c);
+                  }
+                }
+              }
+
+              const q = search.value.trim().toLowerCase();
+              const nodesFiltered = allNodes.filter(n => {
+                if (!keep.has(n.id)) return false;
+                if (!allowedKinds.has(n.kind)) return false;
+                if (!q) return true;
+                return n.label.toLowerCase().includes(q) || n.id.toLowerCase().includes(q);
+              });
+              renderGraph(nodesFiltered);
+              network.fit({ animation: { duration: 250, easingFunction: "easeInOutQuad" } });
+            }
+
+            function updateDetails(nodeId) {
+              if (!nodeId) {
+                details.innerHTML = '<div class="dim">Click a node to inspect details.</div>';
+                return;
+              }
+              const node = nodeById.get(nodeId);
+              const parents = parentsByChild.get(nodeId) || [];
+              const children = childrenByParent.get(nodeId) || [];
+              details.innerHTML = `
+                <div><strong>${node.label}</strong></div>
+                <div class="dim">${node.id}</div>
+                <div style="margin-top:8px"><strong>Group:</strong> ${node.kind}</div>
+                <div><strong>Parents:</strong> ${parents.length}</div>
+                <div><strong>Children:</strong> ${children.length}</div>
+              `;
+            }
+
+            document.getElementById("fit-btn").addEventListener("click", () => {
+              network.fit({ animation: { duration: 250, easingFunction: "easeInOutQuad" } });
+            });
+            document.getElementById("expand-btn").addEventListener("click", showAll);
+            document.getElementById("collapse-btn").addEventListener("click", () => {
+              const selected = network.getSelectedNodes();
+              if (!selected.length) return;
+              branchFrom(selected[0]);
+            });
+
+            search.addEventListener("input", showAll);
+            toggleMin.addEventListener("change", showAll);
+            toggleSdata.addEventListener("change", showAll);
+
+            network.on("click", params => {
+              const nodeId = params.nodes.length ? params.nodes[0] : null;
+              updateDetails(nodeId);
+            });
+
+            showAll();
+          </script>
+        </body>
+        </html>

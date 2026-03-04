@@ -94,6 +94,16 @@ make viz-min-core
 
 ![Class hierarchy MIN to sdata-core](docs/diagrams/sdata-min-core-hierarchy.svg)
 
+Build interactive class hierarchy (HTML, MIN v3.2.0 + sdata-core):
+
+```bash
+make viz-min-core-interactive
+```
+
+Output:
+
+- `docs/diagrams/sdata-min-core-hierarchy-interactive.html`
+
 Build all example plots:
 
 ```bash

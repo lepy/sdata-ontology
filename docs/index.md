@@ -71,6 +71,7 @@ Individual targets:
 ```bash
 make viz-hierarchy
 make viz-min-core
+make viz-min-core-interactive
 make viz-material-state
 make viz-specimen
 make viz-min-v3-examples
@@ -82,6 +83,7 @@ make viz-examples
 Key diagrams:
 
 - `docs/diagrams/sdata-min-core-hierarchy.svg`
+- `docs/diagrams/sdata-min-core-hierarchy-interactive.html`
 - `docs/diagrams/sdata-class-hierarchy.svg`
 - `docs/diagrams/sdata-material-state.svg`
 

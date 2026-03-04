@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-core viz-min-opa-core viz-material-state viz-specimen viz-min-v3-examples viz-min-v21-examples viz-min-opa-examples viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-core viz-min-core-interactive viz-min-opa-core viz-material-state viz-specimen viz-min-v3-examples viz-min-v21-examples viz-min-opa-examples viz-all viz-examples clean
 
 UV ?= uv
 
@@ -47,6 +47,10 @@ viz-hierarchy: check-uv
 # ─── Visualize cross-ontology class hierarchy (MIN -> sdata-core) ────────────
 viz-min-core: check-uv
 	$(UV) run python -m src.visualization.min_sdata_hierarchy_plot
+
+# ─── Visualize interactive cross-ontology class hierarchy (MIN -> sdata-core) ─
+viz-min-core-interactive: check-uv
+	$(UV) run python -m src.visualization.min_sdata_hierarchy_interactive
 
 # Backward-compatible alias
 viz-min-opa-core: viz-min-core
