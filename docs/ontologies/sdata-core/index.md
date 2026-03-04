@@ -3,23 +3,23 @@
 Kernmodell auf `MIN v3.2.0` in zwei Profilen:
 
 - `sdata-core.ttl` (`v0.12.0`, lean profile)
-- `sdata-core-v0.13.0.ttl` (extended profile mit Forma-Fassaden)
+- `sdata-core-v0.13.1.ttl` (extended profile mit Forma-Fassaden und DPP-Haertung)
 
 ## Umfang
 
 - `v0.12.0`: 11 Klassen, 10 Objekt-Properties, 7 Datentyp-Properties
-- `v0.13.0`: 33 Klassen, 15 Objekt-Properties, 12 Datentyp-Properties
+- `v0.13.1`: 35 Klassen, 21 Objekt-Properties, 16 Datentyp-Properties
 
 ## Klassenstruktur
 
 - Nexus-Subklassen (`v0.12` und `v0.13`):
   - `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
-  - (`v0.13` zusaetzlich) `sdata:Boundary`, `sdata:Database`
+  - (`v0.13` zusaetzlich) `sdata:Boundary`, `sdata:Database`, `sdata:Site`
 - Prozessklasse (`min:Process`):
   - `sdata:Process`
 - Datenklasse (`min:Data`):
   - `sdata:Data`
-  - (`v0.13` zusaetzlich) `sdata:Identifier`, `sdata:Result`, `sdata:ResultFile`,
+  - (`v0.13` zusaetzlich) `sdata:Identifier`, `sdata:Result`, `sdata:AssessmentResult`, `sdata:ResultFile`,
     `sdata:ProductPassport`, `sdata:DigitalTwin`,
     `sdata:VerifiableCredential`, `sdata:VerifiablePresentation`,
     `sdata:Proof`, `sdata:CryptographicKey`
@@ -39,7 +39,9 @@ Kernmodell auf `MIN v3.2.0` in zwei Profilen:
   - `sdata:producedBy`, `sdata:derivedFrom`, `sdata:certifies`
   - `sdata:succeeds`, `sdata:precedes`, `sdata:hasProduct`
   - (`v0.13` zusaetzlich) `sdata:specifies`, `sdata:certifiedUnder`,
-    `sdata:identifiedBy`, `sdata:hasIssuer`, `sdata:signedBy`
+    `sdata:identifiedBy`, `sdata:hasIssuer`, `sdata:signedBy`,
+    `sdata:locatedAt`, `sdata:hasCustodian`, `sdata:registeredIn`,
+    `sdata:supersedes`, `sdata:supersededBy`, `sdata:assessesRequirement`
 
 ## Schnelle Migration
 
@@ -52,7 +54,7 @@ Kernmodell auf `MIN v3.2.0` in zwei Profilen:
 - `sdata:hasIdentifier` -> `min:hasIdentifier`
 
 `v0.12 -> v0.13`:
-- Optional auf `sdata-core-v0.13.0.ttl` wechseln, wenn Forma-Fassaden oder VC/DPP-Data-Typen gebraucht werden.
+- Optional auf `sdata-core-v0.13.1.ttl` wechseln, wenn Forma-Fassaden oder VC/DPP-Data-Typen gebraucht werden.
 - Bestehende `v0.12`-Daten bleiben gueltig.
 
 ## Modellierungsregeln

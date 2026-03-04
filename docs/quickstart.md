@@ -3,7 +3,7 @@
 Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.2.0`.
 Er funktioniert fuer beide Core-Profile:
 - `sdata-core.ttl` (`v0.12.0`, lean profile)
-- `sdata-core-v0.13.0.ttl` (extended profile mit Forma-Fassaden)
+- `sdata-core-v0.13.1.ttl` (extended profile mit Forma-Fassaden + DPP-Haertung)
 
 ## 1. Setup
 
@@ -75,3 +75,4 @@ Nutze die Checklisten in:
 
 - `docs/ontologies/MIGRATION-v0.10-to-v0.12.md`
 - `docs/ontologies/MIGRATION-v0.12-to-v0.13.md`
+- `docs/ontologies/MIGRATION-v0.13.0-to-v0.13.1.md`

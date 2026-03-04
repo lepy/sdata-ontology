@@ -3,7 +3,7 @@
 Kompakte Referenz fuer die Modellierung mit `MIN v3.2`.
 Core-Profile:
 - `sdata-core.ttl` (`v0.12.0`, lean)
-- `sdata-core-v0.13.0.ttl` (extended, inkl. Forma-Fassaden)
+- `sdata-core-v0.13.1.ttl` (extended, inkl. Forma-Fassaden)
 
 ## Klassenwahl
 
@@ -19,10 +19,11 @@ sdata-Spezialisierungen:
 - Daten: `sdata:Data`
 - Agenten: `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
 
-`sdata-core-v0.13.0` ergaenzt u. a.:
+`sdata-core-v0.13.1` ergaenzt u. a.:
 
 - Forma-Fassaden: `sdata:Law`, `sdata:Model`, `sdata:Scenario`, `sdata:Requirement`, `sdata:Specification`, `sdata:Regulation`, `sdata:Certification`
 - Weitere Data-/Boundary-Typen: `sdata:Identifier`, `sdata:Result`, `sdata:ProductPassport`, `sdata:Boundary`
+- Dezentrale DPP-Typen: `sdata:Site`, `sdata:AssessmentResult`
 
 ## Relationen: MIN vs sdata
 
@@ -67,7 +68,7 @@ Wenn dein Fall Gesetze, Modelle, Anforderungen oder Institutionen braucht:
 - Klassen: `min:Lex`, `min:Structura`, `min:Possibile`, `min:Norma`, `min:Institutio`
 - Bruecken: `min:realizes`, `min:governs`, `min:formalizes`, `min:evaluates`, `min:encodes`
 
-Mit `sdata-core-v0.13.0` kannst du statt `min:*` die sdata-Fassaden nutzen
+Mit `sdata-core-v0.13.1` kannst du statt `min:*` die sdata-Fassaden nutzen
 (z. B. `sdata:Law`, `sdata:Requirement`, `sdata:Certification`).
 
 ## Haeufige Fehler
