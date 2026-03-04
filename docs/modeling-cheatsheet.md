@@ -1,6 +1,6 @@
 # Modeling Cheat Sheet
 
-Kompakte Referenz fuer die Modellierung mit `MIN v3.0 + sdata-core v0.12.0`.
+Kompakte Referenz fuer die Modellierung mit `MIN v3.2 + sdata-core v0.12.0`.
 
 ## Klassenwahl
 

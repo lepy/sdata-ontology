@@ -5,7 +5,7 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 ## Status
 
 - Core: `sdata-core-v0.12.0.ttl`
-- Foundation: `MIN v3.0.0` (`min-v3.0.0.ttl`)
+- Foundation: `MIN v3.2.0` (`min-v3.2.0.ttl`)
 - OPA: removed
 - State Space: `sdata-material-state-v0.5.0.ttl`
 
@@ -94,7 +94,7 @@ make viz-specimen
 uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
-Build `min-v3.0.0-examples.ttl` via dedicated 3-plot module
+Build `min-v3.2.0-examples.ttl` via dedicated 3-plot module
 (`Object`, `Process`, `Data` modalities):
 
 ```bash
@@ -105,7 +105,7 @@ uv run python -m src.visualization.min_v3_examples_plot
 ## Migration Notes (v0.10.0 -> v0.12.0)
 
 - OPA dependency removed.
-- Current foundation in this repo: `MIN v3.0.0` (v0.12 originally migrated to v2.1.0).
+- Current foundation in this repo: `MIN v3.2.0` (v0.12 originally migrated to v2.1.0).
 - `sdata:Data` is `subClassOf min:Data`.
 - `sdata:Process` is available as domain class (`subClassOf min:Process`).
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.

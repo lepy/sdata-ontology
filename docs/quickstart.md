@@ -1,6 +1,6 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v3.0.0`.
+Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v3.2.0`.
 
 ## 1. Setup
 

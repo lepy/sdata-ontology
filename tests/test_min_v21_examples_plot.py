@@ -10,7 +10,7 @@ MIN = Namespace("https://w3id.org/min#")
 
 
 def _source_graph():
-    return load_graph(ROOT / "examples" / "min-v3.0.0-examples.ttl")
+    return load_graph(ROOT / "examples" / "min-v3.2.0-examples.ttl")
 
 
 def test_extract_material_modal_view_contains_material_modal_instance():

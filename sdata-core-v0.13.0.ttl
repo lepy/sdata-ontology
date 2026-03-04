@@ -1,0 +1,903 @@
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix min:     <https://w3id.org/min#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# =============================================================================
+#
+#   sdata — Semantic Data Ontology (Core)
+#
+#   Domänenontologie für Product Passports, Circular Economy,
+#   Digital Twins, LCA und Verifiable Credentials.
+#
+#   v0.13.0 — Migration auf MIN v3.2.0
+#
+#   33 Klassen. Vollständige sdata-Fassade für alle MIN-Kategorien.
+#   Domänenexperten arbeiten ausschließlich mit sdata:-Klassen.
+#
+#   Änderungen gegenüber v0.12.0:
+#
+#     FUNDAMENT:
+#       — owl:imports MIN 3.2.0 (war: MIN v2.1.0)
+#
+#     NEUE KLASSEN — Nexus (2):
+#       — sdata:Boundary         subClassOf min:Boundary
+#       — sdata:Database         subClassOf sdata:Software
+#
+#     NEUE KLASSEN — Data-Subklassen (9):
+#       — sdata:Identifier       subClassOf sdata:Data
+#       — sdata:Result           subClassOf sdata:Data
+#       — sdata:ResultFile       subClassOf sdata:Data
+#       — sdata:ProductPassport  subClassOf sdata:Data
+#       — sdata:DigitalTwin      subClassOf sdata:Data
+#       — sdata:VerifiableCredential   subClassOf sdata:Data
+#       — sdata:VerifiablePresentation subClassOf sdata:Data
+#       — sdata:Proof            subClassOf sdata:Data
+#       — sdata:CryptographicKey subClassOf sdata:Data
+#
+#     NEUE KLASSEN — Forma (11):
+#       — sdata:Law              subClassOf min:Lex
+#       — sdata:Model            subClassOf min:Structura
+#       — sdata:Scenario         subClassOf min:Possibile
+#       — sdata:Requirement      subClassOf min:Norma
+#       — sdata:Specification    subClassOf min:Norma
+#       — sdata:Regulation       subClassOf min:Norma
+#       — sdata:LifecyclePhase   subClassOf min:Norma
+#       — sdata:Certification    subClassOf min:Institutio
+#       — sdata:Accreditation    subClassOf min:Institutio
+#       — sdata:Registry         subClassOf min:Institutio
+#       — sdata:TrustFramework   subClassOf min:Institutio
+#
+#     NEUE OBJECT PROPERTIES (5):
+#       — sdata:specifies        subPropertyOf min:evaluates
+#       — sdata:certifiedUnder   subPropertyOf min:realizes
+#       — sdata:identifiedBy     Entity → Identifier
+#       — sdata:hasIssuer        Identifier → Agent
+#       — sdata:signedBy         Data → Agent
+#
+#     NEUE DATATYPE PROPERTIES (5):
+#       — sdata:hasEndpoint      xsd:anyURI
+#       — sdata:hasScheme        xsd:string
+#       — sdata:hasValue         xsd:string
+#       — sdata:hasFormat        xsd:string (MIME-Type)
+#       — sdata:hasChecksum      xsd:string (SHA-256)
+#
+#   v0.13.0 — 2026-03-04
+#
+# =============================================================================
+
+<https://w3id.org/sdata/core> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/sdata/core/0.13.0> ;
+    owl:versionInfo "0.13.0" ;
+    owl:imports <https://w3id.org/min/3.2.0> ;
+    dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
+    dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
+    dcterms:description """Domänenontologie für Materialwissenschaft,
+    Fertigungstechnik, Produktpässe, Kreislaufwirtschaft,
+    Digitale Zwillinge, LCA und Verifiable Credentials.
+
+    Zweischicht-Architektur: MIN (Grundontologie) → sdata (Domäne).
+
+    sdata spezialisiert alle MIN-Kategorien:
+
+    Nexus-Zweig:
+      min:Object   → Material, Product, Hardware, Software, Database
+      min:Data     → Data, Identifier, Result, ResultFile,
+                     ProductPassport, DigitalTwin,
+                     VerifiableCredential, VerifiablePresentation,
+                     Proof, CryptographicKey
+      min:Process  → Process
+      min:Agent    → Person, HardwareAgent, SoftwareAgent,
+                     Organization, EnvironmentAgent
+      min:Boundary → Boundary
+
+    Forma-Zweig:
+      min:Lex        → Law
+      min:Structura  → Model
+      min:Possibile  → Scenario
+      min:Norma      → Requirement, Specification, Regulation,
+                       LifecyclePhase
+      min:Institutio → Certification, Accreditation, Registry,
+                       TrustFramework
+
+    33 Klassen. Domänenexperten arbeiten nur mit sdata:-Klassen."""@de ;
+    dcterms:creator "Lepy" ;
+    dcterms:created "2026-03-04"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:seeAlso <https://w3id.org/min> ;
+    min:designRationale """v0.13.0 migriert auf MIN v3.2.0.
+
+    Designprinzip: KEINE direkte Instantiierung von min:-Klassen.
+    Domänenexperten sollen nur mit sdata:-Klassen arbeiten.
+    Für jede MIN-Kategorie gibt es mindestens eine sdata-Fassade.
+
+    Drei Erweiterungsachsen:
+
+    1. Forma-Fassaden. Anforderungen, Normen, Zertifizierungen,
+       Naturgesetze, Modelle und Szenarien haben jetzt eigene
+       sdata-Klassen. Produktpässe referenzieren Normen sauber:
+       Data encodes Norma, nicht Data beschreibt Data.
+
+    2. Data-Subklassen. Data war in v0.12.0 flach. Jetzt
+       differenziert nach Identitätskriterium und Lebenszyklus:
+       Result (semantisches Bündel), ResultFile (physische Datei),
+       ProductPassport (zusammengesetztes DPP-Dokument),
+       DigitalTwin (digitales Abbild), Identifier (reifizierter ID),
+       VerifiableCredential/Presentation/Proof (SSI-Stack),
+       CryptographicKey (Schlüsselmaterial).
+
+    3. SSI/DID-Integration. did:web-Authentifizierung und
+       Datensignierung sind erstklassige Konzepte:
+       VerifiableCredential, Proof, CryptographicKey,
+       signedBy, TrustFramework, Accreditation."""@de .
+
+
+# #############################################################################
+#
+#   TEIL I — OBJECT-HIERARCHIE
+#
+#   min:Object → Material, Product, Hardware, Software, Database
+#
+# #############################################################################
+
+sdata:Material a owl:Class ;
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Material"@en ;
+    rdfs:label "Werkstoff"@de ;
+    rdfs:comment """Ein Werkstoff oder Rohstoff. Physische Substanz, die
+    in Fertigungsprozessen verarbeitet wird. Identität über chemische
+    Zusammensetzung und Gefügezustand."""@de ;
+    skos:example "HC340LA, PP-GF30, AlSi10Mg, CFK-Prepreg, Recyclat."@de .
+
+sdata:Product a owl:Class ;
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Product"@en ;
+    rdfs:label "Produkt"@de ;
+    rdfs:comment """Ein Erzeugnis, Bauteil oder Halbzeug. Resultat eines
+    Fertigungsprozesses. Hat eine definierte Geometrie und Funktion.
+    Träger eines Produktpasses."""@de ;
+    skos:example "Seitenteil, Motorblock, B-Säule, Felge, Baugruppe."@de .
+
+sdata:Hardware a owl:Class ;
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Hardware"@en ;
+    rdfs:label "Hardware"@de ;
+    rdfs:comment """Ein physisches Gerät oder eine Maschine als PASSIVES Ding.
+    Wenn Hardware handelt, wird sie zusätzlich als HardwareAgent
+    typisiert (Doppeltypisierung auf Instanzebene)."""@de ;
+    skos:example "Presse, Ofen, Prüfmaschine, Sensor (passiv), Werkzeug."@de .
+
+sdata:Software a owl:Class ;
+    rdfs:subClassOf min:Object ;
+    rdfs:label "Software"@en ;
+    rdfs:label "Software"@de ;
+    rdfs:comment """Ein Softwareprodukt als PASSIVES Artefakt. Wenn Software
+    handelt, wird sie zusätzlich als SoftwareAgent typisiert."""@de ;
+    skos:example "AutoForm R10, Abaqus 2024, Python-Skript, FE-Solver."@de .
+
+sdata:Database a owl:Class ;
+    rdfs:subClassOf sdata:Software ;
+    rdfs:label "Database"@en ;
+    rdfs:label "Datenbank"@de ;
+    rdfs:comment """Ein Datenbanksystem als Software-Artefakt.
+
+    Passiv: Installation, Schema, Konfiguration.
+    Aktiv (Queries, DPP-Auslieferung): zusätzlich SoftwareAgent.
+
+    Das Datenbankschema ist eine Structura — die Database
+    realizes das Schema (sdata:Model). Zentral für DPP-Infrastruktur."""@de ;
+    skos:example "PostgreSQL DPP-Datenbank, ecoinvent, Triplestore, TimescaleDB."@de .
+
+
+# #############################################################################
+#
+#   TEIL II — DATA-HIERARCHIE
+#
+#   min:Data → Data → Identifier, Result, ResultFile,
+#                      ProductPassport, DigitalTwin,
+#                      VerifiableCredential, VerifiablePresentation,
+#                      Proof, CryptographicKey
+#
+# #############################################################################
+
+sdata:Data a owl:Class ;
+    rdfs:subClassOf min:Data ;
+    rdfs:label "Data"@en ;
+    rdfs:label "Daten"@de ;
+    rdfs:comment """Domänenspezifische Daten. Informational-dominanter Nexus.
+    Data KODIERT Forma (min:encodes). Data IST nicht Forma."""@de ;
+    skos:example "Messdaten, Werkstoffdatenblatt, CAD-Modell, Konfigurationsdatei."@de .
+
+sdata:Identifier a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Identifier"@en ;
+    rdfs:label "Identifikator"@de ;
+    rdfs:comment """Ein reifizierter, strukturierter Identifier.
+
+    Ergänzt min:hasIdentifier (String) um Struktur: Scheme, Value,
+    Issuer, Endpoint. Mehrere Identifier pro Entity möglich.
+
+    Beide Ebenen koexistieren:
+    — min:hasIdentifier für einfache Fälle
+    — sdata:identifiedBy → sdata:Identifier für DPP/DZ"""@de ;
+    skos:example "GTIN, DID (did:web), DOI, VDA-Teilenummer, Chargennummer, UUID."@de .
+
+sdata:Result a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Result"@en ;
+    rdfs:label "Ergebnis"@de ;
+    rdfs:comment """Ein semantisches Ergebnis-Bündel.
+
+    Experiment vs. Simulation lebt im Process (min:generatedBy),
+    nicht in der Klasse. Result bekommt Status (bestanden/nicht
+    bestanden), wird gegen Requirements evaluiert, in VCs
+    eingebettet, signiert. Enthält ResultFiles via hasComponent."""@de ;
+    skos:example "Zugversuchsergebnis, FEM-Ergebnis, LCA-Ergebnis, Härteprüfung."@de .
+
+sdata:ResultFile a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Result File"@en ;
+    rdfs:label "Ergebnisdatei"@de ;
+    rdfs:comment """Eine physische Ergebnisdatei. Hat Format, Größe,
+    Pfad, Prüfsumme. Result enthält ResultFiles via hasComponent."""@de ;
+    skos:example "test_001.csv, result.vtu, pruefbericht.pdf, lca_gwp.json."@de .
+
+sdata:ProductPassport a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Product Passport"@en ;
+    rdfs:label "Produktpass"@de ;
+    rdfs:comment """Ein Digitaler Produktpass (DPP).
+
+    Zusammengesetztes Dokument — enthält Results, referenziert
+    Specifications, encodes Certifications. Lebenszyklusübergreifend.
+    Kann zugleich VerifiableCredential sein (Doppeltypisierung)."""@de ;
+    skos:example "ESPR-DPP, Batterie-Pass, Textil-Pass, Stahl-DPP, EPD."@de .
+
+sdata:DigitalTwin a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Digital Twin"@en ;
+    rdfs:label "Digitaler Zwilling"@de ;
+    rdfs:comment """Ein digitales Abbild eines physischen Products.
+
+    Enthält Models, Results, Geometrie via hasComponent.
+    Describes ein Product. Encodes ein Model.
+    Wenn aktiv (prognostiziert, optimiert): zusätzlich SoftwareAgent."""@de ;
+    skos:example "FEM-basierter DZ, Predictive-Maintenance-DZ, LCA-Lebenszyklus-DZ."@de .
+
+sdata:VerifiableCredential a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Verifiable Credential"@en ;
+    rdfs:label "Verifiable Credential"@de ;
+    rdfs:comment """Ein signiertes Credential nach W3C VC Data Model.
+
+    Enthält Claims über ein Subject (describes), einen Proof
+    (hasComponent) und einen Issuer (signedBy). Rollen (Issuer,
+    Holder, Verifier) sind keine Klassen — sie leben in der
+    Relation zum Process."""@de ;
+    skos:example "Signiertes Materialzeugnis, DPP als VC, EPD als VC."@de .
+
+sdata:VerifiablePresentation a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Verifiable Presentation"@en ;
+    rdfs:label "Verifiable Presentation"@de ;
+    rdfs:comment """Bündel von VCs. Selektive Offenlegung.
+    Kurzlebig, kontextgebunden. Eigener Proof."""@de ;
+    skos:example "DPP-Präsentation an Recycler, Audit-Präsentation."@de .
+
+sdata:Proof a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Proof"@en ;
+    rdfs:label "Beweis"@de ;
+    rdfs:comment """Kryptographische Signatur. Angehängt an VC/VP via
+    hasComponent. Enthält Signaturwert, Algorithmus (encodes Model),
+    Zeitstempel."""@de ;
+    skos:example "Ed25519-Signatur, ECDSA-Signatur, JsonWebSignature2020."@de .
+
+sdata:CryptographicKey a owl:Class ;
+    rdfs:subClassOf sdata:Data ;
+    rdfs:label "Cryptographic Key"@en ;
+    rdfs:label "Kryptographischer Schlüssel"@de ;
+    rdfs:comment """Schlüsselmaterial. Teil des DID Documents
+    (hasComponent). Encodes ein Model (Krypto-Algorithmus)."""@de ;
+    skos:example "Ed25519 Public Key, ECDSA Private Key, X25519 Key."@de .
+
+
+# #############################################################################
+#
+#   TEIL III — AGENT-HIERARCHIE
+#
+# #############################################################################
+
+sdata:Person a owl:Class ;
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Person"@en ;
+    rdfs:label "Person"@de ;
+    rdfs:comment "Menschlicher Agent. Intentionale Handlungsfähigkeit."@de ;
+    skos:example "Prüfer, Konstrukteur, Werker, Laborant, LCA-Berater."@de .
+
+sdata:HardwareAgent a owl:Class ;
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Hardware Agent"@en ;
+    rdfs:label "Hardware-Agent"@de ;
+    rdfs:comment "Handlungsfähige Maschine. Doppeltypisierung mit Hardware."@de ;
+    skos:example "CNC-Fräse, Roboterarm, autonomer Sensor, Prüfmaschine."@de .
+
+sdata:SoftwareAgent a owl:Class ;
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Software Agent"@en ;
+    rdfs:label "Software-Agent"@de ;
+    rdfs:comment "Handlungsfähige Software. Auch für aktive Databases und DZ."@de ;
+    skos:example "FE-Solver, ML-Modell, LLM, DPP-Service, DZ-Agent."@de .
+
+sdata:Organization a owl:Class ;
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Organization"@en ;
+    rdfs:label "Organisation"@de ;
+    rdfs:comment "Kollektive Handlungsfähigkeit. Constitutes und recognizes Institutio."@de ;
+    skos:example "Stahlwerk, Prüflabor, Zertifizierer, OEM, Recycler, DAkkS, IBU."@de .
+
+sdata:EnvironmentAgent a owl:Class ;
+    rdfs:subClassOf min:Agent ;
+    rdfs:label "Environment Agent"@en ;
+    rdfs:label "Umwelt-Agent"@de ;
+    rdfs:comment "Nichtintentionale natürliche Kausalität. Degradationsmodellierung."@de ;
+    skos:example "Korrosion, UV-Strahlung, Feuchtigkeit, Temperaturwechsel."@de .
+
+
+# #############################################################################
+#
+#   TEIL IV — PROCESS
+#
+# #############################################################################
+
+sdata:Process a owl:Class ;
+    rdfs:subClassOf min:Process ;
+    rdfs:label "Process"@en ;
+    rdfs:label "Prozess"@de ;
+    rdfs:comment """Domänenspezifischer Prozess. Typisierung über State Space.
+    Deckt ab: Fertigung, Prüfung, Simulation, LCA, Signierung,
+    Verifikation, Recycling, Transport, Eigentümerwechsel."""@de ;
+    skos:example "Tiefziehen, Zugversuch, FEM-Simulation, LCA-Studie, Signing, Verification, Recycling."@de .
+
+
+# #############################################################################
+#
+#   TEIL V — BOUNDARY
+#
+# #############################################################################
+
+sdata:Boundary a owl:Class ;
+    rdfs:subClassOf min:Boundary ;
+    rdfs:label "Boundary"@en ;
+    rdfs:label "Grenze"@de ;
+    rdfs:comment """Irreduzibel relationales Phänomen. Eine Klasse, keine
+    Subklassen. Typisierung über State Space."""@de ;
+    skos:example "Übergangswiderstand, Reibung, Adhäsion, Korngrenze, Phasengrenze."@de .
+
+
+# #############################################################################
+#
+#   TEIL VI — FORMA: LEX
+#
+# #############################################################################
+
+sdata:Law a owl:Class ;
+    rdfs:subClassOf min:Lex ;
+    rdfs:label "Law"@en ;
+    rdfs:label "Gesetz"@de ;
+    rdfs:comment """Naturgesetz oder universelle Regularität. Domänenfassade
+    für min:Lex. Process realizes Law. Law governs Process."""@de ;
+    skos:example "Energieerhaltung, Massenerhaltung, Thermodynamik, Ficksches Diffusionsgesetz."@de .
+
+
+# #############################################################################
+#
+#   TEIL VII — FORMA: STRUCTURA
+#
+# #############################################################################
+
+sdata:Model a owl:Class ;
+    rdfs:subClassOf min:Structura ;
+    rdfs:label "Model"@en ;
+    rdfs:label "Modell"@de ;
+    rdfs:comment """Mathematische/formale Struktur. Konstitutivmodelle,
+    Materialmodelle, Krypto-Algorithmen, Impact-Methoden, DB-Schemas.
+
+    Für LCA: ReCiPe ist ein Model mit Sub-Models (GWP, AP) via
+    hasComponent. Für SSI: Ed25519, ECDSA sind Models."""@de ;
+    skos:example "von-Mises, Johnson-Cook, Hill'48, ReCiPe 2016, Ed25519, DB-Schema."@de .
+
+
+# #############################################################################
+#
+#   TEIL VIII — FORMA: POSSIBILE
+#
+# #############################################################################
+
+sdata:Scenario a owl:Class ;
+    rdfs:subClassOf min:Possibile ;
+    rdfs:label "Scenario"@en ;
+    rdfs:label "Szenario"@de ;
+    rdfs:comment """Möglichkeitsszenario. FMEA, What-if, Designalternativen.
+    Concerns einen Nexus. Wenn realisiert → Process."""@de ;
+    skos:example "Versagensszenario, FMEA-Zeile, Designalternative, Sensitivitätsfall."@de .
+
+
+# #############################################################################
+#
+#   TEIL IX — FORMA: NORMA
+#
+# #############################################################################
+
+sdata:Requirement a owl:Class ;
+    rdfs:subClassOf min:Norma ;
+    rdfs:label "Requirement"@en ;
+    rdfs:label "Anforderung"@de ;
+    rdfs:comment """Atomare, prüfbare Anforderung. Evaluates Nexus:
+    bestanden/nicht bestanden. Auch für LCA-Methodik:
+    FU, Systemgrenze, Allokation."""@de ;
+    skos:example "Rm ≥ 340 MPa, Ra ≤ 1.6 µm, FU: 1 kg Stahl ab Werk, Systemgrenze: cradle-to-gate."@de .
+
+sdata:Specification a owl:Class ;
+    rdfs:subClassOf min:Norma ;
+    rdfs:label "Specification"@en ;
+    rdfs:label "Spezifikation"@de ;
+    rdfs:comment """Normenwerk. Bündel von Requirements (hasComponent).
+    Data encodes Specification. Auch für LCA: PCR."""@de ;
+    skos:example "EN 10025-2, DIN EN ISO 6892-1, ISO 14040, PCR Stahl, EN 15804."@de .
+
+sdata:Regulation a owl:Class ;
+    rdfs:subClassOf min:Norma ;
+    rdfs:label "Regulation"@en ;
+    rdfs:label "Verordnung"@de ;
+    rdfs:comment """Regulatorische Vorgabe. EU-Verordnungen, Gesetze.
+    Verletzbar (→ Norma). Andere Durchsetzung als Specification."""@de ;
+    skos:example "ESPR, CBAM, REACH, RoHS, EU-Taxonomie."@de .
+
+sdata:LifecyclePhase a owl:Class ;
+    rdfs:subClassOf min:Norma ;
+    rdfs:label "Lifecycle Phase"@en ;
+    rdfs:label "Lebenszyklusphase"@de ;
+    rdfs:comment """Phase im Produktlebenszyklus. Konventionelle Einteilung
+    (ESPR definiert Phasen). Process realizes LifecyclePhase.
+    Ermöglicht lebenszyklusübergreifende DPPs und LCA."""@de ;
+    skos:example "Rohstoffgewinnung, Halbzeugherstellung, Fertigung, Montage, Nutzung, Wartung, End-of-Life, Recycling."@de .
+
+
+# #############################################################################
+#
+#   TEIL X — FORMA: INSTITUTIO
+#
+# #############################################################################
+
+sdata:Certification a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Certification"@en ;
+    rdfs:label "Zertifizierung"@de ;
+    rdfs:comment """Zertifizierung als institutionelles Konstrukt.
+    Data (Zertifikat) encodes Certification. Verschiedene Entitäten."""@de ;
+    skos:example "ISO 9001, EN 10204 3.1, CE-Kennzeichnung, IATF 16949."@de .
+
+sdata:Accreditation a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Accreditation"@en ;
+    rdfs:label "Akkreditierung"@de ;
+    rdfs:comment """Berechtigung zu zertifizieren. Organization hat
+    Accreditation → darf Certification ausstellen."""@de ;
+    skos:example "DAkkS-Akkreditierung, UKAS, EPD-Verifizierer-Akkreditierung."@de .
+
+sdata:Registry a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Registry"@en ;
+    rdfs:label "Register"@de ;
+    rdfs:comment """Dezentrales Register. Wer darf was unter welcher DID
+    bereitstellen."""@de ;
+    skos:example "Catena-X Registry, GAIA-X Registry, EBSI DID Registry."@de .
+
+sdata:TrustFramework a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Trust Framework"@en ;
+    rdfs:label "Vertrauensrahmen"@de ;
+    rdfs:comment """Vertrauensnetzwerk. Registry ist das Register,
+    TrustFramework ist die Vereinbarung WER WANN WEM vertraut."""@de ;
+    skos:example "Catena-X, GAIA-X, EBSI, IBU EPD-Programm."@de .
+
+
+# #############################################################################
+#
+#   TEIL XI — OBJECT PROPERTIES
+#
+# #############################################################################
+
+# --- Bestehend (v0.12.0) ---
+
+sdata:hasMaterial a owl:ObjectProperty ;
+    rdfs:label "has material"@en ;
+    rdfs:domain min:Object ;
+    rdfs:range sdata:Material ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:hasProduct a owl:ObjectProperty ;
+    rdfs:label "has product"@en ;
+    rdfs:domain min:Agent ;
+    rdfs:range sdata:Product ;
+    rdfs:subPropertyOf min:owns .
+
+sdata:usesTool a owl:ObjectProperty ;
+    rdfs:label "uses tool"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Hardware ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:usesSoftware a owl:ObjectProperty ;
+    rdfs:label "uses software"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Software ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:derivedFrom a owl:ObjectProperty ;
+    rdfs:label "derived from"@en ;
+    rdfs:domain sdata:Data ;
+    rdfs:range sdata:Data ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:certifies a owl:ObjectProperty ;
+    rdfs:label "certifies"@en ;
+    rdfs:domain sdata:Data ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:describes .
+
+sdata:succeeds a owl:ObjectProperty ;
+    rdfs:label "succeeds"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:precedes a owl:ObjectProperty ;
+    rdfs:label "precedes"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Process ;
+    owl:inverseOf sdata:succeeds ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:hasData a owl:ObjectProperty ;
+    rdfs:label "has data"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range sdata:Data ;
+    rdfs:subPropertyOf min:describedBy .
+
+sdata:producedBy a owl:ObjectProperty ;
+    rdfs:label "produced by"@en ;
+    rdfs:domain sdata:Data ;
+    rdfs:range sdata:Process ;
+    rdfs:subPropertyOf min:generatedBy .
+
+# --- Neu (v0.13.0) ---
+
+sdata:specifies a owl:ObjectProperty ;
+    rdfs:label "specifies"@en ;
+    rdfs:label "spezifiziert"@de ;
+    rdfs:domain sdata:Specification ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf min:evaluates .
+
+sdata:certifiedUnder a owl:ObjectProperty ;
+    rdfs:label "certified under"@en ;
+    rdfs:label "zertifiziert nach"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range sdata:Certification ;
+    rdfs:subPropertyOf min:realizes .
+
+sdata:identifiedBy a owl:ObjectProperty ;
+    rdfs:label "identified by"@en ;
+    rdfs:label "identifiziert durch"@de ;
+    rdfs:domain min:Entity ;
+    rdfs:range sdata:Identifier .
+
+sdata:hasIssuer a owl:ObjectProperty ;
+    rdfs:label "has issuer"@en ;
+    rdfs:label "hat Aussteller"@de ;
+    rdfs:domain sdata:Identifier ;
+    rdfs:range min:Agent ;
+    rdfs:subPropertyOf min:nexusWith .
+
+sdata:signedBy a owl:ObjectProperty ;
+    rdfs:label "signed by"@en ;
+    rdfs:label "signiert von"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range min:Agent ;
+    rdfs:subPropertyOf min:nexusWith .
+
+
+# #############################################################################
+#
+#   TEIL XII — DATATYPE PROPERTIES
+#
+# #############################################################################
+
+# --- Bestehend (v0.12.0) ---
+
+sdata:hasVersion a owl:DatatypeProperty ;
+    rdfs:label "has version"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+sdata:hasUUID a owl:DatatypeProperty ;
+    rdfs:label "has UUID"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+sdata:hasStartTime a owl:DatatypeProperty ;
+    rdfs:label "has start time"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range xsd:dateTime .
+
+sdata:hasEndTime a owl:DatatypeProperty ;
+    rdfs:label "has end time"@en ;
+    rdfs:domain sdata:Process ;
+    rdfs:range xsd:dateTime .
+
+sdata:hasConfidence a owl:DatatypeProperty ;
+    rdfs:label "has confidence"@en ;
+    rdfs:domain sdata:Data ;
+    rdfs:range xsd:float .
+
+sdata:hasSource a owl:DatatypeProperty ;
+    rdfs:label "has source"@en ;
+    rdfs:domain sdata:Data ;
+    rdfs:range xsd:string .
+
+sdata:hasLocation a owl:DatatypeProperty ;
+    rdfs:label "has location"@en ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:string .
+
+# --- Neu (v0.13.0) ---
+
+sdata:hasEndpoint a owl:DatatypeProperty ;
+    rdfs:label "has endpoint"@en ;
+    rdfs:label "hat Endpunkt"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range xsd:anyURI .
+
+sdata:hasScheme a owl:DatatypeProperty ;
+    rdfs:label "has scheme"@en ;
+    rdfs:label "hat Schema"@de ;
+    rdfs:domain sdata:Identifier ;
+    rdfs:range xsd:string .
+
+sdata:hasValue a owl:DatatypeProperty ;
+    rdfs:label "has value"@en ;
+    rdfs:label "hat Wert"@de ;
+    rdfs:domain sdata:Identifier ;
+    rdfs:range xsd:string .
+
+sdata:hasFormat a owl:DatatypeProperty ;
+    rdfs:label "has format"@en ;
+    rdfs:label "hat Format"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range xsd:string .
+
+sdata:hasChecksum a owl:DatatypeProperty ;
+    rdfs:label "has checksum"@en ;
+    rdfs:label "hat Prüfsumme"@de ;
+    rdfs:domain sdata:Data ;
+    rdfs:range xsd:string .
+
+
+# #############################################################################
+#
+#   TEIL XIII — DISJUNKTHEIT
+#
+# #############################################################################
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( sdata:Material sdata:Product sdata:Hardware sdata:Software ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( sdata:Person sdata:HardwareAgent sdata:SoftwareAgent
+                  sdata:Organization sdata:EnvironmentAgent ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( sdata:Requirement sdata:Specification
+                  sdata:Regulation sdata:LifecyclePhase ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( sdata:Certification sdata:Accreditation
+                  sdata:Registry sdata:TrustFramework ) .
+
+# Data-Subtypen bewusst NICHT disjunkt:
+# ProductPassport ∩ VerifiableCredential (DPP als VC)
+# Result ∩ VerifiableCredential (signiertes Prüfergebnis)
+# DigitalTwin ∩ ProductPassport (DZ enthält DPP-Daten)
+
+
+# #############################################################################
+#
+#   TEIL XIV — CORE MODELING PATTERNS
+#
+#   8 Muster für die Kernszenarien.
+#
+# #############################################################################
+
+# =============================================================================
+#   MUSTER 1: Mehrstufiger Herstellungsprozess mit Lebenszyklusphasen
+#
+#   :erzgewinnung  a sdata:Process ; min:realizes :phase_raw_material .
+#   :walzen        a sdata:Process ; min:realizes :phase_production ;
+#                      sdata:succeeds :erzgewinnung .
+#   :tiefziehen    a sdata:Process ; min:realizes :phase_production ;
+#                      sdata:succeeds :walzen ;
+#                      min:hasInput :coil_001 ; min:hasOutput :bauteil_001 .
+#   :montage       a sdata:Process ; min:realizes :phase_production ;
+#                      sdata:succeeds :tiefziehen .
+#   :nutzung       a sdata:Process ; min:realizes :phase_use ;
+#                      sdata:succeeds :montage .
+#   :recycling     a sdata:Process ; min:realizes :phase_eol ;
+#                      sdata:succeeds :nutzung ;
+#                      min:hasInput :bauteil_demontiert ;
+#                      min:hasOutput :recyclat_001 .
+#   :recyclat_001  a sdata:Material .  # → Zyklus beginnt neu
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 2: Lebenszyklusübergreifender Produktpass
+#
+#   :dpp_001  a sdata:ProductPassport , sdata:VerifiableCredential ;
+#       min:describes :bauteil_001 ;
+#       min:hasComponent :result_walzen ;
+#       min:hasComponent :result_tiefziehen ;
+#       min:hasComponent :result_schweissnaht ;
+#       min:hasComponent :result_lca ;
+#       min:hasComponent :proof_001 ;
+#       min:encodes :iso_9001_cert ;
+#       sdata:signedBy :oem_ag ;
+#       sdata:certifiedUnder :catena_x_cert ;
+#       sdata:identifiedBy :did_dpp_001 .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 3: did:web + Signing
+#
+#   :did_oem  a sdata:Identifier ;
+#       sdata:hasScheme "W3C:DID" ;
+#       sdata:hasValue "did:web:oem.example.com" ;
+#       sdata:hasEndpoint "https://oem.example.com/.well-known/did.json"^^xsd:anyURI .
+#   :did_document  a sdata:Data ;
+#       min:describes :did_oem ;
+#       min:hasComponent :pubkey_oem .
+#   :pubkey_oem  a sdata:CryptographicKey ;
+#       min:encodes :ed25519 .
+#   :ed25519  a sdata:Model .
+#   :proof_001  a sdata:Proof ;
+#       sdata:signedBy :oem_ag ;
+#       min:encodes :ed25519 .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 4: LCA (Ökobilanz)
+#
+#   :lca_studie  a sdata:Process ;
+#       min:hasInput :baugruppe_001 ;
+#       min:performedBy :lca_berater ;
+#       min:realizes :recipe_2016 ;
+#       sdata:usesSoftware :openlca .
+#   :recipe_2016  a sdata:Model ;
+#       min:hasComponent :gwp_100 ;
+#       min:hasComponent :ap .
+#   :gwp_100  a sdata:Model .
+#   :pcr_stahl  a sdata:Specification ;
+#       min:hasComponent :fu_stahl ;
+#       min:hasComponent :systemgrenze_ctg .
+#   :fu_stahl  a sdata:Requirement .
+#   :lca_result  a sdata:Result ;
+#       min:generatedBy :lca_studie .
+#   :epd_001  a sdata:ProductPassport , sdata:VerifiableCredential ;
+#       min:hasComponent :lca_result ;
+#       min:encodes :ibu_programm .
+#   :ibu_programm  a sdata:TrustFramework .
+#   :ecoinvent  a sdata:Database , sdata:SoftwareAgent .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 5: Boundary (Schweißpunkt)
+#
+#   :blech_a  a sdata:Material .
+#   :blech_b  a sdata:Material .
+#   :uebergangswiderstand_01  a sdata:Boundary ;
+#       min:bounds :blech_a ; min:bounds :blech_b .
+#   :result_uw  a sdata:Result ;
+#       min:describes :uebergangswiderstand_01 .
+#   :uw_req  a sdata:Requirement ;
+#       min:evaluates :uebergangswiderstand_01 .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 6: Zirkularität (Recycling → Second Life)
+#
+#   :recycling_001  a sdata:Process ;
+#       min:hasInput :bauteil_demontiert ;
+#       min:hasOutput :recyclat_001 ;
+#       min:realizes :phase_eol .
+#   :recyclat_001  a sdata:Material .
+#   :walzen_002  a sdata:Process ;
+#       min:hasInput :recyclat_001 ;
+#       min:hasOutput :coil_002 ;
+#       min:realizes :phase_production .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 7: Digitaler Zwilling
+#
+#   :dz_001  a sdata:DigitalTwin , sdata:SoftwareAgent ;
+#       min:describes :bauteil_001 ;
+#       min:encodes :johnson_cook ;
+#       min:hasComponent :fem_modell ;
+#       sdata:hasEndpoint "https://dt.example.com/001"^^xsd:anyURI .
+#   :johnson_cook  a sdata:Model .
+#   :dpp_database  a sdata:Database , sdata:SoftwareAgent ;
+#       min:hasComponent :dz_001 ;
+#       min:realizes :db_schema .
+#   :db_schema  a sdata:Model .
+# =============================================================================
+
+# =============================================================================
+#   MUSTER 8: Verifikation
+#
+#   :verification  a sdata:Process ;
+#       min:hasInput :dpp_001 ;
+#       min:hasInput :did_document ;
+#       min:performedBy :verifier ;
+#       min:hasOutput :verification_result .
+#   :verification_result  a sdata:Result ;
+#       min:hasStatus "verified" .
+#   :catena_x  a sdata:TrustFramework ;
+#       min:constitutedBy :consortium ;
+#       min:recognizedBy :oem_ag .
+# =============================================================================
+
+
+# #############################################################################
+#
+#   INVENTAR v0.13.0
+#
+#   KLASSEN (33):
+#     Object (5): Material, Product, Hardware, Software, Database
+#     Data (10): Data, Identifier, Result, ResultFile,
+#       ProductPassport, DigitalTwin, VerifiableCredential,
+#       VerifiablePresentation, Proof, CryptographicKey
+#     Agent (5): Person, HardwareAgent, SoftwareAgent,
+#       Organization, EnvironmentAgent
+#     Process (1): Process
+#     Boundary (1): Boundary
+#     Lex (1): Law
+#     Structura (1): Model
+#     Possibile (1): Scenario
+#     Norma (4): Requirement, Specification, Regulation, LifecyclePhase
+#     Institutio (4): Certification, Accreditation, Registry, TrustFramework
+#
+#   OBJECT PROPERTIES (15):
+#     v0.12.0 (10): hasMaterial, hasProduct, usesTool, usesSoftware,
+#       derivedFrom, certifies, succeeds, precedes, hasData, producedBy
+#     v0.13.0 (5): specifies, certifiedUnder, identifiedBy, hasIssuer,
+#       signedBy
+#     + 33 aus MIN v3.2.0
+#
+#   DATATYPE PROPERTIES (12):
+#     v0.12.0 (7): hasVersion, hasUUID, hasStartTime, hasEndTime,
+#       hasConfidence, hasSource, hasLocation
+#     v0.13.0 (5): hasEndpoint, hasScheme, hasValue, hasFormat, hasChecksum
+#     + 5 aus MIN v3.2.0
+#
+#   DISJUNKTHEITSAXIOME (4):
+#     Object, Agent, Norma, Institutio — jeweils paarweise disjunkt
+#     Data bewusst NICHT disjunkt (Doppeltypisierung gewollt)
+#
+#   MODELING PATTERNS (8):
+#     Herstellung, DPP, did:web, LCA, Boundary, Zirkularität, DZ, Verifikation
+#
+# #############################################################################

@@ -63,7 +63,7 @@ viz-material-state: check-uv
 viz-specimen: check-uv
 	$(UV) run python -m src.visualization.specimen_tensiontest_data_plot
 
-# ─── Visualize min-v3.0.0 examples with three dedicated views ─────────────────
+# ─── Visualize min-v3.2.0 examples with three dedicated views ─────────────────
 viz-min-v3-examples: check-uv
 	$(UV) run python -m src.visualization.min_v3_examples_plot
 

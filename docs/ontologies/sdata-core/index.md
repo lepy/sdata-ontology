@@ -1,6 +1,6 @@
 # sdata-core.ttl
 
-Autarkes Kernmodell (`v0.12.0`) auf `MIN v3.0.0`.
+Autarkes Kernmodell (`v0.12.0`) auf `MIN v3.2.0`.
 
 ## Umfang
 

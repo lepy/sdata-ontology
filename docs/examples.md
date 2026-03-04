@@ -12,7 +12,7 @@ This repository ships executable Turtle examples under `examples/`.
 : compact testing + simulation flow for product/data provenance.
 - `examples/AttributeQuantityValue_sheetthickness.ttl`
 : focused AQV and value-domain modeling sample.
-- `examples/min-v3.0.0-examples.ttl`
+- `examples/min-v3.2.0-examples.ttl`
 : three MIN modalities (`Object`, `Process`, `Data`) in separate example roots.
 
 ## Render All Example Graphs
@@ -52,9 +52,9 @@ This generates 3 filtered views:
 - `docs/diagrams/battery-passport-graph.svg`
 - `docs/diagrams/tensiontest-crashsimulation-graph.svg`
 - `docs/diagrams/AttributeQuantityValue_sheetthickness-graph.svg`
-- `docs/diagrams/min-v3.0.0-examples-material-modal.svg`
-- `docs/diagrams/min-v3.0.0-examples-balanced-modal.svg`
-- `docs/diagrams/min-v3.0.0-examples-informational-modal.svg`
+- `docs/diagrams/min-v3.2.0-examples-material-modal.svg`
+- `docs/diagrams/min-v3.2.0-examples-balanced-modal.svg`
+- `docs/diagrams/min-v3.2.0-examples-informational-modal.svg`
 
 ## Validation
 

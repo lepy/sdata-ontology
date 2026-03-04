@@ -27,71 +27,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph cluster_min {
-		graph [color="#8FB7EA",
-			label="MIN classes",
-			rank=source,
-			style=rounded
-		];
-		subgraph cluster_min_rank {
-			graph [rank=same,
-				style=invis
-			];
-			"https://w3id.org/min#Agent"	[color="#2B6CB0",
-				fillcolor="#E7F0FF",
-				fontcolor="#1A365D",
-				label=Agent];
-			"https://w3id.org/min#Data"	[color="#2B6CB0",
-				fillcolor="#E7F0FF",
-				fontcolor="#1A365D",
-				label=Data];
-			"https://w3id.org/min#Object"	[color="#2B6CB0",
-				fillcolor="#E7F0FF",
-				fontcolor="#1A365D",
-				label=Object];
-			"https://w3id.org/min#Process"	[color="#2B6CB0",
-				fillcolor="#E7F0FF",
-				fontcolor="#1A365D",
-				label=Process];
-		}
-		"https://w3id.org/min#Entity"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Entity];
-		"https://w3id.org/min#Forma"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Forma];
-		"https://w3id.org/min#Institutio"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Institutio];
-		"https://w3id.org/min#Lex"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Lex];
-		"https://w3id.org/min#Nexus"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Nexus];
-		"https://w3id.org/min#Norma"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Norma];
-		"https://w3id.org/min#Possibile"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Possibile];
-		"https://w3id.org/min#Structura"	[color="#2B6CB0",
-			fillcolor="#E7F0FF",
-			fontcolor="#1A365D",
-			label=Structura];
-		__rank_anchor_min	[height=0.01,
-			label="",
-			shape=point,
-			style=invis,
-			width=0.01];
-	}
 	subgraph sdata_rank_agent_children {
 		graph [rank=same,
 			style=invis
@@ -138,6 +73,75 @@ digraph "" {
 			fontcolor="#44337A",
 			label=Software];
 	}
+	subgraph cluster_min {
+		graph [color="#8FB7EA",
+			label="MIN classes",
+			rank=source,
+			style=rounded
+		];
+		subgraph cluster_min_rank {
+			graph [rank=same,
+				style=invis
+			];
+			"https://w3id.org/min#Agent"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Agent];
+			"https://w3id.org/min#Data"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Data];
+			"https://w3id.org/min#Object"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Object];
+			"https://w3id.org/min#Process"	[color="#2B6CB0",
+				fillcolor="#E7F0FF",
+				fontcolor="#1A365D",
+				label=Process];
+		}
+		"https://w3id.org/min#Boundary"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Boundary];
+		"https://w3id.org/min#Entity"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Entity];
+		"https://w3id.org/min#Forma"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Forma];
+		"https://w3id.org/min#Institutio"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Institutio];
+		"https://w3id.org/min#Lex"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Lex];
+		"https://w3id.org/min#Nexus"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Nexus];
+		"https://w3id.org/min#Norma"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Norma];
+		"https://w3id.org/min#Possibile"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Possibile];
+		"https://w3id.org/min#Structura"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Structura];
+		__rank_anchor_min	[height=0.01,
+			label="",
+			shape=point,
+			style=invis,
+			width=0.01];
+	}
 	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
 	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
 	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/Organization";
@@ -156,6 +160,7 @@ digraph "" {
 	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Possibile";
 	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Structura";
 	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Agent";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Boundary";
 	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Data";
 	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Object";
 	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Process";

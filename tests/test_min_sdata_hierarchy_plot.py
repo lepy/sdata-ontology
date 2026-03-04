@@ -11,7 +11,7 @@ SDATA = Namespace("https://w3id.org/sdata/core/")
 
 def _model():
     min_g, core_g, merged_g = load_graphs(
-        ROOT / "min-v3.0.0.ttl",
+        ROOT / "min-v3.2.0.ttl",
         ROOT / "sdata-core.ttl",
     )
     return extract_model(min_g, core_g, merged_g)
