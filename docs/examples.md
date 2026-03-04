@@ -12,8 +12,10 @@ This repository ships executable Turtle examples under `examples/`.
 : compact testing + simulation flow for product/data provenance.
 - `examples/AttributeQuantityValue_sheetthickness.ttl`
 : focused AQV and value-domain modeling sample.
+- `examples/min-v3.0.0-examples.ttl`
+: MIN v3 baseline example including Nexus and FORMA section.
 - `examples/min-v3.2.0-examples.ttl`
-: three MIN modalities (`Object`, `Process`, `Data`) in separate example roots.
+: current MIN v3.2 example including Nexus and FORMA section.
 
 ## Render All Example Graphs
 
@@ -45,6 +47,9 @@ This generates 3 filtered views:
 - `Object / material-dominant`
 - `Process / balanced`
 - `Data / informational-dominant`
+
+Note: the underlying `min-v3.2.0-examples.ttl` also contains FORMA triples.
+The dedicated visualization target currently renders the three Nexus modalities.
 
 ## Typical Output Files
 

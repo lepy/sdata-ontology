@@ -1,23 +1,34 @@
 # sdata-core.ttl
 
-Autarkes Kernmodell (`v0.12.0`) auf `MIN v3.2.0`.
+Kernmodell auf `MIN v3.2.0` in zwei Profilen:
+
+- `sdata-core.ttl` (`v0.12.0`, lean profile)
+- `sdata-core-v0.13.0.ttl` (extended profile mit Forma-Fassaden)
 
 ## Umfang
 
-- 11 Klassen
-- 10 Objekt-Properties
-- 7 Datentyp-Properties
+- `v0.12.0`: 11 Klassen, 10 Objekt-Properties, 7 Datentyp-Properties
+- `v0.13.0`: 33 Klassen, 15 Objekt-Properties, 12 Datentyp-Properties
 
 ## Klassenstruktur
 
-- Objekt-Subklassen (`min:Object`):
+- Nexus-Subklassen (`v0.12` und `v0.13`):
   - `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
+  - (`v0.13` zusaetzlich) `sdata:Boundary`, `sdata:Database`
 - Prozessklasse (`min:Process`):
   - `sdata:Process`
 - Datenklasse (`min:Data`):
   - `sdata:Data`
+  - (`v0.13` zusaetzlich) `sdata:Identifier`, `sdata:Result`, `sdata:ResultFile`,
+    `sdata:ProductPassport`, `sdata:DigitalTwin`,
+    `sdata:VerifiableCredential`, `sdata:VerifiablePresentation`,
+    `sdata:Proof`, `sdata:CryptographicKey`
 - Agent-Subklassen (`min:Agent`):
   - `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
+- Forma-Fassaden (`nur v0.13`):
+  - `sdata:Law`, `sdata:Model`, `sdata:Scenario`
+  - `sdata:Requirement`, `sdata:Specification`, `sdata:Regulation`, `sdata:LifecyclePhase`
+  - `sdata:Certification`, `sdata:Accreditation`, `sdata:Registry`, `sdata:TrustFramework`
 
 ## Wichtigste Relationen
 
@@ -27,15 +38,22 @@ Autarkes Kernmodell (`v0.12.0`) auf `MIN v3.2.0`.
   - `sdata:hasMaterial`, `sdata:usesTool`, `sdata:usesSoftware`, `sdata:hasData`
   - `sdata:producedBy`, `sdata:derivedFrom`, `sdata:certifies`
   - `sdata:succeeds`, `sdata:precedes`, `sdata:hasProduct`
+  - (`v0.13` zusaetzlich) `sdata:specifies`, `sdata:certifiedUnder`,
+    `sdata:identifiedBy`, `sdata:hasIssuer`, `sdata:signedBy`
 
-## Schnelle Migration (v0.10 -> v0.12)
+## Schnelle Migration
 
+`v0.10 -> v0.12`:
 - `sdata:hasInput` -> `min:hasInput`
 - `sdata:hasOutput` -> `min:hasOutput`
 - `sdata:performedBy` -> `min:performedBy`
 - `sdata:producesData` -> `min:generates`
 - `sdata:describes` -> `min:describes`
 - `sdata:hasIdentifier` -> `min:hasIdentifier`
+
+`v0.12 -> v0.13`:
+- Optional auf `sdata-core-v0.13.0.ttl` wechseln, wenn Forma-Fassaden oder VC/DPP-Data-Typen gebraucht werden.
+- Bestehende `v0.12`-Daten bleiben gueltig.
 
 ## Modellierungsregeln
 
@@ -44,6 +62,7 @@ Autarkes Kernmodell (`v0.12.0`) auf `MIN v3.2.0`.
 : stattdessen `sms:MethodAxis`/`sms:DomainAxis` nutzen.
 - Datenart (`Certificate`, `DigitalProductPass`, `TestReport` ...) ueber `sms:DataTypeAxis` modellieren.
 - Umweltgetriebene, nicht-intentionale Kausalitaet ueber `sdata:EnvironmentAgent` modellieren.
+- Forma-Inhalte als Forma modellieren (`min:*` oder `sdata-core-v0.13`-Fassaden), nicht als reine `Data`.
 
 ## Kurzbeispiel
 

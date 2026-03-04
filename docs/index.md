@@ -7,21 +7,27 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 1. [Quickstart](quickstart.md)
 2. [Modeling Cheat Sheet](modeling-cheatsheet.md)
 3. [Migration v0.10 -> v0.12](ontologies/MIGRATION-v0.10-to-v0.12.md)
+4. [Migration v0.12 -> v0.13](ontologies/MIGRATION-v0.12-to-v0.13.md)
 
 ## Included Modules
 
-- `sdata-core.ttl` / `sdata-core-v0.12.0.ttl`: core ontology (MIN v3.2 based)
+- `sdata-core.ttl`: default core profile (`v0.12.0`, MIN v3.2 based)
+- `sdata-core-v0.13.0.ttl`: extended core profile (MIN v3.2 + Forma facades)
 - `min-v3.2.0.ttl`: foundation ontology
 - `sdata-material-state.ttl`: material state space extension
+- `sdata-quantities.ttl`: AQV + ValueDomain extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
-Current core model: **11 classes**, **10 object properties**, **7 datatype properties**.
+Core sizes:
+- `sdata-core.ttl` (`v0.12.0`): **11 classes**, **10 object properties**, **7 datatype properties**
+- `sdata-core-v0.13.0.ttl`: **33 classes**, **15 object properties**, **12 datatype properties**
 
 ## Read This First
 
-1. `sdata-core` for base domain classes and properties.
-2. `sdata-material-state` for method/domain/datatype/value typing.
-3. `sdata-core-shapes` to validate your instance data.
+1. Choose your core profile (`sdata-core.ttl` v0.12 or `sdata-core-v0.13.0.ttl`).
+2. Use `sdata-material-state` for method/domain/datatype/value typing.
+3. Add `sdata-quantities` for AQV and ValueDomain modeling.
+4. Use `sdata-core-shapes` to validate your instance data.
 
 ## Ontology Docs
 
@@ -35,6 +41,7 @@ Current core model: **11 classes**, **10 object properties**, **7 datatype prope
 - [sdata-r-strategies](ontologies/sdata-r-strategies/index.md)
 - [sdata-core-shapes](ontologies/sdata-core-shapes/index.md)
 - [Migration v0.10 -> v0.12](ontologies/MIGRATION-v0.10-to-v0.12.md)
+- [Migration v0.12 -> v0.13](ontologies/MIGRATION-v0.12-to-v0.13.md)
 
 ## Example Datasets
 

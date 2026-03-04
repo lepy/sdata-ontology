@@ -4,17 +4,22 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core: `sdata-core-v0.12.0.ttl`
+- Core (default alias): `sdata-core.ttl` (`v0.12.0`)
+- Core (latest release): `sdata-core-v0.13.0.ttl`
 - Foundation: `MIN v3.2.0` (`min-v3.2.0.ttl`)
-- OPA: removed
 - State Space: `sdata-material-state-v0.5.0.ttl`
+- Quantities: `sdata-quantities.ttl` (`v0.1.1`)
 
 ## Module Overview
 
-- `sdata-core.ttl` (`v0.12.0`)
+- `sdata-core.ttl` (`v0.12.0`, lean profile)
 : 11 classes, 10 object properties, 7 datatype properties.
+- `sdata-core-v0.13.0.ttl` (`extended profile`)
+: 33 classes, 15 object properties, 12 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
 : 13 state axes including `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
+- `sdata-quantities.ttl` (`v0.1.1`)
+: AQV + ValueDomain extension on top of `sdata-core` and `MIN`.
 - `shapes/sdata-core-shapes.ttl`
 : SHACL checks for example data.
 
@@ -25,11 +30,16 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
   - `min:Process`
   - `min:Data`
   - `min:Agent`
+  - `min:Forma` with subclasses:
+  - `min:Lex`, `min:Structura`, `min:Possibile`, `min:Norma`, `min:Institutio`
 - sdata core classes:
   - Objects: `Material`, `Product`, `Hardware`, `Software`
   - Process: `Process`
   - Data: `Data`
   - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
+- `sdata-core-v0.13.0` adds facades for MIN v3 Forma:
+  - `Law`, `Model`, `Scenario`, `Requirement`, `Specification`, `Regulation`, `LifecyclePhase`
+  - `Certification`, `Accreditation`, `Registry`, `TrustFramework`
 - Process instances are modeled as `sdata:Process` (`subClassOf min:Process`).
 : method/domain semantics are typed via `sms:MethodAxis` and `sms:DomainAxis`.
 
@@ -64,6 +74,7 @@ make lint
 - `docs/quickstart.md`
 - `docs/modeling-cheatsheet.md`
 - `docs/ontologies/MIGRATION-v0.10-to-v0.12.md`
+- `docs/ontologies/MIGRATION-v0.12-to-v0.13.md`
 
 ## Visualizations
 
@@ -95,19 +106,18 @@ uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
 Build `min-v3.2.0-examples.ttl` via dedicated 3-plot module
-(`Object`, `Process`, `Data` modalities):
+(`Object`, `Process`, `Data` modalities; file also contains FORMA examples):
 
 ```bash
 make viz-min-v3-examples
 uv run python -m src.visualization.min_v3_examples_plot
 ```
 
-## Migration Notes (v0.10.0 -> v0.12.0)
+## Migration Notes
 
-- OPA dependency removed.
-- Current foundation in this repo: `MIN v3.2.0` (v0.12 originally migrated to v2.1.0).
+- `v0.10 -> v0.12`: OPA removed, migration to MIN categories.
+- `v0.12 -> v0.13`: expanded sdata facade for MIN v3.2 (including Forma classes).
 - `sdata:Data` is `subClassOf min:Data`.
-- `sdata:Process` is available as domain class (`subClassOf min:Process`).
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.
 
 ## Documentation

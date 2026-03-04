@@ -9,6 +9,7 @@ nav:
   - Modeling Cheat Sheet: modeling-cheatsheet.md
   - Examples: examples.md
   - Migration v0.10 -> v0.12: ontologies/MIGRATION-v0.10-to-v0.12.md
+  - Migration v0.12 -> v0.13: ontologies/MIGRATION-v0.12-to-v0.13.md
   - Ontologies:
       - sdata-core: ontologies/sdata-core/index.md
       - sdata-material-state: ontologies/sdata-material-state.md

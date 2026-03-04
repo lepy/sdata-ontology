@@ -1,6 +1,16 @@
 # sdata-quantities.ttl
 
-Führt `sdata:AttributeQuantityValue` und `sdata:ValueDomain` ein, um Messgrößen mit Einheit und Wertebereich zu modellieren.
+Fuehrt `sdata:AttributeQuantityValue` und `sdata:ValueDomain` ein, um Messgroessen
+mit Einheit und Wertebereich zu modellieren.
+
+Aktueller Stand: `v0.1.1`.
+
+## Kernpunkte
+
+- Importiert `sdata-core` und `MIN`.
+- `sdata:AttributeQuantityValue` ist `subClassOf qudt:QuantityValue` und `sdata:Data`.
+- `sdata:ValueDomain` ist `subClassOf sdata:Data`.
+- `sdata:hasQuantity` ist auf `min:Nexus` definiert (Objekt, Prozess, Data, Agent).
 
 ## Zugversuch-Beispiel
 

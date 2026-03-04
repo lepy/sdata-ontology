@@ -1,6 +1,7 @@
 # sdata-material-state.ttl
 
-State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core v0.12.0`.
+State-Space-Erweiterung (`v0.5.0`) fuer `sdata-core`-basierte Modelle
+(`v0.12.0` und `v0.13.0`).
 
 ## Zweck
 

@@ -1,6 +1,9 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow fuer `sdata-core v0.12.0` auf `MIN v3.2.0`.
+Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.2.0`.
+Er funktioniert fuer beide Core-Profile:
+- `sdata-core.ttl` (`v0.12.0`, lean profile)
+- `sdata-core-v0.13.0.ttl` (extended profile mit Forma-Fassaden)
 
 ## 1. Setup
 
@@ -68,6 +71,7 @@ Wichtige Outputs:
 
 ## 6. Migration aus v0.10/OPA
 
-Nutze die Checkliste in:
+Nutze die Checklisten in:
 
 - `docs/ontologies/MIGRATION-v0.10-to-v0.12.md`
+- `docs/ontologies/MIGRATION-v0.12-to-v0.13.md`
