@@ -1,6 +1,6 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.2.0`.
+Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.3.0`.
 Er funktioniert fuer beide Core-Profile:
 - `sdata-core.ttl` (`v0.12.0`, lean profile)
 - `sdata-core-v0.13.1.ttl` (extended profile mit Forma-Fassaden + DPP-Haertung)

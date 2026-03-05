@@ -46,7 +46,7 @@
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.12.0> ;
     owl:versionInfo "0.12.0" ;
-    owl:imports <https://w3id.org/min/3.2.0> ;
+    owl:imports <https://w3id.org/min/3.3.0> ;
     # owl:imports <https://w3id.org/opa> ;  ← ENTFERNT (OPA in MIN v2 absorbiert)
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;

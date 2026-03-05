@@ -1,6 +1,6 @@
 # sdata-core.ttl
 
-Kernmodell auf `MIN v3.2.0` in zwei Profilen:
+Kernmodell auf `MIN v3.3.0` in zwei Profilen:
 
 - `sdata-core.ttl` (`v0.12.0`, lean profile)
 - `sdata-core-v0.13.1.ttl` (extended profile mit Forma-Fassaden und DPP-Haertung)

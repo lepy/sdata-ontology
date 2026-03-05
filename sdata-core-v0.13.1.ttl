@@ -52,7 +52,7 @@
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.13.1> ;
     owl:versionInfo "0.13.1" ;
-    owl:imports <https://w3id.org/min/3.2.0> ;
+    owl:imports <https://w3id.org/min/3.3.0> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
     dcterms:description """Domänenontologie für Materialwissenschaft,
@@ -1178,14 +1178,14 @@ sdata:assessmentOutcome a owl:DatatypeProperty ;
 #       signedBy
 #     v0.13.1 (6): locatedAt, registeredIn, hasCustodian,
 #       supersedes, supersededBy, assessesRequirement
-#     + 33 aus MIN v3.2.0
+#     + 33 aus MIN v3.3.0
 #
 #   DATATYPE PROPERTIES (16):
 #     v0.12.0 (7): hasVersion, hasUUID, hasStartTime, hasEndTime,
 #       hasConfidence, hasSource, hasLocation
 #     v0.13.0 (5): hasEndpoint, hasScheme, hasValue, hasFormat, hasChecksum
 #     v0.13.1 (4): validFrom, validUntil, revokedAt, assessmentOutcome
-#     + 5 aus MIN v3.2.0
+#     + 5 aus MIN v3.3.0
 #
 #   DISJUNKTHEITSAXIOME (4):
 #     Object (inkl. Site), Agent, Norma, Institutio — jeweils paarweise disjunkt
