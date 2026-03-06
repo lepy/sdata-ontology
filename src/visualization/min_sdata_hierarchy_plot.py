@@ -234,7 +234,7 @@ def render(
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.3.0.ttl"))
+    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.4.0.ttl"))
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-min-core-hierarchy")

@@ -6,8 +6,8 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 - Core (default alias): `sdata-core.ttl` (`v0.12.0`)
 - Core (latest release): `sdata-core-v0.13.1.ttl`
-- Foundation: `MIN v3.3.0` (`min-v3.3.0.ttl`)
-- Foundation examples: `examples/min-v3.3.0-examples.ttl`
+- Foundation: `MIN v3.4.0` (`min-v3.4.0.ttl`)
+- Foundation examples: `examples/min-v3.4.0-examples.ttl`
 - State Space: `sdata-material-state-v0.5.0.ttl`
 - Quantities: `sdata-quantities.ttl` (`v0.1.1`)
 
@@ -95,7 +95,7 @@ make viz-min-core
 
 ![Class hierarchy MIN to sdata-core](docs/diagrams/sdata-min-core-hierarchy.svg)
 
-Build interactive class hierarchy (HTML, MIN v3.3.0 + sdata-core):
+Build interactive class hierarchy (HTML, MIN v3.4.0 + sdata-core):
 
 ```bash
 make viz-min-core-interactive
@@ -118,7 +118,7 @@ make viz-specimen
 uv run python -m src.visualization.specimen_tensiontest_data_plot
 ```
 
-Build `min-v3.3.0-examples.ttl` via dedicated 3-plot module
+Build `min-v3.4.0-examples.ttl` via dedicated 3-plot module
 (`Object`, `Process`, `Data` modalities; file also contains FORMA examples):
 
 ```bash
@@ -131,7 +131,7 @@ uv run python -m src.visualization.min_v21_examples_plot
 ## Migration Notes
 
 - `v0.10 -> v0.12`: OPA removed, migration to MIN categories.
-- `v0.12 -> v0.13`: expanded sdata facade for MIN v3.3 (including Forma classes).
+- `v0.12 -> v0.13`: expanded sdata facade for MIN v3 (including Forma classes).
 - `v0.13.0 -> v0.13.1`: adds custody, registry binding, DPP supersession, and validity/revocation fields.
 - `sdata:Data` is `subClassOf min:Data`.
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.

@@ -1,6 +1,6 @@
 # Modeling Cheat Sheet
 
-Kompakte Referenz fuer die Modellierung mit `MIN v3.3`.
+Kompakte Referenz fuer die Modellierung mit `MIN v3.4`.
 Core-Profile:
 - `sdata-core.ttl` (`v0.12.0`, lean)
 - `sdata-core-v0.13.1.ttl` (extended, inkl. Forma-Fassaden)

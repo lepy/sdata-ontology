@@ -1,6 +1,6 @@
 # shapes/sdata-core-shapes.ttl
 
-SHACL-Regeln fuer das `sdata-core v0.12.0`-Profil (MIN v3.3-basiert).
+SHACL-Regeln fuer das `sdata-core v0.12.0`-Profil (MIN v3.4-basiert).
 
 Hinweis:
 - Die Shapes sind auf den lean Core-Stand (`sdata-core.ttl` = `v0.12.0`) ausgerichtet.

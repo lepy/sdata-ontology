@@ -27,52 +27,6 @@ digraph "" {
 		fontname=Helvetica,
 		penwidth=1.6
 	];
-	subgraph sdata_rank_agent_children {
-		graph [rank=same,
-			style=invis
-		];
-		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label="Environment Agent"];
-		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label="Hardware Agent"];
-		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Organization];
-		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Person];
-		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label="Software Agent"];
-	}
-	subgraph sdata_rank_object_children {
-		graph [rank=same,
-			style=invis
-		];
-		"https://w3id.org/sdata/core/Hardware"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Hardware];
-		"https://w3id.org/sdata/core/Material"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Material];
-		"https://w3id.org/sdata/core/Product"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Product];
-		"https://w3id.org/sdata/core/Software"	[color="#6B46C1",
-			fillcolor="#F8EEFF",
-			fontcolor="#44337A",
-			label=Software];
-	}
 	subgraph cluster_min {
 		graph [color="#8FB7EA",
 			label="MIN classes",
@@ -141,6 +95,52 @@ digraph "" {
 			shape=point,
 			style=invis,
 			width=0.01];
+	}
+	subgraph sdata_rank_object_children {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/Hardware"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Hardware];
+		"https://w3id.org/sdata/core/Material"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Material];
+		"https://w3id.org/sdata/core/Product"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Product];
+		"https://w3id.org/sdata/core/Software"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Software];
+	}
+	subgraph sdata_rank_agent_children {
+		graph [rank=same,
+			style=invis
+		];
+		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Environment Agent"];
+		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Hardware Agent"];
+		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Organization];
+		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Person];
+		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Software Agent"];
 	}
 	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
 	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
