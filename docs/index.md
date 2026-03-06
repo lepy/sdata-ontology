@@ -12,20 +12,20 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 ## Included Modules
 
-- `sdata-core.ttl`: default core profile (`v0.12.0`, MIN v3.4 based)
-- `sdata-core-v0.13.1.ttl`: extended core profile (MIN v3.4 + Forma + decentralized DPP additions)
+- `sdata-core.ttl`: default core profile (`v0.14.0`, MIN v3.4 based)
+- `sdata-core-v0.13.1.ttl`: legacy extended core profile
 - `min-v3.4.0.ttl`: foundation ontology
 - `sdata-material-state.ttl`: material state space extension
 - `sdata-quantities.ttl`: AQV + ValueDomain extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation
 
 Core sizes:
-- `sdata-core.ttl` (`v0.12.0`): **11 classes**, **10 object properties**, **7 datatype properties**
+- `sdata-core.ttl` (`v0.14.0`): **42 classes**, **24 object properties**, **19 datatype properties**
 - `sdata-core-v0.13.1.ttl`: **35 classes**, **21 object properties**, **16 datatype properties**
 
 ## Read This First
 
-1. Choose your core profile (`sdata-core.ttl` v0.12 or `sdata-core-v0.13.1.ttl`).
+1. Use `sdata-core.ttl` (`v0.14.0`) as default profile.
 2. Use `sdata-material-state` for method/domain/datatype/value typing.
 3. Add `sdata-quantities` for AQV and ValueDomain modeling.
 4. Use `sdata-core-shapes` to validate your instance data.

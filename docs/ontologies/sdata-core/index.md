@@ -1,97 +1,53 @@
 # sdata-core.ttl
 
-Kernmodell auf `MIN v3.4.0` in zwei Profilen:
+Default-Kernmodell auf `MIN v3.4.0`.
 
-- `sdata-core.ttl` (`v0.12.0`, lean profile)
-- `sdata-core-v0.13.1.ttl` (extended profile mit Forma-Fassaden und DPP-Haertung)
+## Profile
 
-## Umfang
+- `sdata-core.ttl` (`v0.14.0`, default)
+- `sdata-core-v0.13.1.ttl` (legacy profile)
 
-- `v0.12.0`: 11 Klassen, 10 Objekt-Properties, 7 Datentyp-Properties
-- `v0.13.1`: 35 Klassen, 21 Objekt-Properties, 16 Datentyp-Properties
+## Umfang (`v0.14.0`)
 
-## Klassenstruktur
+- 42 Klassen
+- 24 eigene Objekt-Properties
+- 19 eigene Datentyp-Properties
+- 40 MIN-Fassaden (`owl:equivalentProperty`): 35 Objekt- + 5 Datentyp-Properties
 
-- Nexus-Subklassen (`v0.12` und `v0.13`):
-  - `sdata:Material`, `sdata:Product`, `sdata:Hardware`, `sdata:Software`
-  - (`v0.13` zusaetzlich) `sdata:Boundary`, `sdata:Database`, `sdata:Site`
-- Prozessklasse (`min:Process`):
-  - `sdata:Process`
-- Datenklasse (`min:Data`):
-  - `sdata:Data`
-  - (`v0.13` zusaetzlich) `sdata:Identifier`, `sdata:Result`, `sdata:AssessmentResult`, `sdata:ResultFile`,
-    `sdata:ProductPassport`, `sdata:DigitalTwin`,
-    `sdata:VerifiableCredential`, `sdata:VerifiablePresentation`,
-    `sdata:Proof`, `sdata:CryptographicKey`
-- Agent-Subklassen (`min:Agent`):
-  - `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
-- Forma-Fassaden (`nur v0.13`):
-  - `sdata:Law`, `sdata:Model`, `sdata:Scenario`
-  - `sdata:Requirement`, `sdata:Specification`, `sdata:Regulation`, `sdata:LifecyclePhase`
-  - `sdata:Certification`, `sdata:Accreditation`, `sdata:Registry`, `sdata:TrustFramework`
+## Struktur
 
-## Wichtigste Relationen
+- Nexus-Klassen: `Material`, `Product`, `Hardware`, `Software`, `Site`, `Specimen`, `Substance`, `Process`, `Data`, `Result`, `ProductPassport`, `DigitalTwin`, `Identifier`, `ResultFile`, `Proof`, `CryptographicKey`, `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`, `Boundary`
+- Forma-Fassaden: `Law`, `Model`, `Scenario`, `Requirement`, `Specification`, `Regulation`, `LifecyclePhase`, `Certification`, `Accreditation`, `Registry`, `TrustFramework`
+- Typus-Fassaden (v0.14): typisierbare Klassen statt tiefer Subklassierung
 
-- MIN-Basisrelationen:
-  - `min:hasInput`, `min:hasOutput`, `min:performedBy`, `min:generates`, `min:describes`
-- sdata-Ergaenzungen:
-  - `sdata:hasMaterial`, `sdata:usesTool`, `sdata:usesSoftware`, `sdata:hasData`
-  - `sdata:producedBy`, `sdata:derivedFrom`, `sdata:certifies`
-  - `sdata:succeeds`, `sdata:precedes`, `sdata:hasProduct`
-  - (`v0.13` zusaetzlich) `sdata:specifies`, `sdata:certifiedUnder`,
-    `sdata:identifiedBy`, `sdata:hasIssuer`, `sdata:signedBy`,
-    `sdata:locatedAt`, `sdata:hasCustodian`, `sdata:registeredIn`,
-    `sdata:supersedes`, `sdata:supersededBy`, `sdata:assessesRequirement`
+## Modellierungsleitlinien
 
-## Schnelle Migration
+- Verwende im Anwendungsgraphen bevorzugt `sdata:*`.
+- Verwende `sdata:typifiedBy`, wenn kein neues strukturelles Axiom benoetigt wird.
+- Nutze `sms:*` (State Space) fuer Methodik, Domain und DataType.
+- Behalte MIN als importierte Architektur-Ontologie im Hintergrund.
 
-`v0.10 -> v0.12`:
-- `sdata:hasInput` -> `min:hasInput`
-- `sdata:hasOutput` -> `min:hasOutput`
-- `sdata:performedBy` -> `min:performedBy`
-- `sdata:producesData` -> `min:generates`
-- `sdata:describes` -> `min:describes`
-- `sdata:hasIdentifier` -> `min:hasIdentifier`
+## Migration
 
-`v0.12 -> v0.13`:
-- Optional auf `sdata-core-v0.13.1.ttl` wechseln, wenn Forma-Fassaden oder VC/DPP-Data-Typen gebraucht werden.
-- Bestehende `v0.12`-Daten bleiben gueltig.
-
-## Modellierungsregeln
-
-- Prozessinstanzen als `sdata:Process` modellieren.
-- Prozessart nicht als Core-Subklasse modellieren.
-: stattdessen `sms:MethodAxis`/`sms:DomainAxis` nutzen.
-- Datenart (`Certificate`, `DigitalProductPass`, `TestReport` ...) ueber `sms:DataTypeAxis` modellieren.
-- Umweltgetriebene, nicht-intentionale Kausalitaet ueber `sdata:EnvironmentAgent` modellieren.
-- Forma-Inhalte als Forma modellieren (`min:*` oder `sdata-core-v0.13`-Fassaden), nicht als reine `Data`.
+- `v0.10 -> v0.12`: OPA entfernt, MIN-basierte Kernkategorien.
+- `v0.12 -> v0.13`: Forma-Fassaden und DPP/VC-Erweiterung.
+- `v0.13.1 -> v0.14.0`: One-namespace-Ansatz (`sdata:*`-Fassaden fuer MIN) und Typus-Fassaden.
 
 ## Kurzbeispiel
 
 ```turtle
-@prefix min:   <https://w3id.org/min#> .
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix sms:   <https://w3id.org/sdata/material-state/> .
-@prefix ex:    <https://example.org/zugversuch/> .
+@prefix ex:    <https://example.org/> .
 
-ex:DC04 a sdata:Material ;
-  min:hasIdentifier "MAT-DC04-001" .
+ex:probe_42 a sdata:Specimen ;
+  sdata:hasIdentifier "SPEC-42" ;
+  sdata:hasMaterial ex:DC04_charge_7814 .
 
-ex:Probe_A1 a sdata:Product ;
-  min:hasIdentifier "PROD-SPEC-A1" ;
-  sdata:hasMaterial ex:DC04 .
+ex:zugversuch_001 a sdata:Process ;
+  sdata:hasInput ex:probe_42 ;
+  sdata:generates ex:result_zv001 .
 
-ex:Zwick_Z100 a sdata:Hardware, sdata:HardwareAgent ;
-  min:hasIdentifier "HW-ZWICK-Z100" .
-
-ex:Zugversuch_A1 a sdata:Process ;
-  min:hasInput ex:Probe_A1 ;
-  min:performedBy ex:Zwick_Z100 ;
-  sdata:usesTool ex:Zwick_Z100 ;
-  min:generates ex:Messdaten_A1 .
-
-ex:Messdaten_A1 a sdata:Data ;
-  min:describes ex:Probe_A1 ;
-  sdata:producedBy ex:Zugversuch_A1 ;
-  sdata:hasVersion "1.0.0" .
+ex:result_zv001 a sdata:Result ;
+  sdata:generatedBy ex:zugversuch_001 ;
+  sdata:describes ex:probe_42 .
 ```

@@ -1,4 +1,4 @@
-"""Tests for sdata-core ontology and instance data (v0.12.0)."""
+"""Tests for sdata-core ontology and instance data (v0.14.0)."""
 
 from pathlib import Path
 
@@ -116,7 +116,7 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 11, f"Expected 11 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 42, f"Expected 42 classes, found {len(sdata_classes)}"
 
 
 def test_core_uses_min_v3_bases(core_graph):

@@ -253,9 +253,9 @@
     "shape": "box"
   },
   {
-    "id": "https://w3id.org/sdata/core/AssessmentResult",
-    "label": "Assessment Result",
-    "title": "https://w3id.org/sdata/core/AssessmentResult",
+    "id": "https://w3id.org/sdata/core/BillOfMaterials",
+    "label": "Bill of Materials",
+    "title": "https://w3id.org/sdata/core/BillOfMaterials",
     "group": "sdata",
     "kind": "sdata",
     "shape": "box"
@@ -264,6 +264,14 @@
     "id": "https://w3id.org/sdata/core/Boundary",
     "label": "Boundary",
     "title": "https://w3id.org/sdata/core/Boundary",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/BoundaryType",
+    "label": "Boundary Type",
+    "title": "https://w3id.org/sdata/core/BoundaryType",
     "group": "sdata",
     "kind": "sdata",
     "shape": "box"
@@ -293,9 +301,9 @@
     "shape": "box"
   },
   {
-    "id": "https://w3id.org/sdata/core/Database",
-    "label": "Database",
-    "title": "https://w3id.org/sdata/core/Database",
+    "id": "https://w3id.org/sdata/core/DataFormat",
+    "label": "Data Format",
+    "title": "https://w3id.org/sdata/core/DataFormat",
     "group": "sdata",
     "kind": "sdata",
     "shape": "box"
@@ -333,6 +341,14 @@
     "shape": "box"
   },
   {
+    "id": "https://w3id.org/sdata/core/HardwareType",
+    "label": "Hardware Type",
+    "title": "https://w3id.org/sdata/core/HardwareType",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
     "id": "https://w3id.org/sdata/core/Identifier",
     "label": "Identifier",
     "title": "https://w3id.org/sdata/core/Identifier",
@@ -365,6 +381,14 @@
     "shape": "box"
   },
   {
+    "id": "https://w3id.org/sdata/core/MaterialGrade",
+    "label": "Material Grade",
+    "title": "https://w3id.org/sdata/core/MaterialGrade",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
     "id": "https://w3id.org/sdata/core/Model",
     "label": "Model",
     "title": "https://w3id.org/sdata/core/Model",
@@ -392,6 +416,14 @@
     "id": "https://w3id.org/sdata/core/Process",
     "label": "Process",
     "title": "https://w3id.org/sdata/core/Process",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/ProcessType",
+    "label": "Process Type",
+    "title": "https://w3id.org/sdata/core/ProcessType",
     "group": "sdata",
     "kind": "sdata",
     "shape": "box"
@@ -493,9 +525,33 @@
     "shape": "box"
   },
   {
+    "id": "https://w3id.org/sdata/core/SoftwareType",
+    "label": "Software Type",
+    "title": "https://w3id.org/sdata/core/SoftwareType",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
     "id": "https://w3id.org/sdata/core/Specification",
     "label": "Specification",
     "title": "https://w3id.org/sdata/core/Specification",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Specimen",
+    "label": "Specimen",
+    "title": "https://w3id.org/sdata/core/Specimen",
+    "group": "sdata",
+    "kind": "sdata",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/sdata/core/Substance",
+    "label": "Substance",
+    "title": "https://w3id.org/sdata/core/Substance",
     "group": "sdata",
     "kind": "sdata",
     "shape": "box"
@@ -692,6 +748,16 @@
     "arrows": "to"
   },
   {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Specimen",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Object",
+    "to": "https://w3id.org/sdata/core/Substance",
+    "arrows": "to"
+  },
+  {
     "from": "https://w3id.org/min#Possibile",
     "to": "https://w3id.org/sdata/core/Scenario",
     "arrows": "to"
@@ -704,6 +770,11 @@
   {
     "from": "https://w3id.org/min#Structura",
     "to": "https://w3id.org/sdata/core/Model",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/sdata/core/Data",
+    "to": "https://w3id.org/sdata/core/BillOfMaterials",
     "arrows": "to"
   },
   {
@@ -749,16 +820,6 @@
   {
     "from": "https://w3id.org/sdata/core/Data",
     "to": "https://w3id.org/sdata/core/VerifiablePresentation",
-    "arrows": "to"
-  },
-  {
-    "from": "https://w3id.org/sdata/core/Result",
-    "to": "https://w3id.org/sdata/core/AssessmentResult",
-    "arrows": "to"
-  },
-  {
-    "from": "https://w3id.org/sdata/core/Software",
-    "to": "https://w3id.org/sdata/core/Database",
     "arrows": "to"
   }
 ];

@@ -4,8 +4,8 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core (default alias): `sdata-core.ttl` (`v0.12.0`)
-- Core (latest release): `sdata-core-v0.13.1.ttl`
+- Core (default alias): `sdata-core.ttl` (`v0.14.0`)
+- Core (latest release): `sdata-core-v0.14.0.ttl`
 - Foundation: `MIN v3.4.0` (`min-v3.4.0.ttl`)
 - Foundation examples: `examples/min-v3.4.0-examples.ttl`
 - State Space: `sdata-material-state-v0.5.0.ttl`
@@ -13,9 +13,10 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Module Overview
 
-- `sdata-core.ttl` (`v0.12.0`, lean profile)
-: 11 classes, 10 object properties, 7 datatype properties.
-- `sdata-core-v0.13.1.ttl` (`extended profile`)
+- `sdata-core.ttl` (`v0.14.0`, default profile)
+: 42 classes, 24 object properties, 19 datatype properties
+: plus 40 MIN facade properties (`owl:equivalentProperty`).
+- `sdata-core-v0.13.1.ttl` (`legacy extended profile`)
 : 35 classes, 21 object properties, 16 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
 : 13 state axes including `MethodAxis`, `DomainAxis`, `DataTypeAxis`.
@@ -38,10 +39,10 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
   - Process: `Process`
   - Data: `Data`
   - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
-- `sdata-core-v0.13.1` adds facades for MIN v3 Forma:
-  - `Law`, `Model`, `Scenario`, `Requirement`, `Specification`, `Regulation`, `LifecyclePhase`
-  - `Certification`, `Accreditation`, `Registry`, `TrustFramework`
-  - `Site`, `AssessmentResult` for decentralized custody and claim outcomes
+- `sdata-core-v0.14.0` adds:
+  - full `sdata:*` facades for MIN relations (one-namespace workflow)
+  - Typus facades (`typifiedBy` patterns across typable Nexus categories)
+  - additional domain classes including `Specimen`, `BillOfMaterials`, `Substance`
 - Process instances are modeled as `sdata:Process` (`subClassOf min:Process`).
 : method/domain semantics are typed via `sms:MethodAxis` and `sms:DomainAxis`.
 
@@ -133,6 +134,7 @@ uv run python -m src.visualization.min_v21_examples_plot
 - `v0.10 -> v0.12`: OPA removed, migration to MIN categories.
 - `v0.12 -> v0.13`: expanded sdata facade for MIN v3 (including Forma classes).
 - `v0.13.0 -> v0.13.1`: adds custody, registry binding, DPP supersession, and validity/revocation fields.
+- `v0.13.1 -> v0.14.0`: switches to one-namespace modeling (`sdata:*` facades for MIN) and Typus facades.
 - `sdata:Data` is `subClassOf min:Data`.
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.
 

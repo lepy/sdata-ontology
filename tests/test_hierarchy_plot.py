@@ -14,7 +14,7 @@ def _model():
     return extract_hierarchy(graph)
 
 
-def test_extract_contains_expected_v120_classes():
+def test_extract_contains_expected_core_classes():
     model = _model()
     classes = {str(node.iri) for node in model.nodes}
     expected = {

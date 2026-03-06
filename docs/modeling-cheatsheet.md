@@ -2,8 +2,8 @@
 
 Kompakte Referenz fuer die Modellierung mit `MIN v3.4`.
 Core-Profile:
-- `sdata-core.ttl` (`v0.12.0`, lean)
-- `sdata-core-v0.13.1.ttl` (extended, inkl. Forma-Fassaden)
+- `sdata-core.ttl` (`v0.14.0`, default)
+- `sdata-core-v0.13.1.ttl` (legacy extended profile)
 
 ## Klassenwahl
 
@@ -19,11 +19,13 @@ sdata-Spezialisierungen:
 - Daten: `sdata:Data`
 - Agenten: `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
 
-`sdata-core-v0.13.1` ergaenzt u. a.:
+`sdata-core` (`v0.14.0`) enthaelt u. a.:
 
 - Forma-Fassaden: `sdata:Law`, `sdata:Model`, `sdata:Scenario`, `sdata:Requirement`, `sdata:Specification`, `sdata:Regulation`, `sdata:Certification`
 - Weitere Data-/Boundary-Typen: `sdata:Identifier`, `sdata:Result`, `sdata:ProductPassport`, `sdata:Boundary`
-- Dezentrale DPP-Typen: `sdata:Site`, `sdata:AssessmentResult`
+- Dezentrale DPP-Typen: `sdata:Site`, `sdata:Registry`, `sdata:TrustFramework`
+- One-namespace-Fassaden fuer MIN-Relationen (`sdata:hasInput`, `sdata:generates`, `sdata:describes`, ...)
+- Typus-Fassaden (`sdata:typifiedBy`) fuer typisierbare Nexus-Kategorien
 
 ## Relationen: MIN vs sdata
 
@@ -61,14 +63,14 @@ Nutze `sms:hasStateAssignment` fuer fachliche Typisierung statt Core-Subklassen:
 - Datentyp: `sms:DataTypeAxis`
 - Material-/Produktzustand: weitere Achsen (`OriginAxis`, `ConditionAxis`, ...)
 
-## FORMA in MIN v3 (optional in sdata v0.13)
+## FORMA in MIN v3 (verfuegbar in sdata v0.14)
 
 Wenn dein Fall Gesetze, Modelle, Anforderungen oder Institutionen braucht:
 
 - Klassen: `min:Lex`, `min:Structura`, `min:Possibile`, `min:Norma`, `min:Institutio`
 - Bruecken: `min:realizes`, `min:governs`, `min:formalizes`, `min:evaluates`, `min:encodes`
 
-Mit `sdata-core-v0.13.1` kannst du statt `min:*` die sdata-Fassaden nutzen
+Mit `sdata-core` (`v0.14.0`) kannst du statt `min:*` die sdata-Fassaden nutzen
 (z. B. `sdata:Law`, `sdata:Requirement`, `sdata:Certification`).
 
 ## Haeufige Fehler
