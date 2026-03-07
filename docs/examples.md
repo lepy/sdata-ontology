@@ -11,11 +11,8 @@ This repository ships executable Turtle examples under `examples/`.
 - `examples/tensiontest-crashsimulation.ttl`
 : compact testing + simulation flow for product/data provenance.
 - `examples/AttributeQuantityValue_sheetthickness.ttl`
-: focused AQV and value-domain modeling sample.
-- `examples/min-v3.0.0-examples.ttl`
-: MIN v3 baseline example including Nexus and FORMA section.
-- `examples/min-v3.4.0-examples.ttl`
-: current MIN v3.4 example including Nexus and FORMA section.
+: focused AQV and value-domain modeling sample.- `examples/min-v3.7.1-examples.ttl`
+: current MIN v3.7 example including Nexus and FORMA section.
 
 ## Render All Example Graphs
 
@@ -48,7 +45,7 @@ This generates 3 filtered views:
 - `Process / balanced`
 - `Data / informational-dominant`
 
-Note: the underlying `min-v3.4.0-examples.ttl` also contains FORMA triples.
+Note: the underlying `min-v3.7.1-examples.ttl` also contains FORMA triples.
 The dedicated visualization target currently renders the three Nexus modalities.
 
 ## Typical Output Files
@@ -57,9 +54,9 @@ The dedicated visualization target currently renders the three Nexus modalities.
 - `docs/diagrams/battery-passport-graph.svg`
 - `docs/diagrams/tensiontest-crashsimulation-graph.svg`
 - `docs/diagrams/AttributeQuantityValue_sheetthickness-graph.svg`
-- `docs/diagrams/min-v3.4.0-examples-material-modal.svg`
-- `docs/diagrams/min-v3.4.0-examples-balanced-modal.svg`
-- `docs/diagrams/min-v3.4.0-examples-informational-modal.svg`
+- `docs/diagrams/min-v3.7.1-examples-material-modal.svg`
+- `docs/diagrams/min-v3.7.1-examples-balanced-modal.svg`
+- `docs/diagrams/min-v3.7.1-examples-informational-modal.svg`
 
 ## Validation
 

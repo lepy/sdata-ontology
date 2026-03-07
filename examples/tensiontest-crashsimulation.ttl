@@ -1,6 +1,7 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix sms:   <https://w3id.org/sdata/material-state/> .
 @prefix min:   <https://w3id.org/min#> .
+@prefix qudt:  <http://qudt.org/schema/qudt/> .
 @prefix ex:    <https://example.org/simulation/> .
 
 ex:Steel_DC04
@@ -55,7 +56,7 @@ ex:MeasurementData_42
     a sdata:Data ;
     min:describes ex:Specimen_42 ;
     sdata:producedBy ex:TensileTest_42 ;
-    sdata:hasValue 18.5 ;
+    sdata:hasQuantity ex:MeasurementData_42_Elongation_AQV ;
     sdata:hasVersion "1.0.0" ;
     sms:hasStateAssignment [
         a sms:StateAssignment ;
@@ -83,3 +84,10 @@ ex:SimulationResult_v3
         sms:onAxis sms:DataTypeAxis ;
         sms:hasStateValue sms:datatype.SimulationReport
     ] .
+
+ex:MeasurementData_42_Elongation_AQV
+    a sdata:AttributeQuantityValue ;
+    min:hasName "elongation_A80" ;
+    sdata:unitSymbol "%" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 18.5 .

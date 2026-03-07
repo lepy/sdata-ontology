@@ -1,4 +1,4 @@
-"""Render three category-modality plots for examples/min-v3.4.0-examples.ttl."""
+"""Render three category-modality plots for examples/min-v3.7.1-examples.ttl."""
 
 from __future__ import annotations
 
@@ -18,9 +18,9 @@ MODALITIES: tuple[tuple[str, str, URIRef], ...] = (
     ("informational-modal", "Data / informational-dominant", URIRef("https://w3id.org/min#Data")),
 )
 
-DEFAULT_INPUT = Path("examples/min-v3.4.0-examples.ttl")
+DEFAULT_INPUT = Path("examples/min-v3.7.1-examples.ttl")
 DEFAULT_OUT_DIR = Path("docs/diagrams")
-DEFAULT_BASE = "min-v3.4.0-examples"
+DEFAULT_BASE = "min-v3.7.1-examples"
 
 
 def _is_example_uri(term) -> bool:

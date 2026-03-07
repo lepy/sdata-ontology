@@ -3,7 +3,7 @@
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Interactive Class Hierarchy: MIN v3.4.0 -> sdata-core</title>
+          <title>Interactive Class Hierarchy: MIN v3.7.1 -> sdata-core</title>
           <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
           <style>
             :root {
@@ -112,9 +112,9 @@
         <body>
           <div class="layout">
             <aside class="sidebar">
-              <h1>Interactive Class Hierarchy: MIN v3.4.0 -> sdata-core</h1>
+              <h1>Interactive Class Hierarchy: MIN v3.7.1 -> sdata-core</h1>
               <div class="meta">
-                Interactive class hierarchy for MIN v3.4.0 and sdata-core.
+                Interactive class hierarchy for MIN v3.7.1 and sdata-core.
               </div>
               <div class="controls">
                 <div>
@@ -197,6 +197,14 @@
     "shape": "box"
   },
   {
+    "id": "https://w3id.org/min#MetaTerm",
+    "label": "Meta Term",
+    "title": "https://w3id.org/min#MetaTerm",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
     "id": "https://w3id.org/min#Nexus",
     "label": "Nexus",
     "title": "https://w3id.org/min#Nexus",
@@ -216,6 +224,14 @@
     "id": "https://w3id.org/min#Object",
     "label": "Object",
     "title": "https://w3id.org/min#Object",
+    "group": "min",
+    "kind": "min",
+    "shape": "box"
+  },
+  {
+    "id": "https://w3id.org/min#OntologyArtifact",
+    "label": "Ontology Artifact",
+    "title": "https://w3id.org/min#OntologyArtifact",
     "group": "min",
     "kind": "min",
     "shape": "box"
@@ -614,6 +630,11 @@
   },
   {
     "from": "https://w3id.org/min#Data",
+    "to": "https://w3id.org/min#OntologyArtifact",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Data",
     "to": "https://w3id.org/sdata/core/Data",
     "arrows": "to"
   },
@@ -650,6 +671,11 @@
   {
     "from": "https://w3id.org/min#Forma",
     "to": "https://w3id.org/min#Structura",
+    "arrows": "to"
+  },
+  {
+    "from": "https://w3id.org/min#Institutio",
+    "to": "https://w3id.org/min#MetaTerm",
     "arrows": "to"
   },
   {

@@ -14,7 +14,7 @@
 #   Domänenontologie für Product Passports, Circular Economy,
 #   Digital Twins, LCA und Verifiable Credentials.
 #
-#   v0.13.0 — Migration auf MIN v3.2.0
+#   v0.13.0 — Migration auf MIN v3.7.1
 #
 #   33 Klassen. Vollständige sdata-Fassade für alle MIN-Kategorien.
 #   Domänenexperten arbeiten ausschließlich mit sdata:-Klassen.
@@ -22,7 +22,7 @@
 #   Änderungen gegenüber v0.12.0:
 #
 #     FUNDAMENT:
-#       — owl:imports MIN 3.2.0 (war: MIN v2.1.0)
+#       — owl:imports MIN 3.7.1 (war: MIN v2.1.0)
 #
 #     NEUE KLASSEN — Nexus (2):
 #       — sdata:Boundary         subClassOf min:Boundary
@@ -73,7 +73,7 @@
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.13.0> ;
     owl:versionInfo "0.13.0" ;
-    owl:imports <https://w3id.org/min/3.2.0> ;
+    owl:imports <https://w3id.org/min> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
     dcterms:description """Domänenontologie für Materialwissenschaft,
@@ -109,7 +109,7 @@
     dcterms:created "2026-03-04"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:seeAlso <https://w3id.org/min> ;
-    min:designRationale """v0.13.0 migriert auf MIN v3.2.0.
+    min:designRationale """v0.13.0 migriert auf MIN v3.7.1.
 
     Designprinzip: KEINE direkte Instantiierung von min:-Klassen.
     Domänenexperten sollen nur mit sdata:-Klassen arbeiten.
@@ -885,13 +885,13 @@ sdata:hasChecksum a owl:DatatypeProperty ;
 #       derivedFrom, certifies, succeeds, precedes, hasData, producedBy
 #     v0.13.0 (5): specifies, certifiedUnder, identifiedBy, hasIssuer,
 #       signedBy
-#     + 33 aus MIN v3.2.0
+#     + 33 aus MIN v3.7.1
 #
 #   DATATYPE PROPERTIES (12):
 #     v0.12.0 (7): hasVersion, hasUUID, hasStartTime, hasEndTime,
 #       hasConfidence, hasSource, hasLocation
 #     v0.13.0 (5): hasEndpoint, hasScheme, hasValue, hasFormat, hasChecksum
-#     + 5 aus MIN v3.2.0
+#     + 5 aus MIN v3.7.1
 #
 #   DISJUNKTHEITSAXIOME (4):
 #     Object, Agent, Norma, Institutio — jeweils paarweise disjunkt

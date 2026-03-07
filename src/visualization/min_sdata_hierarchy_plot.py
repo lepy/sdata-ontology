@@ -13,11 +13,14 @@ from rdflib.namespace import OWL
 
 MIN_PREFIX = "https://w3id.org/min"
 SDATA_CORE_PREFIX = "https://w3id.org/sdata/core/"
+MIN_ENTITY = "https://w3id.org/min#Entity"
 MIN_NEXUS = "https://w3id.org/min#Nexus"
+MIN_FORMA = "https://w3id.org/min#Forma"
 MIN_OBJECT = "https://w3id.org/min#Object"
 MIN_PROCESS = "https://w3id.org/min#Process"
 MIN_DATA = "https://w3id.org/min#Data"
 MIN_AGENT = "https://w3id.org/min#Agent"
+MIN_BOUNDARY = "https://w3id.org/min#Boundary"
 SDATA_OBJECT_CHILDREN = (
     "https://w3id.org/sdata/core/Material",
     "https://w3id.org/sdata/core/Product",
@@ -50,6 +53,33 @@ class Edge:
 class Model:
     nodes: tuple[Node, ...]
     edges: tuple[Edge, ...]
+
+
+def _children_index(model: Model) -> dict[str, set[str]]:
+    children: dict[str, set[str]] = {}
+    for edge in model.edges:
+        parent = str(edge.parent)
+        child = str(edge.child)
+        children.setdefault(parent, set()).add(child)
+    return children
+
+
+def _descendants(start: str, children: dict[str, set[str]]) -> set[str]:
+    seen: set[str] = set()
+    stack = list(children.get(start, set()))
+    while stack:
+        node = stack.pop()
+        if node in seen:
+            continue
+        seen.add(node)
+        stack.extend(children.get(node, set()))
+    return seen
+
+
+def _local_name(iri: str) -> str:
+    if "#" in iri:
+        return iri.rsplit("#", 1)[1]
+    return iri.rsplit("/", 1)[-1]
 
 
 def _kind_from_iri(iri: URIRef) -> str | None:
@@ -174,49 +204,79 @@ def build_agraph(model: Model):
         fontname="Helvetica",
     )
 
-    min_cluster = graph.add_subgraph(name="cluster_min", label="MIN classes", color="#8FB7EA", style="rounded")
-    min_cluster.graph_attr.update(rank="source")
-
     style_map = {
         "min": {"fillcolor": "#E7F0FF", "color": "#2B6CB0", "fontcolor": "#1A365D"},
         "sdata": {"fillcolor": "#F8EEFF", "color": "#6B46C1", "fontcolor": "#44337A"},
     }
 
     for node in model.nodes:
-        if node.kind == "min":
-            target = min_cluster
-        else:
-            target = graph
-        target.add_node(str(node.iri), label=node.label, **style_map[node.kind])
+        graph.add_node(str(node.iri), label=node.label, **style_map[node.kind])
 
     node_ids = {str(node.iri) for node in model.nodes}
+    children = _children_index(model)
+    kind_by_id = {str(node.iri): node.kind for node in model.nodes}
 
-    def _rank_same(container, name: str, ids: tuple[str, ...]) -> None:
+    # Cluster each MIN class under Nexus/Forma together with all reachable sdata children.
+    nexus_desc = _descendants(MIN_NEXUS, children) if MIN_NEXUS in node_ids else set()
+    forma_desc = _descendants(MIN_FORMA, children) if MIN_FORMA in node_ids else set()
+    branch_min_classes = sorted(
+        iri
+        for iri in (nexus_desc | forma_desc)
+        if iri in node_ids and kind_by_id.get(iri) == "min"
+    )
+    for min_class in branch_min_classes:
+        sdata_children = sorted(
+            iri
+            for iri in _descendants(min_class, children)
+            if iri in node_ids and kind_by_id.get(iri) == "sdata"
+        )
+        members = [min_class] + sdata_children
+        family = "Nexus" if min_class in nexus_desc else "Forma"
+        family_style = (
+            {"color": "#7AA2D6", "bgcolor": "#F2F8FF"}
+            if family == "Nexus"
+            else {"color": "#A48BC9", "bgcolor": "#FAF5FF"}
+        )
+        graph.add_subgraph(
+            members,
+            name=f"cluster_{_local_name(min_class).lower()}",
+            label=f"{_local_name(min_class)} + sdata children",
+            style="rounded,dashed",
+            penwidth="1.2",
+            rankdir="TB",
+            **family_style,
+        )
+
+    # Keep only the global top anchor at Entity.
+    if MIN_ENTITY in node_ids:
+        graph.add_subgraph([MIN_ENTITY], name="rank_entity_top", rank="source", style="invis")
+
+    # Stack direct Entity children vertically (tree TB root layering).
+    entity_children = [iri for iri in children.get(MIN_ENTITY, set()) if iri in node_ids]
+    ordered_entity_children = [iri for iri in (MIN_NEXUS, MIN_FORMA) if iri in entity_children]
+    ordered_entity_children.extend(sorted(iri for iri in entity_children if iri not in ordered_entity_children))
+
+    # Stagger branch nodes vertically, so branch subgraphs are not on one level.
+    def _add_stagger_chain(ids: tuple[str, ...], prefix: str) -> None:
         present = [iri for iri in ids if iri in node_ids]
-        if len(present) >= 2:
-            container.add_subgraph(present, name=name, rank="same", style="invis")
+        for idx in range(len(present) - 1):
+            graph.add_edge(
+                present[idx],
+                present[idx + 1],
+                style="invis",
+                color="#FFFFFF",
+                weight="50",
+                minlen="1",
+                constraint="true",
+                key=f"{prefix}_{idx}",
+            )
 
-    _rank_same(min_cluster, "cluster_min_rank", (MIN_OBJECT, MIN_PROCESS, MIN_DATA, MIN_AGENT))
-    _rank_same(graph, "sdata_rank_object_children", SDATA_OBJECT_CHILDREN)
-    _rank_same(graph, "sdata_rank_agent_children", SDATA_AGENT_CHILDREN)
+    _add_stagger_chain(tuple(ordered_entity_children), "entity_children_stack")
+    _add_stagger_chain((MIN_NEXUS, MIN_OBJECT, MIN_PROCESS, MIN_DATA, MIN_AGENT, MIN_BOUNDARY), "nexus_stack")
+    _add_stagger_chain((MIN_FORMA, "https://w3id.org/min#Lex", "https://w3id.org/min#Structura", "https://w3id.org/min#Possibile", "https://w3id.org/min#Norma", "https://w3id.org/min#Institutio"), "forma_stack")
 
     for edge in model.edges:
         graph.add_edge(str(edge.parent), str(edge.child), label="")
-
-    min_anchor = "__rank_anchor_min"
-    sdata_anchor = "__rank_anchor_sdata"
-    min_cluster.add_node(min_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
-    graph.add_node(sdata_anchor, label="", shape="point", style="invis", width="0.01", height="0.01")
-    graph.add_edge(
-        min_anchor,
-        sdata_anchor,
-        style="invis",
-        color="#FFFFFF",
-        weight="200",
-        minlen="2",
-        constraint="true",
-        ltail="cluster_min",
-    )
 
     return graph
 
@@ -234,7 +294,7 @@ def render(
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.4.0.ttl"))
+    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.7.1.ttl"))
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-min-core-hierarchy")

@@ -1,6 +1,6 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.4.0`.
+Dieser Quickstart zeigt den typischen Workflow auf `MIN v3.7.1`.
 Er nutzt standardmaessig:
 - `sdata-core.ttl` (`v0.14.0`, default profile)
 - optional legacy: `sdata-core-v0.13.1.ttl`

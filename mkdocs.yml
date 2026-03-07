@@ -7,6 +7,24 @@ nav:
   - Home: index.md
   - Quickstart: quickstart.md
   - Modeling Cheat Sheet: modeling-cheatsheet.md
+  - Empfohlene Modellierung (Industrie):
+      - Uebersicht: modeling/index.md
+      - Rohstoffherkunft und Chain-of-Custody: modeling/rohstoffherkunft-chain-of-custody.md
+      - Materialtypisierung (Kupfer): modeling/materialtypisierung-kupfer.md
+      - Prozesskette (Kupferherstellung): modeling/prozesskette-kupfer.md
+      - Prozessparameter und Traceability: modeling/prozessparameter-traceability.md
+      - Qualitaet und Pruefmerkmale: modeling/qualitaet-pruefmerkmale.md
+      - Energie- und CO2-Bilanz: modeling/energie-co2-bilanz.md
+      - Ausschuss, Nacharbeit und Yield: modeling/ausschuss-nacharbeit-yield.md
+      - Korrosion und Oberflaechenstabilitaet: modeling/korrosion-oberflaechenstabilitaet.md
+      - Normen und Compliance: modeling/normen-compliance.md
+      - DPP-Datenmodell und Versionierung: modeling/dpp-versionierung.md
+      - Digitaler Zwilling: modeling/digitaler-zwilling.md
+      - Kreislaufwirtschaft und Closed-Loop: modeling/kreislaufwirtschaft.md
+      - Reibung: modelling/reibung.md
+      - Korrosion (alt): modeling/korrosion.md
+      - Schatten: modeling/schatten.md
+      - DPP (alt): modeling/dpp.md
   - Examples: examples.md
   - Breakfast Egg (DE): breakfast_egg_de.md
   - Breakfast Egg (EN): breakfast_egg_en.md

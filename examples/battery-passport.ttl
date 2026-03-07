@@ -197,7 +197,7 @@ ex:CathodeProcessData_01
     a sdata:Data ;
     min:describes ex:CathodeFoil_01 ;
     sdata:producedBy ex:CathodeProduction_01 ;
-    sdata:hasValue 1850.0 ;
+    sdata:hasQuantity ex:CathodePressForce_AQV ;
     sdata:hasVersion "1.0.0" ;
     sms:hasStateAssignment [
         a sms:StateAssignment ;
@@ -299,6 +299,13 @@ ex:MassLoss_AQV
     sdata:dtype "float" ;
     sdata:hasValueDomain ex:MassLossDomain ;
     qudt:numericValue 12.3 .
+
+ex:CathodePressForce_AQV
+    a sdata:AttributeQuantityValue ;
+    min:hasName "press_force" ;
+    sdata:unitSymbol "N" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 1850.0 .
 
 ex:YieldStrengthSpec
     a sdata:ValueDomain ;

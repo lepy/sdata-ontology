@@ -7,10 +7,12 @@ from src.visualization.min_v21_examples_plot import extract_modality_view, load_
 ROOT = Path(__file__).resolve().parent.parent
 EX = Namespace("https://example.org/")
 MIN = Namespace("https://w3id.org/min#")
+SDATA = Namespace("https://w3id.org/sdata/core/")
+QUDT = Namespace("http://qudt.org/schema/qudt/")
 
 
 def _source_graph():
-    return load_graph(ROOT / "examples" / "min-v3.4.0-examples.ttl")
+    return load_graph(ROOT / "examples" / "min-v3.7.1-examples.ttl")
 
 
 def test_extract_material_modal_view_contains_material_modal_instance():
@@ -18,7 +20,12 @@ def test_extract_material_modal_view_contains_material_modal_instance():
     material_view = extract_modality_view(graph, MIN.Object)
 
     assert (EX.Stahlcoil_2026_001, MIN.hasIdentifier, None) in material_view
-    assert (EX.Stahlcoil_2026_001, EX.masse_kg, None) in material_view
+    assert (
+        EX.Stahlcoil_2026_001,
+        SDATA.hasQuantity,
+        EX.Stahlcoil_2026_001_Masse_AQV,
+    ) in material_view
+    assert (EX.Stahlcoil_2026_001_Masse_AQV, QUDT.numericValue, None) in material_view
 
 
 def test_extract_balanced_view_contains_process_flow():

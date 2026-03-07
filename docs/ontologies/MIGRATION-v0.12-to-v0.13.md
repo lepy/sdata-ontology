@@ -1,6 +1,6 @@
 # Migration Guide: sdata-core v0.12.0 -> v0.13.0
 
-`sdata-core-v0.13.0.ttl` erweitert den Core auf `MIN v3.2.0` mit einer
+`sdata-core-v0.13.0.ttl` erweitert den Core auf `MIN v3.7.1` mit einer
 vollstaendigen sdata-Fassade fuer Nexus und Forma.
 
 ## Kurzfassung

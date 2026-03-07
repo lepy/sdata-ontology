@@ -13,7 +13,7 @@
 #
 #   v0.14.0 — 2026-03-06
 #
-#   42 Klassen. 24 eigene Object Properties + 35 Fassaden.
+#   43 Klassen. 24 eigene Object Properties + 35 Fassaden.
 #   19 eigene Datatype Properties + 5 Fassaden.
 #
 #   NAMESPACE-REGEL:
@@ -32,7 +32,7 @@
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.14.0> ;
     owl:versionInfo "0.14.0" ;
-    owl:imports <https://w3id.org/min/3.4.0> ;
+    owl:imports <https://w3id.org/min> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
     dcterms:description """Domänenontologie für Materialwissenschaft,
@@ -42,10 +42,10 @@
     Architektur: MIN (Grundontologie) → sdata (Domäne).
     Nutzer arbeiten ausschließlich mit sdata:-Termen.
 
-    42 Klassen über alle MIN-Kategorien:
+    43 Klassen über alle MIN-Kategorien:
       Object (7), Data (11), Agent (5), Process (1), Boundary (1),
       Lex (1), Structura (1), Possibile (1), Norma (4),
-      Institutio (4), Typus (6)."""@de ;
+      Institutio (4), Typus (7)."""@de ;
     dcterms:creator "Lepy" ;
     dcterms:created "2026-03-06"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
@@ -600,47 +600,53 @@ sdata:TrustFramework a owl:Class ;
 
 # #############################################################################
 #
-#   TEIL IX — FORMA: TYPUS (6)
+#   TEIL IX — FORMA: TYPUS (7)
 #
 # #############################################################################
 
+sdata:Typus a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:comment """Konventionelle Wesensbestimmung in der Domäne.
+    Bündelt Norma, Structura, Lex zu einem benannten Typ.
+    Spezialisierung von Institutio für technische Klassifikation."""@de .
+
 sdata:MaterialGrade a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Material Grade"@en ;
     rdfs:label "Werkstoffsorte"@de ;
     rdfs:comment "Wesensbestimmung eines Werkstoffs. DPP-Feld ‹Werkstoffbezeichnung›."@de ;
     skos:example "DC04, HC340LA, AlSi10Mg, PP-GF30, X5CrNi18-10."@de .
 
 sdata:ProcessType a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Process Type"@en ;
     rdfs:label "Verfahrenstyp"@de ;
     rdfs:comment "Wesensbestimmung eines Verfahrens. Nicht Specification."@de ;
     skos:example "Zugversuch nach ISO 6892-1, Tiefziehen, Crashsimulation."@de .
 
 sdata:DataFormat a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Data Format"@en ;
     rdfs:label "Datenformat"@de ;
     rdfs:comment "Wesensbestimmung eines Dateiformats."@de ;
     skos:example "STEP AP214, JT, VTU, CSV (RFC 4180), JSON-LD, Parquet."@de .
 
 sdata:HardwareType a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Hardware Type"@en ;
     rdfs:label "Gerätetyp"@de ;
     rdfs:comment "Wesensbestimmung eines Hardware-Typs. Ersetzt Hardware-Subklassen."@de ;
     skos:example "Universalprüfmaschine, Hydraulische Presse, Thermoelement Typ K."@de .
 
 sdata:SoftwareType a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Software Type"@en ;
     rdfs:label "Softwaretyp"@de ;
     rdfs:comment "Wesensbestimmung eines Software-Typs. Ersetzt Software-Subklassen."@de ;
     skos:example "FE-Solver, CAD-System, LCA-Software, RDBMS, Triplestore."@de .
 
 sdata:BoundaryType a owl:Class ;
-    rdfs:subClassOf min:Typus ;
+    rdfs:subClassOf sdata:Typus ;
     rdfs:label "Boundary Type"@en ;
     rdfs:label "Grenzflächentyp"@de ;
     rdfs:comment "Wesensbestimmung eines Grenzflächentyps."@de ;
@@ -1188,10 +1194,10 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #
 #   INVENTAR v0.14.0
 #
-#   KLASSEN (42):
+#   KLASSEN (43):
 #     Object (7), Data (11), Agent (5), Process (1), Boundary (1),
 #     Lex (1), Structura (1), Possibile (1), Norma (4),
-#     Institutio (4), Typus (6)
+#     Institutio (4), Typus (7)
 #
 #   FASSADEN (40):  35 OP + 5 DP  (owl:equivalentProperty → MIN)
 #   EIGENE OP (24): v0.12.0 (10), v0.13.0 (5), v0.13.1 (6), v0.14.0 (3)

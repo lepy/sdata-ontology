@@ -268,7 +268,7 @@ def write_html(model: Model, out_html: Path, title: str) -> None:
             <aside class="sidebar">
               <h1>{title}</h1>
               <div class="meta">
-                Interactive class hierarchy for MIN v3.4.0 and sdata-core.
+                Interactive class hierarchy for MIN v3.7.1 and sdata-core.
               </div>
               <div class="controls">
                 <div>
@@ -478,11 +478,11 @@ def write_html(model: Model, out_html: Path, title: str) -> None:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.4.0.ttl"))
+    parser.add_argument("--min", dest="min_path", type=Path, default=Path("min-v3.7.1.ttl"))
     parser.add_argument("--core", type=Path, default=Path("sdata-core.ttl"))
     parser.add_argument("--out-dir", type=Path, default=Path("docs/diagrams"))
     parser.add_argument("--name", default="sdata-min-core-hierarchy-interactive")
-    parser.add_argument("--title", default="Interactive Class Hierarchy: MIN v3.4.0 -> sdata-core")
+    parser.add_argument("--title", default="Interactive Class Hierarchy: MIN v3.7.1 -> sdata-core")
     return parser.parse_args(argv)
 
 

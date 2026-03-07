@@ -52,7 +52,7 @@
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.13.1> ;
     owl:versionInfo "0.13.1" ;
-    owl:imports <https://w3id.org/min/3.4.0> ;
+    owl:imports <https://w3id.org/min> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
     dcterms:description """Domänenontologie für Materialwissenschaft,

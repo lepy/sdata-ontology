@@ -25,7 +25,7 @@ def core_graph():
 @pytest.fixture(scope="session")
 def min_graph():
     g = Graph()
-    g.parse(ROOT / "min-v3.4.0.ttl", format="turtle")
+    g.parse(ROOT / "min-v3.7.1.ttl", format="turtle")
     return g
 
 

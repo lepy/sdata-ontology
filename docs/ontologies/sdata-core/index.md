@@ -1,6 +1,6 @@
 # sdata-core.ttl
 
-Default-Kernmodell auf `MIN v3.4.0`.
+Default-Kernmodell auf `MIN v3.7.1`.
 
 ## Profile
 

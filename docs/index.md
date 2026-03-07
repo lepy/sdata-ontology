@@ -12,9 +12,9 @@ sdata is a modular ontology suite for Product Passports, Circular Economy and Di
 
 ## Included Modules
 
-- `sdata-core.ttl`: default core profile (`v0.14.0`, MIN v3.4 based)
+- `sdata-core.ttl`: default core profile (`v0.14.0`, MIN v3.7 based)
 - `sdata-core-v0.13.1.ttl`: legacy extended core profile
-- `min-v3.4.0.ttl`: foundation ontology
+- `min-v3.7.1.ttl`: foundation ontology
 - `sdata-material-state.ttl`: material state space extension
 - `sdata-quantities.ttl`: AQV + ValueDomain extension
 - `shapes/sdata-core-shapes.ttl`: SHACL constraints for instance validation

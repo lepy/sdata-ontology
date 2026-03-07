@@ -2,7 +2,7 @@ digraph "" {
 	graph [bgcolor="#FAFBFC",
 		fontname=Helvetica,
 		fontsize=18,
-		label="TTL Graph (Data / informational-dominant): min-v3.2.0-examples.ttl",
+		label="TTL Graph (Data / informational-dominant): min-v3.7.1-examples.ttl",
 		labeljust=c,
 		labelloc=t,
 		nodesep=0.4,
