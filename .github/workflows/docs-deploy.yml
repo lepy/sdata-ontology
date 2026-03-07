@@ -30,11 +30,11 @@ jobs:
       - name: Install uv
         run: pip install uv
 
-      - name: Sync docs dependencies
-        run: uv sync --group docs
+      - name: Install docs dependencies
+        run: uv pip install --system mkdocs mkdocs-material
 
       - name: Build MkDocs site
-        run: uv run --group docs mkdocs build
+        run: mkdocs build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
