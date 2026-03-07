@@ -2,7 +2,7 @@
 
 Kompakte Referenz fuer die Modellierung mit `MIN v3.7`.
 Core-Profile:
-- `sdata-core.ttl` (`v0.14.0`, default)
+- `sdata-core.ttl` (`v0.15.0`, default)
 - `sdata-core-v0.13.1.ttl` (legacy extended profile)
 
 ## Klassenwahl
@@ -19,7 +19,7 @@ sdata-Spezialisierungen:
 - Daten: `sdata:Data`
 - Agenten: `sdata:Person`, `sdata:HardwareAgent`, `sdata:SoftwareAgent`, `sdata:Organization`, `sdata:EnvironmentAgent`
 
-`sdata-core` (`v0.14.0`) enthaelt u. a.:
+`sdata-core` (`v0.15.0`) enthaelt u. a.:
 
 - Forma-Fassaden: `sdata:Law`, `sdata:Model`, `sdata:Scenario`, `sdata:Requirement`, `sdata:Specification`, `sdata:Regulation`, `sdata:Certification`
 - Weitere Data-/Boundary-Typen: `sdata:Identifier`, `sdata:Result`, `sdata:ProductPassport`, `sdata:Boundary`
@@ -63,14 +63,14 @@ Nutze `sms:hasStateAssignment` fuer fachliche Typisierung statt Core-Subklassen:
 - Datentyp: `sms:DataTypeAxis`
 - Material-/Produktzustand: weitere Achsen (`OriginAxis`, `ConditionAxis`, ...)
 
-## FORMA in MIN v3 (verfuegbar in sdata v0.14)
+## FORMA in MIN v3 (verfuegbar in sdata v0.15)
 
 Wenn dein Fall Gesetze, Modelle, Anforderungen oder Institutionen braucht:
 
 - Klassen: `min:Lex`, `min:Structura`, `min:Possibile`, `min:Norma`, `min:Institutio`
 - Bruecken: `min:realizes`, `min:governs`, `min:formalizes`, `min:evaluates`, `min:encodes`
 
-Mit `sdata-core` (`v0.14.0`) kannst du statt `min:*` die sdata-Fassaden nutzen
+Mit `sdata-core` (`v0.15.0`) kannst du statt `min:*` die sdata-Fassaden nutzen
 (z. B. `sdata:Law`, `sdata:Requirement`, `sdata:Certification`).
 
 ## Haeufige Fehler

@@ -1,9 +1,9 @@
 # shapes/sdata-core-shapes.ttl
 
-SHACL-Regeln fuer das `sdata-core v0.14.0`-Profil (MIN v3.7-basiert).
+SHACL-Regeln fuer das `sdata-core v0.15.0`-Profil (MIN v3.7-basiert).
 
 Hinweis:
-- Die Shapes pruefen Basisregeln, die im Default-Core (`sdata-core.ttl` = `v0.14.0`) gelten.
+- Die Shapes pruefen Basisregeln, die im Default-Core (`sdata-core.ttl` = `v0.15.0`) gelten.
 - Bei Nutzung aelterer Core-Versionen bleiben diese Checks weitgehend kompatibel.
 
 Die Shapes pruefen u. a.:

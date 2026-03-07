@@ -1,4 +1,4 @@
-.PHONY: check-uv setup setup-docs setup-pip validate test lint viz-hierarchy viz-min-core viz-min-core-interactive viz-min-opa-core viz-material-state viz-specimen viz-min-v3-examples viz-min-v21-examples viz-min-opa-examples viz-all viz-examples clean
+.PHONY: check-uv setup setup-docs setup-pip validate test lint docs-sdata-classes viz-hierarchy viz-min-core viz-min-core-interactive viz-min-opa-core viz-material-state viz-specimen viz-min-v3-examples viz-min-v21-examples viz-min-opa-examples viz-all viz-examples clean
 
 UV ?= uv
 
@@ -39,6 +39,10 @@ lint: check-uv
 		$(UV) run python -c "from rdflib import Graph; g = Graph(); g.parse('$$f', format='turtle'); print(f'  ✓ {len(g)} triples')" || exit 1; \
 	done
 	@echo "✓ All files valid Turtle."
+
+# ─── Generate sdata-core class docs ──────────────────────────────────────────
+docs-sdata-classes: check-uv
+	$(UV) run python -m src.generate_sdata_class_docs
 
 # ─── Visualize class hierarchy ───────────────────────────────────────────────
 viz-hierarchy: check-uv

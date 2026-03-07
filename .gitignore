@@ -18,3 +18,6 @@ Thumbs.db
 
 # docs build
 site/
+
+# generated diagrams
+docs/diagrams/*.png

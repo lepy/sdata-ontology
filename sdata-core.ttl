@@ -1,7 +1,7 @@
 @prefix sdata:   <https://w3id.org/sdata/core/> .
 @prefix min:     <https://w3id.org/min#> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
-@prefix rdf:     <http://www.w3.org/1999/02/22/rdf-syntax-ns#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -11,10 +11,12 @@
 #
 #   sdata — Semantic Data Ontology (Core)
 #
-#   v0.14.0 — 2026-03-06
+#   v0.15.0 — 2026-03-07
 #
-#   43 Klassen. 24 eigene Object Properties + 35 Fassaden.
-#   19 eigene Datatype Properties + 5 Fassaden.
+#   Konform mit MIN v3.7.1.
+#
+#   46 Klassen. 32 eigene Object Properties + 44 OP-Fassaden.
+#   19 eigene Datatype Properties + 5 DP-Fassaden + 2 AP-Fassaden.
 #
 #   NAMESPACE-REGEL:
 #     Domänennutzer schreiben ausschließlich sdata:*.
@@ -30,8 +32,9 @@
 # =============================================================================
 
 <https://w3id.org/sdata/core> a owl:Ontology ;
-    owl:versionIRI <https://w3id.org/sdata/core/0.14.0> ;
-    owl:versionInfo "0.14.0" ;
+    owl:versionIRI <https://w3id.org/sdata/core/0.15.0> ;
+    owl:versionInfo "0.15.0" ;
+    owl:priorVersion <https://w3id.org/sdata/core/0.14.0> ;
     owl:imports <https://w3id.org/min> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
@@ -39,33 +42,56 @@
     Fertigungstechnik, Produktpässe, Kreislaufwirtschaft,
     Digitale Zwillinge, LCA und Verifiable Credentials.
 
-    Architektur: MIN (Grundontologie) → sdata (Domäne).
+    Architektur: MIN v3.7.1 (Grundontologie) → sdata (Domäne).
     Nutzer arbeiten ausschließlich mit sdata:-Termen.
 
-    43 Klassen über alle MIN-Kategorien:
+    46 Klassen über alle MIN-Kategorien:
       Object (7), Data (11), Agent (5), Process (1), Boundary (1),
-      Lex (1), Structura (1), Possibile (1), Norma (4),
-      Institutio (4), Typus (7)."""@de ;
+      Lex (1), Structura (1), Possibile (1), Norma (1),
+      Institutio (9), Typus (8)."""@de ;
     dcterms:creator "Lepy" ;
-    dcterms:created "2026-03-06"^^xsd:date ;
+    dcterms:created "2026-03-07"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:seeAlso <https://w3id.org/min> ;
-    min:designRationale """v0.14.0 führt drei Architekturprinzipien ein:
+    min:designRationale """v0.15.0 — Konformität mit MIN v3.7.1.
 
-    1. EIN-NAMESPACE-REGEL: Domänennutzer schreiben nur sdata:*.
-       Alle MIN-Relationen werden als owl:equivalentProperty
-       re-exportiert. MIN bleibt als Architektur-Ontologie
-       unter der Haube. 40 Fassaden (35 OP + 5 DP).
+    Änderungen gegenüber v0.14.0:
 
-    2. TYPUS-FASSADEN: Sechs Typus-Fassaden für alle typisierbaren
-       Nexus-Kategorien. Keine Subklassen für Unterscheidungen,
-       die ein Typus leisten kann.
+    1. FASSADEN-KOMPLETT: 9 neue OP-Fassaden für MIN v3.5–v3.7.1,
+       2 neue AP-Fassaden.
+       originates/originatedBy, comprises/comprisedBy,
+       selects, influences, expresses, between,
+       describesOntologyTerm, causalityMode, efficacyMode.
+       Gesamtzahl Fassaden: 44 OP + 5 DP + 2 AP = 51.
 
-    3. VERHALTEN AUS RELATIONEN: Keine Subklasse, wenn das
-       Verhalten aus Relationen emergiert. AssessmentResult
-       gestrichen (emerges aus assessesRequirement).
-       Database gestrichen (kein eigenes Axiom).
-       Algorithm gestrichen (gleiche Ebene wie Model)."""@de .
+    2. REGULATION → INSTITUTIO: ESPR/REACH/RoHS bündeln
+       Anforderungen. Sie sind konventionell, existieren durch
+       Anerkennung. Exakt Searles Kriterium. Atomare
+       Anforderungen bleiben sdata:Requirement (Norma).
+
+    3. SPECIFICATION → INSTITUTIO: DIN EN ISO 6892-1 bündelt
+       Anforderungen. Selbe Argumentation wie Regulation.
+
+    4. LIFECYCLE-PHASE → INSTITUTIO: Lebenszykluseinteilungen
+       sind keine Soll-Aussagen, sondern konventionelle
+       Klassifikationen der LCA-Community.
+
+    5. ASSESSESREQUIREMENT KORRIGIERT: Richtung war
+       Result(Data) → Requirement(Norma) = Nexus → Forma.
+       SubPropertyOf evaluates war falsch (Forma → Nexus).
+       Korrigiert zu rdfs:subPropertyOf sdata:realizes.
+
+    6. SPECIFIES KORRIGIERT: Specification ist jetzt Institutio.
+       SubPropertyOf von evaluates → constrains.
+
+    7. PRODUCTTYPE + MODELTYPE: Zwei fehlende Typus-Fassaden.
+       Produkte und Modelle werden genauso typifiziert wie
+       Materialien und Hardware.
+
+    8. ORGANIZATION: Hinweis auf Dualrolle Agent/Institutio.
+
+    9. VERSCHIEBUNG: Norma von 4 auf 1 Klasse. Institutio
+       von 4 auf 9 Klassen. Typus von 7 auf 8. Gesamt 46."""@de .
 
 
 # #############################################################################
@@ -74,6 +100,9 @@
 #
 #   owl:equivalentProperty — bidirektional, Reasoner-kompatibel.
 #   Nutzer schreiben sdata:performs, Reasoner inferiert min:performs.
+#
+#   44 Object-Property-Fassaden, 5 Datatype-Property-Fassaden,
+#   2 Annotation-Property-Fassaden.
 #
 # #############################################################################
 
@@ -184,7 +213,43 @@ sdata:hasBoundary a owl:ObjectProperty ;
     rdfs:label "has boundary"@en ;
     rdfs:label "hat Grenze"@de .
 
-# --- Brückenrelationen: Nexus ↔ Forma ---
+# --- Kategorienrelationen: Agent → Possibile (v3.6) ---
+
+sdata:selects a owl:ObjectProperty ;
+    owl:equivalentProperty min:selects ;
+    rdfs:label "selects"@en ;
+    rdfs:label "wählt"@de .
+
+# --- Allgemeine Nexus-Relationen (v3.7) ---
+
+sdata:influences a owl:ObjectProperty ;
+    owl:equivalentProperty min:influences ;
+    rdfs:label "influences"@en ;
+    rdfs:label "beeinflusst"@de .
+
+sdata:expresses a owl:ObjectProperty ;
+    owl:equivalentProperty min:expresses ;
+    rdfs:label "expresses"@en ;
+    rdfs:label "drückt aus"@de .
+
+sdata:between a owl:ObjectProperty ;
+    owl:equivalentProperty min:between ;
+    rdfs:label "between"@en ;
+    rdfs:label "zwischen"@de .
+
+# --- Brückenrelationen: Nexus → Forma (Genese, v3.5) ---
+
+sdata:originates a owl:ObjectProperty ;
+    owl:equivalentProperty min:originates ;
+    rdfs:label "originates"@en ;
+    rdfs:label "bringt hervor"@de .
+
+sdata:originatedBy a owl:ObjectProperty ;
+    owl:equivalentProperty min:originatedBy ;
+    rdfs:label "originated by"@en ;
+    rdfs:label "hervorgebracht durch"@de .
+
+# --- Brückenrelationen: Nexus → Forma (Realisierung) ---
 
 sdata:realizes a owl:ObjectProperty ;
     owl:equivalentProperty min:realizes ;
@@ -195,6 +260,8 @@ sdata:realizedBy a owl:ObjectProperty ;
     owl:equivalentProperty min:realizedBy ;
     rdfs:label "realized by"@en ;
     rdfs:label "realisiert durch"@de .
+
+# --- Brückenrelationen: Forma → Nexus (Bestimmung) ---
 
 sdata:constrains a owl:ObjectProperty ;
     owl:equivalentProperty min:constrains ;
@@ -260,7 +327,7 @@ sdata:encodedBy a owl:ObjectProperty ;
     rdfs:label "encoded by"@en ;
     rdfs:label "kodiert durch"@de .
 
-# --- Brückenrelationen: Typus → Nexus ---
+# --- Brückenrelationen: Institutio → Nexus (Typifizierung) ---
 
 sdata:typifies a owl:ObjectProperty ;
     owl:equivalentProperty min:typifies ;
@@ -272,7 +339,26 @@ sdata:typifiedBy a owl:ObjectProperty ;
     rdfs:label "typified by"@en ;
     rdfs:label "typifiziert durch"@de .
 
-# --- Datatype Properties ---
+# --- Intra-Forma: Institutio → Forma (Bündelung, v3.5) ---
+
+sdata:comprises a owl:ObjectProperty ;
+    owl:equivalentProperty min:comprises ;
+    rdfs:label "comprises"@en ;
+    rdfs:label "umfasst"@de .
+
+sdata:comprisedBy a owl:ObjectProperty ;
+    owl:equivalentProperty min:comprisedBy ;
+    rdfs:label "comprised by"@en ;
+    rdfs:label "umfasst durch"@de .
+
+# --- Reflexive Meta-Ebene (v3.7.1) ---
+
+sdata:describesOntologyTerm a owl:ObjectProperty ;
+    owl:equivalentProperty min:describesOntologyTerm ;
+    rdfs:label "describes ontology term"@en ;
+    rdfs:label "beschreibt Ontologieterm"@de .
+
+# --- Datatype-Property-Fassaden ---
 
 sdata:hasIdentifier a owl:DatatypeProperty ;
     owl:equivalentProperty min:hasIdentifier ;
@@ -294,6 +380,18 @@ sdata:hasStatus a owl:DatatypeProperty ;
     owl:equivalentProperty min:hasStatus ;
     rdfs:label "has status"@en .
 
+# --- Annotation-Property-Fassaden (v0.15.0) ---
+
+sdata:causalityMode a owl:AnnotationProperty ;
+    owl:equivalentProperty min:causalityMode ;
+    rdfs:label "causality mode"@en ;
+    rdfs:label "Kausalitätsmodus"@de .
+
+sdata:efficacyMode a owl:AnnotationProperty ;
+    owl:equivalentProperty min:efficacyMode ;
+    rdfs:label "efficacy mode"@en ;
+    rdfs:label "Wirksamkeitsmodus"@de .
+
 
 # #############################################################################
 #
@@ -305,6 +403,7 @@ sdata:Material a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Material"@en ;
     rdfs:label "Werkstoff"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Ein Werkstoff oder Rohstoff. Physische Substanz, die
     in Fertigungsprozessen verarbeitet wird. Identität über chemische
     Zusammensetzung und Gefügezustand."""@de ;
@@ -314,14 +413,17 @@ sdata:Product a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Product"@en ;
     rdfs:label "Produkt"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Ein Erzeugnis, Bauteil oder Halbzeug. Resultat eines
-    Fertigungsprozesses. Träger eines Produktpasses."""@de ;
+    Fertigungsprozesses. Träger eines Produktpasses. Typisierung
+    über sdata:ProductType (sdata:typifiedBy)."""@de ;
     skos:example "Seitenteil, Motorblock, B-Säule, Felge, Baugruppe."@de .
 
 sdata:Hardware a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Hardware"@en ;
     rdfs:label "Hardware"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Physisches Gerät oder Maschine als PASSIVES Ding.
     Wenn aktiv: Doppeltypisierung mit HardwareAgent.
     Klassifizierung über sdata:HardwareType (sdata:typifiedBy)."""@de ;
@@ -331,6 +433,7 @@ sdata:Software a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Software"@en ;
     rdfs:label "Software"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Softwareprodukt als PASSIVES Artefakt. Wenn aktiv:
     Doppeltypisierung mit SoftwareAgent. Klassifizierung über
     sdata:SoftwareType. Datenbanken, Solver, CAD: alles
@@ -341,6 +444,7 @@ sdata:Site a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Site"@en ;
     rdfs:label "Standort"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment "Physischer Standort. Verortung via sdata:locatedAt."@de ;
     skos:example "Werk Duisburg, Presswerk Leipzig, Recyclinganlage Hamburg."@de .
 
@@ -348,6 +452,7 @@ sdata:Specimen a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Specimen"@en ;
     rdfs:label "Probe"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Prüfkörper oder Probe. Weder Material noch Product.
     Provenienz via sdata:sampledFrom."""@de ;
     skos:example "Flachzugprobe (DIN 50125 Typ H), Rundprobe, Kerbschlagprobe."@de .
@@ -356,6 +461,7 @@ sdata:Substance a owl:Class ;
     rdfs:subClassOf min:Object ;
     rdfs:label "Substance"@en ;
     rdfs:label "Substanz"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment """Chemischer Stoff im regulatorischen Sinne (REACH/RoHS/ESPR).
     Material ist werkstofftechnisch, Substance ist stofflich-regulatorisch.
     Dasselbe Blech HAT ein Material und ENTHÄLT Substances."""@de ;
@@ -372,7 +478,9 @@ sdata:Data a owl:Class ;
     rdfs:subClassOf min:Data ;
     rdfs:label "Data"@en ;
     rdfs:label "Daten"@de ;
-    rdfs:comment "Domänenspezifische Daten. Data sdata:encodes Forma."@de ;
+    sdata:causalityMode "mediated" ;
+    rdfs:comment """Domänenspezifische Daten. Data sdata:encodes Forma.
+    Kausalitätsmodus: mediated — wirkt nur über Agent."""@de ;
     skos:example "Messdaten, Werkstoffdatenblatt, CAD-Modell."@de .
 
 sdata:Identifier a owl:Class ;
@@ -402,8 +510,15 @@ sdata:ProductPassport a owl:Class ;
     rdfs:subClassOf sdata:Data ;
     rdfs:label "Product Passport"@en ;
     rdfs:label "Produktpass"@de ;
-    rdfs:comment """Digitaler Produktpass (DPP). Kann zugleich
-    VerifiableCredential sein. Versionskette via sdata:supersedes."""@de ;
+    skos:altLabel "DPP"@en ;
+    skos:altLabel "Digital Product Passport"@en ;
+    rdfs:comment """Digitaler Produktpass (DPP). Die konkrete Datei ist
+    min:Data (Nexus). Die Spezifikation (was enthalten sein muss)
+    ist sdata:Regulation / sdata:Specification (Institutio).
+    Verbindung via sdata:encodes (Data kodiert Institutio) und
+    sdata:typifiedBy (Institutio bestimmt, als was die Datei zählt).
+    Kann zugleich VerifiableCredential sein.
+    Versionskette via sdata:supersedes."""@de ;
     skos:example "ESPR-DPP, Batterie-Pass, Textil-Pass, Stahl-DPP, EPD."@de .
 
 sdata:DigitalTwin a owl:Class ;
@@ -458,12 +573,14 @@ sdata:Person a owl:Class ;
     rdfs:subClassOf min:Agent ;
     rdfs:label "Person"@en ;
     rdfs:label "Person"@de ;
+    sdata:causalityMode "dispositional" ;
     skos:example "Prüfer, Konstrukteur, Werker, Laborant."@de .
 
 sdata:HardwareAgent a owl:Class ;
     rdfs:subClassOf min:Agent ;
     rdfs:label "Hardware Agent"@en ;
     rdfs:label "Hardware-Agent"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment "Handlungsfähige Maschine. Doppeltypisierung mit Hardware."@de ;
     skos:example "CNC-Fräse, Roboterarm, Prüfmaschine (im Betrieb)."@de .
 
@@ -471,18 +588,27 @@ sdata:SoftwareAgent a owl:Class ;
     rdfs:subClassOf min:Agent ;
     rdfs:label "Software Agent"@en ;
     rdfs:label "Software-Agent"@de ;
+    sdata:causalityMode "dispositional" ;
     skos:example "FE-Solver (rechnend), ML-Modell, DPP-Service."@de .
 
 sdata:Organization a owl:Class ;
     rdfs:subClassOf min:Agent ;
     rdfs:label "Organization"@en ;
     rdfs:label "Organisation"@de ;
+    sdata:causalityMode "dispositional" ;
+    rdfs:comment """Organisation als HANDELNDER Agent. Wenn dasselbe
+    Unternehmen als juristische Person oder anerkannte Institution
+    modelliert werden soll, ZUSÄTZLICH Doppeltypisierung mit
+    min:Institutio oder sdata:LegalEntity.
+    Organisation als Handelnder: sdata:Organization (Agent).
+    Organisation als juristische Person: + min:Institutio."""@de ;
     skos:example "Stahlwerk, Prüflabor, Zertifizierer, OEM, Recycler."@de .
 
 sdata:EnvironmentAgent a owl:Class ;
     rdfs:subClassOf min:Agent ;
     rdfs:label "Environment Agent"@en ;
     rdfs:label "Umwelt-Agent"@de ;
+    sdata:causalityMode "dispositional" ;
     skos:example "Korrosion, UV-Strahlung, Feuchtigkeit."@de .
 
 
@@ -496,6 +622,7 @@ sdata:Process a owl:Class ;
     rdfs:subClassOf min:Process ;
     rdfs:label "Process"@en ;
     rdfs:label "Prozess"@de ;
+    sdata:causalityMode "dispositional" ;
     rdfs:comment "Typisierung über sdata:ProcessType (sdata:typifiedBy)."@de ;
     skos:example "Tiefziehen, Zugversuch, FEM-Simulation, LCA-Studie."@de .
 
@@ -503,6 +630,7 @@ sdata:Boundary a owl:Class ;
     rdfs:subClassOf min:Boundary ;
     rdfs:label "Boundary"@en ;
     rdfs:label "Grenze"@de ;
+    sdata:causalityMode "relational" ;
     rdfs:comment "Typisierung über sdata:BoundaryType."@de ;
     skos:example "Übergangswiderstand, Reibung, Adhäsion, Korngrenze."@de .
 
@@ -517,15 +645,18 @@ sdata:Law a owl:Class ;
     rdfs:subClassOf min:Lex ;
     rdfs:label "Law"@en ;
     rdfs:label "Gesetz"@de ;
+    sdata:efficacyMode "lawful" ;
     skos:example "Energieerhaltung, Massenerhaltung, Ficksches Diffusionsgesetz."@de .
 
 sdata:Model a owl:Class ;
     rdfs:subClassOf min:Structura ;
     rdfs:label "Model"@en ;
     rdfs:label "Modell"@de ;
+    sdata:efficacyMode "structural" ;
     rdfs:comment """Mathematische/formale Struktur. Deckt beschreibende
     Strukturen (von-Mises) und berechenbare Verfahren (Newton-Raphson,
-    Ed25519, LSTM) gleichermaßen ab."""@de ;
+    Ed25519, LSTM) gleichermaßen ab. Typisierung über
+    sdata:ModelType (sdata:typifiedBy)."""@de ;
     skos:example """von-Mises, Johnson-Cook, ReCiPe, Ed25519,
     Newton-Raphson, Gradient Boosting, LSTM, DB-Schema."""@de .
 
@@ -533,12 +664,16 @@ sdata:Scenario a owl:Class ;
     rdfs:subClassOf min:Possibile ;
     rdfs:label "Scenario"@en ;
     rdfs:label "Szenario"@de ;
+    sdata:efficacyMode "modal" ;
     skos:example "Versagensszenario, FMEA-Zeile, Designalternative."@de .
 
 
 # #############################################################################
 #
-#   TEIL VII — FORMA: NORMA (4)
+#   TEIL VII — FORMA: NORMA (1)
+#
+#   v0.15.0: Regulation, Specification, LifecyclePhase → Institutio.
+#   Nur atomare Anforderungen bleiben Norma.
 #
 # #############################################################################
 
@@ -546,30 +681,22 @@ sdata:Requirement a owl:Class ;
     rdfs:subClassOf min:Norma ;
     rdfs:label "Requirement"@en ;
     rdfs:label "Anforderung"@de ;
+    sdata:efficacyMode "normative" ;
+    rdfs:comment """ATOMARE Anforderung oder Grenzwert. Jede einzelne
+    Anforderung ist eine eigenständige Norma-Instanz. Bündelung
+    mehrerer Requirements zu einer Specification oder Regulation
+    ist Institutio (via sdata:comprises)."""@de ;
     skos:example "Rm ≥ 340 MPa, Ra ≤ 1.6 µm, FU: 1 kg Stahl ab Werk."@de .
-
-sdata:Specification a owl:Class ;
-    rdfs:subClassOf min:Norma ;
-    rdfs:label "Specification"@en ;
-    rdfs:label "Spezifikation"@de ;
-    skos:example "EN 10025-2, DIN EN ISO 6892-1, ISO 14040."@de .
-
-sdata:Regulation a owl:Class ;
-    rdfs:subClassOf min:Norma ;
-    rdfs:label "Regulation"@en ;
-    rdfs:label "Verordnung"@de ;
-    skos:example "ESPR, CBAM, REACH, RoHS, EU-Taxonomie."@de .
-
-sdata:LifecyclePhase a owl:Class ;
-    rdfs:subClassOf min:Norma ;
-    rdfs:label "Lifecycle Phase"@en ;
-    rdfs:label "Lebenszyklusphase"@de ;
-    skos:example "Rohstoffgewinnung, Fertigung, Nutzung, End-of-Life."@de .
 
 
 # #############################################################################
 #
-#   TEIL VIII — FORMA: INSTITUTIO (4)
+#   TEIL VIII — FORMA: INSTITUTIO (9)
+#
+#   v0.15.0: Regulation, Specification, LifecyclePhase hierher verschoben.
+#   Begründung: sie bündeln Anforderungen, existieren durch Anerkennung,
+#   erfüllen Searles Kriterium. Ihre einzelnen Anforderungen bleiben
+#   sdata:Requirement (Norma).
 #
 # #############################################################################
 
@@ -577,38 +704,96 @@ sdata:Certification a owl:Class ;
     rdfs:subClassOf min:Institutio ;
     rdfs:label "Certification"@en ;
     rdfs:label "Zertifizierung"@de ;
+    sdata:efficacyMode "institutional" ;
     skos:example "ISO 9001, EN 10204 3.1, CE-Kennzeichnung."@de .
 
 sdata:Accreditation a owl:Class ;
     rdfs:subClassOf min:Institutio ;
     rdfs:label "Accreditation"@en ;
     rdfs:label "Akkreditierung"@de ;
+    sdata:efficacyMode "institutional" ;
     skos:example "DAkkS-Akkreditierung, UKAS."@de .
 
 sdata:Registry a owl:Class ;
     rdfs:subClassOf min:Institutio ;
     rdfs:label "Registry"@en ;
     rdfs:label "Register"@de ;
+    sdata:efficacyMode "institutional" ;
     skos:example "Catena-X Registry, GAIA-X Registry."@de .
 
 sdata:TrustFramework a owl:Class ;
     rdfs:subClassOf min:Institutio ;
     rdfs:label "Trust Framework"@en ;
     rdfs:label "Vertrauensrahmen"@de ;
+    sdata:efficacyMode "institutional" ;
     skos:example "Catena-X, GAIA-X, EBSI, IBU EPD-Programm."@de .
+
+sdata:Regulation a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Regulation"@en ;
+    rdfs:label "Verordnung"@de ;
+    sdata:efficacyMode "institutional" ;
+    rdfs:comment """Regulatorisches Rahmenwerk. BÜNDELT atomare
+    Anforderungen (sdata:Requirement) via sdata:comprises.
+    Existiert durch kollektive Anerkennung (EU, nationale
+    Gesetzgeber). Exakt Searles Kriterium.
+    v0.15.0: von Norma nach Institutio verschoben."""@de ;
+    skos:example "ESPR, CBAM, REACH, RoHS, EU-Taxonomie."@de .
+
+sdata:Specification a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Specification"@en ;
+    rdfs:label "Spezifikation"@de ;
+    sdata:efficacyMode "institutional" ;
+    rdfs:comment """Technische Spezifikation oder Norm. BÜNDELT atomare
+    Anforderungen (sdata:Requirement) via sdata:comprises.
+    Existiert durch Anerkennung der Normungsgemeinschaft.
+    v0.15.0: von Norma nach Institutio verschoben."""@de ;
+    skos:example "EN 10025-2, DIN EN ISO 6892-1, ISO 14040."@de .
+
+sdata:LifecyclePhase a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Lifecycle Phase"@en ;
+    rdfs:label "Lebenszyklusphase"@de ;
+    sdata:efficacyMode "institutional" ;
+    rdfs:comment """Konventionelle Lebenszykluseinteilung. Keine
+    Soll-Aussage, sondern konventionelle Klassifikation der
+    LCA/ESPR-Community. Existiert durch Anerkennung.
+    v0.15.0: von Norma nach Institutio verschoben."""@de ;
+    skos:example "Rohstoffgewinnung, Fertigung, Nutzung, End-of-Life."@de .
+
+sdata:LegalEntity a owl:Class ;
+    rdfs:subClassOf min:Institutio ;
+    rdfs:label "Legal Entity"@en ;
+    rdfs:label "Juristische Person"@de ;
+    sdata:efficacyMode "institutional" ;
+    rdfs:comment """Organisation als juristische Person oder anerkannte
+    Institution. Gegenstück zu sdata:Organization (Agent).
+    Doppeltypisierung: dasselbe Unternehmen kann zugleich
+    Organization (Agent, handelt) und LegalEntity (Institutio,
+    existiert durch rechtliche Anerkennung) sein.
+    Searle: ‹X counts as Y in context C.›"""@de ;
+    skos:example "GmbH, AG, Universität, Normungsgremium, Behörde."@de .
 
 
 # #############################################################################
 #
-#   TEIL IX — FORMA: TYPUS (7)
+#   TEIL IX — FORMA: TYPUS (8)
+#
+#   v0.15.0: +ProductType, +ModelType.
 #
 # #############################################################################
 
 sdata:Typus a owl:Class ;
     rdfs:subClassOf min:Institutio ;
+    rdfs:label "Typus"@en ;
+    rdfs:label "Typus"@de ;
+    sdata:efficacyMode "institutional" ;
     rdfs:comment """Konventionelle Wesensbestimmung in der Domäne.
     Bündelt Norma, Structura, Lex zu einem benannten Typ.
-    Spezialisierung von Institutio für technische Klassifikation."""@de .
+    Spezialisierung von Institutio für technische Klassifikation.
+    Typifiziert Nexus via sdata:typifies.
+    Bündelt Forma via sdata:comprises."""@de .
 
 sdata:MaterialGrade a owl:Class ;
     rdfs:subClassOf sdata:Typus ;
@@ -623,6 +808,14 @@ sdata:ProcessType a owl:Class ;
     rdfs:label "Verfahrenstyp"@de ;
     rdfs:comment "Wesensbestimmung eines Verfahrens. Nicht Specification."@de ;
     skos:example "Zugversuch nach ISO 6892-1, Tiefziehen, Crashsimulation."@de .
+
+sdata:ProductType a owl:Class ;
+    rdfs:subClassOf sdata:Typus ;
+    rdfs:label "Product Type"@en ;
+    rdfs:label "Produkttyp"@de ;
+    rdfs:comment """Wesensbestimmung eines Produkts. Typisiert sdata:Product
+    via sdata:typifies. v0.15.0: neu."""@de ;
+    skos:example "Seitenteil, B-Säule, Felge, Platine, Baugruppe, Coil."@de .
 
 sdata:DataFormat a owl:Class ;
     rdfs:subClassOf sdata:Typus ;
@@ -652,10 +845,19 @@ sdata:BoundaryType a owl:Class ;
     rdfs:comment "Wesensbestimmung eines Grenzflächentyps."@de ;
     skos:example "Coulomb-Reibung, Σ3-CSL-Korngrenze, thermischer Kontaktwiderstand."@de .
 
+sdata:ModelType a owl:Class ;
+    rdfs:subClassOf sdata:Typus ;
+    rdfs:label "Model Type"@en ;
+    rdfs:label "Modelltyp"@de ;
+    rdfs:comment """Wesensbestimmung eines Modelltyps. Unterscheidet
+    physikalische Modelle, kryptographische Verfahren,
+    ML-Architekturen, Schemata. v0.15.0: neu."""@de ;
+    skos:example "Materialmodell, Kryptoalgorithmus, ML-Architektur, DB-Schema."@de .
+
 
 # #############################################################################
 #
-#   TEIL X — EIGENE sdata OBJECT PROPERTIES (24)
+#   TEIL X — EIGENE sdata OBJECT PROPERTIES (36)
 #
 # #############################################################################
 
@@ -724,12 +926,6 @@ sdata:producedBy a owl:ObjectProperty ;
 
 # --- v0.13.0 ---
 
-sdata:specifies a owl:ObjectProperty ;
-    rdfs:label "specifies"@en ;
-    rdfs:domain sdata:Specification ;
-    rdfs:range min:Nexus ;
-    rdfs:subPropertyOf sdata:evaluates .
-
 sdata:certifiedUnder a owl:ObjectProperty ;
     rdfs:label "certified under"@en ;
     rdfs:domain min:Nexus ;
@@ -789,7 +985,11 @@ sdata:assessesRequirement a owl:ObjectProperty ;
     rdfs:label "assesses requirement"@en ;
     rdfs:domain sdata:Result ;
     rdfs:range sdata:Requirement ;
-    rdfs:subPropertyOf sdata:evaluates .
+    rdfs:subPropertyOf sdata:realizes ;
+    rdfs:comment """v0.15.0 KORRIGIERT: SubPropertyOf realizes (nicht evaluates).
+    Begründung: Richtung ist Result(Data/Nexus) → Requirement(Norma/Forma).
+    Das ist Nexus → Forma, also realizes-Richtung.
+    evaluates geht Forma → Nexus (umgekehrte Richtung)."""@de .
 
 # --- v0.14.0 ---
 
@@ -810,6 +1010,84 @@ sdata:hasBOM a owl:ObjectProperty ;
     rdfs:domain sdata:Product ;
     rdfs:range sdata:BillOfMaterials ;
     rdfs:subPropertyOf sdata:describedBy .
+
+# --- v0.15.0 ---
+
+sdata:specifies a owl:ObjectProperty ;
+    rdfs:label "specifies"@en ;
+    rdfs:domain sdata:Specification ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf sdata:constrains ;
+    rdfs:comment """v0.15.0 KORRIGIERT: SubPropertyOf constrains (nicht evaluates).
+    Begründung: Specification ist jetzt Institutio (Forma).
+    Richtung Forma → Nexus = constrains."""@de .
+
+sdata:regulates a owl:ObjectProperty ;
+    rdfs:label "regulates"@en ;
+    rdfs:label "reguliert"@de ;
+    rdfs:domain sdata:Regulation ;
+    rdfs:range min:Nexus ;
+    rdfs:subPropertyOf sdata:constrains ;
+    rdfs:comment """Regulation beschränkt Nexus. v0.15.0: neu.
+    Richtung Forma → Nexus = constrains."""@de .
+
+sdata:requiresPhase a owl:ObjectProperty ;
+    rdfs:label "requires phase"@en ;
+    rdfs:label "erfordert Phase"@de ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:LifecyclePhase ;
+    rdfs:subPropertyOf sdata:realizes ;
+    rdfs:comment """Process realisiert eine Lebenszyklusphase.
+    v0.15.0: neu."""@de .
+
+sdata:issuedBy a owl:ObjectProperty ;
+    rdfs:label "issued by"@en ;
+    rdfs:label "herausgegeben von"@de ;
+    rdfs:domain min:Institutio ;
+    rdfs:range min:Agent ;
+    rdfs:subPropertyOf sdata:constitutedBy ;
+    rdfs:comment """Allgemeine Herausgeber-Relation. v0.15.0: neu."""@de .
+
+sdata:governedBy a owl:ObjectProperty ;
+    rdfs:label "governed by"@en ;
+    rdfs:label "geregelt durch"@de ;
+    rdfs:domain sdata:Process ;
+    rdfs:range sdata:Law ;
+    rdfs:comment """Process wird von einem Naturgesetz bestimmt.
+    Inverse Domänen-Perspektive zu sdata:governs.
+    v0.15.0: neu."""@de .
+
+sdata:originatedIn a owl:ObjectProperty ;
+    rdfs:label "originated in"@en ;
+    rdfs:label "entstanden in"@de ;
+    rdfs:domain min:Forma ;
+    rdfs:range sdata:Process ;
+    rdfs:subPropertyOf sdata:originatedBy ;
+    rdfs:comment """Forma entstand in einem Process.
+    Spezialisierung von originatedBy. v0.15.0: neu."""@de .
+
+sdata:hasLegalEntity a owl:ObjectProperty ;
+    rdfs:label "has legal entity"@en ;
+    rdfs:label "hat juristische Person"@de ;
+    rdfs:domain sdata:Organization ;
+    rdfs:range sdata:LegalEntity ;
+    rdfs:comment """Verbindet den Agent-Aspekt einer Organisation
+    mit ihrem Institutio-Aspekt (juristische Person).
+    v0.15.0: neu."""@de .
+
+sdata:regulatedBy a owl:ObjectProperty ;
+    rdfs:label "regulated by"@en ;
+    rdfs:label "reguliert durch"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range sdata:Regulation ;
+    owl:inverseOf sdata:regulates .
+
+sdata:specifiedBy a owl:ObjectProperty ;
+    rdfs:label "specified by"@en ;
+    rdfs:label "spezifiziert durch"@de ;
+    rdfs:domain min:Nexus ;
+    rdfs:range sdata:Specification ;
+    owl:inverseOf sdata:specifies .
 
 
 # #############################################################################
@@ -933,22 +1211,21 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
                   sdata:Organization sdata:EnvironmentAgent ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( sdata:Requirement sdata:Specification
-                  sdata:Regulation sdata:LifecyclePhase ) .
-
-[] a owl:AllDisjointClasses ;
     owl:members ( sdata:Certification sdata:Accreditation
-                  sdata:Registry sdata:TrustFramework ) .
+                  sdata:Registry sdata:TrustFramework
+                  sdata:Regulation sdata:Specification
+                  sdata:LifecyclePhase sdata:LegalEntity ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( sdata:MaterialGrade sdata:ProcessType
+    owl:members ( sdata:MaterialGrade sdata:ProcessType sdata:ProductType
                   sdata:DataFormat sdata:HardwareType
-                  sdata:SoftwareType sdata:BoundaryType ) .
+                  sdata:SoftwareType sdata:BoundaryType
+                  sdata:ModelType ) .
 
 
 # #############################################################################
 #
-#   TEIL XIII — MODELING PATTERNS (1–15, rein sdata:)
+#   TEIL XIII — MODELING PATTERNS (1–16, rein sdata:)
 #
 # #############################################################################
 
@@ -968,14 +1245,23 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #   :recyclat_001  a sdata:Material .
 
 # =============================================================================
-#   MUSTER 2: Lebenszyklusübergreifender Produktpass
+#   MUSTER 2: Lebenszyklusübergreifender Produktpass (DPP)
 # =============================================================================
+#
+#   :espr_dpp_spec  a sdata:Regulation ;
+#       sdata:hasName "ESPR Digital Product Passport" ;
+#       sdata:comprises :req_co2_deklaration ,
+#                        :req_recyclatanteil ,
+#                        :req_reparierbarkeit ;
+#       sdata:constitutedBy :eu_kommission ;
+#       sdata:recognizedBy :eu_mitgliedstaaten .
 #
 #   :dpp_001  a sdata:ProductPassport , sdata:VerifiableCredential ;
 #       sdata:describes :bauteil_001 ;
+#       sdata:encodes :espr_dpp_spec ;
+#       sdata:typifiedBy :espr_dpp_spec ;
 #       sdata:hasComponent :result_walzen ;
 #       sdata:hasComponent :proof_001 ;
-#       sdata:encodes :iso_9001_cert ;
 #       sdata:signedBy :oem_ag ;
 #       sdata:identifiedBy :did_dpp_001 .
 
@@ -988,7 +1274,10 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:hasValue "did:web:oem.example.com" .
 #   :pubkey_oem  a sdata:CryptographicKey ;
 #       sdata:encodes :ed25519 .
-#   :ed25519  a sdata:Model .
+#   :ed25519  a sdata:Model ;
+#       sdata:typifiedBy :krypto_typ .
+#   :krypto_typ  a sdata:ModelType ;
+#       sdata:hasName "Kryptographisches Verfahren" .
 #   :proof_001  a sdata:Proof ;
 #       sdata:signedBy :oem_ag ;
 #       sdata:encodes :ed25519 .
@@ -1001,8 +1290,12 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:hasInput :baugruppe_001 ;
 #       sdata:performedBy :lca_berater ;
 #       sdata:realizes :recipe_2016 ;
+#       sdata:requiresPhase :phase_production ;
 #       sdata:usesSoftware :openlca .
-#   :recipe_2016  a sdata:Model .
+#   :recipe_2016  a sdata:Model ;
+#       sdata:typifiedBy :lca_methode_typ .
+#   :lca_methode_typ  a sdata:ModelType ;
+#       sdata:hasName "LCA-Wirkungsabschätzung" .
 #   :lca_result  a sdata:Result ;
 #       sdata:generatedBy :lca_studie .
 
@@ -1030,15 +1323,18 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:hasOutput :coil_002 .
 
 # =============================================================================
-#   MUSTER 7: Digitaler Zwilling
+#   MUSTER 7: Digitaler Zwilling mit Szenarioauswahl
 # =============================================================================
 #
 #   :dz_001  a sdata:DigitalTwin , sdata:SoftwareAgent ;
 #       sdata:describes :bauteil_001 ;
 #       sdata:encodes :johnson_cook ;
-#       sdata:typifiedBy :predictive_twin_typ .
+#       sdata:typifiedBy :predictive_twin_typ ;
+#       sdata:selects :szenario_versagen_links .
 #   :predictive_twin_typ  a sdata:SoftwareType .
 #   :johnson_cook  a sdata:Model .
+#   :szenario_versagen_links  a sdata:Scenario ;
+#       sdata:concerns :bauteil_001 .
 
 # =============================================================================
 #   MUSTER 8: Verifikation
@@ -1058,13 +1354,17 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 # =============================================================================
 #
 #   :bauteil_001  a sdata:Product ;
+#       sdata:typifiedBy :seitenteil_typ ;
 #       sdata:hasCustodian :stahlwerk_ag ;
 #       sdata:locatedAt :werk_duisburg .
+#   :seitenteil_typ  a sdata:ProductType ;
+#       sdata:hasName "Seitenteil" .
 #   :custody_transfer  a sdata:Process ;
 #       sdata:hasInput :bauteil_001 ;
 #       sdata:performedBy :stahlwerk_ag ;
 #       sdata:hasOutput :bauteil_001_at_oem .
 #   :bauteil_001_at_oem  a sdata:Product ;
+#       sdata:typifiedBy :seitenteil_typ ;
 #       sdata:hasCustodian :oem_ag ;
 #       sdata:locatedAt :presswerk_leipzig .
 
@@ -1112,15 +1412,19 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:signedBy :pruefinstitut_ag .
 
 # =============================================================================
-#   MUSTER 13: Typus-Kette (alle 6 Fassaden)
+#   MUSTER 13: Typus-Kette (alle 8 Fassaden)
 # =============================================================================
 #
 #   :DC04  a sdata:MaterialGrade ;
 #       sdata:hasName "DC04" ;
-#       sdata:typifies :blech_042 .
+#       sdata:typifies :blech_042 ;
+#       sdata:comprises :req_C_max , :req_Rm_270 , :structura_bcc .
 #   :zugversuch_iso6892  a sdata:ProcessType ;
 #       sdata:hasName "Zugversuch nach ISO 6892-1" ;
 #       sdata:typifies :zugversuch_001 .
+#   :seitenteil_typ  a sdata:ProductType ;
+#       sdata:hasName "Seitenteil" ;
+#       sdata:typifies :bauteil_001 .
 #   :universalpruefmaschine  a sdata:HardwareType ;
 #       sdata:hasName "Universalprüfmaschine" ;
 #       sdata:typifies :zwick_z250 .
@@ -1134,7 +1438,10 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:typifiedBy :fe_solver_typ ;
 #       sdata:performs :crashsim_001 ;
 #       sdata:realizes :zentrale_differenzen .
-#   :zentrale_differenzen  a sdata:Model .
+#   :zentrale_differenzen  a sdata:Model ;
+#       sdata:typifiedBy :numerik_typ .
+#   :numerik_typ  a sdata:ModelType ;
+#       sdata:hasName "Numerisches Integrationsverfahren" .
 #   :csv_rfc4180  a sdata:DataFormat ;
 #       sdata:typifies :resultfile_001 .
 #   :coulomb_reibung  a sdata:BoundaryType ;
@@ -1189,20 +1496,100 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:hasComponent :result_svhc ;
 #       sdata:signedBy :oem_ag .
 
+# =============================================================================
+#   MUSTER 16: Regulation bündelt Requirements (v0.15.0)
+# =============================================================================
+#
+#   :espr  a sdata:Regulation ;
+#       sdata:hasIdentifier "EU-2024/1781" ;
+#       sdata:hasName "Ecodesign for Sustainable Products Regulation" ;
+#       sdata:comprises :req_dpp_pflicht ,
+#                        :req_recyclatanteil ,
+#                        :req_co2_deklaration ,
+#                        :req_reparierbarkeit ;
+#       sdata:constitutedBy :eu_kommission ;
+#       sdata:recognizedBy :eu_mitgliedstaaten ;
+#       sdata:regulates :bauteil_001 .
+#
+#   :req_dpp_pflicht  a sdata:Requirement ;
+#       sdata:hasName "DPP-Pflicht ab 2027" ;
+#       sdata:evaluates :bauteil_001 .
+#   :req_recyclatanteil  a sdata:Requirement ;
+#       sdata:hasName "Recyclatanteil ≥ 25%" .
+#   :req_co2_deklaration  a sdata:Requirement ;
+#       sdata:hasName "CO₂-Fußabdruck muss deklariert werden" .
+#
+#   :din_en_iso_6892_1  a sdata:Specification ;
+#       sdata:hasIdentifier "DIN EN ISO 6892-1:2019" ;
+#       sdata:hasName "Metallic materials — Tensile testing" ;
+#       sdata:comprises :req_dehnrate ,
+#                        :req_probenform ,
+#                        :req_prueftemperatur ;
+#       sdata:specifies :zugversuch_001 ;
+#       sdata:constitutedBy :iso_tc164 .
+#
+#   :req_prueftemperatur  a sdata:Requirement ;
+#       sdata:hasName "Prüftemperatur 23 ± 5 °C" ;
+#       sdata:evaluates :zugversuch_001 .
+
 
 # #############################################################################
 #
-#   INVENTAR v0.14.0
+#   INVENTAR v0.15.0
 #
-#   KLASSEN (43):
-#     Object (7), Data (11), Agent (5), Process (1), Boundary (1),
-#     Lex (1), Structura (1), Possibile (1), Norma (4),
-#     Institutio (4), Typus (7)
+#   KLASSEN (46):
+#     Object (7): Material, Product, Hardware, Software, Site,
+#                 Specimen, Substance
+#     Data (11):  Data, Identifier, Result, ResultFile, ProductPassport,
+#                 DigitalTwin, VerifiableCredential, VerifiablePresentation,
+#                 Proof, CryptographicKey, BillOfMaterials
+#     Agent (5):  Person, HardwareAgent, SoftwareAgent, Organization,
+#                 EnvironmentAgent
+#     Process (1): Process
+#     Boundary (1): Boundary
+#     Lex (1):      Law
+#     Structura (1): Model
+#     Possibile (1): Scenario
+#     Norma (1):     Requirement
+#     Institutio (9): Certification, Accreditation, Registry,
+#                     TrustFramework, Regulation, Specification,
+#                     LifecyclePhase, LegalEntity, Typus
+#     Typus (8):     MaterialGrade, ProcessType, ProductType,
+#                    DataFormat, HardwareType, SoftwareType,
+#                    BoundaryType, ModelType
 #
-#   FASSADEN (40):  35 OP + 5 DP  (owl:equivalentProperty → MIN)
-#   EIGENE OP (24): v0.12.0 (10), v0.13.0 (5), v0.13.1 (6), v0.14.0 (3)
-#   EIGENE DP (19): v0.12.0 (7), v0.13.0 (5), v0.13.1 (4), v0.14.0 (3)
-#   DISJUNKTHEITSAXIOME (5): Object, Agent, Norma, Institutio, Typus
-#   MODELING PATTERNS (15): rein sdata:
+#   FASSADEN (51): 44 OP + 5 DP + 2 AP (owl:equivalentProperty → MIN)
+#   EIGENE OP (32): v0.12.0 (10), v0.13.0 (4), v0.13.1 (6),
+#                   v0.14.0 (3), v0.15.0 (9)
+#   EIGENE DP (19): unverändert
+#   DISJUNKTHEITSAXIOME (4): Object, Agent, Institutio, Typus
+#   MODELING PATTERNS (16): rein sdata:
+#
+#   ÄNDERUNGEN GEGENÜBER v0.14.0:
+#
+#   FASSADEN NEU (9 OP + 2 AP):
+#     originates, originatedBy, comprises, comprisedBy,
+#     selects, influences, expresses, between,
+#     describesOntologyTerm,
+#     causalityMode, efficacyMode
+#
+#   KLASSEN VERSCHOBEN (3): Norma → Institutio
+#     Regulation, Specification, LifecyclePhase
+#
+#   KLASSEN NEU (3):
+#     LegalEntity (Institutio), ProductType (Typus), ModelType (Typus)
+#
+#   EIGENE OP NEU (9) + KORRIGIERT (2):
+#     regulates, regulatedBy, specifiedBy,
+#     requiresPhase, issuedBy, governedBy,
+#     originatedIn, hasLegalEntity,
+#     specifies (verschoben + korrigiert: subOf constrains),
+#     assessesRequirement (korrigiert: subOf realizes)
+#
+#   DISJUNKTHEITSAXIOME: Norma-Axiom entfernt (nur noch 1 Klasse),
+#     Institutio-Axiom erweitert, Typus-Axiom erweitert.
+#
+#   KAUSALITÄTSMODI: sdata:causalityMode auf allen Nexus-Klassen.
+#     sdata:efficacyMode auf allen Forma-Klassen.
 #
 # #############################################################################

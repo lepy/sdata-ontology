@@ -4,8 +4,8 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Status
 
-- Core (default alias): `sdata-core.ttl` (`v0.14.0`)
-- Core (latest release): `sdata-core-v0.14.0.ttl`
+- Core (default alias): `sdata-core.ttl` (`v0.15.0`)
+- Core (latest release): `sdata-core-v0.15.0.ttl`
 - Foundation: `MIN v3.7.1` (`min-v3.7.1.ttl`)
 - Foundation examples: `examples/min-v3.7.1-examples.ttl`
 - State Space: `sdata-material-state-v0.5.0.ttl`
@@ -13,9 +13,9 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
 
 ## Module Overview
 
-- `sdata-core.ttl` (`v0.14.0`, default profile)
-: 42 classes, 24 object properties, 19 datatype properties
-: plus 40 MIN facade properties (`owl:equivalentProperty`).
+- `sdata-core.ttl` (`v0.15.0`, default profile)
+: 46 classes, 32 object properties, 19 datatype properties
+: plus 51 MIN facade properties (`owl:equivalentProperty` / `owl:equivalentAnnotationProperty`).
 - `sdata-core-v0.13.1.ttl` (`legacy extended profile`)
 : 35 classes, 21 object properties, 16 datatype properties.
 - `sdata-material-state.ttl` (`v0.5.0`)
@@ -39,7 +39,7 @@ Ontology suite for Product Passports, Circular Economy, and Digital Twins.
   - Process: `Process`
   - Data: `Data`
   - Agents: `Person`, `HardwareAgent`, `SoftwareAgent`, `Organization`, `EnvironmentAgent`
-- `sdata-core-v0.14.0` adds:
+- `sdata-core-v0.15.0` adds:
   - full `sdata:*` facades for MIN relations (one-namespace workflow)
   - Typus facades (`typifiedBy` patterns across typable Nexus categories)
   - additional domain classes including `Specimen`, `BillOfMaterials`, `Substance`
@@ -136,6 +136,7 @@ uv run python -m src.visualization.min_v21_examples_plot
 - `v0.12 -> v0.13`: expanded sdata facade for MIN v3 (including Forma classes).
 - `v0.13.0 -> v0.13.1`: adds custody, registry binding, DPP supersession, and validity/revocation fields.
 - `v0.13.1 -> v0.14.0`: switches to one-namespace modeling (`sdata:*` facades for MIN) and Typus facades.
+- `v0.14.0 -> v0.15.0`: MIN v3.7.1 conformance, facade completion, and Forma realignment (`Regulation`/`Specification`/`LifecyclePhase` to `Institutio`).
 - `sdata:Data` is `subClassOf min:Data`.
 - MIN polarity is schema-level (`min:materialProperty`, `min:informationalProperty`), not instance blank-node aspects.
 
