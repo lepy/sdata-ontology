@@ -1,0 +1,317 @@
+@prefix min:     <https://w3id.org/min#> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+@prefix qudt:    <http://qudt.org/schema/qudt/> .
+@prefix ex:      <https://example.org/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+# =============================================================================
+#
+#   MIN v3.7.1 — Beispiele
+#
+#   Flacher Graph.
+#   Quantitative Werte werden konsistent als
+#   sdata:AttributeQuantityValue modelliert.
+#
+#   v3.7.1 — 2026-03-07
+#
+# =============================================================================
+
+
+# #############################################################################
+#
+#   SCHEMA: Textuelle Informations-Properties
+#
+#   Quantitative Angaben liegen als AQV an der Instanz
+#   (sdata:hasQuantity + qudt:numericValue).
+#
+# #############################################################################
+
+ex:werkstoffNr a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Werkstoffnummer"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range xsd:string .
+
+ex:gefuege a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Gefuege"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range xsd:string .
+
+ex:chemAnalyse a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Chemische Analyse"@de ;
+    rdfs:domain min:Object ;
+    rdfs:range xsd:string .
+
+ex:prozessplanNr a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Prozessplan-Nummer"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range xsd:string .
+
+ex:pruefnorm a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Pruefnorm"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range xsd:string .
+
+ex:maschinentyp a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Maschinentyp"@de ;
+    rdfs:domain min:Process ;
+    rdfs:range xsd:string .
+
+ex:dateiformat a owl:DatatypeProperty ;
+    rdfs:subPropertyOf min:informationalProperty ;
+    rdfs:label "Dateiformat"@de ;
+    rdfs:domain min:Data ;
+    rdfs:range xsd:string .
+
+
+# #############################################################################
+#
+#   INSTANZEN — Flacher Graph
+#
+# #############################################################################
+
+
+# =============================================================================
+#   1. OBJECT — Stahlcoil (material-dominant)
+# =============================================================================
+
+ex:Stahlcoil_2026_001 a min:Object ;
+    min:hasIdentifier "COIL-HC340-001" ;
+    min:hasName "HC340LA Warmband-Coil" ;
+    min:hasTimestamp "2026-01-15T08:30:00"^^xsd:dateTime ;
+    min:hasStatus "freigegeben" ;
+
+    sdata:hasQuantity ex:Stahlcoil_2026_001_Masse_AQV ;
+    sdata:hasQuantity ex:Stahlcoil_2026_001_Breite_AQV ;
+    sdata:hasQuantity ex:Stahlcoil_2026_001_Dicke_AQV ;
+    sdata:hasQuantity ex:Stahlcoil_2026_001_Dichte_AQV ;
+    sdata:hasQuantity ex:Stahlcoil_2026_001_Streckgrenze_AQV ;
+
+    ex:werkstoffNr "1.0548" ;
+    ex:chemAnalyse "C<=0.12 Mn<=1.6 Si<=0.5 P<=0.03 Al>=0.015 Ti<=0.15" ;
+    ex:gefuege "Ferritisch-bainitisch" .
+
+
+# =============================================================================
+#   2. PROCESS — Tiefziehen (ausgewogen)
+# =============================================================================
+
+ex:Tiefziehen_2026_017 a min:Process ;
+    min:hasIdentifier "PROC-TZ-017" ;
+    min:hasName "Tiefziehen Kotfluegel links" ;
+    min:hasTimestamp "2026-02-10T14:22:00"^^xsd:dateTime ;
+    min:hasStatus "abgeschlossen" ;
+
+    sdata:hasQuantity ex:Tiefziehen_2026_017_Pressenkraft_AQV ;
+    sdata:hasQuantity ex:Tiefziehen_2026_017_Energieverbrauch_AQV ;
+    sdata:hasQuantity ex:Tiefziehen_2026_017_Ziehverhaeltnis_AQV ;
+
+    ex:prozessplanNr "PP-2026-042" ;
+    ex:maschinentyp "Schuler ServoDirect 16000" ;
+
+    min:hasInput ex:Stahlcoil_2026_001 ;
+    min:hasOutput ex:Bauteil_2026_042 ;
+    min:performedBy ex:Presswerk_Agent_001 ;
+    min:generates ex:Zugversuchsdaten_2026_042 .
+
+
+# =============================================================================
+#   3. DATA — Zugversuchsdaten (informational-dominant)
+# =============================================================================
+
+ex:Zugversuchsdaten_2026_042 a min:Data ;
+    min:hasIdentifier "DATA-ZV-042" ;
+    min:hasName "Zugversuchsdaten HC340LA Charge 2026-001" ;
+    min:hasTimestamp "2026-02-12T09:15:00"^^xsd:dateTime ;
+    min:hasStatus "validiert" ;
+
+    sdata:hasQuantity ex:Zugversuchsdaten_2026_042_Dateigroesse_AQV ;
+    sdata:hasQuantity ex:Zugversuchsdaten_2026_042_Rp02_AQV ;
+
+    ex:pruefnorm "DIN EN ISO 6892-1" ;
+    ex:dateiformat "CSV" ;
+
+    min:describes ex:Stahlcoil_2026_001 ;
+    min:generatedBy ex:Tiefziehen_2026_017 .
+
+
+# =============================================================================
+#   4. AGENT + OBJECT — Presswerk (nicht-disjunkt)
+# =============================================================================
+
+ex:Presswerk_Agent_001 a min:Agent , min:Object ;
+    min:hasIdentifier "AGT-PRESS-001" ;
+    min:hasName "Presswerk Linie 3" ;
+    min:hasStatus "aktiv" ;
+
+    sdata:hasQuantity ex:Presswerk_Agent_001_Masse_AQV ;
+
+    min:performs ex:Tiefziehen_2026_017 ;
+    min:owns ex:Bauteil_2026_042 .
+
+
+# =============================================================================
+#   5. Zweites Object — Bauteil (Output des Tiefziehens)
+# =============================================================================
+
+ex:Bauteil_2026_042 a min:Object ;
+    min:hasIdentifier "PART-KFL-042" ;
+    min:hasName "Kotfluegel links" ;
+    min:hasStatus "gefertigt" ;
+    min:resultOf ex:Tiefziehen_2026_017 .
+
+
+# =============================================================================
+#   6. FORMA — exemplarische Nutzung der funf FORMA-Klassen
+# =============================================================================
+
+ex:Energieerhaltung a min:Lex ;
+    min:hasIdentifier "LEX-ENERGY-CONSERVATION" ;
+    min:hasName "Energieerhaltung" ;
+    min:governs ex:Tiefziehen_2026_017 ;
+    min:constrains ex:Tiefziehen_2026_017 .
+
+ex:VonMisesFliessflaeche a min:Structura ;
+    min:hasIdentifier "STR-VON-MISES" ;
+    min:hasName "von-Mises-Fliessflaeche" ;
+    min:formalizes ex:Tiefziehen_2026_017 .
+
+ex:RissbildungAnBiegeradius a min:Possibile ;
+    min:hasIdentifier "POSS-CRACK-BEND-RADIUS" ;
+    min:hasName "Rissbildung am Biegeradius" ;
+    min:concerns ex:Bauteil_2026_042 ;
+    min:alternativeTo ex:Bauteil_2026_042 .
+
+ex:MindestStreckgrenze340MPa a min:Norma ;
+    min:hasIdentifier "NOR-RP02-MIN-340" ;
+    min:hasName "Mindeststreckgrenze Rp0.2 >= 340 MPa" ;
+    min:evaluates ex:Bauteil_2026_042 .
+
+ex:DIN_EN_ISO_6892_1_Zertifizierungsregime a min:Institutio ;
+    min:hasIdentifier "INST-DIN-EN-ISO-6892-1" ;
+    min:hasName "DIN EN ISO 6892-1 Zertifizierungsregime" .
+
+ex:Tiefziehen_2026_017
+    min:realizes ex:Energieerhaltung , ex:VonMisesFliessflaeche .
+
+ex:Bauteil_2026_042
+    min:realizes ex:MindestStreckgrenze340MPa .
+
+ex:Presswerk_Agent_001
+    min:recognizes ex:DIN_EN_ISO_6892_1_Zertifizierungsregime ;
+    min:constitutes ex:DIN_EN_ISO_6892_1_Zertifizierungsregime .
+
+ex:Zugversuchsdaten_2026_042
+    min:encodes ex:VonMisesFliessflaeche ,
+                ex:RissbildungAnBiegeradius ,
+                ex:MindestStreckgrenze340MPa ,
+                ex:DIN_EN_ISO_6892_1_Zertifizierungsregime .
+
+
+# =============================================================================
+#   AQV — Quantitative Werte
+# =============================================================================
+
+ex:Stahlcoil_2026_001_Masse_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "masse_kg" ;
+    sdata:unitSymbol "kg" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 12500.0 .
+
+ex:Stahlcoil_2026_001_Breite_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "breite_mm" ;
+    sdata:unitSymbol "mm" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 1200.0 .
+
+ex:Stahlcoil_2026_001_Dicke_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "dicke_mm" ;
+    sdata:unitSymbol "mm" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 2.0 .
+
+ex:Stahlcoil_2026_001_Dichte_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "dichte_kg_m3" ;
+    sdata:unitSymbol "kg/m3" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 7850.0 .
+
+ex:Stahlcoil_2026_001_Streckgrenze_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "streckgrenze_MPa" ;
+    sdata:unitSymbol "MPa" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 340.0 .
+
+ex:Tiefziehen_2026_017_Pressenkraft_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "pressenkraft_kN" ;
+    sdata:unitSymbol "kN" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 4500.0 .
+
+ex:Tiefziehen_2026_017_Energieverbrauch_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "energieverbrauch_kWh" ;
+    sdata:unitSymbol "kWh" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 12.8 .
+
+ex:Tiefziehen_2026_017_Ziehverhaeltnis_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "ziehverhaeltnis" ;
+    sdata:unitSymbol "-" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 2.1 .
+
+ex:Zugversuchsdaten_2026_042_Dateigroesse_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "dateigroesse_MB" ;
+    sdata:unitSymbol "MB" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 2.4 .
+
+ex:Zugversuchsdaten_2026_042_Rp02_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "streckgrenze_Rp02_MPa" ;
+    sdata:unitSymbol "MPa" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 358.0 .
+
+ex:Presswerk_Agent_001_Masse_AQV a sdata:AttributeQuantityValue ;
+    min:hasName "masse_kg" ;
+    sdata:unitSymbol "kg" ;
+    sdata:dtype "float" ;
+    qudt:numericValue 180000.0 .
+
+
+# #############################################################################
+#
+#   SPARQL-BEISPIELE
+#
+#   1. Alle AQVs des Coils:
+#
+#      SELECT ?aqv ?name ?value ?unit WHERE {
+#          ex:Stahlcoil_2026_001 sdata:hasQuantity ?aqv .
+#          ?aqv a sdata:AttributeQuantityValue ;
+#               min:hasName ?name ;
+#               qudt:numericValue ?value .
+#          OPTIONAL { ?aqv sdata:unitSymbol ?unit }
+#      }
+#
+#   2. Alle informationalen Text-Properties des Coils:
+#
+#      SELECT ?prop ?val WHERE {
+#          ex:Stahlcoil_2026_001 ?prop ?val .
+#          ?prop rdfs:subPropertyOf* min:informationalProperty .
+#      }
+#
+#   3. Direkte Massenabfrage via AQV:
+#
+#      SELECT ?m WHERE {
+#          ex:Stahlcoil_2026_001 sdata:hasQuantity ?q .
+#          ?q min:hasName "masse_kg" ; qudt:numericValue ?m .
+#      }
+#
+# #############################################################################
