@@ -14,8 +14,20 @@ Fassade für min:Lex. Das, was immer gilt.
 
 ## Examples
 - (none)
-## Industriebeispiel
-- Praxisfall aus der Industrie, in dem `sdata:Lex` zur semantischen Modellierung eingesetzt wird.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Praxisfall aus der Industrie, in dem `sdata:Lex` zur semantischen Modellierung eingesetzt wird.
+ex:lex_001 a sdata:Lex ;
+  min:hasIdentifier "LEX-001" ;
+  min:hasName "Lex fuer Produktpasspflicht" ;
+  min:governs ex:process_001 .
+
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

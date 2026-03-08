@@ -13,8 +13,20 @@ Wesensbestimmung eines Hardware-Typs. Ersetzt Hardware-Subklassen.
 
 ## Examples
 - `Universalprüfmaschine, Hydraulische Presse, Thermoelement Typ K.`
-## Industriebeispiel
-- Typisierung einer Ofenanlage als `Induktionsofen 2 MW`.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Typisierung einer Ofenanlage als `Induktionsofen 2 MW`.
+ex:hardware_type_001 a sdata:HardwareType ;
+  min:hasIdentifier "HARDWARETYPE-001" ;
+  min:hasName "HardwareType Klassifikation" ;
+  min:typifies ex:hardware_001 .
+
+ex:hardware_001 a sdata:Hardware .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

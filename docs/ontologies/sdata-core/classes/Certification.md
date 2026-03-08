@@ -13,8 +13,22 @@
 
 ## Examples
 - `ISO 9001, EN 10204 3.1, CE-Kennzeichnung.`
-## Industriebeispiel
-- ISO-9001-Zertifikat eines Ziehwerks als Nachweis im Produktpass.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# ISO-9001-Zertifikat eines Ziehwerks als Nachweis im Produktpass.
+ex:certification_001 a sdata:Certification ;
+  min:hasIdentifier "CERTIFICATION-001" ;
+  min:hasName "Certification Branchenregel" ;
+  min:typifies ex:process_001 ;
+  min:comprises ex:req_001 .
+
+ex:req_001 a sdata:Requirement .
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

@@ -24,8 +24,20 @@ Konventionelle Wesensbestimmung in der Domäne.
 
 ## Examples
 - (none)
-## Industriebeispiel
-- Domänentyp `Leiterklasse 5` zur standardisierten Einordnung von Produkten.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Domänentyp `Leiterklasse 5` zur standardisierten Einordnung von Produkten.
+ex:typus_001 a sdata:Typus ;
+  min:hasIdentifier "TYPUS-001" ;
+  min:hasName "Typus Klassifikation" ;
+  min:typifies ex:product_001 .
+
+ex:product_001 a sdata:Product .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

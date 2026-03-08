@@ -14,8 +14,21 @@ Fassade für min:Structura. Das, was die
 
 ## Examples
 - (none)
-## Industriebeispiel
-- Praxisfall aus der Industrie, in dem `sdata:Structura` zur semantischen Modellierung eingesetzt wird.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Praxisfall aus der Industrie, in dem `sdata:Structura` zur semantischen Modellierung eingesetzt wird.
+ex:structura_001 a sdata:Structura ;
+  min:hasIdentifier "STRUCTURA-001" ;
+  min:hasName "Structura zur Prozessauslegung" ;
+  min:constrains ex:process_001 .
+
+ex:model_data_001 a sdata:Data ; min:encodes ex:model_001 .
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

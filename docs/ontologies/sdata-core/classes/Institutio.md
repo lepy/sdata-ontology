@@ -23,8 +23,22 @@ Fassade für min:Institutio. Das, was anerkannt wird.
 
 ## Examples
 - (none)
-## Industriebeispiel
-- Praxisfall aus der Industrie, in dem `sdata:Institutio` zur semantischen Modellierung eingesetzt wird.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Praxisfall aus der Industrie, in dem `sdata:Institutio` zur semantischen Modellierung eingesetzt wird.
+ex:institutio_001 a sdata:Institutio ;
+  min:hasIdentifier "INSTITUTIO-001" ;
+  min:hasName "Institutio Branchenregel" ;
+  min:typifies ex:process_001 ;
+  min:comprises ex:req_001 .
+
+ex:req_001 a sdata:Requirement .
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

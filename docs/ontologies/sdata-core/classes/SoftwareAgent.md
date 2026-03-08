@@ -16,8 +16,22 @@ Software als handelnder Agent. Co-Typisierung:
 
 ## Examples
 - `FE-Solver (rechnend), ML-Modell, DPP-Service.`
-## Industriebeispiel
-- Automatischer Regelalgorithmus, der Ziehgeschwindigkeit adaptiv anpasst.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Automatischer Regelalgorithmus, der Ziehgeschwindigkeit adaptiv anpasst.
+ex:software_agent_001 a sdata:SoftwareAgent ;
+  min:hasIdentifier "SOFTWAREAGENT-001" ;
+  min:hasName "SoftwareAgent Akteur" ;
+  min:performs ex:process_001 ;
+  min:actsOn ex:product_001 .
+
+ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:product_001 a sdata:Product .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

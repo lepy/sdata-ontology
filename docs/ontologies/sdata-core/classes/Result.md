@@ -15,8 +15,22 @@ Semantisches Ergebnis-Bündel. Assessment-Verhalten
 
 ## Examples
 - `Zugversuchsergebnis, FEM-Ergebnis, Compliance-Bewertung.`
-## Industriebeispiel
-- Bestanden/Nicht-bestanden Ergebnis einer elektrischen End-of-Line-Pruefung.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Bestanden/Nicht-bestanden Ergebnis einer elektrischen End-of-Line-Pruefung.
+ex:result_001 a sdata:Result ;
+  min:hasIdentifier "RESULT-001" ;
+  min:hasName "Result Datensatz" ;
+  min:describes ex:product_001 ;
+  sdata:producedBy ex:process_001 .
+
+ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:product_001 a sdata:Product .
+```
 ## Used As Domain
 - `sdata:assessesRequirement`
 - `sdata:assessmentOutcome`

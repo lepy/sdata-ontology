@@ -16,8 +16,22 @@ Technische Spezifikation oder Norm. BÜNDELT atomare
 
 ## Examples
 - `EN 10025-2, DIN EN ISO 6892-1, ISO 14040.`
-## Industriebeispiel
-- DIN EN ISO 6892-1 als Spezifikation fuer Zugversuchsablauf und Auswertung.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# DIN EN ISO 6892-1 als Spezifikation fuer Zugversuchsablauf und Auswertung.
+ex:specification_001 a sdata:Specification ;
+  min:hasIdentifier "SPECIFICATION-001" ;
+  min:hasName "Specification Branchenregel" ;
+  min:typifies ex:process_001 ;
+  min:comprises ex:req_001 .
+
+ex:req_001 a sdata:Requirement .
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - `sdata:specifies`
 ## Used As Range

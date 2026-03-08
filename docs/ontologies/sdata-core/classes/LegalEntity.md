@@ -23,8 +23,22 @@ Juristische Person als reine Institutio — OHNE Agency.
 
 ## Examples
 - `Aufgelöste GmbH, historische Institution, Rechtsform als Muster.`
-## Industriebeispiel
-- Rechtliche Einheit eines OEMs als Vertragspartner in der Lieferkette.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Rechtliche Einheit eines OEMs als Vertragspartner in der Lieferkette.
+ex:legal_entity_001 a sdata:LegalEntity ;
+  min:hasIdentifier "LEGALENTITY-001" ;
+  min:hasName "LegalEntity Branchenregel" ;
+  min:typifies ex:process_001 ;
+  min:comprises ex:req_001 .
+
+ex:req_001 a sdata:Requirement .
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

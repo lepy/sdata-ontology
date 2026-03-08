@@ -12,8 +12,22 @@ Signiertes Credential. W3C VC Data Model.
 
 ## Examples
 - `Signiertes Materialzeugnis, DPP als VC.`
-## Industriebeispiel
-- Signiertes Hersteller-Zertifikat als maschinenpruefbarer Nachweis.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Signiertes Hersteller-Zertifikat als maschinenpruefbarer Nachweis.
+ex:verifiable_credential_001 a sdata:VerifiableCredential ;
+  min:hasIdentifier "VERIFIABLECREDENTIAL-001" ;
+  min:hasName "VerifiableCredential Datensatz" ;
+  min:describes ex:product_001 ;
+  sdata:producedBy ex:process_001 .
+
+ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:product_001 a sdata:Product .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

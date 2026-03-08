@@ -13,8 +13,20 @@ Wesensbestimmung eines Verfahrens. Nicht Specification.
 
 ## Examples
 - `Zugversuch nach ISO 6892-1, Tiefziehen, Crashsimulation.`
-## Industriebeispiel
-- Typisierung als `Kaltumformung` innerhalb der Prozessklassifikation.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Typisierung als `Kaltumformung` innerhalb der Prozessklassifikation.
+ex:process_type_001 a sdata:ProcessType ;
+  min:hasIdentifier "PROCESSTYPE-001" ;
+  min:hasName "ProcessType Klassifikation" ;
+  min:typifies ex:process_001 .
+
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

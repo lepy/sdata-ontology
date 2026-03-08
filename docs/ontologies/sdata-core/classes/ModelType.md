@@ -15,8 +15,20 @@ Wesensbestimmung eines Modelltyps. Unterscheidet
 
 ## Examples
 - `Materialmodell, Kryptoalgorithmus, ML-Architektur, DB-Schema.`
-## Industriebeispiel
-- Typisierung als `Transientes Thermomodell` fuer Simulationsdaten.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Typisierung als `Transientes Thermomodell` fuer Simulationsdaten.
+ex:model_type_001 a sdata:ModelType ;
+  min:hasIdentifier "MODELTYPE-001" ;
+  min:hasName "ModelType Klassifikation" ;
+  min:typifies ex:model_001 .
+
+ex:model_001 a sdata:Model .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

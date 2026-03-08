@@ -13,8 +13,20 @@
 
 ## Examples
 - `Energieerhaltung, Massenerhaltung, Ficksches Diffusionsgesetz.`
-## Industriebeispiel
-- EU-Batterieverordnung als rechtsverbindliche Grundlage fuer DPP-Pflichten.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# EU-Batterieverordnung als rechtsverbindliche Grundlage fuer DPP-Pflichten.
+ex:law_001 a sdata:Law ;
+  min:hasIdentifier "LAW-001" ;
+  min:hasName "Law fuer Produktpasspflicht" ;
+  min:governs ex:process_001 .
+
+ex:process_001 a sdata:Process .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

@@ -13,8 +13,20 @@ Wesensbestimmung eines Grenzflächentyps.
 
 ## Examples
 - `Coulomb-Reibung, Σ3-CSL-Korngrenze, thermischer Kontaktwiderstand.`
-## Industriebeispiel
-- Typisierung einer Grenze als `Cradle-to-Gate` fuer ein DPP-LCA-Modell.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Typisierung einer Grenze als `Cradle-to-Gate` fuer ein DPP-LCA-Modell.
+ex:boundary_type_001 a sdata:BoundaryType ;
+  min:hasIdentifier "BOUNDARYTYPE-001" ;
+  min:hasName "BoundaryType Klassifikation" ;
+  min:typifies ex:boundary_001 .
+
+ex:boundary_001 a sdata:Boundary .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

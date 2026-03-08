@@ -6,6 +6,7 @@ import argparse
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
+import re
 
 from rdflib import Graph, Literal, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
@@ -60,6 +61,65 @@ INDUSTRY_EXAMPLE_BY_CLASS: dict[str, str] = {
     "Typus": "Domänentyp `Leiterklasse 5` zur standardisierten Einordnung von Produkten.",
     "VerifiableCredential": "Signiertes Hersteller-Zertifikat als maschinenpruefbarer Nachweis.",
     "VerifiablePresentation": "Gebuendelte Vorlage mehrerer Nachweise fuer Audit oder Behoerde.",
+}
+
+OBJECT_CLASSES = {
+    "Object",
+    "Material",
+    "Product",
+    "Hardware",
+    "Software",
+    "Site",
+    "Specimen",
+    "Substance",
+}
+
+DATA_CLASSES = {
+    "Data",
+    "Identifier",
+    "Result",
+    "ResultFile",
+    "ProductPassport",
+    "DigitalProductPassport",
+    "DigitalTwin",
+    "VerifiableCredential",
+    "VerifiablePresentation",
+    "Proof",
+    "CryptographicKey",
+    "BillOfMaterials",
+}
+
+AGENT_CLASSES = {
+    "Agent",
+    "Person",
+    "HardwareAgent",
+    "SoftwareAgent",
+    "Organization",
+    "EnvironmentAgent",
+}
+
+TYPUS_CLASSES = {
+    "Typus",
+    "MaterialGrade",
+    "ProcessType",
+    "ProductType",
+    "DataFormat",
+    "HardwareType",
+    "SoftwareType",
+    "BoundaryType",
+    "ModelType",
+}
+
+INSTITUTIO_CLASSES = {
+    "Institutio",
+    "Certification",
+    "Accreditation",
+    "Registry",
+    "TrustFramework",
+    "Regulation",
+    "Specification",
+    "LifecyclePhase",
+    "LegalEntity",
 }
 
 
@@ -204,6 +264,191 @@ def _industry_example(name: str) -> str:
     return f"Praxisfall aus der Industrie, in dem `sdata:{name}` zur semantischen Modellierung eingesetzt wird."
 
 
+def _slug(name: str) -> str:
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+
+
+def _industry_ttl(name: str) -> str:
+    example = _industry_example(name)
+    slug = _slug(name)
+    lines = [
+        "@prefix sdata: <https://w3id.org/sdata/core/> .",
+        "@prefix min:   <https://w3id.org/min#> .",
+        "@prefix ex:    <https://example.org/industry/> .",
+        "",
+        f"# {example}",
+    ]
+
+    if name == "Process":
+        lines.extend(
+            [
+                "ex:process_001 a sdata:Process ;",
+                '  min:hasIdentifier "PROC-001" ;',
+                '  min:hasName "Warmumformung Linie 3" ;',
+                "  min:hasInput ex:material_001 ;",
+                "  min:hasOutput ex:product_001 ;",
+                "  min:performedBy ex:person_001 ;",
+                "  min:generates ex:data_001 .",
+                "",
+                "ex:material_001 a sdata:Material .",
+                "ex:product_001 a sdata:Product ; sdata:hasMaterial ex:material_001 .",
+                "ex:person_001 a sdata:Person .",
+                "ex:data_001 a sdata:Data ; sdata:producedBy ex:process_001 .",
+            ]
+        )
+    elif name in DATA_CLASSES:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Datensatz" ;',
+                "  min:describes ex:product_001 ;",
+                "  sdata:producedBy ex:process_001 .",
+                "",
+                "ex:process_001 a sdata:Process ; min:generates ex:data_001 .",
+                "ex:product_001 a sdata:Product .",
+            ]
+        )
+    elif name in AGENT_CLASSES:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Akteur" ;',
+                "  min:performs ex:process_001 ;",
+                "  min:actsOn ex:product_001 .",
+                "",
+                "ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .",
+                "ex:product_001 a sdata:Product .",
+            ]
+        )
+    elif name == "Boundary":
+        lines.extend(
+            [
+                "ex:boundary_001 a sdata:Boundary ;",
+                '  min:hasIdentifier "BOUND-001" ;',
+                '  min:hasName "Kontaktgrenze Werkzeug-Blech" ;',
+                "  min:bounds ex:tool_001 ;",
+                "  min:bounds ex:sheet_001 .",
+                "",
+                "ex:tool_001 a sdata:Hardware .",
+                "ex:sheet_001 a sdata:Material .",
+            ]
+        )
+    elif name in TYPUS_CLASSES:
+        target_map = {
+            "MaterialGrade": "Material",
+            "ProcessType": "Process",
+            "ProductType": "Product",
+            "DataFormat": "Data",
+            "HardwareType": "Hardware",
+            "SoftwareType": "Software",
+            "BoundaryType": "Boundary",
+            "ModelType": "Model",
+        }
+        target = target_map.get(name, "Product")
+        target_slug = _slug(target)
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Klassifikation" ;',
+                f"  min:typifies ex:{target_slug}_001 .",
+                "",
+                f"ex:{target_slug}_001 a sdata:{target} .",
+            ]
+        )
+    elif name in {"Structura", "Model"}:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} zur Prozessauslegung" ;',
+                "  min:constrains ex:process_001 .",
+                "",
+                "ex:model_data_001 a sdata:Data ; min:encodes ex:model_001 .",
+                "ex:process_001 a sdata:Process .",
+            ]
+        )
+    elif name in {"Possibile", "Scenario"}:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} 30 Prozent Rezyklat" ;',
+                "  min:concerns ex:product_001 ;",
+                f"  min:alternativeTo ex:{slug}_002 .",
+                "",
+                f"ex:{slug}_002 a sdata:{name} ; min:concerns ex:product_001 .",
+                "ex:product_001 a sdata:Product .",
+            ]
+        )
+    elif name in {"Norma", "Requirement"}:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Leitfaehigkeitsgrenze" ;',
+                "  min:evaluates ex:result_001 .",
+                "",
+                "ex:result_001 a sdata:Result ; sdata:assessmentOutcome \"pass\" .",
+            ]
+        )
+    elif name in {"Lex", "Law"}:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} fuer Produktpasspflicht" ;',
+                "  min:governs ex:process_001 .",
+                "",
+                "ex:process_001 a sdata:Process .",
+            ]
+        )
+    elif name in INSTITUTIO_CLASSES:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Branchenregel" ;',
+                "  min:typifies ex:process_001 ;",
+                "  min:comprises ex:req_001 .",
+                "",
+                "ex:req_001 a sdata:Requirement .",
+                "ex:process_001 a sdata:Process .",
+            ]
+        )
+    elif name in OBJECT_CLASSES:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Instanz" ;',
+                "  min:describedBy ex:data_001 .",
+                "",
+                "ex:data_001 a sdata:Data ;",
+                "  min:describes ex:product_001 ;",
+                "  sdata:producedBy ex:process_001 .",
+                "",
+                "ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .",
+                "ex:product_001 a sdata:Product .",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  min:hasIdentifier "{name.upper()}-001" ;',
+                f'  min:hasName "{name} Beispielinstanz" ;',
+                "  min:nexusWith ex:context_001 .",
+                "",
+                "ex:context_001 a sdata:Data .",
+            ]
+        )
+
+    return "\n".join(lines)
+
+
 def write_class_page(path: Path, info: ClassInfo) -> None:
     super_lines = [_format_class_ref(iri) for iri in info.superclasses]
     sub_lines = [_format_class_ref(iri) for iri in info.subclasses]
@@ -224,8 +469,10 @@ def write_class_page(path: Path, info: ClassInfo) -> None:
     lines.append((f"{info.comment}\n\n" if info.comment else "(none)\n\n"))
     lines.append("## Examples\n")
     lines.append(_render_list([f"`{example}`" for example in info.examples]))
-    lines.append("## Industriebeispiel\n")
-    lines.append(f"- {_industry_example(info.name)}\n")
+    lines.append("## Industriebeispiel (TTL)\n")
+    lines.append("```turtle\n")
+    lines.append(_industry_ttl(info.name))
+    lines.append("\n```\n")
     lines.append("## Used As Domain\n")
     lines.append(_render_list(domain_lines))
     lines.append("## Used As Range\n")

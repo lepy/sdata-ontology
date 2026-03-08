@@ -16,8 +16,22 @@ Handlungsfähige Maschine. Co-Typisierung:
 
 ## Examples
 - `CNC-Fräse, Roboterarm, Prüfmaschine (im Betrieb).`
-## Industriebeispiel
-- Autonomer Roboterarm, der Materialproben umspannt und zufuehrt.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Autonomer Roboterarm, der Materialproben umspannt und zufuehrt.
+ex:hardware_agent_001 a sdata:HardwareAgent ;
+  min:hasIdentifier "HARDWAREAGENT-001" ;
+  min:hasName "HardwareAgent Akteur" ;
+  min:performs ex:process_001 ;
+  min:actsOn ex:product_001 .
+
+ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:product_001 a sdata:Product .
+```
 ## Used As Domain
 - (none)
 ## Used As Range

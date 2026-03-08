@@ -13,8 +13,20 @@ Wesensbestimmung eines Dateiformats.
 
 ## Examples
 - `STEP AP214, JT, VTU, CSV (RFC 4180), JSON-LD, Parquet.`
-## Industriebeispiel
-- Definition des Datenformats als OPC-UA-Export fuer Shopfloor-Integrationen.
+## Industriebeispiel (TTL)
+```turtle
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix ex:    <https://example.org/industry/> .
+
+# Definition des Datenformats als OPC-UA-Export fuer Shopfloor-Integrationen.
+ex:data_format_001 a sdata:DataFormat ;
+  min:hasIdentifier "DATAFORMAT-001" ;
+  min:hasName "DataFormat Klassifikation" ;
+  min:typifies ex:data_001 .
+
+ex:data_001 a sdata:Data .
+```
 ## Used As Domain
 - (none)
 ## Used As Range
