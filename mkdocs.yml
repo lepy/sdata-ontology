@@ -3,6 +3,8 @@ site_description: Semantic Data Ontology for Product Passports, Circular Economy
 repo_url: https://github.com/lepy/sdata-ontology
 theme:
   name: material
+extra_javascript:
+  - javascripts/md-path-redirect.js
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
