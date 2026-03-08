@@ -24,17 +24,16 @@ Produktpass als Data-Artefakt. Allgemeine Klasse
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Digital Product Passport eines Hochvolt-Kabels mit Material- und Compliance-Daten.
 ex:product_passport_001 a sdata:ProductPassport ;
-  min:hasIdentifier "PRODUCTPASSPORT-001" ;
-  min:hasName "ProductPassport Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "PRODUCTPASSPORT-001" ;
+  sdata:hasName "ProductPassport Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

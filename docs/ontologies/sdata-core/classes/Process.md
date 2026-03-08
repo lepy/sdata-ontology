@@ -16,17 +16,16 @@ Typisierung über sdata:ProcessType (sdata:typifiedBy).
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Mehrstufiger Ziehprozess zur Reduktion des Leitungsquerschnitts.
 ex:process_001 a sdata:Process ;
-  min:hasIdentifier "PROC-001" ;
-  min:hasName "Warmumformung Linie 3" ;
-  min:hasInput ex:material_001 ;
-  min:hasOutput ex:product_001 ;
-  min:performedBy ex:person_001 ;
-  min:generates ex:data_001 .
+  sdata:hasIdentifier "PROC-001" ;
+  sdata:hasName "Warmumformung Linie 3" ;
+  sdata:hasInput ex:material_001 ;
+  sdata:hasOutput ex:product_001 ;
+  sdata:performedBy ex:person_001 ;
+  sdata:generates ex:data_001 .
 
 ex:material_001 a sdata:Material .
 ex:product_001 a sdata:Product ; sdata:hasMaterial ex:material_001 .

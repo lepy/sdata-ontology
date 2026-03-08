@@ -16,17 +16,16 @@ Schlüsselmaterial. sdata:encodes ein Model.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Oeffentlicher Schluessel zur Verifikation signierter DPP-Dokumente.
 ex:cryptographic_key_001 a sdata:CryptographicKey ;
-  min:hasIdentifier "CRYPTOGRAPHICKEY-001" ;
-  min:hasName "CryptographicKey Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "CRYPTOGRAPHICKEY-001" ;
+  sdata:hasName "CryptographicKey Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

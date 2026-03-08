@@ -16,15 +16,14 @@
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # EUDI-/VC-Vertrauensrahmen fuer interoperable Nachweise im DPP.
 ex:trust_framework_001 a sdata:TrustFramework ;
-  min:hasIdentifier "TRUSTFRAMEWORK-001" ;
-  min:hasName "TrustFramework Branchenregel" ;
-  min:typifies ex:process_001 ;
-  min:comprises ex:req_001 .
+  sdata:hasIdentifier "TRUSTFRAMEWORK-001" ;
+  sdata:hasName "TrustFramework Branchenregel" ;
+  sdata:typifies ex:process_001 ;
+  sdata:comprises ex:req_001 .
 
 ex:req_001 a sdata:Requirement .
 ex:process_001 a sdata:Process .

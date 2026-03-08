@@ -19,20 +19,19 @@ Softwareprodukt als PASSIVES Artefakt. Wenn aktiv:
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # MES-System zur Erfassung von Prozessparametern und Chargenbezug.
 ex:software_001 a sdata:Software ;
-  min:hasIdentifier "SOFTWARE-001" ;
-  min:hasName "Software Instanz" ;
-  min:describedBy ex:data_001 .
+  sdata:hasIdentifier "SOFTWARE-001" ;
+  sdata:hasName "Software Instanz" ;
+  sdata:describedBy ex:data_001 .
 
 ex:data_001 a sdata:Data ;
-  min:describes ex:product_001 ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

@@ -16,17 +16,16 @@
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Szenario `30% Rezyklatanteil` zur Bewertung von CO2- und Kostenwirkungen.
 ex:scenario_001 a sdata:Scenario ;
-  min:hasIdentifier "SCENARIO-001" ;
-  min:hasName "Scenario 30 Prozent Rezyklat" ;
-  min:concerns ex:product_001 ;
-  min:alternativeTo ex:scenario_002 .
+  sdata:hasIdentifier "SCENARIO-001" ;
+  sdata:hasName "Scenario 30 Prozent Rezyklat" ;
+  sdata:concerns ex:product_001 ;
+  sdata:alternativeTo ex:scenario_002 .
 
-ex:scenario_002 a sdata:Scenario ; min:concerns ex:product_001 .
+ex:scenario_002 a sdata:Scenario ; sdata:concerns ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

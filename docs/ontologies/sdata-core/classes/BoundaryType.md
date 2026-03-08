@@ -16,14 +16,13 @@ Wesensbestimmung eines Grenzflächentyps.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung einer Grenze als `Cradle-to-Gate` fuer ein DPP-LCA-Modell.
 ex:boundary_type_001 a sdata:BoundaryType ;
-  min:hasIdentifier "BOUNDARYTYPE-001" ;
-  min:hasName "BoundaryType Klassifikation" ;
-  min:typifies ex:boundary_001 .
+  sdata:hasIdentifier "BOUNDARYTYPE-001" ;
+  sdata:hasName "BoundaryType Klassifikation" ;
+  sdata:typifies ex:boundary_001 .
 
 ex:boundary_001 a sdata:Boundary .
 ```

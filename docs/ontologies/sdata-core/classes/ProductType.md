@@ -17,14 +17,13 @@ Wesensbestimmung eines Produkts. Typisiert sdata:Product
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung als `HV-Kabelsatz` fuer Variantensteuerung im PLM.
 ex:product_type_001 a sdata:ProductType ;
-  min:hasIdentifier "PRODUCTTYPE-001" ;
-  min:hasName "ProductType Klassifikation" ;
-  min:typifies ex:product_001 .
+  sdata:hasIdentifier "PRODUCTTYPE-001" ;
+  sdata:hasName "ProductType Klassifikation" ;
+  sdata:typifies ex:product_001 .
 
 ex:product_001 a sdata:Product .
 ```

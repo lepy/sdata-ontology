@@ -16,17 +16,16 @@ Physische Ergebnisdatei. Format, Größe, Pfad, Prüfsumme.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # PDF-Pruefprotokoll einer Wareneingangspruefung mit Signatur.
 ex:result_file_001 a sdata:ResultFile ;
-  min:hasIdentifier "RESULTFILE-001" ;
-  min:hasName "ResultFile Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "RESULTFILE-001" ;
+  sdata:hasName "ResultFile Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

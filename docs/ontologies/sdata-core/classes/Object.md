@@ -26,20 +26,19 @@ Fassade für min:Object. Das, was da ist.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Praxisfall aus der Industrie, in dem `sdata:Object` zur semantischen Modellierung eingesetzt wird.
 ex:object_001 a sdata:Object ;
-  min:hasIdentifier "OBJECT-001" ;
-  min:hasName "Object Instanz" ;
-  min:describedBy ex:data_001 .
+  sdata:hasIdentifier "OBJECT-001" ;
+  sdata:hasName "Object Instanz" ;
+  sdata:describedBy ex:data_001 .
 
 ex:data_001 a sdata:Data ;
-  min:describes ex:product_001 ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

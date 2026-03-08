@@ -19,14 +19,13 @@ ATOMARE Anforderung oder Grenzwert. Jede einzelne
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Grenzwertanforderung `Leitfaehigkeit >= 58 MS/m` fuer Kupferkomponenten.
 ex:requirement_001 a sdata:Requirement ;
-  min:hasIdentifier "REQUIREMENT-001" ;
-  min:hasName "Requirement Leitfaehigkeitsgrenze" ;
-  min:evaluates ex:result_001 .
+  sdata:hasIdentifier "REQUIREMENT-001" ;
+  sdata:hasName "Requirement Leitfaehigkeitsgrenze" ;
+  sdata:evaluates ex:result_001 .
 
 ex:result_001 a sdata:Result ; sdata:assessmentOutcome "pass" .
 ```

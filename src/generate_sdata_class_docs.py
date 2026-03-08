@@ -273,7 +273,6 @@ def _industry_ttl(name: str) -> str:
     slug = _slug(name)
     lines = [
         "@prefix sdata: <https://w3id.org/sdata/core/> .",
-        "@prefix min:   <https://w3id.org/min#> .",
         "@prefix ex:    <https://example.org/industry/> .",
         "",
         f"# {example}",
@@ -283,12 +282,12 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 "ex:process_001 a sdata:Process ;",
-                '  min:hasIdentifier "PROC-001" ;',
-                '  min:hasName "Warmumformung Linie 3" ;',
-                "  min:hasInput ex:material_001 ;",
-                "  min:hasOutput ex:product_001 ;",
-                "  min:performedBy ex:person_001 ;",
-                "  min:generates ex:data_001 .",
+                '  sdata:hasIdentifier "PROC-001" ;',
+                '  sdata:hasName "Warmumformung Linie 3" ;',
+                "  sdata:hasInput ex:material_001 ;",
+                "  sdata:hasOutput ex:product_001 ;",
+                "  sdata:performedBy ex:person_001 ;",
+                "  sdata:generates ex:data_001 .",
                 "",
                 "ex:material_001 a sdata:Material .",
                 "ex:product_001 a sdata:Product ; sdata:hasMaterial ex:material_001 .",
@@ -300,12 +299,12 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Datensatz" ;',
-                "  min:describes ex:product_001 ;",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Datensatz" ;',
+                "  sdata:describes ex:product_001 ;",
                 "  sdata:producedBy ex:process_001 .",
                 "",
-                "ex:process_001 a sdata:Process ; min:generates ex:data_001 .",
+                "ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .",
                 "ex:product_001 a sdata:Product .",
             ]
         )
@@ -313,12 +312,12 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Akteur" ;',
-                "  min:performs ex:process_001 ;",
-                "  min:actsOn ex:product_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Akteur" ;',
+                "  sdata:performs ex:process_001 ;",
+                "  sdata:actsOn ex:product_001 .",
                 "",
-                "ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .",
+                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .",
                 "ex:product_001 a sdata:Product .",
             ]
         )
@@ -326,10 +325,10 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 "ex:boundary_001 a sdata:Boundary ;",
-                '  min:hasIdentifier "BOUND-001" ;',
-                '  min:hasName "Kontaktgrenze Werkzeug-Blech" ;',
-                "  min:bounds ex:tool_001 ;",
-                "  min:bounds ex:sheet_001 .",
+                '  sdata:hasIdentifier "BOUND-001" ;',
+                '  sdata:hasName "Kontaktgrenze Werkzeug-Blech" ;',
+                "  sdata:bounds ex:tool_001 ;",
+                "  sdata:bounds ex:sheet_001 .",
                 "",
                 "ex:tool_001 a sdata:Hardware .",
                 "ex:sheet_001 a sdata:Material .",
@@ -351,9 +350,9 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Klassifikation" ;',
-                f"  min:typifies ex:{target_slug}_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Klassifikation" ;',
+                f"  sdata:typifies ex:{target_slug}_001 .",
                 "",
                 f"ex:{target_slug}_001 a sdata:{target} .",
             ]
@@ -362,11 +361,11 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} zur Prozessauslegung" ;',
-                "  min:constrains ex:process_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} zur Prozessauslegung" ;',
+                "  sdata:constrains ex:process_001 .",
                 "",
-                "ex:model_data_001 a sdata:Data ; min:encodes ex:model_001 .",
+                "ex:model_data_001 a sdata:Data ; sdata:encodes ex:model_001 .",
                 "ex:process_001 a sdata:Process .",
             ]
         )
@@ -374,12 +373,12 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} 30 Prozent Rezyklat" ;',
-                "  min:concerns ex:product_001 ;",
-                f"  min:alternativeTo ex:{slug}_002 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} 30 Prozent Rezyklat" ;',
+                "  sdata:concerns ex:product_001 ;",
+                f"  sdata:alternativeTo ex:{slug}_002 .",
                 "",
-                f"ex:{slug}_002 a sdata:{name} ; min:concerns ex:product_001 .",
+                f"ex:{slug}_002 a sdata:{name} ; sdata:concerns ex:product_001 .",
                 "ex:product_001 a sdata:Product .",
             ]
         )
@@ -387,9 +386,9 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Leitfaehigkeitsgrenze" ;',
-                "  min:evaluates ex:result_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Leitfaehigkeitsgrenze" ;',
+                "  sdata:evaluates ex:result_001 .",
                 "",
                 "ex:result_001 a sdata:Result ; sdata:assessmentOutcome \"pass\" .",
             ]
@@ -398,9 +397,9 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} fuer Produktpasspflicht" ;',
-                "  min:governs ex:process_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} fuer Produktpasspflicht" ;',
+                "  sdata:governs ex:process_001 .",
                 "",
                 "ex:process_001 a sdata:Process .",
             ]
@@ -409,10 +408,10 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Branchenregel" ;',
-                "  min:typifies ex:process_001 ;",
-                "  min:comprises ex:req_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Branchenregel" ;',
+                "  sdata:typifies ex:process_001 ;",
+                "  sdata:comprises ex:req_001 .",
                 "",
                 "ex:req_001 a sdata:Requirement .",
                 "ex:process_001 a sdata:Process .",
@@ -422,15 +421,15 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Instanz" ;',
-                "  min:describedBy ex:data_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Instanz" ;',
+                "  sdata:describedBy ex:data_001 .",
                 "",
                 "ex:data_001 a sdata:Data ;",
-                "  min:describes ex:product_001 ;",
+                "  sdata:describes ex:product_001 ;",
                 "  sdata:producedBy ex:process_001 .",
                 "",
-                "ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .",
+                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .",
                 "ex:product_001 a sdata:Product .",
             ]
         )
@@ -438,9 +437,9 @@ def _industry_ttl(name: str) -> str:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
-                f'  min:hasIdentifier "{name.upper()}-001" ;',
-                f'  min:hasName "{name} Beispielinstanz" ;',
-                "  min:nexusWith ex:context_001 .",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} Beispielinstanz" ;',
+                "  sdata:nexusWith ex:context_001 .",
                 "",
                 "ex:context_001 a sdata:Data .",
             ]

@@ -16,15 +16,14 @@ Typisierung über sdata:BoundaryType.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Bilanzgrenze eines CO2-Footprints von Rohkupfer bis auslieferbares Halbzeug.
 ex:boundary_001 a sdata:Boundary ;
-  min:hasIdentifier "BOUND-001" ;
-  min:hasName "Kontaktgrenze Werkzeug-Blech" ;
-  min:bounds ex:tool_001 ;
-  min:bounds ex:sheet_001 .
+  sdata:hasIdentifier "BOUND-001" ;
+  sdata:hasName "Kontaktgrenze Werkzeug-Blech" ;
+  sdata:bounds ex:tool_001 ;
+  sdata:bounds ex:sheet_001 .
 
 ex:tool_001 a sdata:Hardware .
 ex:sheet_001 a sdata:Material .

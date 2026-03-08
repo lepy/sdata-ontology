@@ -16,14 +16,13 @@ Wesensbestimmung eines Werkstoffs. DPP-Feld ‹Werkstoffbezeichnung›.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Werkstoffguete `Cu-OF` zur Typisierung hochreinen Kupfers.
 ex:material_grade_001 a sdata:MaterialGrade ;
-  min:hasIdentifier "MATERIALGRADE-001" ;
-  min:hasName "MaterialGrade Klassifikation" ;
-  min:typifies ex:material_001 .
+  sdata:hasIdentifier "MATERIALGRADE-001" ;
+  sdata:hasName "MaterialGrade Klassifikation" ;
+  sdata:typifies ex:material_001 .
 
 ex:material_001 a sdata:Material .
 ```

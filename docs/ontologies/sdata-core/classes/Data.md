@@ -27,17 +27,16 @@ Domänenspezifische Daten. Data sdata:encodes Forma.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Messdaten aus Inline-Wanddickenmessung in der Rohrfertigung.
 ex:data_001 a sdata:Data ;
-  min:hasIdentifier "DATA-001" ;
-  min:hasName "Data Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "DATA-001" ;
+  sdata:hasName "Data Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

@@ -16,14 +16,13 @@ Wesensbestimmung eines Dateiformats.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Definition des Datenformats als OPC-UA-Export fuer Shopfloor-Integrationen.
 ex:data_format_001 a sdata:DataFormat ;
-  min:hasIdentifier "DATAFORMAT-001" ;
-  min:hasName "DataFormat Klassifikation" ;
-  min:typifies ex:data_001 .
+  sdata:hasIdentifier "DATAFORMAT-001" ;
+  sdata:hasName "DataFormat Klassifikation" ;
+  sdata:typifies ex:data_001 .
 
 ex:data_001 a sdata:Data .
 ```

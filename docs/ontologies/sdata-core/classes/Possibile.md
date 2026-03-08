@@ -17,17 +17,16 @@ Fassade für min:Possibile. Das, was sein könnte.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Praxisfall aus der Industrie, in dem `sdata:Possibile` zur semantischen Modellierung eingesetzt wird.
 ex:possibile_001 a sdata:Possibile ;
-  min:hasIdentifier "POSSIBILE-001" ;
-  min:hasName "Possibile 30 Prozent Rezyklat" ;
-  min:concerns ex:product_001 ;
-  min:alternativeTo ex:possibile_002 .
+  sdata:hasIdentifier "POSSIBILE-001" ;
+  sdata:hasName "Possibile 30 Prozent Rezyklat" ;
+  sdata:concerns ex:product_001 ;
+  sdata:alternativeTo ex:possibile_002 .
 
-ex:possibile_002 a sdata:Possibile ; min:concerns ex:product_001 .
+ex:possibile_002 a sdata:Possibile ; sdata:concerns ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

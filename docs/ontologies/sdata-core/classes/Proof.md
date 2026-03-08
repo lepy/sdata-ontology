@@ -16,17 +16,16 @@ Kryptographische Signatur.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Hash-basierter Integritaetsnachweis fuer einen freigegebenen Messdatensatz.
 ex:proof_001 a sdata:Proof ;
-  min:hasIdentifier "PROOF-001" ;
-  min:hasName "Proof Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "PROOF-001" ;
+  sdata:hasName "Proof Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

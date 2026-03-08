@@ -19,17 +19,16 @@ Software als handelnder Agent. Co-Typisierung:
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Automatischer Regelalgorithmus, der Ziehgeschwindigkeit adaptiv anpasst.
 ex:software_agent_001 a sdata:SoftwareAgent ;
-  min:hasIdentifier "SOFTWAREAGENT-001" ;
-  min:hasName "SoftwareAgent Akteur" ;
-  min:performs ex:process_001 ;
-  min:actsOn ex:product_001 .
+  sdata:hasIdentifier "SOFTWAREAGENT-001" ;
+  sdata:hasName "SoftwareAgent Akteur" ;
+  sdata:performs ex:process_001 ;
+  sdata:actsOn ex:product_001 .
 
-ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

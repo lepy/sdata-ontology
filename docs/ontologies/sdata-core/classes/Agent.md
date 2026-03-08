@@ -23,17 +23,16 @@ Fassade für min:Agent. Das, was handelt.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Praxisfall aus der Industrie, in dem `sdata:Agent` zur semantischen Modellierung eingesetzt wird.
 ex:agent_001 a sdata:Agent ;
-  min:hasIdentifier "AGENT-001" ;
-  min:hasName "Agent Akteur" ;
-  min:performs ex:process_001 ;
-  min:actsOn ex:product_001 .
+  sdata:hasIdentifier "AGENT-001" ;
+  sdata:hasName "Agent Akteur" ;
+  sdata:performs ex:process_001 ;
+  sdata:actsOn ex:product_001 .
 
-ex:process_001 a sdata:Process ; min:hasOutput ex:product_001 .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

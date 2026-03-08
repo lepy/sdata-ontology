@@ -16,15 +16,14 @@
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # DAkkS-Akkreditierung eines Prueflabors fuer Zugversuche nach DIN EN ISO 6892-1.
 ex:accreditation_001 a sdata:Accreditation ;
-  min:hasIdentifier "ACCREDITATION-001" ;
-  min:hasName "Accreditation Branchenregel" ;
-  min:typifies ex:process_001 ;
-  min:comprises ex:req_001 .
+  sdata:hasIdentifier "ACCREDITATION-001" ;
+  sdata:hasName "Accreditation Branchenregel" ;
+  sdata:typifies ex:process_001 ;
+  sdata:comprises ex:req_001 .
 
 ex:req_001 a sdata:Requirement .
 ex:process_001 a sdata:Process .

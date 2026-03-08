@@ -16,14 +16,13 @@ Wesensbestimmung eines Software-Typs. Ersetzt Software-Subklassen.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung einer Anwendung als `LCA-Tool` fuer Bilanzierung.
 ex:software_type_001 a sdata:SoftwareType ;
-  min:hasIdentifier "SOFTWARETYPE-001" ;
-  min:hasName "SoftwareType Klassifikation" ;
-  min:typifies ex:software_001 .
+  sdata:hasIdentifier "SOFTWARETYPE-001" ;
+  sdata:hasName "SoftwareType Klassifikation" ;
+  sdata:typifies ex:software_001 .
 
 ex:software_001 a sdata:Software .
 ```

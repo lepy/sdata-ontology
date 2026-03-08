@@ -16,14 +16,13 @@ Wesensbestimmung eines Hardware-Typs. Ersetzt Hardware-Subklassen.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung einer Ofenanlage als `Induktionsofen 2 MW`.
 ex:hardware_type_001 a sdata:HardwareType ;
-  min:hasIdentifier "HARDWARETYPE-001" ;
-  min:hasName "HardwareType Klassifikation" ;
-  min:typifies ex:hardware_001 .
+  sdata:hasIdentifier "HARDWARETYPE-001" ;
+  sdata:hasName "HardwareType Klassifikation" ;
+  sdata:typifies ex:hardware_001 .
 
 ex:hardware_001 a sdata:Hardware .
 ```

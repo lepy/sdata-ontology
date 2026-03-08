@@ -18,14 +18,13 @@ Wesensbestimmung eines Modelltyps. Unterscheidet
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung als `Transientes Thermomodell` fuer Simulationsdaten.
 ex:model_type_001 a sdata:ModelType ;
-  min:hasIdentifier "MODELTYPE-001" ;
-  min:hasName "ModelType Klassifikation" ;
-  min:typifies ex:model_001 .
+  sdata:hasIdentifier "MODELTYPE-001" ;
+  sdata:hasName "ModelType Klassifikation" ;
+  sdata:typifies ex:model_001 .
 
 ex:model_001 a sdata:Model .
 ```

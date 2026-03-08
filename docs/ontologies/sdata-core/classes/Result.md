@@ -18,17 +18,16 @@ Semantisches Ergebnis-Bündel. Assessment-Verhalten
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Bestanden/Nicht-bestanden Ergebnis einer elektrischen End-of-Line-Pruefung.
 ex:result_001 a sdata:Result ;
-  min:hasIdentifier "RESULT-001" ;
-  min:hasName "Result Datensatz" ;
-  min:describes ex:product_001 ;
+  sdata:hasIdentifier "RESULT-001" ;
+  sdata:hasName "Result Datensatz" ;
+  sdata:describes ex:product_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; min:generates ex:data_001 .
+ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
 ex:product_001 a sdata:Product .
 ```
 ## Used As Domain

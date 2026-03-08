@@ -16,14 +16,13 @@ Wesensbestimmung eines Verfahrens. Nicht Specification.
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # Typisierung als `Kaltumformung` innerhalb der Prozessklassifikation.
 ex:process_type_001 a sdata:ProcessType ;
-  min:hasIdentifier "PROCESSTYPE-001" ;
-  min:hasName "ProcessType Klassifikation" ;
-  min:typifies ex:process_001 .
+  sdata:hasIdentifier "PROCESSTYPE-001" ;
+  sdata:hasName "ProcessType Klassifikation" ;
+  sdata:typifies ex:process_001 .
 
 ex:process_001 a sdata:Process .
 ```

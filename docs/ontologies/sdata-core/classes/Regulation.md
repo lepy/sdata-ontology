@@ -20,15 +20,14 @@ Regulatorisches Rahmenwerk. BÜNDELT atomare
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
-@prefix min:   <https://w3id.org/min#> .
 @prefix ex:    <https://example.org/industry/> .
 
 # REACH- oder RoHS-Regelwerk mit gebuendelten Anforderungen an Substanzen.
 ex:regulation_001 a sdata:Regulation ;
-  min:hasIdentifier "REGULATION-001" ;
-  min:hasName "Regulation Branchenregel" ;
-  min:typifies ex:process_001 ;
-  min:comprises ex:req_001 .
+  sdata:hasIdentifier "REGULATION-001" ;
+  sdata:hasName "Regulation Branchenregel" ;
+  sdata:typifies ex:process_001 ;
+  sdata:comprises ex:req_001 .
 
 ex:req_001 a sdata:Requirement .
 ex:process_001 a sdata:Process .
