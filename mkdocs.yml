@@ -1,0 +1,100 @@
+site_name: sdata Ontology
+site_description: Semantic Data Ontology for Product Passports, Circular Economy and Digital Twins
+repo_url: https://github.com/lepy/sdata-ontology
+theme:
+  name: material
+extra_javascript:
+  - javascripts/md-path-redirect.js
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Modeling Cheat Sheet: modeling-cheatsheet.md
+  - Empfohlene Modellierung (Industrie):
+      - Uebersicht: modeling/index.md
+      - Rohstoffherkunft und Chain-of-Custody: modeling/rohstoffherkunft-chain-of-custody.md
+      - Materialtypisierung (Kupfer): modeling/materialtypisierung-kupfer.md
+      - Prozesskette (Kupferherstellung): modeling/prozesskette-kupfer.md
+      - Prozessparameter und Traceability: modeling/prozessparameter-traceability.md
+      - Qualitaet und Pruefmerkmale: modeling/qualitaet-pruefmerkmale.md
+      - Energie- und CO2-Bilanz: modeling/energie-co2-bilanz.md
+      - Ausschuss, Nacharbeit und Yield: modeling/ausschuss-nacharbeit-yield.md
+      - Korrosion und Oberflaechenstabilitaet: modeling/korrosion-oberflaechenstabilitaet.md
+      - Normen und Compliance: modeling/normen-compliance.md
+      - DPP-Datenmodell und Versionierung: modeling/dpp-versionierung.md
+      - Digitaler Zwilling: modeling/digitaler-zwilling.md
+      - Kreislaufwirtschaft und Closed-Loop: modeling/kreislaufwirtschaft.md
+      - Reibung: modeling/reibung.md
+      - Korrosion (alt): modeling/korrosion.md
+      - Schatten: modeling/schatten.md
+      - DPP (alt): modeling/dpp.md
+  - Examples: examples.md
+  - Breakfast Egg (DE): breakfast_egg_de.md
+  - Breakfast Egg (EN): breakfast_egg_en.md
+  - Ontologies:
+      - sdata-core:
+          - Uebersicht: ontologies/sdata-core/index.md
+          - Klassenhierarchie v0.1.0: sdata-core-v0.1.0-klassenhierarchie.md
+          - Klassenreferenz:
+              - Uebersicht: ontologies/sdata-core/classes/index.md
+              - Accreditation: ontologies/sdata-core/classes/Accreditation.md
+              - Agent: ontologies/sdata-core/classes/Agent.md
+              - BillOfMaterials: ontologies/sdata-core/classes/BillOfMaterials.md
+              - Boundary: ontologies/sdata-core/classes/Boundary.md
+              - BoundaryType: ontologies/sdata-core/classes/BoundaryType.md
+              - Certification: ontologies/sdata-core/classes/Certification.md
+              - CryptographicKey: ontologies/sdata-core/classes/CryptographicKey.md
+              - Data: ontologies/sdata-core/classes/Data.md
+              - DataFormat: ontologies/sdata-core/classes/DataFormat.md
+              - DigitalProductPassport: ontologies/sdata-core/classes/DigitalProductPassport.md
+              - DigitalTwin: ontologies/sdata-core/classes/DigitalTwin.md
+              - EnvironmentAgent: ontologies/sdata-core/classes/EnvironmentAgent.md
+              - Hardware: ontologies/sdata-core/classes/Hardware.md
+              - HardwareAgent: ontologies/sdata-core/classes/HardwareAgent.md
+              - HardwareType: ontologies/sdata-core/classes/HardwareType.md
+              - Identifier: ontologies/sdata-core/classes/Identifier.md
+              - Institutio: ontologies/sdata-core/classes/Institutio.md
+              - Law: ontologies/sdata-core/classes/Law.md
+              - LegalEntity: ontologies/sdata-core/classes/LegalEntity.md
+              - Lex: ontologies/sdata-core/classes/Lex.md
+              - LifecyclePhase: ontologies/sdata-core/classes/LifecyclePhase.md
+              - Material: ontologies/sdata-core/classes/Material.md
+              - MaterialGrade: ontologies/sdata-core/classes/MaterialGrade.md
+              - Model: ontologies/sdata-core/classes/Model.md
+              - ModelType: ontologies/sdata-core/classes/ModelType.md
+              - Norma: ontologies/sdata-core/classes/Norma.md
+              - Object: ontologies/sdata-core/classes/Object.md
+              - Organization: ontologies/sdata-core/classes/Organization.md
+              - Person: ontologies/sdata-core/classes/Person.md
+              - Possibile: ontologies/sdata-core/classes/Possibile.md
+              - Process: ontologies/sdata-core/classes/Process.md
+              - ProcessType: ontologies/sdata-core/classes/ProcessType.md
+              - Product: ontologies/sdata-core/classes/Product.md
+              - ProductPassport: ontologies/sdata-core/classes/ProductPassport.md
+              - ProductType: ontologies/sdata-core/classes/ProductType.md
+              - Proof: ontologies/sdata-core/classes/Proof.md
+              - Registry: ontologies/sdata-core/classes/Registry.md
+              - Regulation: ontologies/sdata-core/classes/Regulation.md
+              - Requirement: ontologies/sdata-core/classes/Requirement.md
+              - Result: ontologies/sdata-core/classes/Result.md
+              - ResultFile: ontologies/sdata-core/classes/ResultFile.md
+              - Scenario: ontologies/sdata-core/classes/Scenario.md
+              - Site: ontologies/sdata-core/classes/Site.md
+              - Software: ontologies/sdata-core/classes/Software.md
+              - SoftwareAgent: ontologies/sdata-core/classes/SoftwareAgent.md
+              - SoftwareType: ontologies/sdata-core/classes/SoftwareType.md
+              - Specification: ontologies/sdata-core/classes/Specification.md
+              - Specimen: ontologies/sdata-core/classes/Specimen.md
+              - Structura: ontologies/sdata-core/classes/Structura.md
+              - Substance: ontologies/sdata-core/classes/Substance.md
+              - TrustFramework: ontologies/sdata-core/classes/TrustFramework.md
+              - Typus: ontologies/sdata-core/classes/Typus.md
+              - VerifiableCredential: ontologies/sdata-core/classes/VerifiableCredential.md
+              - VerifiablePresentation: ontologies/sdata-core/classes/VerifiablePresentation.md
+      - sdata-material-state: ontologies/sdata-material-state.md
+      - sdata-quantities: ontologies/sdata-quantities/index.md
+      - sdata-vd-interval: ontologies/sdata-vd-interval/index.md
+      - sdata-vd-enum: ontologies/sdata-vd-enum/index.md
+      - sdata-vd-statistical: ontologies/sdata-vd-statistical/index.md
+      - sdata-vd-fuzzy: ontologies/sdata-vd-fuzzy/index.md
+      - sdata-r-strategies: ontologies/sdata-r-strategies/index.md
+      - sdata-core-shapes: ontologies/sdata-core-shapes/index.md

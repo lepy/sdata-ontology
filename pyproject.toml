@@ -1,0 +1,83 @@
+[project]
+name = "sdata-core"
+version = "1.0.0"
+description = "Semantic Data Ontology — mid-level ontology for Product Passports, Circular Economy & Digital Twins"
+readme = "README.md"
+license = "CC-BY-SA-4.0"
+requires-python = ">=3.12"
+authors = [
+    { name = "Ingolf Lepenies", email = "ingolf@lepenies.de" },
+]
+keywords = ["ontology", "semantic-web", "product-passport", "circular-economy", "digital-twin", "BFO", "PROV-O", "QUDT"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/lepy/sdata-ontology"
+Documentation = "https://github.com/lepy/sdata-ontology/blob/main/docs/index.md"
+Repository = "https://github.com/lepy/sdata-ontology"
+Issues = "https://github.com/lepy/sdata-ontology/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pyshacl>=0.26",
+    "rdflib>=7.0",
+    "pygraphviz>=1.13",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+docs = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5,<10",
+]
+
+[dependency-groups]
+dev = [
+    "pyshacl>=0.26",
+    "rdflib>=7.0",
+    "pygraphviz>=1.13",
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+docs = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5,<10",
+]
+
+[tool.hatch.build]
+include = [
+    "src/__init__.py",
+    "src/visualization/**/*.py",
+    "src/examples/**/*.py",
+    "*.ttl",
+    "shapes/*.ttl",
+    "examples/*.ttl",
+    "vendor/ontologies/*.ttl",
+    "README.md",
+    "LICENSE",
+    "docs/**/*.md",
+    "mkdocs.yml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"sdata-core.ttl" = "share/sdata-ontology/sdata-core.ttl"
+"sdata-agents.ttl" = "share/sdata-ontology/sdata-agents.ttl"
+"shapes/sdata-core-shapes.ttl" = "share/sdata-ontology/shapes/sdata-core-shapes.ttl"
+"examples/battery-passport.ttl" = "share/sdata-ontology/examples/battery-passport.ttl"
+"vendor/ontologies/bfo.ttl" = "share/sdata-ontology/vendor/ontologies/bfo.ttl"
+"vendor/ontologies/prov-o.ttl" = "share/sdata-ontology/vendor/ontologies/prov-o.ttl"
+"vendor/ontologies/qudt.ttl" = "share/sdata-ontology/vendor/ontologies/qudt.ttl"
+"vendor/ontologies/dtype.ttl" = "share/sdata-ontology/vendor/ontologies/dtype.ttl"
+"vendor/ontologies/vaem.ttl" = "share/sdata-ontology/vendor/ontologies/vaem.ttl"
+"vendor/ontologies/skos.ttl" = "share/sdata-ontology/vendor/ontologies/skos.ttl"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

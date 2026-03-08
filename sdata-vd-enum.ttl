@@ -1,0 +1,99 @@
+# =============================================================================
+# FILE: sdata-vd-enum.ttl
+# ValueDomain extension: EnumeratedDomain (finite set of allowed values)
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/vd-enum>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/quantities> ;
+    owl:versionInfo "0.1.0 — 27 February 2026" ;
+    rdfs:label "sdata ValueDomain: Enumeration"@en ,
+               "sdata Wertebereich: Aufzählung"@de ;
+    dcterms:description
+        """Finite set of allowed values. Supports both plain string
+enumerations and SKOS-backed concept enumerations.
+1 Class · 1 Object Property · 1 Datatype Property"""@en .
+
+# =============================================================================
+# CLASS
+# =============================================================================
+
+sdata:EnumeratedDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:ValueDomain ;
+    rdfs:label     "Enumerated Domain"@en ,
+                   "Aufzählungs-Wertebereich"@de ;
+    rdfs:comment   """Finite, closed set of allowed values. Two usage patterns:
+
+1. Simple string enumeration:
+   Use sdata:allowedValue for flat lists of permitted strings.
+
+2. SKOS-backed enumeration:
+   Use sdata:allowedScheme to link to a SKOS ConceptScheme.
+   Each concept in the scheme is an allowed value.
+   Richer semantics (hierarchy, labels, mappings) via SKOS.
+
+Both patterns can coexist on the same instance."""@en ,
+                   """Endliche, geschlossene Menge erlaubter Werte. Zwei
+Nutzungsmuster: einfache String-Aufzählung via allowedValue,
+oder SKOS-gestützte Aufzählung via allowedScheme."""@de .
+
+# =============================================================================
+# PROPERTIES
+# =============================================================================
+
+sdata:allowedValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:EnumeratedDomain ;
+    rdfs:range     xsd:string ;
+    rdfs:label     "allowed value"@en ,
+                   "erlaubter Wert"@de ;
+    rdfs:comment   """One permitted value in the enumeration. Use multiple
+statements for multiple values:
+  ex:dom  sdata:allowedValue  \"DC04\" , \"DC06\" , \"DP600\" ."""@en .
+
+sdata:allowedScheme
+    rdf:type       owl:ObjectProperty ;
+    rdfs:domain    sdata:EnumeratedDomain ;
+    rdfs:range     owl:Thing ;   # intended: skos:ConceptScheme
+    rdfs:label     "allowed scheme"@en ,
+                   "erlaubtes Schema"@de ;
+    rdfs:comment   """Links to a SKOS ConceptScheme whose concepts define the
+allowed values. Range is owl:Thing to avoid hard SKOS import
+dependency — consuming applications should validate against
+skos:ConceptScheme."""@en .
+
+# =============================================================================
+# USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ─── Simple string enum ─────────────────────────────────
+# ex:dom_grades  a  sdata:EnumeratedDomain ;
+#     sdata:allowedValue      "DC04" , "DC06" , "DP600" , "DP800" ;
+#     sdata:domainDescription "Allowed steel grades" .
+#
+# ─── SKOS-backed enum ───────────────────────────────────
+# ex:dom_agent_types  a  sdata:EnumeratedDomain ;
+#     sdata:allowedScheme     <https://w3id.org/sdata/vocab/agent-types> ;
+#     sdata:domainDescription "Agent types from sdata vocabulary" .
+#
+# ─── Hybrid (belt and suspenders) ───────────────────────
+# ex:dom_directions  a  sdata:EnumeratedDomain ;
+#     sdata:allowedValue      "0" , "45" , "90" ;
+#     sdata:allowedScheme     <https://w3id.org/sdata/vocab/rolling-directions> ;
+#     sdata:domainDescription "Rolling direction angles in degrees" .
+#
+# =============================================================================
+# END — sdata-vd-enum.ttl v0.1.0
+# =============================================================================

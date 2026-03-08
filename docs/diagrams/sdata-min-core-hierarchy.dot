@@ -1,0 +1,515 @@
+digraph "" {
+	graph [bgcolor="#FAFBFC",
+		compound=true,
+		fontname=Helvetica,
+		fontsize=20,
+		label="Class Hierarchy: MIN -> sdata-core",
+		labeljust=c,
+		labelloc=t,
+		newrank=true,
+		nodesep=0.55,
+		overlap=false,
+		pad=0.35,
+		rankdir=TB,
+		ranksep=1.0,
+		splines=true
+	];
+	node [fontname=Helvetica,
+		fontsize=12,
+		label="\N",
+		margin="0.14,0.08",
+		penwidth=1.6,
+		shape=box,
+		style="filled,rounded"
+	];
+	edge [arrowsize=0.85,
+		color="#4A5568",
+		fontname=Helvetica,
+		penwidth=1.6
+	];
+	subgraph cluster_data {
+		graph [bgcolor="#F2F8FF",
+			color="#7AA2D6",
+			label="Data + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Data"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Data];
+		"https://w3id.org/sdata/core/BillOfMaterials"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Bill of Materials"];
+		"https://w3id.org/sdata/core/CryptographicKey"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Cryptographic Key"];
+		"https://w3id.org/sdata/core/Data"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Data];
+		"https://w3id.org/sdata/core/DigitalTwin"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Digital Twin"];
+		"https://w3id.org/sdata/core/Identifier"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Identifier];
+		"https://w3id.org/sdata/core/ProductPassport"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Product Passport"];
+		"https://w3id.org/sdata/core/Proof"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Proof];
+		"https://w3id.org/sdata/core/Result"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Result];
+		"https://w3id.org/sdata/core/ResultFile"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Result File"];
+		"https://w3id.org/sdata/core/SoftwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Software Agent"];
+		"https://w3id.org/sdata/core/VerifiableCredential"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Verifiable Credential"];
+		"https://w3id.org/sdata/core/VerifiablePresentation"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Verifiable Presentation"];
+	}
+	subgraph cluster_boundary {
+		graph [bgcolor="#F2F8FF",
+			color="#7AA2D6",
+			label="Boundary + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Boundary"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Boundary];
+		"https://w3id.org/sdata/core/Boundary"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Boundary];
+	}
+	subgraph cluster_institutio {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="Institutio + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Institutio"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Institutio];
+		"https://w3id.org/sdata/core/Accreditation"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Accreditation];
+		"https://w3id.org/sdata/core/BoundaryType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Boundary Type"];
+		"https://w3id.org/sdata/core/Certification"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Certification];
+		"https://w3id.org/sdata/core/DataFormat"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Data Format"];
+		"https://w3id.org/sdata/core/HardwareType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Hardware Type"];
+		"https://w3id.org/sdata/core/LegalEntity"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Legal Entity"];
+		"https://w3id.org/sdata/core/LifecyclePhase"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Lifecycle Phase"];
+		"https://w3id.org/sdata/core/MaterialGrade"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Material Grade"];
+		"https://w3id.org/sdata/core/ModelType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Model Type"];
+		"https://w3id.org/sdata/core/Organization"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Organization];
+		"https://w3id.org/sdata/core/ProcessType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Process Type"];
+		"https://w3id.org/sdata/core/ProductType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Product Type"];
+		"https://w3id.org/sdata/core/Registry"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Registry];
+		"https://w3id.org/sdata/core/Regulation"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Regulation];
+		"https://w3id.org/sdata/core/SoftwareType"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Software Type"];
+		"https://w3id.org/sdata/core/Specification"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Specification];
+		"https://w3id.org/sdata/core/TrustFramework"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Trust Framework"];
+		"https://w3id.org/sdata/core/Typus"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Typus];
+	}
+	subgraph cluster_lex {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="Lex + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Lex"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Lex];
+		"https://w3id.org/sdata/core/Law"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Law];
+	}
+	subgraph cluster_metaterm {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="MetaTerm + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#MetaTerm"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label="Meta Term"];
+	}
+	subgraph cluster_norma {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="Norma + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Norma"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Norma];
+		"https://w3id.org/sdata/core/Requirement"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Requirement];
+	}
+	subgraph cluster_object {
+		graph [bgcolor="#F2F8FF",
+			color="#7AA2D6",
+			label="Object + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Object"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Object];
+		"https://w3id.org/sdata/core/Hardware"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Hardware];
+		"https://w3id.org/sdata/core/HardwareAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Hardware Agent"];
+		"https://w3id.org/sdata/core/Material"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Material];
+		"https://w3id.org/sdata/core/Person"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Person];
+		"https://w3id.org/sdata/core/Product"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Product];
+		"https://w3id.org/sdata/core/Site"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Site];
+		"https://w3id.org/sdata/core/Software"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Software];
+		"https://w3id.org/sdata/core/Specimen"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Specimen];
+		"https://w3id.org/sdata/core/Substance"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Substance];
+	}
+	subgraph cluster_ontologyartifact {
+		graph [bgcolor="#F2F8FF",
+			color="#7AA2D6",
+			label="OntologyArtifact + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#OntologyArtifact"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label="Ontology Artifact"];
+	}
+	subgraph cluster_possibile {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="Possibile + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Possibile"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Possibile];
+		"https://w3id.org/sdata/core/Scenario"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Scenario];
+	}
+	subgraph cluster_process {
+		graph [bgcolor="#F2F8FF",
+			color="#7AA2D6",
+			label="Process + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Process"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Process];
+		"https://w3id.org/sdata/core/EnvironmentAgent"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label="Environment Agent"];
+		"https://w3id.org/sdata/core/Process"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Process];
+	}
+	subgraph cluster_structura {
+		graph [bgcolor="#FAF5FF",
+			color="#A48BC9",
+			label="Structura + sdata children",
+			penwidth=1.2,
+			rankdir=TB,
+			style="rounded,dashed"
+		];
+		"https://w3id.org/min#Structura"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Structura];
+		"https://w3id.org/sdata/core/Model"	[color="#6B46C1",
+			fillcolor="#F8EEFF",
+			fontcolor="#44337A",
+			label=Model];
+	}
+	subgraph rank_entity_top {
+		graph [rank=source,
+			style=invis
+		];
+		"https://w3id.org/min#Entity"	[color="#2B6CB0",
+			fillcolor="#E7F0FF",
+			fontcolor="#1A365D",
+			label=Entity];
+	}
+	"https://w3id.org/min#Agent"	[color="#2B6CB0",
+		fillcolor="#E7F0FF",
+		fontcolor="#1A365D",
+		label=Agent];
+	"https://w3id.org/min#Agent" -> "https://w3id.org/min#Boundary"	[key=nexus_stack_4,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/EnvironmentAgent";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/HardwareAgent";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/Organization";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/Person";
+	"https://w3id.org/min#Agent" -> "https://w3id.org/sdata/core/SoftwareAgent";
+	"https://w3id.org/min#Boundary" -> "https://w3id.org/sdata/core/Boundary";
+	"https://w3id.org/min#Data" -> "https://w3id.org/min#Agent"	[key=nexus_stack_3,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Data" -> "https://w3id.org/min#OntologyArtifact";
+	"https://w3id.org/min#Data" -> "https://w3id.org/sdata/core/Data";
+	"https://w3id.org/min#Data" -> "https://w3id.org/sdata/core/SoftwareAgent";
+	"https://w3id.org/min#Entity" -> "https://w3id.org/min#Agent";
+	"https://w3id.org/min#Forma"	[color="#2B6CB0",
+		fillcolor="#E7F0FF",
+		fontcolor="#1A365D",
+		label=Forma];
+	"https://w3id.org/min#Entity" -> "https://w3id.org/min#Forma";
+	"https://w3id.org/min#Nexus"	[color="#2B6CB0",
+		fillcolor="#E7F0FF",
+		fontcolor="#1A365D",
+		label=Nexus];
+	"https://w3id.org/min#Entity" -> "https://w3id.org/min#Nexus";
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Agent"	[key=entity_children_stack_1,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Institutio";
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Lex"	[key=forma_stack_0,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Lex";
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Norma";
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Possibile";
+	"https://w3id.org/min#Forma" -> "https://w3id.org/min#Structura";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/min#MetaTerm";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Accreditation";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Certification";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/LegalEntity";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/LifecyclePhase";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Organization";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Registry";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Regulation";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Specification";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/TrustFramework";
+	"https://w3id.org/min#Institutio" -> "https://w3id.org/sdata/core/Typus";
+	"https://w3id.org/min#Lex" -> "https://w3id.org/min#Structura"	[key=forma_stack_1,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Lex" -> "https://w3id.org/sdata/core/Law";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Boundary";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Data";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Forma"	[key=entity_children_stack_0,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Object"	[key=nexus_stack_0,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Object";
+	"https://w3id.org/min#Nexus" -> "https://w3id.org/min#Process";
+	"https://w3id.org/min#Norma" -> "https://w3id.org/min#Institutio"	[key=forma_stack_4,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Norma" -> "https://w3id.org/sdata/core/Requirement";
+	"https://w3id.org/min#Object" -> "https://w3id.org/min#Process"	[key=nexus_stack_1,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Hardware";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/HardwareAgent";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Material";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Person";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Product";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Site";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Software";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Specimen";
+	"https://w3id.org/min#Object" -> "https://w3id.org/sdata/core/Substance";
+	"https://w3id.org/min#Possibile" -> "https://w3id.org/min#Norma"	[key=forma_stack_3,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Possibile" -> "https://w3id.org/sdata/core/Scenario";
+	"https://w3id.org/min#Process" -> "https://w3id.org/min#Data"	[key=nexus_stack_2,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Process" -> "https://w3id.org/sdata/core/EnvironmentAgent";
+	"https://w3id.org/min#Process" -> "https://w3id.org/sdata/core/Process";
+	"https://w3id.org/min#Structura" -> "https://w3id.org/min#Possibile"	[key=forma_stack_2,
+		color="#FFFFFF",
+		constraint=true,
+		minlen=1,
+		style=invis,
+		weight=50];
+	"https://w3id.org/min#Structura" -> "https://w3id.org/sdata/core/Model";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/BillOfMaterials";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/CryptographicKey";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/DigitalTwin";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Identifier";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/ProductPassport";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Proof";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/Result";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/ResultFile";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/VerifiableCredential";
+	"https://w3id.org/sdata/core/Data" -> "https://w3id.org/sdata/core/VerifiablePresentation";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/BoundaryType";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/DataFormat";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/HardwareType";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/MaterialGrade";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/ModelType";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/ProcessType";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/ProductType";
+	"https://w3id.org/sdata/core/Typus" -> "https://w3id.org/sdata/core/SoftwareType";
+}

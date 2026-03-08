@@ -1,0 +1,123 @@
+```mermaid
+graph TD
+    subgraph MIN
+        N0["Agent"]
+        N1["Boundary"]
+        N2["Data"]
+        N3["Entity"]
+        N4["Forma"]
+        N5["Institutio"]
+        N6["Lex"]
+        N7["Meta Term"]
+        N8["Nexus"]
+        N9["Norma"]
+        N10["Object"]
+        N11["Ontology Artifact"]
+        N12["Possibile"]
+        N13["Process"]
+        N14["Structura"]
+    end
+
+    subgraph sdata_core
+        N15["Accreditation"]
+        N16["Bill of Materials"]
+        N17["Boundary"]
+        N18["Boundary Type"]
+        N19["Certification"]
+        N20["Cryptographic Key"]
+        N21["Data"]
+        N22["Data Format"]
+        N23["Digital Twin"]
+        N24["Environment Agent"]
+        N25["Hardware"]
+        N26["Hardware Agent"]
+        N27["Hardware Type"]
+        N28["Identifier"]
+        N29["Law"]
+        N30["Lifecycle Phase"]
+        N31["Material"]
+        N32["Material Grade"]
+        N33["Model"]
+        N34["Organization"]
+        N35["Person"]
+        N36["Process"]
+        N37["Process Type"]
+        N38["Product"]
+        N39["Product Passport"]
+        N40["Proof"]
+        N41["Registry"]
+        N42["Regulation"]
+        N43["Requirement"]
+        N44["Result"]
+        N45["Result File"]
+        N46["Scenario"]
+        N47["Site"]
+        N48["Software"]
+        N49["Software Agent"]
+        N50["Software Type"]
+        N51["Specification"]
+        N52["Specimen"]
+        N53["Substance"]
+        N54["Trust Framework"]
+        N55["Verifiable Credential"]
+        N56["Verifiable Presentation"]
+    end
+
+    N0 --> N24
+    N0 --> N26
+    N0 --> N34
+    N0 --> N35
+    N0 --> N49
+    N1 --> N17
+    N2 --> N11
+    N2 --> N21
+    N3 --> N4
+    N3 --> N8
+    N4 --> N5
+    N4 --> N6
+    N4 --> N9
+    N4 --> N12
+    N4 --> N14
+    N5 --> N7
+    N5 --> N15
+    N5 --> N19
+    N5 --> N41
+    N5 --> N54
+    N6 --> N29
+    N8 --> N0
+    N8 --> N1
+    N8 --> N2
+    N8 --> N10
+    N8 --> N13
+    N9 --> N30
+    N9 --> N42
+    N9 --> N43
+    N9 --> N51
+    N10 --> N25
+    N10 --> N31
+    N10 --> N38
+    N10 --> N47
+    N10 --> N48
+    N10 --> N52
+    N10 --> N53
+    N12 --> N46
+    N13 --> N36
+    N14 --> N33
+    N21 --> N16
+    N21 --> N20
+    N21 --> N23
+    N21 --> N28
+    N21 --> N39
+    N21 --> N40
+    N21 --> N44
+    N21 --> N45
+    N21 --> N55
+    N21 --> N56
+
+    classDef minNode fill:#E7F0FF,stroke:#2B6CB0,color:#1A365D
+    classDef sdataNode fill:#F1E8FF,stroke:#6B46C1,color:#44337A
+    class N0,N1,N2,N3,N4,N5,N6,N7,N8,N9,N10,N11,N12,N13,N14 minNode
+    class N15,N16,N17,N18,N19,N20,N21,N22,N23,N24,N25,N26,N27,N28,N29,N30,N31,N32,N33,N34,N35,N36,N37,N38,N39,N40,N41,N42,N43,N44,N45,N46,N47,N48,N49,N50,N51,N52,N53,N54,N55,N56 sdataNode
+```
+
+Bridge edges (MIN -> sdata-core) are inferred from rdfs:subClassOf links.

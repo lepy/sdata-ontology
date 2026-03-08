@@ -1,0 +1,214 @@
+# =============================================================================
+# FILE: sdata-vd-interval.ttl
+# ValueDomain extension: IntervalDomain (bounded range with boundary semantics)
+# =============================================================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sdata:   <https://w3id.org/sdata/core/> .
+
+# =============================================================================
+# Ontology header
+# =============================================================================
+
+<https://w3id.org/sdata/vd-interval>
+    a owl:Ontology ;
+    owl:imports <https://w3id.org/sdata/quantities> ;
+    owl:versionInfo "0.1.0 — 06 March 2026" ;
+    rdfs:label "sdata ValueDomain: Interval"@en ,
+               "sdata Wertebereich: Intervall"@de ;
+    dcterms:description
+        """Bounded range with explicit open/closed boundary semantics.
+Supports all four interval types: [a,b]  (a,b]  [a,b)  (a,b).
+Also supports symmetric ± notation (center ± halfWidth).
+Also serves as truncation bound for statistical and fuzzy domains
+via sdata:truncatedBy.
+
+Notation convention (ISO 31-11):
+  [a, b]  closed–closed   a ≤ x ≤ b   (default)
+  (a, b]  open–closed     a < x ≤ b
+  [a, b)  closed–open     a ≤ x < b
+  (a, b)  open–open       a < x < b
+
+Symmetric notation:
+  c ± h   equivalent to   [c − h, c + h]   (default closed)
+
+1 Class · 0 Object Properties · 6 Datatype Properties"""@en .
+
+# =============================================================================
+# CLASS
+# =============================================================================
+
+sdata:IntervalDomain
+    rdf:type       owl:Class ;
+    rdfs:subClassOf sdata:ValueDomain ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:minValue ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:subClassOf [
+        rdf:type owl:Restriction ;
+        owl:onProperty sdata:maxValue ;
+        owl:cardinality "1"^^xsd:nonNegativeInteger
+    ] ;
+    rdfs:label     "Interval Domain"@en ,
+                   "Intervall-Wertebereich"@de ;
+    rdfs:comment   """Bounded range defined by lower and upper bound with explicit
+open/closed boundary semantics.
+
+Default: closed interval [min, max] (both inclusive).
+Override via sdata:minInclusive and sdata:maxInclusive.
+
+The four interval types:
+  [a, b]  — minInclusive=true,  maxInclusive=true   (default)
+  (a, b]  — minInclusive=false, maxInclusive=true
+  [a, b)  — minInclusive=true,  maxInclusive=false
+  (a, b)  — minInclusive=false, maxInclusive=false
+
+Symmetric ± notation:
+  When sdata:centerValue and sdata:halfWidth are given,
+  bounds are derived as:
+    minValue = centerValue − halfWidth
+    maxValue = centerValue + halfWidth
+  Both min/maxValue SHOULD still be asserted explicitly
+  for interoperability. Consistency can be enforced via SHACL.
+
+Use INF / -INF for unbounded sides:
+  [0, +∞)  — non-negative reals
+  (-∞, +∞) — all reals (unconstrained, but documented)
+
+Also used as truncation bound for StatisticalDomain and FuzzyDomain
+via sdata:truncatedBy."""@en ,
+                   """Beschränkter Bereich mit expliziter offen/geschlossen-Semantik
+an den Grenzen. Standard: geschlossenes Intervall [min, max].
+Unterstützt auch symmetrische ±-Notation über
+sdata:centerValue und sdata:halfWidth."""@de .
+
+# =============================================================================
+# DATATYPE PROPERTIES — bounds
+# =============================================================================
+
+sdata:minValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "minimum value"@en ,
+                   "Minimalwert"@de ;
+    rdfs:comment   "Lower bound of the interval."@en .
+
+sdata:maxValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "maximum value"@en ,
+                   "Maximalwert"@de ;
+    rdfs:comment   "Upper bound of the interval."@en .
+
+# =============================================================================
+# DATATYPE PROPERTIES — boundary semantics
+# =============================================================================
+
+sdata:minInclusive
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:boolean ;
+    rdfs:label     "min inclusive"@en ,
+                   "Min inklusiv"@de ;
+    rdfs:comment   """Is the lower bound included in the interval?
+  true  → closed: x ≥ min  (bracket notation: [ )
+  false → open:   x > min  (bracket notation: ( )
+Default if omitted: true (closed)."""@en .
+
+sdata:maxInclusive
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:boolean ;
+    rdfs:label     "max inclusive"@en ,
+                   "Max inklusiv"@de ;
+    rdfs:comment   """Is the upper bound included in the interval?
+  true  → closed: x ≤ max  (bracket notation: ] )
+  false → open:   x < max  (bracket notation: ) )
+Default if omitted: true (closed)."""@en .
+
+# =============================================================================
+# DATATYPE PROPERTIES — symmetric ± notation
+# =============================================================================
+
+sdata:centerValue
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "center value"@en ,
+                   "Mittenwert"@de ;
+    rdfs:comment   """Midpoint of a symmetric interval.
+If given together with sdata:halfWidth, the interval bounds are:
+  minValue = centerValue − halfWidth
+  maxValue = centerValue + halfWidth
+Both min/maxValue SHOULD still be asserted explicitly
+for interoperability."""@en .
+
+sdata:halfWidth
+    rdf:type       owl:DatatypeProperty ;
+    rdfs:domain    sdata:IntervalDomain ;
+    rdfs:range     xsd:double ;
+    rdfs:label     "half width"@en ,
+                   "Halbbreite"@de ;
+    rdfs:comment   """Half-width (± tolerance) of a symmetric interval.
+Must be non-negative. Used together with sdata:centerValue.
+  minValue = centerValue − halfWidth
+  maxValue = centerValue + halfWidth"""@en .
+
+# =============================================================================
+# USAGE EXAMPLES (informative)
+# =============================================================================
+#
+# ─── [1.1, 1.3] — closed–closed (default) ───────────────
+# ex:dom_closed  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:domainDescription "t ∈ [1.1, 1.3] mm" .
+#
+# ─── (1.1, 1.3] — open–closed ───────────────────────────
+# ex:dom_open_closed  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:minInclusive      "false"^^xsd:boolean ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:domainDescription "t ∈ (1.1, 1.3] mm" .
+#
+# ─── [1.1, 1.3) — closed–open ───────────────────────────
+# ex:dom_closed_open  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:maxInclusive      "false"^^xsd:boolean ;
+#     sdata:domainDescription "t ∈ [1.1, 1.3) mm" .
+#
+# ─── (1.1, 1.3) — open–open ─────────────────────────────
+# ex:dom_open  a  sdata:IntervalDomain ;
+#     sdata:minValue          "1.1"^^xsd:double ;
+#     sdata:minInclusive      "false"^^xsd:boolean ;
+#     sdata:maxValue          "1.3"^^xsd:double ;
+#     sdata:maxInclusive      "false"^^xsd:boolean ;
+#     sdata:domainDescription "t ∈ (1.1, 1.3) mm" .
+#
+# ─── 4.0 ± 1.5 → [2.5, 5.5] — symmetric ± notation ────
+# ex:dom_symmetric  a  sdata:IntervalDomain ;
+#     sdata:centerValue       "4.0"^^xsd:double ;
+#     sdata:halfWidth         "1.5"^^xsd:double ;
+#     sdata:minValue          "2.5"^^xsd:double ;
+#     sdata:maxValue          "5.5"^^xsd:double ;
+#     sdata:domainDescription "x = 4.0 ± 1.5 mm → [2.5, 5.5] mm" .
+#
+# ─── [0, +∞) — non-negative reals ───────────────────────
+# ex:dom_non_negative  a  sdata:IntervalDomain ;
+#     sdata:minValue          "0.0"^^xsd:double ;
+#     sdata:maxValue          "INF"^^xsd:double ;
+#     sdata:maxInclusive      "false"^^xsd:boolean ;
+#     sdata:domainDescription "x ∈ [0, +∞)" .
+#
+# =============================================================================
+# END — sdata-vd-interval.ttl v0.1.0
+# =============================================================================

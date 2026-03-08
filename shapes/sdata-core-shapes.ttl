@@ -1,0 +1,66 @@
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix sdata: <https://w3id.org/sdata/core/> .
+@prefix sms:   <https://w3id.org/sdata/material-state/> .
+@prefix min:   <https://w3id.org/min#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+# =============================================================================
+# sdata Core SHACL Shapes v0.1.0 (MIN v1.0.0 based model)
+# =============================================================================
+
+<https://w3id.org/sdata/shapes/IdentifierLiteralShape>
+    a sh:NodeShape ;
+    rdfs:label "Identifier literal shape"@en ;
+    sh:targetSubjectsOf min:hasIdentifier ;
+    sh:property [
+        sh:path min:hasIdentifier ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] .
+
+<https://w3id.org/sdata/shapes/VersionLiteralShape>
+    a sh:NodeShape ;
+    rdfs:label "Version literal shape"@en ;
+    sh:targetSubjectsOf sdata:hasVersion ;
+    sh:property [
+        sh:path sdata:hasVersion ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+    ] .
+
+<https://w3id.org/sdata/shapes/ProcessFlowShape>
+    a sh:NodeShape ;
+    rdfs:label "Process flow shape"@en ;
+    sh:targetSubjectsOf min:hasInput ;
+    sh:property [
+        sh:path min:hasInput ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path min:generates ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+<https://w3id.org/sdata/shapes/StateAssignmentShape>
+    a sh:NodeShape ;
+    rdfs:label "State assignment shape"@en ;
+    sh:targetClass sms:StateAssignment ;
+    sh:property [
+        sh:path sms:onAxis ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] ;
+    sh:property [
+        sh:path sms:hasStateValue ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+    ] .
+
+# =============================================================================
+# END — sdata Core SHACL Shapes v0.1.0
+# =============================================================================
