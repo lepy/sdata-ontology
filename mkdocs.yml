@@ -34,6 +34,7 @@ nav:
       - sdata-core:
           - Uebersicht: ontologies/sdata-core/index.md
           - Klassenhierarchie v0.1.0: sdata-core-v0.1.0-klassenhierarchie.md
+          - Codex Referenz: ontologies/sdata-core/sdata-codex-ref.md
           - Klassenreferenz:
               - Uebersicht: ontologies/sdata-core/classes/index.md
               - Accreditation: ontologies/sdata-core/classes/Accreditation.md

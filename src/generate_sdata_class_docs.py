@@ -516,6 +516,19 @@ def _industry_ttl(name: str) -> str:
     return "\n".join(lines)
 
 
+def _write_text(path: Path, content: str) -> None:
+    try:
+        path.write_text(content, encoding="utf-8")
+    except PermissionError:
+        # Generated docs may be present with restrictive file modes from another user.
+        # Recreate file so regeneration still works when directory permissions allow it.
+        if path.exists():
+            path.unlink()
+            path.write_text(content, encoding="utf-8")
+            return
+        raise
+
+
 def write_class_page(path: Path, info: ClassInfo) -> None:
     super_lines = [_format_class_ref(iri) for iri in info.superclasses]
     sub_lines = [_format_class_ref(iri) for iri in info.subclasses]
@@ -551,7 +564,7 @@ def write_class_page(path: Path, info: ClassInfo) -> None:
     lines.append(f"ex:example a sdata:{info.name} .\n")
     lines.append("```\n")
 
-    path.write_text("".join(lines), encoding="utf-8")
+    _write_text(path, "".join(lines))
 
 
 def write_index(path: Path, infos: list[ClassInfo], version: str | None) -> None:
@@ -568,7 +581,7 @@ def write_index(path: Path, infos: list[ClassInfo], version: str | None) -> None
         lines.append(f"| {class_link} | {supers} | {len(info.subclasses)} |\n")
     lines.append("\n")
 
-    path.write_text("".join(lines), encoding="utf-8")
+    _write_text(path, "".join(lines))
 
 
 def parse_args() -> argparse.Namespace:
