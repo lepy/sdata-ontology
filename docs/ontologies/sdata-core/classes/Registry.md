@@ -18,15 +18,11 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Branchenregister zur Aufloesung verifizierbarer Hersteller-Identitaeten.
-ex:registry_001 a sdata:Registry ;
-  sdata:hasIdentifier "REGISTRY-001" ;
-  sdata:hasName "Registry Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# Catena-X DID-Registry.
+ex:catena_x_registry a sdata:Registry ;
+    sdata:hasName "Catena-X DID Registry" ;
+    sdata:constitutedBy ex:catena_x_consortium .
+ex:catena_x_consortium a sdata:Organization .
 ```
 ## Used As Domain
 - (none)

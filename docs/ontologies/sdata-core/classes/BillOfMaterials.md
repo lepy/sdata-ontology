@@ -19,16 +19,15 @@ Stückliste als Data. sdata:describes ein physisches Ding.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Stueckliste eines Kupfer-Kabelsatzes mit Leitern, Isolierung, Steckern und Mengenanteilen.
-ex:bill_of_materials_001 a sdata:BillOfMaterials ;
-  sdata:hasIdentifier "BILLOFMATERIALS-001" ;
-  sdata:hasName "BillOfMaterials Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Stückliste einer Karosserie-Baugruppe mit rekursiven Komponenten.
+ex:bom_karosserie a sdata:BillOfMaterials ;
+    sdata:describes ex:baugruppe_001 ;
+    sdata:hasComponent ex:bom_entry_seitenteil ;
+    sdata:hasComponent ex:bom_entry_bsaeule .
+ex:baugruppe_001 a sdata:Hardware ;
+    sdata:typifiedBy ex:baugruppe_typ .
+ex:baugruppe_typ a sdata:ProductType ;
+    sdata:hasName "Karosserie-Baugruppe" .
 ```
 ## Used As Domain
 - (none)

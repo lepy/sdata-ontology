@@ -18,13 +18,10 @@ Fassade für min:Norma. Anforderung.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Norma` zur semantischen Modellierung eingesetzt wird.
-ex:norma_001 a sdata:Norma ;
-  sdata:hasIdentifier "NORMA-001" ;
-  sdata:hasName "Norma Leitfaehigkeitsgrenze" ;
-  sdata:evaluates ex:result_001 .
-
-ex:result_001 a sdata:Result ; sdata:assessmentOutcome "pass" .
+# Norma ist eine Fassade — verwende sdata:Requirement.
+ex:req_rm a sdata:Requirement ;
+    sdata:hasName "Rm ≥ 340 MPa" ;
+    sdata:evaluates ex:probe_42 .
 ```
 ## Used As Domain
 - (none)

@@ -18,14 +18,10 @@ Fassade für min:Structura. Formale Struktur.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Structura` zur semantischen Modellierung eingesetzt wird.
-ex:structura_001 a sdata:Structura ;
-  sdata:hasIdentifier "STRUCTURA-001" ;
-  sdata:hasName "Structura zur Prozessauslegung" ;
-  sdata:constrains ex:process_001 .
-
-ex:model_data_001 a sdata:Data ; sdata:encodes ex:structura_001 .
-ex:process_001 a sdata:Process .
+# Structura ist eine Fassade — verwende sdata:Model.
+ex:von_mises a sdata:Model ;
+    sdata:hasName "von-Mises-Fließkriterium" ;
+    sdata:typifiedBy ex:materialmodell_typ .
 ```
 ## Used As Domain
 - (none)

@@ -18,13 +18,11 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Typisierung als `Transientes Thermomodell` fuer Simulationsdaten.
-ex:model_type_001 a sdata:ModelType ;
-  sdata:hasIdentifier "MODELTYPE-001" ;
-  sdata:hasName "ModelType Klassifikation" ;
-  sdata:typifies ex:model_001 .
-
-ex:model_001 a sdata:Model .
+# Materialmodell als Modelltyp.
+ex:materialmodell_typ a sdata:ModelType ;
+    sdata:hasName "Materialmodell" ;
+    sdata:typifies ex:johnson_cook .
+ex:johnson_cook a sdata:Model .
 ```
 ## Used As Domain
 - (none)

@@ -18,16 +18,14 @@ Schlüsselmaterial. sdata:encodes ein Model.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Oeffentlicher Schluessel zur Verifikation signierter DPP-Dokumente.
-ex:cryptographic_key_001 a sdata:CryptographicKey ;
-  sdata:hasIdentifier "CRYPTOGRAPHICKEY-001" ;
-  sdata:hasName "CryptographicKey Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Öffentlicher Ed25519-Schlüssel zur DPP-Verifikation.
+ex:pubkey_oem a sdata:CryptographicKey ;
+    sdata:hasName "OEM Public Key" ;
+    sdata:encodes ex:ed25519 .
+ex:ed25519 a sdata:Model ;
+    sdata:typifiedBy ex:krypto_typ .
+ex:krypto_typ a sdata:ModelType ;
+    sdata:hasName "Kryptographisches Verfahren" .
 ```
 ## Used As Domain
 - (none)

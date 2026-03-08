@@ -21,16 +21,15 @@ Agent ∩ Institutio.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Tier-1-Lieferant als organisatorischer Akteur im DPP-Netzwerk.
-ex:organization_001 a sdata:Organization ;
-  sdata:hasIdentifier "ORG-001" ;
-  sdata:hasName "Tier-1 Lieferant Nord" ;
-  sdata:performs ex:process_001 ;
-  sdata:owns ex:asset_001 .
-
-ex:process_001 a sdata:Process .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Stahlwerk als Agent ∩ Institutio.
+ex:stahlwerk_ag a sdata:Organization ;
+    sdata:hasName "Stahlwerk AG" ;
+    sdata:identifiedBy ex:did_stahlwerk ;
+    sdata:locatedAt ex:werk_duisburg ;
+    sdata:hasLegalEntity ex:stahlwerk_gmbh .
+ex:did_stahlwerk a sdata:Identifier .
+ex:werk_duisburg a sdata:Site .
+ex:stahlwerk_gmbh a sdata:LegalEntity .
 ```
 ## Used As Domain
 - `sdata:hasLegalEntity`

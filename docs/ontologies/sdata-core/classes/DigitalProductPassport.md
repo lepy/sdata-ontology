@@ -19,16 +19,19 @@ ESPR-konformer digitaler Produktpass.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:DigitalProductPassport` zur semantischen Modellierung eingesetzt wird.
-ex:digital_product_passport_001 a sdata:DigitalProductPassport ;
-  sdata:hasIdentifier "DIGITALPRODUCTPASSPORT-001" ;
-  sdata:hasName "DigitalProductPassport Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# ESPR-konformer Stahl-DPP mit Signatur.
+ex:dpp_001 a sdata:DigitalProductPassport , sdata:VerifiableCredential ;
+    sdata:describes ex:seitenteil_001 ;
+    sdata:encodes ex:espr_spec ;
+    sdata:typifiedBy ex:espr_spec ;
+    sdata:signedBy ex:oem_ag ;
+    sdata:identifiedBy ex:did_dpp_001 ;
+    sdata:hasVersion "1.0.0" ;
+    sdata:hasComponent ex:result_rm ;
+    sdata:hasComponent ex:proof_001 .
+ex:seitenteil_001 a sdata:Hardware ;
+    sdata:typifiedBy ex:seitenteil_typ .
+ex:seitenteil_typ a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

@@ -17,16 +17,14 @@ Bündel von VCs. Selektive Offenlegung.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Gebuendelte Vorlage mehrerer Nachweise fuer Audit oder Behoerde.
-ex:verifiable_presentation_001 a sdata:VerifiablePresentation ;
-  sdata:hasIdentifier "VERIFIABLEPRESENTATION-001" ;
-  sdata:hasName "VerifiablePresentation Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# DPP-Präsentation an einen Recycler.
+ex:vp_recycler a sdata:VerifiablePresentation ;
+    sdata:hasComponent ex:dpp_001 ;
+    sdata:hasComponent ex:vc_zeugnis ;
+    sdata:signedBy ex:oem_ag .
+ex:dpp_001 a sdata:DigitalProductPassport .
+ex:vc_zeugnis a sdata:VerifiableCredential .
+ex:oem_ag a sdata:Organization .
 ```
 ## Used As Domain
 - (none)

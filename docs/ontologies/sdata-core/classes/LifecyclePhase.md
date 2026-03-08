@@ -19,15 +19,11 @@ Konventionelle Lebenszykluseinteilung.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Nutzungsphase eines Kabelbaums zwischen Inbetriebnahme und Austausch.
-ex:lifecycle_phase_001 a sdata:LifecyclePhase ;
-  sdata:hasIdentifier "LIFECYCLEPHASE-001" ;
-  sdata:hasName "LifecyclePhase Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# Fertigungsphase im LCA/ESPR-Kontext.
+ex:phase_production a sdata:LifecyclePhase ;
+    sdata:hasName "Fertigung" .
+ex:walzen a sdata:Process ;
+    sdata:requiresPhase ex:phase_production .
 ```
 ## Used As Domain
 - (none)

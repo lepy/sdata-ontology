@@ -18,15 +18,13 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# EUDI-/VC-Vertrauensrahmen fuer interoperable Nachweise im DPP.
-ex:trust_framework_001 a sdata:TrustFramework ;
-  sdata:hasIdentifier "TRUSTFRAMEWORK-001" ;
-  sdata:hasName "TrustFramework Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# Catena-X als Vertrauensrahmen.
+ex:catena_x a sdata:TrustFramework ;
+    sdata:hasName "Catena-X" ;
+    sdata:constitutedBy ex:catena_x_consortium ;
+    sdata:hasComponent ex:catena_x_registry .
+ex:catena_x_consortium a sdata:Organization .
+ex:catena_x_registry a sdata:Registry .
 ```
 ## Used As Domain
 - (none)

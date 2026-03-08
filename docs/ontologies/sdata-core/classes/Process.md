@@ -17,23 +17,26 @@ Typisierung über sdata:ProcessType.
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
-# Mehrstufiger Ziehprozess zur Reduktion des Leitungsquerschnitts.
-ex:process_001 a sdata:Process ;
-  sdata:hasIdentifier "PROC-001" ;
-  sdata:hasName "Warmumformung Linie 3" ;
-  sdata:hasInput ex:material_001 ;
-  sdata:hasOutput ex:part_001 ;
-  sdata:performedBy ex:software_001 ;
-  sdata:generates ex:result_001 .
-
-ex:material_001 a sdata:Material .
-ex:part_001 a sdata:Hardware ;
-  sdata:hasMaterial ex:material_001 ;
-  sdata:typifiedBy ex:product_type_001 .
-ex:software_001 a sdata:Software ; sdata:performs ex:process_001 .
-ex:result_001 a sdata:Result ; sdata:producedBy ex:process_001 .
-ex:product_type_001 a sdata:ProductType .
+# Zugversuch mit vollständiger Prozesskette.
+ex:zugversuch_001 a sdata:Process ;
+    sdata:typifiedBy ex:zugversuch_typ ;
+    sdata:hasInput ex:probe_42 ;
+    sdata:hasOutput ex:result_zv001 ;
+    sdata:performedBy ex:zwick_z250 ;
+    sdata:usesTool ex:zwick_z250 ;
+    sdata:realizes ex:din_6892 ;
+    sdata:requiresPhase ex:phase_production ;
+    sdata:governedBy ex:energieerhaltung ;
+    sdata:hasStartTime "2026-03-08T09:00:00Z"^^xsd:dateTime ;
+    sdata:hasEndTime "2026-03-08T09:15:00Z"^^xsd:dateTime .
+ex:zugversuch_typ a sdata:ProcessType .
+ex:probe_42 a sdata:Specimen .
+ex:result_zv001 a sdata:Result .
+ex:zwick_z250 a sdata:Hardware .
+ex:din_6892 a sdata:Specification .
+ex:energieerhaltung a sdata:Law .
 ```
 ## Used As Domain
 - `sdata:governedBy`

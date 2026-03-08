@@ -20,16 +20,13 @@ Mensch als handelnder Agent. Agent ∩ Object.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Qualitaetsingenieurin, die einen Pruefbericht fachlich freigibt.
-ex:person_001 a sdata:Person ;
-  sdata:hasIdentifier "PERSON-001" ;
-  sdata:hasName "Person als materieller Agent" ;
-  sdata:performs ex:process_001 ;
-  sdata:actsOn ex:asset_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Laborant als handelnder Agent im Zugversuch.
+ex:laborant_schmidt a sdata:Person ;
+    sdata:hasName "Laborant Schmidt" ;
+    sdata:performs ex:probenentnahme_42 ;
+    sdata:locatedAt ex:labor_berlin .
+ex:probenentnahme_42 a sdata:Process .
+ex:labor_berlin a sdata:Site .
 ```
 ## Used As Domain
 - (none)

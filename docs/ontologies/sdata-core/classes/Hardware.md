@@ -28,16 +28,17 @@ Physisches Gerät, Maschine, Bauteil, Werkzeug —
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Zugpruefmaschine als physisches Betriebsmittel im Prueflabor.
-ex:hardware_001 a sdata:Hardware ;
-  sdata:hasIdentifier "HARDWARE-001" ;
-  sdata:hasName "Hardware als materieller Agent" ;
-  sdata:performs ex:process_001 ;
-  sdata:actsOn ex:asset_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Universalprüfmaschine Zwick Z250 im Zugversuch.
+ex:zwick_z250 a sdata:Hardware ;
+    sdata:hasName "Zwick Z250" ;
+    sdata:typifiedBy ex:universalpruefmaschine ;
+    sdata:performs ex:zugversuch_001 ;
+    sdata:locatedAt ex:labor_berlin ;
+    sdata:hasStatus "running" .
+ex:universalpruefmaschine a sdata:ProductType ;
+    sdata:hasName "Universalprüfmaschine" .
+ex:zugversuch_001 a sdata:Process .
+ex:labor_berlin a sdata:Site .
 ```
 ## Used As Domain
 - (none)

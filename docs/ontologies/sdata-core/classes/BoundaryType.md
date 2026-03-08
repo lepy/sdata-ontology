@@ -18,13 +18,11 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Typisierung einer Grenze als `Cradle-to-Gate` fuer ein DPP-LCA-Modell.
-ex:boundary_type_001 a sdata:BoundaryType ;
-  sdata:hasIdentifier "BOUNDARYTYPE-001" ;
-  sdata:hasName "BoundaryType Klassifikation" ;
-  sdata:typifies ex:boundary_001 .
-
-ex:boundary_001 a sdata:Boundary .
+# Coulomb-Reibungsmodell als Grenzflächentyp.
+ex:coulomb_reibung a sdata:BoundaryType ;
+    sdata:hasName "Coulomb-Reibung" ;
+    sdata:typifies ex:reibung_werkzeug_blech .
+ex:reibung_werkzeug_blech a sdata:Boundary .
 ```
 ## Used As Domain
 - (none)

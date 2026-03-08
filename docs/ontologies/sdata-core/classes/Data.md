@@ -28,16 +28,14 @@ Domänenspezifische Daten. Wirkt nur über Agent.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Messdaten aus Inline-Wanddickenmessung in der Rohrfertigung.
-ex:data_001 a sdata:Data ;
-  sdata:hasIdentifier "DATA-001" ;
-  sdata:hasName "Data Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# LS-DYNA Inputdeck als passive Datei.
+ex:inputdeck_crash a sdata:Data ;
+    sdata:hasName "Crashsimulation Inputdeck" ;
+    sdata:encodes ex:fe_modell_crash ;
+    sdata:typifiedBy ex:keyword_format .
+ex:fe_modell_crash a sdata:Model .
+ex:keyword_format a sdata:DataFormat ;
+    sdata:hasName "LS-DYNA Keyword" .
 ```
 ## Used As Domain
 - `sdata:certifies`

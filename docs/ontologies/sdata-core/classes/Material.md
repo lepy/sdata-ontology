@@ -29,16 +29,16 @@ Werkstoff als Agent. Wirkt selektiv:
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Cu-ETP-Bandmaterial als Eingangsrohstoff fuer Stanz-Biege-Teile.
-ex:material_001 a sdata:Material ;
-  sdata:hasIdentifier "MATERIAL-001" ;
-  sdata:hasName "Material als materieller Agent" ;
-  sdata:performs ex:process_001 ;
-  sdata:actsOn ex:asset_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# DC04-Werkstoff einer Charge mit Substanzen.
+ex:DC04_charge_7814 a sdata:Material ;
+    sdata:hasName "DC04 Charge 7814" ;
+    sdata:typifiedBy ex:DC04 ;
+    sdata:containsSubstance ex:mn_001 .
+ex:DC04 a sdata:MaterialGrade ;
+    sdata:hasName "DC04" .
+ex:mn_001 a sdata:Substance ;
+    sdata:hasName "Mangan" ;
+    sdata:hasCASNumber "7439-96-5" .
 ```
 ## Used As Domain
 - (none)

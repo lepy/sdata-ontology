@@ -22,16 +22,18 @@ Digitaler Zwilling — Software-Agent, der ein
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Digitaler Zwilling einer Giesslinie mit Live-Parametern und Historie.
-ex:digital_twin_001 a sdata:DigitalTwin ;
-  sdata:hasIdentifier "DIGITALTWIN-001" ;
-  sdata:hasName "DigitalTwin als informationeller Agent" ;
-  sdata:performs ex:process_001 ;
-  sdata:describes ex:asset_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Predictive-Maintenance-Zwilling eines Presswerks.
+ex:dz_presse a sdata:DigitalTwin ;
+    sdata:describes ex:presse_001 ;
+    sdata:encodes ex:johnson_cook ;
+    sdata:typifiedBy ex:predictive_twin_typ ;
+    sdata:selects ex:szenario_versagen ;
+    sdata:hasStatus "running" .
+ex:presse_001 a sdata:Hardware .
+ex:johnson_cook a sdata:Model .
+ex:predictive_twin_typ a sdata:ProductType ;
+    sdata:hasName "Predictive Twin" .
+ex:szenario_versagen a sdata:Scenario .
 ```
 ## Used As Domain
 - (none)

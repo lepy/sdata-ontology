@@ -18,16 +18,14 @@ Reifizierter Identifier. Scheme, Value, Issuer, Registry.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Chargennummer einer Kupferlegierung als rueckverfolgbare Kennung.
-ex:identifier_001 a sdata:Identifier ;
-  sdata:hasIdentifier "IDENTIFIER-001" ;
-  sdata:hasName "Identifier Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# DID-Identifier eines OEM, registriert in Catena-X.
+ex:did_oem a sdata:Identifier ;
+    sdata:hasScheme "W3C:DID" ;
+    sdata:hasValue "did:web:oem.example.com" ;
+    sdata:hasIssuer ex:oem_ag ;
+    sdata:registeredIn ex:catena_x_registry .
+ex:oem_ag a sdata:Organization .
+ex:catena_x_registry a sdata:Registry .
 ```
 ## Used As Domain
 - `sdata:hasIssuer`

@@ -22,20 +22,11 @@ Wesensbestimmung eines Produkts, Geräts oder
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Typisierung von Hardware und Software als einheitlicher Produkttyp.
-ex:universalpruefmaschine a sdata:ProductType ;
-  sdata:hasIdentifier "PT-001" ;
-  sdata:hasName "Universalpruefmaschine" .
-
-ex:fe_solver_typ a sdata:ProductType ;
-  sdata:hasIdentifier "PT-002" ;
-  sdata:hasName "FE-Solver" .
-
-ex:zwick_z250 a sdata:Hardware ;
-  sdata:typifiedBy ex:universalpruefmaschine .
-
-ex:ls_dyna_r14 a sdata:Software ;
-  sdata:typifiedBy ex:fe_solver_typ .
+# Seitenteil als Produkttyp (ersetzt ehemalige Klasse Product).
+ex:seitenteil_typ a sdata:ProductType ;
+    sdata:hasName "Seitenteil" ;
+    sdata:typifies ex:seitenteil_001 .
+ex:seitenteil_001 a sdata:Hardware .
 ```
 ## Used As Domain
 - (none)

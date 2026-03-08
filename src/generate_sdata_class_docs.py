@@ -7,6 +7,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 import re
+import zipfile
 
 from rdflib import Graph, Literal, RDF, RDFS, URIRef
 from rdflib.namespace import OWL
@@ -130,6 +131,12 @@ class ClassInfo:
     subclasses: tuple[URIRef, ...]
     domain_of: tuple[URIRef, ...]
     range_of: tuple[URIRef, ...]
+
+
+@dataclass(frozen=True)
+class ClassDocOverride:
+    examples: tuple[str, ...] | None = None
+    industry_ttl: str | None = None
 
 
 def _local_name(iri: URIRef) -> str:
@@ -516,6 +523,53 @@ def _industry_ttl(name: str) -> str:
     return "\n".join(lines)
 
 
+def _parse_examples_section(markdown: str) -> tuple[str, ...] | None:
+    section = re.search(r"^## Examples\s*\n(?P<body>.*?)(?=^##\s|\Z)", markdown, flags=re.MULTILINE | re.DOTALL)
+    if not section:
+        return None
+    lines = [line.strip() for line in section.group("body").splitlines() if line.strip().startswith("- ")]
+    if not lines:
+        return None
+    values: list[str] = []
+    for line in lines:
+        value = line[2:].strip()
+        if value == "(none)":
+            return tuple()
+        if value.startswith("`") and value.endswith("`") and len(value) >= 2:
+            value = value[1:-1]
+        values.append(value)
+    return tuple(values)
+
+
+def _parse_industry_ttl_section(markdown: str) -> str | None:
+    match = re.search(
+        r"^## Industriebeispiel \(TTL\)\s*\n```turtle\n(?P<body>.*?)\n```",
+        markdown,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        return None
+    return match.group("body").strip()
+
+
+def _load_class_doc_overrides(zip_path: Path) -> dict[str, ClassDocOverride]:
+    if not zip_path.exists():
+        return {}
+    overrides: dict[str, ClassDocOverride] = {}
+    with zipfile.ZipFile(zip_path) as archive:
+        for name in archive.namelist():
+            if not name.endswith(".md"):
+                continue
+            class_name = Path(name).stem
+            markdown = archive.read(name).decode("utf-8")
+            examples = _parse_examples_section(markdown)
+            industry_ttl = _parse_industry_ttl_section(markdown)
+            if examples is None and industry_ttl is None:
+                continue
+            overrides[class_name] = ClassDocOverride(examples=examples, industry_ttl=industry_ttl)
+    return overrides
+
+
 def _write_text(path: Path, content: str) -> None:
     try:
         path.write_text(content, encoding="utf-8")
@@ -529,11 +583,18 @@ def _write_text(path: Path, content: str) -> None:
         raise
 
 
-def write_class_page(path: Path, info: ClassInfo) -> None:
+def write_class_page(path: Path, info: ClassInfo, override: ClassDocOverride | None = None) -> None:
     super_lines = [_format_class_ref(iri) for iri in info.superclasses]
     sub_lines = [_format_class_ref(iri) for iri in info.subclasses]
     domain_lines = [_format_prop_ref(iri) for iri in info.domain_of]
     range_lines = [_format_prop_ref(iri) for iri in info.range_of]
+
+    example_values = list(info.examples)
+    if override and override.examples is not None:
+        example_values = list(override.examples)
+    industry_ttl = _industry_ttl(info.name)
+    if override and override.industry_ttl:
+        industry_ttl = override.industry_ttl
 
     lines: list[str] = []
     lines.append(f"# sdata:{info.name}\n")
@@ -548,10 +609,10 @@ def write_class_page(path: Path, info: ClassInfo) -> None:
     lines.append("## Comment\n")
     lines.append((f"{info.comment}\n\n" if info.comment else "(none)\n\n"))
     lines.append("## Examples\n")
-    lines.append(_render_list([f"`{example}`" for example in info.examples]))
+    lines.append(_render_list([f"`{example}`" for example in example_values]))
     lines.append("## Industriebeispiel (TTL)\n")
     lines.append("```turtle\n")
-    lines.append(_industry_ttl(info.name))
+    lines.append(industry_ttl)
     lines.append("\n```\n")
     lines.append("## Used As Domain\n")
     lines.append(_render_list(domain_lines))
@@ -599,6 +660,7 @@ def main() -> int:
     graph = Graph()
     graph.parse(args.core, format="turtle")
     infos, version = build_class_infos(graph)
+    overrides = _load_class_doc_overrides(args.out_dir / "sdata-class-docs.zip")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     generated_paths = {args.out_dir / f"{info.name}.md" for info in infos}
@@ -608,7 +670,7 @@ def main() -> int:
             path.unlink()
 
     for info in infos:
-        write_class_page(args.out_dir / f"{info.name}.md", info)
+        write_class_page(args.out_dir / f"{info.name}.md", info, overrides.get(info.name))
     write_index(args.out_dir / "index.md", infos, version)
 
     print(f"Generated {len(infos)} class pages in {args.out_dir}")

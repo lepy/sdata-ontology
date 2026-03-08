@@ -16,17 +16,14 @@ Signiertes Credential. W3C VC Data Model.
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
-# Signiertes Hersteller-Zertifikat als maschinenpruefbarer Nachweis.
-ex:verifiable_credential_001 a sdata:VerifiableCredential ;
-  sdata:hasIdentifier "VERIFIABLECREDENTIAL-001" ;
-  sdata:hasName "VerifiableCredential Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Signiertes Materialzeugnis als VC.
+ex:vc_zeugnis a sdata:VerifiableCredential ;
+    sdata:signedBy ex:pruefinstitut_ag ;
+    sdata:validFrom "2026-01-15T00:00:00Z"^^xsd:dateTime ;
+    sdata:validUntil "2028-01-15T00:00:00Z"^^xsd:dateTime .
+ex:pruefinstitut_ag a sdata:Organization .
 ```
 ## Used As Domain
 - (none)

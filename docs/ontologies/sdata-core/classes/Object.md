@@ -28,17 +28,10 @@ Fassade für min:Object. Das, was da ist.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Object` zur semantischen Modellierung eingesetzt wird.
-ex:object_001 a sdata:Object ;
-  sdata:hasIdentifier "OBJECT-001" ;
-  sdata:hasName "Object Instanz" ;
-  sdata:describedBy ex:data_001 .
-
-ex:data_001 a sdata:Data ;
-  sdata:describes ex:object_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Object ist fast immer abstrakt — verwende Subklassen.
+# Einzige direkte Instanziierung: Site.
+ex:werk_duisburg a sdata:Site ;
+    sdata:hasName "Werk Duisburg" .
 ```
 ## Used As Domain
 - (none)

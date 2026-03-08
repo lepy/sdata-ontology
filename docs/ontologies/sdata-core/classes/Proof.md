@@ -18,16 +18,12 @@ Kryptographische Signatur.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Hash-basierter Integritaetsnachweis fuer einen freigegebenen Messdatensatz.
+# Ed25519-Signatur eines DPP.
 ex:proof_001 a sdata:Proof ;
-  sdata:hasIdentifier "PROOF-001" ;
-  sdata:hasName "Proof Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+    sdata:signedBy ex:oem_ag ;
+    sdata:encodes ex:ed25519 .
+ex:oem_ag a sdata:Organization .
+ex:ed25519 a sdata:Model .
 ```
 ## Used As Domain
 - (none)

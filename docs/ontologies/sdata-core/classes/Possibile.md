@@ -18,16 +18,10 @@ Fassade für min:Possibile. Möglichkeitsraum.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Possibile` zur semantischen Modellierung eingesetzt wird.
-ex:possibile_001 a sdata:Possibile ;
-  sdata:hasIdentifier "POSSIBILE-001" ;
-  sdata:hasName "Possibile 30 Prozent Rezyklat" ;
-  sdata:concerns ex:asset_001 ;
-  sdata:alternativeTo ex:possibile_002 .
-
-ex:possibile_002 a sdata:Possibile ; sdata:concerns ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Possibile ist eine Fassade — verwende sdata:Scenario.
+ex:szenario_versagen a sdata:Scenario ;
+    sdata:hasName "Versagen Seitenteil links" ;
+    sdata:concerns ex:seitenteil_001 .
 ```
 ## Used As Domain
 - (none)

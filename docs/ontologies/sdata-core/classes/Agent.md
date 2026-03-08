@@ -31,13 +31,12 @@ Fassade für min:Agent. Das, was handelt.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Agent` zur semantischen Modellierung eingesetzt wird.
-ex:agent_001 a sdata:Agent ;
-  sdata:hasIdentifier "AGENT-001" ;
-  sdata:hasName "Generischer Agent im Shopfloor" ;
-  sdata:performs ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Agent ist abstrakt — nicht direkt instanziieren.
+# Verwende stattdessen: Person, Hardware, Software, etc.
+ex:laborant_mueller a sdata:Person ;
+    sdata:hasName "Laborant Müller" ;
+    sdata:performs ex:zugversuch_001 .
+ex:zugversuch_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

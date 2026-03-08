@@ -25,16 +25,17 @@ Software — IMMER Agent. Agent ∩ Data.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# MES-System zur Erfassung von Prozessparametern und Chargenbezug.
-ex:software_001 a sdata:Software ;
-  sdata:hasIdentifier "SOFTWARE-001" ;
-  sdata:hasName "Software als informationeller Agent" ;
-  sdata:performs ex:process_001 ;
-  sdata:describes ex:asset_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# LS-DYNA R14 als Software-Agent in der Crashsimulation.
+ex:ls_dyna_r14 a sdata:Software ;
+    sdata:hasName "LS-DYNA R14" ;
+    sdata:typifiedBy ex:fe_solver_typ ;
+    sdata:performs ex:crashsim_001 ;
+    sdata:realizes ex:zentrale_differenzen ;
+    sdata:hasStatus "running" .
+ex:fe_solver_typ a sdata:ProductType ;
+    sdata:hasName "Expliziter FE-Solver" .
+ex:crashsim_001 a sdata:Process .
+ex:zentrale_differenzen a sdata:Model .
 ```
 ## Used As Domain
 - (none)

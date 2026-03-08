@@ -20,14 +20,14 @@ Formale Approximation. Kann nützlich sein,
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# FEM-Modell einer Stromschiene zur thermomechanischen Auslegung.
-ex:model_001 a sdata:Model ;
-  sdata:hasIdentifier "MODEL-001" ;
-  sdata:hasName "Model zur Prozessauslegung" ;
-  sdata:constrains ex:process_001 .
-
-ex:model_data_001 a sdata:Data ; sdata:encodes ex:model_001 .
-ex:process_001 a sdata:Process .
+# Hookesches Modell als formale Approximation.
+ex:hooke a sdata:Model ;
+    sdata:hasName "Hookesches Modell" ;
+    sdata:typifiedBy ex:materialmodell_typ ;
+    sdata:realizes ex:energieerhaltung .
+ex:materialmodell_typ a sdata:ModelType ;
+    sdata:hasName "Materialmodell" .
+ex:energieerhaltung a sdata:Law .
 ```
 ## Used As Domain
 - (none)

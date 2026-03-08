@@ -19,15 +19,19 @@ Technische Spezifikation oder Norm. BÜNDELT atomare
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# DIN EN ISO 6892-1 als Spezifikation fuer Zugversuchsablauf und Auswertung.
-ex:specification_001 a sdata:Specification ;
-  sdata:hasIdentifier "SPECIFICATION-001" ;
-  sdata:hasName "Specification Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# DIN EN ISO 6892-1 als technische Spezifikation.
+ex:din_6892 a sdata:Specification ;
+    sdata:hasIdentifier "DIN EN ISO 6892-1:2019" ;
+    sdata:hasName "Metallic materials — Tensile testing" ;
+    sdata:specifies ex:zugversuch_001 ;
+    sdata:comprises ex:req_dehnrate , ex:req_probenform , ex:req_temperatur ;
+    sdata:constitutedBy ex:iso_tc164 .
+ex:zugversuch_001 a sdata:Process .
+ex:req_dehnrate a sdata:Requirement .
+ex:req_probenform a sdata:Requirement .
+ex:req_temperatur a sdata:Requirement ;
+    sdata:hasName "Prüftemperatur 23 ± 5 °C" .
+ex:iso_tc164 a sdata:Organization .
 ```
 ## Used As Domain
 - `sdata:specifies`

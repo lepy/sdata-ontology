@@ -21,16 +21,17 @@ Semantisches Ergebnis-Bündel. Eigenes Axiom:
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Bestanden/Nicht-bestanden Ergebnis einer elektrischen End-of-Line-Pruefung.
-ex:result_001 a sdata:Result ;
-  sdata:hasIdentifier "RESULT-001" ;
-  sdata:hasName "Result Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Zugversuchsergebnis mit Compliance-Bewertung.
+ex:result_rm a sdata:Result , sdata:VerifiableCredential ;
+    sdata:assessesRequirement ex:req_rm ;
+    sdata:assessmentOutcome "pass" ;
+    sdata:generatedBy ex:zugversuch_001 ;
+    sdata:describes ex:probe_42 ;
+    sdata:signedBy ex:pruefinstitut_ag .
+ex:req_rm a sdata:Requirement .
+ex:zugversuch_001 a sdata:Process .
+ex:probe_42 a sdata:Specimen .
+ex:pruefinstitut_ag a sdata:Organization .
 ```
 ## Used As Domain
 - `sdata:assessesRequirement`

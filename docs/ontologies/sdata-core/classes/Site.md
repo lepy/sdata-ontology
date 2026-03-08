@@ -20,17 +20,13 @@ Physischer Standort. Verortung via sdata:locatedAt.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Produktionsstandort mit Giesserei, Walzwerk und Prueflabor.
-ex:site_001 a sdata:Site ;
-  sdata:hasIdentifier "SITE-001" ;
-  sdata:hasName "Site Instanz" ;
-  sdata:describedBy ex:data_001 .
-
-ex:data_001 a sdata:Data ;
-  sdata:describes ex:site_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Werk Duisburg als physischer Standort.
+ex:werk_duisburg a sdata:Site ;
+    sdata:hasName "Werk Duisburg" ;
+    sdata:identifiedBy ex:did_werk .
+ex:did_werk a sdata:Identifier .
+ex:zwick_z250 a sdata:Hardware ;
+    sdata:locatedAt ex:werk_duisburg .
 ```
 ## Used As Domain
 - (none)

@@ -19,15 +19,18 @@ Regulatorisches Rahmenwerk. BÜNDELT atomare
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# REACH- oder RoHS-Regelwerk mit gebuendelten Anforderungen an Substanzen.
-ex:regulation_001 a sdata:Regulation ;
-  sdata:hasIdentifier "REGULATION-001" ;
-  sdata:hasName "Regulation Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# ESPR-Verordnung bündelt atomare Anforderungen.
+ex:espr a sdata:Regulation ;
+    sdata:hasIdentifier "EU-2024/1781" ;
+    sdata:hasName "Ecodesign for Sustainable Products Regulation" ;
+    sdata:comprises ex:req_dpp_pflicht , ex:req_recyclatanteil ;
+    sdata:constitutedBy ex:eu_kommission ;
+    sdata:recognizedBy ex:eu_mitgliedstaaten ;
+    sdata:regulates ex:seitenteil_001 .
+ex:req_dpp_pflicht a sdata:Requirement .
+ex:req_recyclatanteil a sdata:Requirement .
+ex:eu_kommission a sdata:Organization .
+ex:seitenteil_001 a sdata:Hardware .
 ```
 ## Used As Domain
 - `sdata:regulates`

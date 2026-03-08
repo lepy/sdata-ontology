@@ -19,13 +19,11 @@ Wesensbestimmung eines Dateiformats. Ersetzt
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Definition des Datenformats als OPC-UA-Export fuer Shopfloor-Integrationen.
-ex:data_format_001 a sdata:DataFormat ;
-  sdata:hasIdentifier "DATAFORMAT-001" ;
-  sdata:hasName "DataFormat Klassifikation" ;
-  sdata:typifies ex:data_001 .
-
-ex:data_001 a sdata:Data .
+# CSV-Format nach RFC 4180 als Datenformat.
+ex:csv_rfc4180 a sdata:DataFormat ;
+    sdata:hasName "CSV (RFC 4180)" ;
+    sdata:typifies ex:resultfile_001 .
+ex:resultfile_001 a sdata:Data .
 ```
 ## Used As Domain
 - (none)

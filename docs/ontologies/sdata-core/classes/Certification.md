@@ -18,15 +18,14 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# ISO-9001-Zertifikat eines Ziehwerks als Nachweis im Produktpass.
-ex:certification_001 a sdata:Certification ;
-  sdata:hasIdentifier "CERTIFICATION-001" ;
-  sdata:hasName "Certification Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# ISO-9001-Zertifikat eines Stahlwerks.
+ex:iso9001_stahlwerk a sdata:Certification ;
+    sdata:hasName "ISO 9001:2015" ;
+    sdata:constitutedBy ex:tuev_sued .
+ex:tuev_sued a sdata:Organization ;
+    sdata:hasName "TÜV SÜD" .
+ex:stahlwerk_ag a sdata:Organization ;
+    sdata:certifiedUnder ex:iso9001_stahlwerk .
 ```
 ## Used As Domain
 - (none)

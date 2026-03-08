@@ -19,13 +19,14 @@ ATOMARE Anforderung oder Grenzwert. Bündelung
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Grenzwertanforderung `Leitfaehigkeit >= 58 MS/m` fuer Kupferkomponenten.
-ex:requirement_001 a sdata:Requirement ;
-  sdata:hasIdentifier "REQUIREMENT-001" ;
-  sdata:hasName "Requirement Leitfaehigkeitsgrenze" ;
-  sdata:evaluates ex:result_001 .
-
-ex:result_001 a sdata:Result ; sdata:assessmentOutcome "pass" .
+# Atomare Zugfestigkeitsanforderung.
+ex:req_rm a sdata:Requirement ;
+    sdata:hasName "Rm ≥ 340 MPa" ;
+    sdata:evaluates ex:probe_42 .
+ex:probe_42 a sdata:Specimen .
+ex:result_rm a sdata:Result ;
+    sdata:assessesRequirement ex:req_rm ;
+    sdata:assessmentOutcome "pass" .
 ```
 ## Used As Domain
 - (none)

@@ -18,13 +18,11 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Typisierung als `Kaltumformung` innerhalb der Prozessklassifikation.
-ex:process_type_001 a sdata:ProcessType ;
-  sdata:hasIdentifier "PROCESSTYPE-001" ;
-  sdata:hasName "ProcessType Klassifikation" ;
-  sdata:typifies ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Zugversuchstyp nach ISO 6892-1.
+ex:zugversuch_typ a sdata:ProcessType ;
+    sdata:hasName "Zugversuch nach ISO 6892-1" ;
+    sdata:typifies ex:zugversuch_001 .
+ex:zugversuch_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

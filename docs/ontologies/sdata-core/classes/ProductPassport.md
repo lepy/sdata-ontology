@@ -19,16 +19,13 @@ Produktpass als Data-Artefakt.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Digital Product Passport eines Hochvolt-Kabels mit Material- und Compliance-Daten.
-ex:product_passport_001 a sdata:ProductPassport ;
-  sdata:hasIdentifier "PRODUCTPASSPORT-001" ;
-  sdata:hasName "ProductPassport Datensatz" ;
-  sdata:describes ex:asset_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
-ex:product_type_001 a sdata:ProductType .
+# Materialzeugnis EN 10204 als analoger Produktpass.
+ex:zeugnis_001 a sdata:ProductPassport ;
+    sdata:describes ex:coil_001 ;
+    sdata:hasVersion "1.0.0" ;
+    sdata:signedBy ex:stahlwerk_ag .
+ex:coil_001 a sdata:Hardware .
+ex:stahlwerk_ag a sdata:Organization .
 ```
 ## Used As Domain
 - (none)

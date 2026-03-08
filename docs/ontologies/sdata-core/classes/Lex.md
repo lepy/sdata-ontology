@@ -21,13 +21,10 @@ Fassade für min:Lex. Das, was immer gilt.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Lex` zur semantischen Modellierung eingesetzt wird.
-ex:lex_001 a sdata:Lex ;
-  sdata:hasIdentifier "LEX-001" ;
-  sdata:hasName "Lex fuer Produktpasspflicht" ;
-  sdata:governs ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Lex ist eine Fassade — verwende sdata:Law.
+ex:massenerhaltung a sdata:Law ;
+    sdata:hasName "Massenerhaltung" ;
+    sdata:governs ex:walzprozess .
 ```
 ## Used As Domain
 - (none)

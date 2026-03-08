@@ -19,15 +19,9 @@ Juristische Person OHNE Agency.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Rechtliche Einheit eines OEMs als Vertragspartner in der Lieferkette.
-ex:legal_entity_001 a sdata:LegalEntity ;
-  sdata:hasIdentifier "LEGALENTITY-001" ;
-  sdata:hasName "LegalEntity Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# Aufgelöste GmbH ohne aktuelle Handlungsfähigkeit.
+ex:altfirma_gmbh a sdata:LegalEntity ;
+    sdata:hasName "Altfirma GmbH (aufgelöst)" .
 ```
 ## Used As Domain
 - (none)

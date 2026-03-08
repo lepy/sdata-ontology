@@ -24,13 +24,11 @@ Konventionelle Wesensbestimmung. Bündelt Forma.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Domänentyp `Leiterklasse 5` zur standardisierten Einordnung von Produkten.
-ex:typus_001 a sdata:Typus ;
-  sdata:hasIdentifier "TYPUS-001" ;
-  sdata:hasName "Typus Klassifikation" ;
-  sdata:typifies ex:hardware_001 .
-
-ex:hardware_001 a sdata:Hardware .
+# Typus ist die Basisklasse — verwende Subklassen.
+# MaterialGrade, ProcessType, ProductType, DataFormat, etc.
+ex:DC04 a sdata:MaterialGrade ;
+    sdata:hasName "DC04" ;
+    sdata:typifies ex:blech_042 .
 ```
 ## Used As Domain
 - (none)

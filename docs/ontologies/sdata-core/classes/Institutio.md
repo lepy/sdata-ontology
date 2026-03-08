@@ -27,15 +27,12 @@ Fassade für min:Institutio. Kollektive Anerkennung.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Praxisfall aus der Industrie, in dem `sdata:Institutio` zur semantischen Modellierung eingesetzt wird.
-ex:institutio_001 a sdata:Institutio ;
-  sdata:hasIdentifier "INSTITUTIO-001" ;
-  sdata:hasName "Institutio Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# Institutio ist eine Fassade — verwende Subklassen.
+# Regulation, Specification, Certification, etc.
+ex:espr a sdata:Regulation ;
+    sdata:hasName "ESPR" ;
+    sdata:comprises ex:req_dpp_pflicht .
+ex:req_dpp_pflicht a sdata:Requirement .
 ```
 ## Used As Domain
 - (none)

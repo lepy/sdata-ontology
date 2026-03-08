@@ -21,13 +21,11 @@ Universelles Gesetz. Gilt ausnahmslos.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# EU-Batterieverordnung als rechtsverbindliche Grundlage fuer DPP-Pflichten.
-ex:law_001 a sdata:Law ;
-  sdata:hasIdentifier "LAW-001" ;
-  sdata:hasName "Law fuer Produktpasspflicht" ;
-  sdata:governs ex:process_001 .
-
-ex:process_001 a sdata:Process .
+# Energieerhaltungssatz als universelles Gesetz.
+ex:energieerhaltung a sdata:Law ;
+    sdata:hasName "Energieerhaltung" ;
+    sdata:governs ex:zugversuch_001 .
+ex:zugversuch_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

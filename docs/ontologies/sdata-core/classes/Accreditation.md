@@ -18,15 +18,12 @@
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# DAkkS-Akkreditierung eines Prueflabors fuer Zugversuche nach DIN EN ISO 6892-1.
-ex:accreditation_001 a sdata:Accreditation ;
-  sdata:hasIdentifier "ACCREDITATION-001" ;
-  sdata:hasName "Accreditation Branchenregel" ;
-  sdata:typifies ex:process_001 ;
-  sdata:comprises ex:req_001 .
-
-ex:req_001 a sdata:Requirement .
-ex:process_001 a sdata:Process .
+# DAkkS-Akkreditierung eines Prüflabors für Zugversuche.
+ex:dakks_001 a sdata:Accreditation ;
+    sdata:hasName "DAkkS-Akkreditierung DIN EN ISO/IEC 17025" ;
+    sdata:constitutedBy ex:dakks .
+ex:dakks a sdata:Organization ;
+    sdata:hasName "Deutsche Akkreditierungsstelle" .
 ```
 ## Used As Domain
 - (none)

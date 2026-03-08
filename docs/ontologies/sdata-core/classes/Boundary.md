@@ -18,15 +18,16 @@ Typisierung über sdata:BoundaryType.
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Bilanzgrenze eines CO2-Footprints von Rohkupfer bis auslieferbares Halbzeug.
-ex:boundary_001 a sdata:Boundary ;
-  sdata:hasIdentifier "BOUND-001" ;
-  sdata:hasName "Kontaktgrenze Werkzeug-Blech" ;
-  sdata:bounds ex:tool_001 ;
-  sdata:bounds ex:sheet_001 .
-
-ex:tool_001 a sdata:Hardware .
-ex:sheet_001 a sdata:Material .
+# Reibkontakt zwischen Werkzeug und Blech beim Tiefziehen.
+ex:reibung_001 a sdata:Boundary ;
+    sdata:hasName "Kontakt Werkzeug–Blech" ;
+    sdata:bounds ex:werkzeug_001 ;
+    sdata:bounds ex:blech_042 ;
+    sdata:typifiedBy ex:coulomb_typ .
+ex:werkzeug_001 a sdata:Hardware .
+ex:blech_042 a sdata:Hardware .
+ex:coulomb_typ a sdata:BoundaryType ;
+    sdata:hasName "Coulomb-Reibung" .
 ```
 ## Used As Domain
 - (none)
