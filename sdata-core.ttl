@@ -13,9 +13,8 @@
 #   sdata — Semantic Data Ontology (Core)
 #
 #   v0.1.0 — 2026-03-08
-
 #
-#   54 Klassen. 31 eigene Object Properties + 45 OP-Fassaden.
+#   52 Klassen. 31 eigene Object Properties + 45 OP-Fassaden.
 #   19 eigene Datatype Properties + 5 DP-Fassaden + 2 AP-Fassaden.
 #
 #   NAMESPACE-REGEL:
@@ -29,12 +28,18 @@
 #       Ja  → Klasse
 #       Nein → Typus-Instanz
 #
+#   AGENT-DESIGN:
+#     Zustand ≠ Typ. Ob eine Maschine gerade aktiv ist,
+#     gehört in sdata:hasStatus, nicht in die Klassenhierarchie.
+#     Hardware ist IMMER Agent ∩ Object (materiale Identität).
+#     Software ist IMMER Agent ∩ Data (informationale Identität).
+#     Keine separaten HardwareAgent/SoftwareAgent-Klassen.
+#
 # =============================================================================
 
 <https://w3id.org/sdata/core> a owl:Ontology ;
     owl:versionIRI <https://w3id.org/sdata/core/0.1.0> ;
     owl:versionInfo "0.1.0" ;
-    owl:priorVersion <https://w3id.org/sdata/core/0.1.0> ;
     owl:imports <https://w3id.org/min> ;
     dcterms:title "sdata — Semantic Data Ontology (Core)"@en ;
     dcterms:title "sdata — Semantische Datenontologie (Kern)"@de ;
@@ -45,20 +50,27 @@
     Architektur: MIN v1.0.0 (Grundontologie) → sdata (Domäne).
     Nutzer arbeiten ausschließlich mit sdata:-Termen.
 
-    54 Klassen über alle MIN-Kategorien:
-      Fassaden (7), Object (7), Data (12), Agent (5), Process (1), Boundary (1),
+    52 Klassen über alle MIN-Kategorien:
+      Fassaden (7), Object (5), Data (12), Agent (5), Process (1), Boundary (1),
       Lex (1), Structura (1), Possibile (1), Norma (1),
-      Institutio (9), Typus (8)."""@de ;
+      Institutio (9), Typus (8).
+
+    Agent-Design: Zustand ≠ Typ. Hardware ist immer Agent ∩ Object,
+    Software ist immer Agent ∩ Data. Aktivität ist Property (hasStatus),
+    nicht Klasse."""@de ;
     dcterms:creator <https://orcid.org/0000-0001-8199-8666> ;
     dcterms:created "2026-03-08"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by-sa/4.0/> ;
     rdfs:seeAlso <https://w3id.org/min> ;
     min:designRationale """v0.1.0 — Konformität mit MIN v1.0.0.
+    Agent-Design: Zustand ≠ Typ. Hardware und Software sind
+    immer Agents. HardwareAgent/SoftwareAgent eliminiert.
     """@de .
 <https://orcid.org/0000-0001-8199-8666> a foaf:Person ;
     foaf:name "Dr. Ingolf Lepenies" ;
     foaf:homepage <https://github.com/lepy> .
-    
+
+
 # #############################################################################
 #
 #   TEIL I — MIN-RELATIONEN ALS sdata:-FASSADEN
@@ -350,7 +362,7 @@ sdata:hasStatus a owl:DatatypeProperty ;
     owl:equivalentProperty min:hasStatus ;
     rdfs:label "has status"@en .
 
-# --- Annotation-Property-Fassaden (v0.1.0) ---
+# --- Annotation-Property-Fassaden ---
 
 sdata:causalityMode a owl:AnnotationProperty ;
     owl:equivalentProperty min:causalityMode ;
@@ -365,15 +377,7 @@ sdata:efficacyMode a owl:AnnotationProperty ;
 
 # #############################################################################
 #
-#   TEIL Ia — MIN-KATEGORIEN ALS sdata:-KLASSEN-FASSADEN
-#
-#   Namespace-Regel: Domänennutzer schreiben ausschließlich sdata:*.
-#   Jede MIN-Kategorie bekommt eine sdata:-Fassade.
-#   Alle Domänenklassen erben von sdata:-Klassen, nie von min: direkt.
-#
-#   sdata:Data, sdata:Process, sdata:Boundary existieren bereits
-#   als Domänenklassen (TEIL II–V). Die folgenden 7 Fassaden
-#   ergänzen die fehlenden Kategorien.
+#   TEIL Ia — MIN-KATEGORIEN ALS sdata:-KLASSEN-FASSADEN (7)
 #
 # #############################################################################
 
@@ -394,7 +398,11 @@ sdata:Agent a owl:Class ;
     rdfs:comment """Fassade für min:Agent. Das, was handelt.
     Selektive Handlungsfähigkeit. Querkategorie.
     Co-Typisierung Pflicht: Agent ⊑ Nexus ⊔ Forma.
-    Alle sdata-Agent-Klassen erben von sdata:Agent."""@de .
+
+    DESIGN-PRINZIP: Zustand ≠ Typ.
+    Ob ein Agent gerade aktiv ist, gehört in
+    sdata:hasStatus ('idle', 'running', 'standby'),
+    nicht in die Klassenhierarchie."""@de .
 
 sdata:Lex a owl:Class ;
     rdfs:subClassOf min:Lex ;
@@ -439,7 +447,11 @@ sdata:Institutio a owl:Class ;
 
 # #############################################################################
 #
-#   TEIL II — OBJECT-HIERARCHIE (7)
+#   TEIL II — OBJECT-HIERARCHIE (5)
+#
+#   v0.1.0: Hardware und Software aus Object entfernt.
+#   Hardware → Agent ∩ Object (TEIL IV).
+#   Software → Agent ∩ Data (TEIL IV).
 #
 # #############################################################################
 
@@ -462,27 +474,6 @@ sdata:Product a owl:Class ;
     Fertigungsprozesses. Träger eines Produktpasses. Typisierung
     über sdata:ProductType (sdata:typifiedBy)."""@de ;
     skos:example "Seitenteil, Motorblock, B-Säule, Felge, Baugruppe."@de .
-
-sdata:Hardware a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Hardware"@en ;
-    rdfs:label "Hardware"@de ;
-    sdata:causalityMode "dispositional" ;
-    rdfs:comment """Physisches Gerät oder Maschine als PASSIVES Ding.
-    Wenn aktiv: Doppeltypisierung mit HardwareAgent.
-    Klassifizierung über sdata:HardwareType (sdata:typifiedBy)."""@de ;
-    skos:example "Presse, Ofen, Prüfmaschine, Sensor (passiv), Werkzeug."@de .
-
-sdata:Software a owl:Class ;
-    rdfs:subClassOf sdata:Object ;
-    rdfs:label "Software"@en ;
-    rdfs:label "Software"@de ;
-    sdata:causalityMode "dispositional" ;
-    rdfs:comment """Softwareprodukt als PASSIVES Artefakt. Wenn aktiv:
-    Doppeltypisierung mit SoftwareAgent. Klassifizierung über
-    sdata:SoftwareType. Datenbanken, Solver, CAD: alles
-    SoftwareType-Instanzen."""@de ;
-    skos:example "AutoForm R10, Abaqus 2024, LS-DYNA R14, PostgreSQL, openLCA."@de .
 
 sdata:Site a owl:Class ;
     rdfs:subClassOf sdata:Object ;
@@ -514,7 +505,9 @@ sdata:Substance a owl:Class ;
 
 # #############################################################################
 #
-#   TEIL III — DATA-HIERARCHIE (11)
+#   TEIL III — DATA-HIERARCHIE (12)
+#
+#   Software ist nicht mehr hier — siehe TEIL IV (Agent).
 #
 # #############################################################################
 
@@ -586,7 +579,8 @@ sdata:DigitalTwin a owl:Class ;
     rdfs:subClassOf sdata:Data ;
     rdfs:label "Digital Twin"@en ;
     rdfs:label "Digitaler Zwilling"@de ;
-    rdfs:comment "Digitales Abbild. Wenn aktiv: zusätzlich SoftwareAgent."@de ;
+    rdfs:comment """Digitales Abbild. Wenn aktiv (Predictive Twin):
+    Doppeltypisierung mit sdata:Software (Agent ∩ Data)."""@de ;
     skos:example "FEM-basierter DZ, Predictive-Maintenance-DZ."@de .
 
 sdata:VerifiableCredential a owl:Class ;
@@ -628,6 +622,19 @@ sdata:BillOfMaterials a owl:Class ;
 #
 #   TEIL IV — AGENT-HIERARCHIE (5)
 #
+#   DESIGN-PRINZIP: Zustand ≠ Typ.
+#   Hardware ist IMMER Agent (ob idle oder running).
+#   Software ist IMMER Agent (ob installiert oder rechnend).
+#   Keine separaten HardwareAgent/SoftwareAgent-Klassen.
+#
+#   Co-Typisierung     | Identitätskriterium
+#   -------------------|---------------------
+#   Person:       Agent ∩ Object      | material
+#   Hardware:     Agent ∩ Object      | material
+#   Software:     Agent ∩ Data        | informational
+#   Organization: Agent ∩ Institutio  | institutional
+#   EnvironmentAgent: Agent ∩ Process | kausal
+#
 # #############################################################################
 
 sdata:Person a owl:Class ;
@@ -641,27 +648,48 @@ sdata:Person a owl:Class ;
     Kontinuität."""@de ;
     skos:example "Prüfer, Konstrukteur, Werker, Laborant."@de .
 
-sdata:HardwareAgent a owl:Class ;
+sdata:Hardware a owl:Class ;
     rdfs:subClassOf sdata:Agent ;
     rdfs:subClassOf sdata:Object ;
-    rdfs:label "Hardware Agent"@en ;
-    rdfs:label "Hardware-Agent"@de ;
+    rdfs:label "Hardware"@en ;
+    rdfs:label "Hardware"@de ;
     sdata:causalityMode "dispositional" ;
-    rdfs:comment """Handlungsfähige Maschine. Co-Typisierung:
-    Agent ∩ Object. Identitätskriterium: materiale
-    Kontinuität. Doppeltypisierung mit Hardware."""@de ;
-    skos:example "CNC-Fräse, Roboterarm, Prüfmaschine (im Betrieb)."@de .
+    rdfs:comment """Physisches Gerät oder Maschine — IMMER Agent.
+    Co-Typisierung: Agent ∩ Object.
+    Identitätskriterium: materiale Kontinuität.
 
-sdata:SoftwareAgent a owl:Class ;
+    Ob die Maschine gerade aktiv ist, gehört in
+    sdata:hasStatus ('idle', 'running', 'standby', 'maintenance'),
+    nicht in die Klassenhierarchie.
+
+    Die Zwick Z250 ist eine Prüfmaschine — egal ob sie
+    gerade prüft oder im Leerlauf steht.
+
+    Klassifizierung über sdata:HardwareType (sdata:typifiedBy)."""@de ;
+    skos:example "Presse, Ofen, Prüfmaschine, Sensor, Werkzeug, Roboterarm."@de .
+
+sdata:Software a owl:Class ;
     rdfs:subClassOf sdata:Agent ;
     rdfs:subClassOf sdata:Data ;
-    rdfs:label "Software Agent"@en ;
-    rdfs:label "Software-Agent"@de ;
+    rdfs:label "Software"@en ;
+    rdfs:label "Software"@de ;
     sdata:causalityMode "dispositional" ;
-    rdfs:comment """Software als handelnder Agent. Co-Typisierung:
-    Agent ∩ Data. Identitätskriterium: informationale
-    Identität. Neue Gewichte = neuer Agent."""@de ;
-    skos:example "FE-Solver (rechnend), ML-Modell, DPP-Service."@de .
+    rdfs:comment """Software — IMMER Agent.
+    Co-Typisierung: Agent ∩ Data.
+    Identitätskriterium: informationale Identität.
+    Neue Gewichte nach Fine-Tuning = neuer Agent.
+
+    Software hat keine materiale Persistenz — sie ist
+    verlustfrei kopierbar, die Kopie ist identisch.
+    Deshalb Data, nicht Object.
+
+    Eine reine Installationsdatei ohne Agency ist
+    schlicht sdata:Data oder sdata:ResultFile,
+    nicht sdata:Software.
+
+    Klassifizierung über sdata:SoftwareType (sdata:typifiedBy).
+    Datenbanken, Solver, CAD: alles SoftwareType-Instanzen."""@de ;
+    skos:example "AutoForm R10, Abaqus 2024, LS-DYNA R14, PostgreSQL, openLCA."@de .
 
 sdata:Organization a owl:Class ;
     rdfs:subClassOf sdata:Agent ;
@@ -672,11 +700,6 @@ sdata:Organization a owl:Class ;
     rdfs:comment """Organisation als handelnder Agent UND anerkannte
     Institution. Co-Typisierung: Agent ∩ Institutio.
     Identitätskriterium: institutionelle Identität.
-
-    sdata ermöglicht das nativ: Agent steht über der
-    Zweiggrenze. Ein Knoten, zwei Dimensionen.
-    Vorher: zwei Knoten (Organization + LegalEntity).
-    Jetzt: ein Knoten mit Doppelklasse.
 
     sdata:LegalEntity bleibt als reine Institutio-Klasse
     für juristische Personen OHNE Agency
@@ -813,8 +836,7 @@ sdata:Regulation a owl:Class ;
     rdfs:comment """Regulatorisches Rahmenwerk. BÜNDELT atomare
     Anforderungen (sdata:Requirement) via sdata:comprises.
     Existiert durch kollektive Anerkennung (EU, nationale
-    Gesetzgeber). Exakt Searles Kriterium.
-    v0.1.0: von Norma nach Institutio verschoben."""@de ;
+    Gesetzgeber). Exakt Searles Kriterium."""@de ;
     skos:example "ESPR, CBAM, REACH, RoHS, EU-Taxonomie."@de .
 
 sdata:Specification a owl:Class ;
@@ -824,8 +846,7 @@ sdata:Specification a owl:Class ;
     sdata:efficacyMode "institutional" ;
     rdfs:comment """Technische Spezifikation oder Norm. BÜNDELT atomare
     Anforderungen (sdata:Requirement) via sdata:comprises.
-    Existiert durch Anerkennung der Normungsgemeinschaft.
-    v0.1.0: von Norma nach Institutio verschoben."""@de ;
+    Existiert durch Anerkennung der Normungsgemeinschaft."""@de ;
     skos:example "EN 10025-2, DIN EN ISO 6892-1, ISO 14040."@de .
 
 sdata:LifecyclePhase a owl:Class ;
@@ -835,8 +856,7 @@ sdata:LifecyclePhase a owl:Class ;
     sdata:efficacyMode "institutional" ;
     rdfs:comment """Konventionelle Lebenszykluseinteilung. Keine
     Soll-Aussage, sondern konventionelle Klassifikation der
-    LCA/ESPR-Community. Existiert durch Anerkennung.
-    v0.1.0: von Norma nach Institutio verschoben."""@de ;
+    LCA/ESPR-Community. Existiert durch Anerkennung."""@de ;
     skos:example "Rohstoffgewinnung, Fertigung, Nutzung, End-of-Life."@de .
 
 sdata:LegalEntity a owl:Class ;
@@ -845,16 +865,8 @@ sdata:LegalEntity a owl:Class ;
     rdfs:label "Juristische Person"@de ;
     sdata:efficacyMode "institutional" ;
     rdfs:comment """Juristische Person als reine Institutio — OHNE Agency.
-
-    sdata:Organization ist Agent ∩ Institutio
-    (ein Knoten). LegalEntity bleibt für Fälle, in denen
-    KEINE Agency vorliegt:
-    — Aufgelöste Firmen (keine Handlungsfähigkeit mehr)
-    — Historische Institutionen
-    — Rechtsformen als abstrakte Institutio
-
-    Aktive Unternehmen: sdata:Organization (hat beides).
-    Juristische Hülle ohne Agency: sdata:LegalEntity."""@de ;
+    Aktive Unternehmen: sdata:Organization (Agent ∩ Institutio).
+    Hüllen ohne Agency: sdata:LegalEntity (nur Institutio)."""@de ;
     skos:example "Aufgelöste GmbH, historische Institution, Rechtsform als Muster."@de .
 
 
@@ -894,7 +906,7 @@ sdata:ProductType a owl:Class ;
     rdfs:label "Product Type"@en ;
     rdfs:label "Produkttyp"@de ;
     rdfs:comment """Wesensbestimmung eines Produkts. Typisiert sdata:Product
-    via sdata:typifies. v0.1.0: neu."""@de ;
+    via sdata:typifies."""@de ;
     skos:example "Seitenteil, B-Säule, Felge, Platine, Baugruppe, Coil."@de .
 
 sdata:DataFormat a owl:Class ;
@@ -931,13 +943,13 @@ sdata:ModelType a owl:Class ;
     rdfs:label "Modelltyp"@de ;
     rdfs:comment """Wesensbestimmung eines Modelltyps. Unterscheidet
     physikalische Modelle, kryptographische Verfahren,
-    ML-Architekturen, Schemata. v0.1.0: neu."""@de ;
+    ML-Architekturen, Schemata."""@de ;
     skos:example "Materialmodell, Kryptoalgorithmus, ML-Architektur, DB-Schema."@de .
 
 
 # #############################################################################
 #
-#   TEIL X — EIGENE sdata OBJECT PROPERTIES (36)
+#   TEIL X — EIGENE sdata OBJECT PROPERTIES (31)
 #
 # #############################################################################
 
@@ -1054,7 +1066,7 @@ sdata:assessesRequirement a owl:ObjectProperty ;
     rdfs:domain sdata:Result ;
     rdfs:range sdata:Requirement ;
     rdfs:subPropertyOf sdata:realizes ;
-    rdfs:comment """v0.1.0 KORRIGIERT: SubPropertyOf realizes (nicht evaluates).
+    rdfs:comment """SubPropertyOf realizes (nicht evaluates).
     Begründung: Richtung ist Result(Data/Nexus) → Requirement(Norma/Forma).
     Das ist Nexus → Forma, also realizes-Richtung.
     evaluates geht Forma → Nexus (umgekehrte Richtung)."""@de .
@@ -1082,8 +1094,8 @@ sdata:specifies a owl:ObjectProperty ;
     rdfs:domain sdata:Specification ;
     rdfs:range min:Nexus ;
     rdfs:subPropertyOf sdata:constrains ;
-    rdfs:comment """v0.1.0 KORRIGIERT: SubPropertyOf constrains (nicht evaluates).
-    Begründung: Specification ist jetzt Institutio (Forma).
+    rdfs:comment """SubPropertyOf constrains (nicht evaluates).
+    Begründung: Specification ist Institutio (Forma).
     Richtung Forma → Nexus = constrains."""@de .
 
 sdata:regulates a owl:ObjectProperty ;
@@ -1092,7 +1104,7 @@ sdata:regulates a owl:ObjectProperty ;
     rdfs:domain sdata:Regulation ;
     rdfs:range min:Nexus ;
     rdfs:subPropertyOf sdata:constrains ;
-    rdfs:comment """Regulation beschränkt Nexus. v0.1.0: neu.
+    rdfs:comment """Regulation beschränkt Nexus.
     Richtung Forma → Nexus = constrains."""@de .
 
 sdata:requiresPhase a owl:ObjectProperty ;
@@ -1100,17 +1112,14 @@ sdata:requiresPhase a owl:ObjectProperty ;
     rdfs:label "erfordert Phase"@de ;
     rdfs:domain sdata:Process ;
     rdfs:range sdata:LifecyclePhase ;
-    rdfs:subPropertyOf sdata:realizes ;
-    rdfs:comment """Process realisiert eine Lebenszyklusphase.
-    v0.1.0: neu."""@de .
+    rdfs:subPropertyOf sdata:realizes .
 
 sdata:issuedBy a owl:ObjectProperty ;
     rdfs:label "issued by"@en ;
     rdfs:label "herausgegeben von"@de ;
     rdfs:domain min:Institutio ;
     rdfs:range min:Agent ;
-    rdfs:subPropertyOf sdata:constitutedBy ;
-    rdfs:comment """Allgemeine Herausgeber-Relation. v0.1.0: neu."""@de .
+    rdfs:subPropertyOf sdata:constitutedBy .
 
 sdata:governedBy a owl:ObjectProperty ;
     rdfs:label "governed by"@en ;
@@ -1118,17 +1127,14 @@ sdata:governedBy a owl:ObjectProperty ;
     rdfs:domain sdata:Process ;
     rdfs:range sdata:Law ;
     rdfs:comment """Process wird von einem Naturgesetz bestimmt.
-    Inverse Domänen-Perspektive zu sdata:governs.
-    v0.1.0: neu."""@de .
+    Inverse Domänen-Perspektive zu sdata:governs."""@de .
 
 sdata:originatedIn a owl:ObjectProperty ;
     rdfs:label "originated in"@en ;
     rdfs:label "entstanden in"@de ;
     rdfs:domain min:Forma ;
     rdfs:range sdata:Process ;
-    rdfs:subPropertyOf sdata:originatedBy ;
-    rdfs:comment """Forma entstand in einem Process.
-    Spezialisierung von originatedBy. v0.1.0: neu."""@de .
+    rdfs:subPropertyOf sdata:originatedBy .
 
 sdata:hasLegalEntity a owl:ObjectProperty ;
     rdfs:label "has legal entity"@en ;
@@ -1136,8 +1142,7 @@ sdata:hasLegalEntity a owl:ObjectProperty ;
     rdfs:domain sdata:Organization ;
     rdfs:range sdata:LegalEntity ;
     rdfs:comment """Verbindet den Agent-Aspekt einer Organisation
-    mit ihrem Institutio-Aspekt (juristische Person).
-    v0.1.0: neu."""@de .
+    mit ihrem Institutio-Aspekt (juristische Person)."""@de .
 
 sdata:regulatedBy a owl:ObjectProperty ;
     rdfs:label "regulated by"@en ;
@@ -1263,15 +1268,18 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #
 #   TEIL XII — DISJUNKTHEIT
 #
+#   v0.1.0: Hardware und Software aus Object-Disjunktheit entfernt.
+#   Hardware ist jetzt Agent ∩ Object, Software ist Agent ∩ Data.
+#   Neue Agent-Disjunktheit enthält Hardware und Software.
+#
 # #############################################################################
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( sdata:Material sdata:Product sdata:Hardware
-                  sdata:Software sdata:Site
-                  sdata:Specimen sdata:Substance ) .
+    owl:members ( sdata:Material sdata:Product
+                  sdata:Site sdata:Specimen sdata:Substance ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( sdata:Person sdata:HardwareAgent sdata:SoftwareAgent
+    owl:members ( sdata:Person sdata:Hardware sdata:Software
                   sdata:Organization sdata:EnvironmentAgent ) .
 
 [] a owl:AllDisjointClasses ;
@@ -1290,6 +1298,10 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 # #############################################################################
 #
 #   TEIL XIII — MODELING PATTERNS (1–16, rein sdata:)
+#
+#   v0.1.0: Alle Patterns aktualisiert — keine Doppeltypisierung
+#   Hardware/HardwareAgent oder Software/SoftwareAgent mehr.
+#   Hardware und Software SIND bereits Agents.
 #
 # #############################################################################
 
@@ -1356,6 +1368,11 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:realizes :recipe_2016 ;
 #       sdata:requiresPhase :phase_production ;
 #       sdata:usesSoftware :openlca .
+#   :openlca  a sdata:Software ;
+#       sdata:typifiedBy :lca_software_typ ;
+#       sdata:hasStatus "running" .
+#   :lca_software_typ  a sdata:SoftwareType ;
+#       sdata:hasName "LCA-Software" .
 #   :recipe_2016  a sdata:Model ;
 #       sdata:typifiedBy :lca_methode_typ .
 #   :lca_methode_typ  a sdata:ModelType ;
@@ -1390,11 +1407,12 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #   MUSTER 7: Digitaler Zwilling mit Szenarioauswahl
 # =============================================================================
 #
-#   :dz_001  a sdata:DigitalTwin , sdata:SoftwareAgent ;
+#   :dz_001  a sdata:DigitalTwin , sdata:Software ;
 #       sdata:describes :bauteil_001 ;
 #       sdata:encodes :johnson_cook ;
 #       sdata:typifiedBy :predictive_twin_typ ;
-#       sdata:selects :szenario_versagen_links .
+#       sdata:selects :szenario_versagen_links ;
+#       sdata:hasStatus "running" .
 #   :predictive_twin_typ  a sdata:SoftwareType .
 #   :johnson_cook  a sdata:Model .
 #   :szenario_versagen_links  a sdata:Scenario ;
@@ -1476,7 +1494,11 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #       sdata:signedBy :pruefinstitut_ag .
 
 # =============================================================================
-#   MUSTER 13: Typus-Kette (alle 8 Fassaden)
+#   MUSTER 13: Typus-Kette (alle 8 Typus-Klassen)
+#
+#   v0.1.0: Keine Doppeltypisierung Hardware/HardwareAgent oder
+#   Software/SoftwareAgent mehr. Hardware und Software SIND Agents.
+#   Status wird über sdata:hasStatus modelliert.
 # =============================================================================
 #
 #   :DC04  a sdata:MaterialGrade ;
@@ -1492,16 +1514,18 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #   :universalpruefmaschine  a sdata:HardwareType ;
 #       sdata:hasName "Universalprüfmaschine" ;
 #       sdata:typifies :zwick_z250 .
-#   :zwick_z250  a sdata:Hardware , sdata:HardwareAgent ;
+#   :zwick_z250  a sdata:Hardware ;
 #       sdata:typifiedBy :universalpruefmaschine ;
-#       sdata:performs :zugversuch_001 .
+#       sdata:performs :zugversuch_001 ;
+#       sdata:hasStatus "running" .
 #   :fe_solver_typ  a sdata:SoftwareType ;
 #       sdata:hasName "Expliziter FE-Solver" ;
 #       sdata:typifies :ls_dyna_r14 .
-#   :ls_dyna_r14  a sdata:Software , sdata:SoftwareAgent ;
+#   :ls_dyna_r14  a sdata:Software ;
 #       sdata:typifiedBy :fe_solver_typ ;
 #       sdata:performs :crashsim_001 ;
-#       sdata:realizes :zentrale_differenzen .
+#       sdata:realizes :zentrale_differenzen ;
+#       sdata:hasStatus "running" .
 #   :zentrale_differenzen  a sdata:Model ;
 #       sdata:typifiedBy :numerik_typ .
 #   :numerik_typ  a sdata:ModelType ;
@@ -1601,17 +1625,16 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #
 #   INVENTAR v0.1.0
 #
-#   KLASSEN (54):
+#   KLASSEN (52):
 #     Fassaden (7): Object, Agent, Lex, Structura, Possibile,
 #                   Norma, Institutio
-#     Object (7): Material, Product, Hardware, Software, Site,
-#                 Specimen, Substance
+#     Object (5): Material, Product, Site, Specimen, Substance
 #     Data (12):  Data, Identifier, Result, ResultFile, ProductPassport,
 #                 DigitalProductPassport, DigitalTwin,
 #                 VerifiableCredential, VerifiablePresentation,
 #                 Proof, CryptographicKey, BillOfMaterials
-#     Agent (5):  Person (∩Object), HardwareAgent (∩Object),
-#                 SoftwareAgent (∩Data), Organization (∩Institutio),
+#     Agent (5):  Person (∩Object), Hardware (∩Object),
+#                 Software (∩Data), Organization (∩Institutio),
 #                 EnvironmentAgent (∩Process)
 #     Process (1): Process
 #     Boundary (1): Boundary
@@ -1629,39 +1652,16 @@ sdata:hasRegulatoryStatus a owl:DatatypeProperty ;
 #   Hinweis: Data, Process, Boundary dienen als Fassade UND
 #   Domänenklasse (werden nicht doppelt gezählt).
 #
+#   AGENT-DESIGN (v0.1.0):
+#     Zustand ≠ Typ. Hardware ist IMMER Agent ∩ Object.
+#     Software ist IMMER Agent ∩ Data.
+#     HardwareAgent und SoftwareAgent eliminiert.
+#     Aktivität wird über sdata:hasStatus modelliert.
+#
 #   FASSADEN (52): 45 OP + 5 DP + 2 AP (owl:equivalentProperty → MIN)
-#   EIGENE OP (31): v0.1.0 (10), v0.1.0 (4), v0.1.0 (6),
-#                   v0.1.0 (3), v0.1.0 (9), v0.1.0 (-1 derivedFrom→Fassade)
-#   EIGENE DP (19): unverändert
+#   EIGENE OP (31)
+#   EIGENE DP (19)
 #   DISJUNKTHEITSAXIOME (4): Object, Agent, Institutio, Typus
 #   MODELING PATTERNS (16): rein sdata:
-#
-#   ÄNDERUNGEN GEGENÜBER v0.1.0:
-#
-#   KLASSEN-FASSADEN (7 neu):
-#     Object, Agent, Lex, Structura, Possibile, Norma, Institutio
-#     Namespace-Regel konsequent: kein min: in Domänenklassen.
-#     Alle Kinder erben von sdata:-Fassaden.
-#
-#   DIGITALPRODUCTPASSPORT (1 neu):
-#     sdata:DigitalProductPassport ⊂ sdata:ProductPassport
-#     ESPR-konform, maschinenlesbar, signierbar.
-#
-#     Agent-Klassen erhalten Co-Typisierung:
-#       Person         ⊂ Agent ∩ Object
-#       HardwareAgent  ⊂ Agent ∩ Object
-#       SoftwareAgent  ⊂ Agent ∩ Data
-#       Organization   ⊂ Agent ∩ Institutio
-#       EnvironmentAgent ⊂ Agent ∩ Process
-#
-#   DERIVEDFROM PROMOTION:
-#     sdata:derivedFrom: eigene OP (Data→Data) → Fassade
-#     owl:equivalentProperty min:derivedFrom (Nexus→Nexus)
-#     Eigene OPs: 32 → 31. OP-Fassaden: 44 → 45.
-#
-#   LEGALENTITY REFRAMED:
-#     Reine Institutio ohne Agency.
-#     Aktive Unternehmen: Organization (Agent ∩ Institutio).
-#     Hüllen ohne Agency: LegalEntity (nur Institutio).
 #
 # #############################################################################
