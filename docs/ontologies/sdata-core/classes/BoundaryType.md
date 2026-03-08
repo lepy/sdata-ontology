@@ -9,7 +9,7 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Grenzflächentyps.
+(none)
 
 ## Examples
 - `Coulomb-Reibung, Σ3-CSL-Korngrenze, thermischer Kontaktwiderstand.`

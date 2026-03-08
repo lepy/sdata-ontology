@@ -8,15 +8,21 @@
 - `min:Agent`
 ## Direct Subclasses
 - [`sdata:EnvironmentAgent`](./EnvironmentAgent.md)
-- [`sdata:HardwareAgent`](./HardwareAgent.md)
+- [`sdata:Hardware`](./Hardware.md)
+- [`sdata:Material`](./Material.md)
 - [`sdata:Organization`](./Organization.md)
 - [`sdata:Person`](./Person.md)
-- [`sdata:SoftwareAgent`](./SoftwareAgent.md)
+- [`sdata:Software`](./Software.md)
+- [`sdata:Specimen`](./Specimen.md)
+- [`sdata:Substance`](./Substance.md)
 ## Comment
 Fassade für min:Agent. Das, was handelt.
     Selektive Handlungsfähigkeit. Querkategorie.
     Co-Typisierung Pflicht: Agent ⊑ Nexus ⊔ Forma.
-    Alle sdata-Agent-Klassen erben von sdata:Agent.
+
+    DESIGN-PRINZIP: Zustand ≠ Typ.
+    Ob ein Agent gerade aktiv ist, gehört in
+    sdata:hasStatus, nicht in die Klassenhierarchie.
 
 ## Examples
 - (none)
@@ -28,12 +34,10 @@ Fassade für min:Agent. Das, was handelt.
 # Praxisfall aus der Industrie, in dem `sdata:Agent` zur semantischen Modellierung eingesetzt wird.
 ex:agent_001 a sdata:Agent ;
   sdata:hasIdentifier "AGENT-001" ;
-  sdata:hasName "Agent Akteur" ;
-  sdata:performs ex:process_001 ;
-  sdata:actsOn ex:product_001 .
+  sdata:hasName "Generischer Agent im Shopfloor" ;
+  sdata:performs ex:process_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

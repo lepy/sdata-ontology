@@ -11,10 +11,9 @@
 - (none)
 ## Comment
 Natürlicher Prozess mit selektiver Wirkung.
-    Co-Typisierung: Agent ∩ Process.
-    Greift BESTIMMTE Phasen/Materialien an, nicht alles.
-    Selektivitätstest: Korrosion greift bestimmte Korngrenzen
-    an → Agent. Tornado transformiert alles → kein Agent.
+    Agent ∩ Process. Selektivitätstest:
+    Korrosion greift bestimmte Korngrenzen an → Agent.
+    Tornado transformiert alles → kein Agent.
 
 ## Examples
 - `Korrosion, UV-Strahlung, Feuchtigkeit.`
@@ -25,13 +24,13 @@ Natürlicher Prozess mit selektiver Wirkung.
 
 # Korrosive Betriebsumgebung als wirksamer Agent auf Materialalterung.
 ex:environment_agent_001 a sdata:EnvironmentAgent ;
-  sdata:hasIdentifier "ENVIRONMENTAGENT-001" ;
-  sdata:hasName "EnvironmentAgent Akteur" ;
-  sdata:performs ex:process_001 ;
-  sdata:actsOn ex:product_001 .
+  sdata:hasIdentifier "ENV-001" ;
+  sdata:hasName "Feuchte-korrosive Umgebung" ;
+  sdata:influences ex:process_001 ;
+  sdata:actsOn ex:material_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process .
+ex:material_001 a sdata:Material .
 ```
 ## Used As Domain
 - (none)

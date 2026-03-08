@@ -9,7 +9,7 @@
 ## Direct Subclasses
 - [`sdata:EnvironmentAgent`](./EnvironmentAgent.md)
 ## Comment
-Typisierung über sdata:ProcessType (sdata:typifiedBy).
+Typisierung über sdata:ProcessType.
 
 ## Examples
 - `Tiefziehen, Zugversuch, FEM-Simulation, LCA-Studie.`
@@ -23,14 +23,17 @@ ex:process_001 a sdata:Process ;
   sdata:hasIdentifier "PROC-001" ;
   sdata:hasName "Warmumformung Linie 3" ;
   sdata:hasInput ex:material_001 ;
-  sdata:hasOutput ex:product_001 ;
-  sdata:performedBy ex:person_001 ;
-  sdata:generates ex:data_001 .
+  sdata:hasOutput ex:part_001 ;
+  sdata:performedBy ex:software_001 ;
+  sdata:generates ex:result_001 .
 
 ex:material_001 a sdata:Material .
-ex:product_001 a sdata:Product ; sdata:hasMaterial ex:material_001 .
-ex:person_001 a sdata:Person .
-ex:data_001 a sdata:Data ; sdata:producedBy ex:process_001 .
+ex:part_001 a sdata:Hardware ;
+  sdata:hasMaterial ex:material_001 ;
+  sdata:typifiedBy ex:product_type_001 .
+ex:software_001 a sdata:Software ; sdata:performs ex:process_001 .
+ex:result_001 a sdata:Result ; sdata:producedBy ex:process_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:governedBy`

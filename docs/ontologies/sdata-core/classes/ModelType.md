@@ -9,9 +9,7 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Modelltyps. Unterscheidet
-    physikalische Modelle, kryptographische Verfahren,
-    ML-Architekturen, Schemata. v0.1.0: neu.
+(none)
 
 ## Examples
 - `Materialmodell, Kryptoalgorithmus, ML-Architektur, DB-Schema.`

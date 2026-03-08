@@ -8,18 +8,18 @@
 - `min:Object`
 ## Direct Subclasses
 - [`sdata:Hardware`](./Hardware.md)
-- [`sdata:HardwareAgent`](./HardwareAgent.md)
 - [`sdata:Material`](./Material.md)
 - [`sdata:Person`](./Person.md)
-- [`sdata:Product`](./Product.md)
 - [`sdata:Site`](./Site.md)
-- [`sdata:Software`](./Software.md)
 - [`sdata:Specimen`](./Specimen.md)
 - [`sdata:Substance`](./Substance.md)
 ## Comment
 Fassade für min:Object. Das, was da ist.
-    Materielle Persistenz. Alle sdata-Object-Klassen
-    erben von sdata:Object, nicht von min:Object.
+    Materielle Persistenz.
+
+    Direkte Instanziierung nur für Site.
+    Alle anderen physischen Dinge sind Agents
+    (Hardware, Material, Substance, Specimen, Person).
 
 ## Examples
 - (none)
@@ -35,11 +35,10 @@ ex:object_001 a sdata:Object ;
   sdata:describedBy ex:data_001 .
 
 ex:data_001 a sdata:Data ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:object_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

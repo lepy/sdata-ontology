@@ -9,10 +9,8 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Konventionelle Lebenszykluseinteilung. Keine
-    Soll-Aussage, sondern konventionelle Klassifikation der
-    LCA/ESPR-Community. Existiert durch Anerkennung.
-    v0.1.0: von Norma nach Institutio verschoben.
+Konventionelle Lebenszykluseinteilung.
+    Existiert durch Anerkennung der LCA/ESPR-Community.
 
 ## Examples
 - `Rohstoffgewinnung, Fertigung, Nutzung, End-of-Life.`

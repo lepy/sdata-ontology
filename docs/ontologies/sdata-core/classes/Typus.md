@@ -9,18 +9,13 @@
 ## Direct Subclasses
 - [`sdata:BoundaryType`](./BoundaryType.md)
 - [`sdata:DataFormat`](./DataFormat.md)
-- [`sdata:HardwareType`](./HardwareType.md)
 - [`sdata:MaterialGrade`](./MaterialGrade.md)
 - [`sdata:ModelType`](./ModelType.md)
 - [`sdata:ProcessType`](./ProcessType.md)
 - [`sdata:ProductType`](./ProductType.md)
-- [`sdata:SoftwareType`](./SoftwareType.md)
 ## Comment
-Konventionelle Wesensbestimmung in der Domäne.
-    Bündelt Norma, Structura, Lex zu einem benannten Typ.
-    Spezialisierung von Institutio für technische Klassifikation.
+Konventionelle Wesensbestimmung. Bündelt Forma.
     Typifiziert Nexus via sdata:typifies.
-    Bündelt Forma via sdata:comprises.
 
 ## Examples
 - (none)
@@ -33,9 +28,9 @@ Konventionelle Wesensbestimmung in der Domäne.
 ex:typus_001 a sdata:Typus ;
   sdata:hasIdentifier "TYPUS-001" ;
   sdata:hasName "Typus Klassifikation" ;
-  sdata:typifies ex:product_001 .
+  sdata:typifies ex:hardware_001 .
 
-ex:product_001 a sdata:Product .
+ex:hardware_001 a sdata:Hardware .
 ```
 ## Used As Domain
 - (none)

@@ -9,10 +9,13 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-(none)
+Universelles Gesetz. Gilt ausnahmslos.
+    Kein Gegenbeispiel möglich. Fundament für FPT.
+    Dünn: nur Erhaltungssätze und Hauptsätze.
+    Hooke, Fick, Fourier sind Modelle, nicht Gesetze.
 
 ## Examples
-- `Energieerhaltung, Massenerhaltung, Ficksches Diffusionsgesetz.`
+- `Energieerhaltung, Massenerhaltung, Entropiezunahme, Impulserhaltung.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .

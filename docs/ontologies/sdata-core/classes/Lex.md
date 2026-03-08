@@ -10,7 +10,9 @@
 - [`sdata:Law`](./Law.md)
 ## Comment
 Fassade für min:Lex. Das, was immer gilt.
-    Universelle Gültigkeit.
+    Universelle Gültigkeit. Erhaltungssätze,
+    Hauptsätze der Thermodynamik. Dünn, aber
+    strukturell tragend für First Principle Thinking.
 
 ## Examples
 - (none)

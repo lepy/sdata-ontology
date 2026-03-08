@@ -5,14 +5,18 @@
 - `Digital Twin`
 - `Digitaler Zwilling`
 ## Direct Superclasses
-- [`sdata:Data`](./Data.md)
+- [`sdata:Software`](./Software.md)
 ## Direct Subclasses
 - (none)
 ## Comment
-Digitales Abbild. Wenn aktiv: zusätzlich SoftwareAgent.
+Digitaler Zwilling — Software-Agent, der ein
+    physisches Gegenstück beschreibt und dessen Verhalten
+    vorhersagt. Spezialisierung von Software (Agent ∩ Data).
+    Semantischer Unterschied: DigitalTwin sdata:describes
+    immer ein physisches Ding.
 
 ## Examples
-- `FEM-basierter DZ, Predictive-Maintenance-DZ.`
+- `FEM-basierter DZ, Predictive-Maintenance-DZ, Prozess-DZ.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
@@ -21,12 +25,13 @@ Digitales Abbild. Wenn aktiv: zusätzlich SoftwareAgent.
 # Digitaler Zwilling einer Giesslinie mit Live-Parametern und Historie.
 ex:digital_twin_001 a sdata:DigitalTwin ;
   sdata:hasIdentifier "DIGITALTWIN-001" ;
-  sdata:hasName "DigitalTwin Datensatz" ;
-  sdata:describes ex:product_001 ;
-  sdata:producedBy ex:process_001 .
+  sdata:hasName "DigitalTwin als informationeller Agent" ;
+  sdata:performs ex:process_001 ;
+  sdata:describes ex:asset_001 .
 
-ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

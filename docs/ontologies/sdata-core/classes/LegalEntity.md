@@ -9,20 +9,11 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Juristische Person als reine Institutio — OHNE Agency.
-
-    sdata:Organization ist Agent ∩ Institutio
-    (ein Knoten). LegalEntity bleibt für Fälle, in denen
-    KEINE Agency vorliegt:
-    — Aufgelöste Firmen (keine Handlungsfähigkeit mehr)
-    — Historische Institutionen
-    — Rechtsformen als abstrakte Institutio
-
-    Aktive Unternehmen: sdata:Organization (hat beides).
-    Juristische Hülle ohne Agency: sdata:LegalEntity.
+Juristische Person OHNE Agency.
+    Aktive Unternehmen: sdata:Organization.
 
 ## Examples
-- `Aufgelöste GmbH, historische Institution, Rechtsform als Muster.`
+- `Aufgelöste GmbH, historische Institution.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .

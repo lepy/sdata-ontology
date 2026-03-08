@@ -22,11 +22,12 @@ Reifizierter Identifier. Scheme, Value, Issuer, Registry.
 ex:identifier_001 a sdata:Identifier ;
   sdata:hasIdentifier "IDENTIFIER-001" ;
   sdata:hasName "Identifier Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:hasIssuer`

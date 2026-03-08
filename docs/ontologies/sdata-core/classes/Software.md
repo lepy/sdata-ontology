@@ -5,14 +5,18 @@
 - `Software`
 - `Software`
 ## Direct Superclasses
-- [`sdata:Object`](./Object.md)
+- [`sdata:Agent`](./Agent.md)
+- [`sdata:Data`](./Data.md)
 ## Direct Subclasses
-- (none)
+- [`sdata:DigitalTwin`](./DigitalTwin.md)
 ## Comment
-Softwareprodukt als PASSIVES Artefakt. Wenn aktiv:
-    Doppeltypisierung mit SoftwareAgent. Klassifizierung über
-    sdata:SoftwareType. Datenbanken, Solver, CAD: alles
-    SoftwareType-Instanzen.
+Software — IMMER Agent. Agent ∩ Data.
+    Identitätskriterium: informationale Identität.
+    Neue Gewichte = neuer Agent.
+
+    Reine Installationsdatei ohne Agency ist sdata:Data.
+
+    Klassifizierung: sdata:ProductType.
 
 ## Examples
 - `AutoForm R10, Abaqus 2024, LS-DYNA R14, PostgreSQL, openLCA.`
@@ -24,15 +28,13 @@ Softwareprodukt als PASSIVES Artefakt. Wenn aktiv:
 # MES-System zur Erfassung von Prozessparametern und Chargenbezug.
 ex:software_001 a sdata:Software ;
   sdata:hasIdentifier "SOFTWARE-001" ;
-  sdata:hasName "Software Instanz" ;
-  sdata:describedBy ex:data_001 .
+  sdata:hasName "Software als informationeller Agent" ;
+  sdata:performs ex:process_001 ;
+  sdata:describes ex:asset_001 .
 
-ex:data_001 a sdata:Data ;
-  sdata:describes ex:product_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

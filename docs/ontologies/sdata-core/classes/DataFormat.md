@@ -9,10 +9,11 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Dateiformats.
+Wesensbestimmung eines Dateiformats. Ersetzt
+    die ehemalige DP hasFormat und die Klasse ResultFile.
 
 ## Examples
-- `STEP AP214, JT, VTU, CSV (RFC 4180), JSON-LD, Parquet.`
+- `STEP AP214, JT, VTU, CSV (RFC 4180), JSON-LD, Parquet, PDF.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .

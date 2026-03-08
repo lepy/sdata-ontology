@@ -9,9 +9,10 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Semantisches Ergebnis-Bündel. Assessment-Verhalten
-    emergiert aus sdata:assessesRequirement + assessmentOutcome.
+Semantisches Ergebnis-Bündel. Eigenes Axiom:
+    assessesRequirement + assessmentOutcome.
     Doppeltypisierung Result ∩ VerifiableCredential möglich.
+    Persistierung über sdata:typifiedBy → DataFormat.
 
 ## Examples
 - `Zugversuchsergebnis, FEM-Ergebnis, Compliance-Bewertung.`
@@ -24,11 +25,12 @@ Semantisches Ergebnis-Bündel. Assessment-Verhalten
 ex:result_001 a sdata:Result ;
   sdata:hasIdentifier "RESULT-001" ;
   sdata:hasName "Result Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:assessesRequirement`

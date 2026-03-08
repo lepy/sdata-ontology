@@ -10,18 +10,9 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Organisation als handelnder Agent UND anerkannte
-    Institution. Co-Typisierung: Agent ∩ Institutio.
+Agent ∩ Institutio.
     Identitätskriterium: institutionelle Identität.
-
-    sdata ermöglicht das nativ: Agent steht über der
-    Zweiggrenze. Ein Knoten, zwei Dimensionen.
-    Vorher: zwei Knoten (Organization + LegalEntity).
-    Jetzt: ein Knoten mit Doppelklasse.
-
-    sdata:LegalEntity bleibt als reine Institutio-Klasse
-    für juristische Personen OHNE Agency
-    (aufgelöste Firmen, historische Entitäten).
+    sdata:LegalEntity bleibt für Fälle ohne Agency.
 
 ## Examples
 - `Stahlwerk, Prüflabor, Zertifizierer, OEM, Recycler.`
@@ -32,13 +23,14 @@ Organisation als handelnder Agent UND anerkannte
 
 # Tier-1-Lieferant als organisatorischer Akteur im DPP-Netzwerk.
 ex:organization_001 a sdata:Organization ;
-  sdata:hasIdentifier "ORGANIZATION-001" ;
-  sdata:hasName "Organization Akteur" ;
+  sdata:hasIdentifier "ORG-001" ;
+  sdata:hasName "Tier-1 Lieferant Nord" ;
   sdata:performs ex:process_001 ;
-  sdata:actsOn ex:product_001 .
+  sdata:owns ex:asset_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:hasLegalEntity`

@@ -22,11 +22,12 @@ Kryptographische Signatur.
 ex:proof_001 a sdata:Proof ;
   sdata:hasIdentifier "PROOF-001" ;
   sdata:hasName "Proof Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

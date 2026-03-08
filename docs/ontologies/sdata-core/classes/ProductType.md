@@ -9,23 +9,33 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Produkts. Typisiert sdata:Product
-    via sdata:typifies. v0.1.0: neu.
+Wesensbestimmung eines Produkts, Geräts oder
+    Software-Typs. Einheitlicher Typus für Hardware,
+    Software und alle anderen typifizierbaren Nexus.
+    Ersetzt die ehemaligen Klassen Product, HardwareType
+    und SoftwareType.
 
 ## Examples
-- `Seitenteil, B-Säule, Felge, Platine, Baugruppe, Coil.`
+- `Seitenteil, B-Säule, Felge, Universalprüfmaschine, Hydraulische Presse, FE-Solver, CAD-System, LCA-Software.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
 @prefix ex:    <https://example.org/industry/> .
 
-# Typisierung als `HV-Kabelsatz` fuer Variantensteuerung im PLM.
-ex:product_type_001 a sdata:ProductType ;
-  sdata:hasIdentifier "PRODUCTTYPE-001" ;
-  sdata:hasName "ProductType Klassifikation" ;
-  sdata:typifies ex:product_001 .
+# Typisierung von Hardware und Software als einheitlicher Produkttyp.
+ex:universalpruefmaschine a sdata:ProductType ;
+  sdata:hasIdentifier "PT-001" ;
+  sdata:hasName "Universalpruefmaschine" .
 
-ex:product_001 a sdata:Product .
+ex:fe_solver_typ a sdata:ProductType ;
+  sdata:hasIdentifier "PT-002" ;
+  sdata:hasName "FE-Solver" .
+
+ex:zwick_z250 a sdata:Hardware ;
+  sdata:typifiedBy ex:universalpruefmaschine .
+
+ex:ls_dyna_r14 a sdata:Software ;
+  sdata:typifiedBy ex:fe_solver_typ .
 ```
 ## Used As Domain
 - (none)

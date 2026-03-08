@@ -10,6 +10,8 @@
 - (none)
 ## Comment
 Physischer Standort. Verortung via sdata:locatedAt.
+    Besteht den Selektivitätstest nicht — verortet nur.
+    Einziges direkt instanziierbares Object ohne Agency.
 
 ## Examples
 - `Werk Duisburg, Presswerk Leipzig, Recyclinganlage Hamburg.`
@@ -25,11 +27,10 @@ ex:site_001 a sdata:Site ;
   sdata:describedBy ex:data_001 .
 
 ex:data_001 a sdata:Data ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:site_001 ;
   sdata:producedBy ex:process_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process .
 ```
 ## Used As Domain
 - (none)

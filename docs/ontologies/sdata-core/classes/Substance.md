@@ -5,13 +5,15 @@
 - `Substance`
 - `Substanz`
 ## Direct Superclasses
+- [`sdata:Agent`](./Agent.md)
 - [`sdata:Object`](./Object.md)
 ## Direct Subclasses
 - (none)
 ## Comment
-Chemischer Stoff im regulatorischen Sinne (REACH/RoHS/ESPR).
-    Material ist werkstofftechnisch, Substance ist stofflich-regulatorisch.
-    Dasselbe Blech HAT ein Material und ENTHÄLT Substances.
+Chemischer Stoff als Agent. Wirkt selektiv:
+    Mangan härtet, Chrom-VI schädigt.
+    Agent ∩ Object. Identität: material.
+    Regulatorisch: REACH/RoHS/ESPR.
 
 ## Examples
 - `Mangan (CAS 7439-96-5), Chrom-VI (SVHC), Blei (RoHS).`
@@ -23,15 +25,13 @@ Chemischer Stoff im regulatorischen Sinne (REACH/RoHS/ESPR).
 # Legierungselement Phosphor als enthaltene Substanz in einer Charge.
 ex:substance_001 a sdata:Substance ;
   sdata:hasIdentifier "SUBSTANCE-001" ;
-  sdata:hasName "Substance Instanz" ;
-  sdata:describedBy ex:data_001 .
+  sdata:hasName "Substance als materieller Agent" ;
+  sdata:performs ex:process_001 ;
+  sdata:actsOn ex:asset_001 .
 
-ex:data_001 a sdata:Data ;
-  sdata:describes ex:product_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:hasCASNumber`

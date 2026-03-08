@@ -9,8 +9,7 @@
 ## Direct Subclasses
 - [`sdata:Requirement`](./Requirement.md)
 ## Comment
-Fassade für min:Norma. Das, was gelten soll.
-    Anforderung.
+Fassade für min:Norma. Anforderung.
 
 ## Examples
 - (none)

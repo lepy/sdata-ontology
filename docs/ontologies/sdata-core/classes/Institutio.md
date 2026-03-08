@@ -18,8 +18,7 @@
 - [`sdata:TrustFramework`](./TrustFramework.md)
 - [`sdata:Typus`](./Typus.md)
 ## Comment
-Fassade für min:Institutio. Das, was anerkannt wird.
-    Kollektive Anerkennung.
+Fassade für min:Institutio. Kollektive Anerkennung.
 
 ## Examples
 - (none)

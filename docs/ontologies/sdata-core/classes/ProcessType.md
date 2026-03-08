@@ -9,7 +9,7 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Verfahrens. Nicht Specification.
+(none)
 
 ## Examples
 - `Zugversuch nach ISO 6892-1, Tiefziehen, Crashsimulation.`

@@ -5,11 +5,14 @@
 - `Probe`
 - `Specimen`
 ## Direct Superclasses
+- [`sdata:Agent`](./Agent.md)
 - [`sdata:Object`](./Object.md)
 ## Direct Subclasses
 - (none)
 ## Comment
-Prüfkörper oder Probe. Weder Material noch Product.
+Prüfkörper als Agent. Wirkt selektiv:
+    widersteht Last, versagt lokal, kann Messeinrichtung
+    zerstören. Agent ∩ Object. Identität: material.
     Provenienz via sdata:sampledFrom.
 
 ## Examples
@@ -22,15 +25,13 @@ Prüfkörper oder Probe. Weder Material noch Product.
 # Normprobe aus einer Kupfercharge fuer mechanische Pruefungen.
 ex:specimen_001 a sdata:Specimen ;
   sdata:hasIdentifier "SPECIMEN-001" ;
-  sdata:hasName "Specimen Instanz" ;
-  sdata:describedBy ex:data_001 .
+  sdata:hasName "Specimen als materieller Agent" ;
+  sdata:performs ex:process_001 ;
+  sdata:actsOn ex:asset_001 .
 
-ex:data_001 a sdata:Data ;
-  sdata:describes ex:product_001 ;
-  sdata:producedBy ex:process_001 .
-
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:sampledFrom`

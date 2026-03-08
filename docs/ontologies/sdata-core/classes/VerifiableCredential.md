@@ -21,11 +21,12 @@ Signiertes Credential. W3C VC Data Model.
 ex:verifiable_credential_001 a sdata:VerifiableCredential ;
   sdata:hasIdentifier "VERIFIABLECREDENTIAL-001" ;
   sdata:hasName "VerifiableCredential Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

@@ -53,14 +53,12 @@ def test_turtle_syntax(ttl_file):
 
 EXPECTED_CLASSES = [
     "Material",
-    "Product",
     "Hardware",
     "Software",
+    "DigitalTwin",
     "Data",
     "Process",
     "Person",
-    "HardwareAgent",
-    "SoftwareAgent",
     "Organization",
     "EnvironmentAgent",
 ]
@@ -74,7 +72,6 @@ def test_core_classes_exist(core_graph, class_name):
 
 EXPECTED_OBJECT_PROPERTIES = [
     "hasMaterial",
-    "hasProduct",
     "usesTool",
     "usesSoftware",
     "derivedFrom",
@@ -83,6 +80,7 @@ EXPECTED_OBJECT_PROPERTIES = [
     "precedes",
     "hasData",
     "producedBy",
+    "typifiedBy",
 ]
 
 
@@ -116,7 +114,7 @@ def test_datatype_properties_exist(core_graph, prop_name):
 def test_core_class_count(core_graph):
     classes = set(core_graph.subjects(RDF.type, OWL_CLASS))
     sdata_classes = {c for c in classes if str(c).startswith(str(SDATA))}
-    assert len(sdata_classes) == 54, f"Expected 54 classes, found {len(sdata_classes)}"
+    assert len(sdata_classes) == 48, f"Expected 48 classes, found {len(sdata_classes)}"
 
 
 def test_core_uses_min_bases_via_facades(core_graph):
@@ -165,12 +163,10 @@ def test_example_uses_min_categories(example_graph, core_graph):
 def test_example_uses_representative_domain_classes(example_graph, core_graph):
     representative_classes = [
         "Material",
-        "Product",
         "Process",
         "Data",
         "Person",
         "Hardware",
-        "HardwareAgent",
     ]
     for class_name in representative_classes:
         instances = _instances_of_class_or_subclass(example_graph, core_graph, SDATA[class_name])

@@ -9,7 +9,7 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Wesensbestimmung eines Werkstoffs. DPP-Feld ‹Werkstoffbezeichnung›.
+(none)
 
 ## Examples
 - `DC04, HC340LA, AlSi10Mg, PP-GF30, X5CrNi18-10.`

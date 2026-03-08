@@ -9,14 +9,7 @@
 ## Direct Subclasses
 - [`sdata:DigitalProductPassport`](./DigitalProductPassport.md)
 ## Comment
-Produktpass als Data-Artefakt. Allgemeine Klasse
-    für alle Formen von Produktpässen — analog, digital,
-    maschinenlesbar oder nicht. Die konkrete Datei ist
-    min:Data (Nexus). Die Spezifikation (was enthalten sein muss)
-    ist sdata:Regulation / sdata:Specification (Institutio).
-    Verbindung via sdata:encodes (Data kodiert Institutio) und
-    sdata:typifiedBy (Institutio bestimmt, als was die Datei zählt).
-    Kann zugleich VerifiableCredential sein.
+Produktpass als Data-Artefakt.
     Versionskette via sdata:supersedes.
 
 ## Examples
@@ -30,11 +23,12 @@ Produktpass als Data-Artefakt. Allgemeine Klasse
 ex:product_passport_001 a sdata:ProductPassport ;
   sdata:hasIdentifier "PRODUCTPASSPORT-001" ;
   sdata:hasName "ProductPassport Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

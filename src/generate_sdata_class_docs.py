@@ -26,8 +26,6 @@ INDUSTRY_EXAMPLE_BY_CLASS: dict[str, str] = {
     "DigitalTwin": "Digitaler Zwilling einer Giesslinie mit Live-Parametern und Historie.",
     "EnvironmentAgent": "Korrosive Betriebsumgebung als wirksamer Agent auf Materialalterung.",
     "Hardware": "Zugpruefmaschine als physisches Betriebsmittel im Prueflabor.",
-    "HardwareAgent": "Autonomer Roboterarm, der Materialproben umspannt und zufuehrt.",
-    "HardwareType": "Typisierung einer Ofenanlage als `Induktionsofen 2 MW`.",
     "Identifier": "Chargennummer einer Kupferlegierung als rueckverfolgbare Kennung.",
     "Law": "EU-Batterieverordnung als rechtsverbindliche Grundlage fuer DPP-Pflichten.",
     "LegalEntity": "Rechtliche Einheit eines OEMs als Vertragspartner in der Lieferkette.",
@@ -40,20 +38,16 @@ INDUSTRY_EXAMPLE_BY_CLASS: dict[str, str] = {
     "Person": "Qualitaetsingenieurin, die einen Pruefbericht fachlich freigibt.",
     "Process": "Mehrstufiger Ziehprozess zur Reduktion des Leitungsquerschnitts.",
     "ProcessType": "Typisierung als `Kaltumformung` innerhalb der Prozessklassifikation.",
-    "Product": "Kupfer-Stromschiene als Endprodukt fuer E-Mobilitaetsanwendungen.",
     "ProductPassport": "Digital Product Passport eines Hochvolt-Kabels mit Material- und Compliance-Daten.",
-    "ProductType": "Typisierung als `HV-Kabelsatz` fuer Variantensteuerung im PLM.",
+    "ProductType": "Typisierung von Hardware und Software als einheitlicher Produkttyp.",
     "Proof": "Hash-basierter Integritaetsnachweis fuer einen freigegebenen Messdatensatz.",
     "Registry": "Branchenregister zur Aufloesung verifizierbarer Hersteller-Identitaeten.",
     "Regulation": "REACH- oder RoHS-Regelwerk mit gebuendelten Anforderungen an Substanzen.",
     "Requirement": "Grenzwertanforderung `Leitfaehigkeit >= 58 MS/m` fuer Kupferkomponenten.",
     "Result": "Bestanden/Nicht-bestanden Ergebnis einer elektrischen End-of-Line-Pruefung.",
-    "ResultFile": "PDF-Pruefprotokoll einer Wareneingangspruefung mit Signatur.",
     "Scenario": "Szenario `30% Rezyklatanteil` zur Bewertung von CO2- und Kostenwirkungen.",
     "Site": "Produktionsstandort mit Giesserei, Walzwerk und Prueflabor.",
     "Software": "MES-System zur Erfassung von Prozessparametern und Chargenbezug.",
-    "SoftwareAgent": "Automatischer Regelalgorithmus, der Ziehgeschwindigkeit adaptiv anpasst.",
-    "SoftwareType": "Typisierung einer Anwendung als `LCA-Tool` fuer Bilanzierung.",
     "Specification": "DIN EN ISO 6892-1 als Spezifikation fuer Zugversuchsablauf und Auswertung.",
     "Specimen": "Normprobe aus einer Kupfercharge fuer mechanische Pruefungen.",
     "Substance": "Legierungselement Phosphor als enthaltene Substanz in einer Charge.",
@@ -65,23 +59,15 @@ INDUSTRY_EXAMPLE_BY_CLASS: dict[str, str] = {
 
 OBJECT_CLASSES = {
     "Object",
-    "Material",
-    "Product",
-    "Hardware",
-    "Software",
     "Site",
-    "Specimen",
-    "Substance",
 }
 
 DATA_CLASSES = {
     "Data",
     "Identifier",
     "Result",
-    "ResultFile",
     "ProductPassport",
     "DigitalProductPassport",
-    "DigitalTwin",
     "VerifiableCredential",
     "VerifiablePresentation",
     "Proof",
@@ -89,12 +75,24 @@ DATA_CLASSES = {
     "BillOfMaterials",
 }
 
-AGENT_CLASSES = {
-    "Agent",
+AGENT_OBJECT_CLASSES = {
     "Person",
-    "HardwareAgent",
-    "SoftwareAgent",
+    "Hardware",
+    "Material",
+    "Substance",
+    "Specimen",
+}
+
+AGENT_DATA_CLASSES = {
+    "Software",
+    "DigitalTwin",
+}
+
+AGENT_INSTITUTIONAL_CLASSES = {
     "Organization",
+}
+
+AGENT_PROCESS_CLASSES = {
     "EnvironmentAgent",
 }
 
@@ -104,8 +102,6 @@ TYPUS_CLASSES = {
     "ProcessType",
     "ProductType",
     "DataFormat",
-    "HardwareType",
-    "SoftwareType",
     "BoundaryType",
     "ModelType",
 }
@@ -285,14 +281,17 @@ def _industry_ttl(name: str) -> str:
                 '  sdata:hasIdentifier "PROC-001" ;',
                 '  sdata:hasName "Warmumformung Linie 3" ;',
                 "  sdata:hasInput ex:material_001 ;",
-                "  sdata:hasOutput ex:product_001 ;",
-                "  sdata:performedBy ex:person_001 ;",
-                "  sdata:generates ex:data_001 .",
+                "  sdata:hasOutput ex:part_001 ;",
+                "  sdata:performedBy ex:software_001 ;",
+                "  sdata:generates ex:result_001 .",
                 "",
                 "ex:material_001 a sdata:Material .",
-                "ex:product_001 a sdata:Product ; sdata:hasMaterial ex:material_001 .",
-                "ex:person_001 a sdata:Person .",
-                "ex:data_001 a sdata:Data ; sdata:producedBy ex:process_001 .",
+                "ex:part_001 a sdata:Hardware ;",
+                "  sdata:hasMaterial ex:material_001 ;",
+                "  sdata:typifiedBy ex:product_type_001 .",
+                "ex:software_001 a sdata:Software ; sdata:performs ex:process_001 .",
+                "ex:result_001 a sdata:Result ; sdata:producedBy ex:process_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
             ]
         )
     elif name in DATA_CLASSES:
@@ -301,24 +300,78 @@ def _industry_ttl(name: str) -> str:
                 f"ex:{slug}_001 a sdata:{name} ;",
                 f'  sdata:hasIdentifier "{name.upper()}-001" ;',
                 f'  sdata:hasName "{name} Datensatz" ;',
-                "  sdata:describes ex:product_001 ;",
+                "  sdata:describes ex:asset_001 ;",
                 "  sdata:producedBy ex:process_001 .",
                 "",
                 "ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .",
-                "ex:product_001 a sdata:Product .",
+                "ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
             ]
         )
-    elif name in AGENT_CLASSES:
+    elif name == "Agent":
+        lines.extend(
+            [
+                "ex:agent_001 a sdata:Agent ;",
+                '  sdata:hasIdentifier "AGENT-001" ;',
+                '  sdata:hasName "Generischer Agent im Shopfloor" ;',
+                "  sdata:performs ex:process_001 .",
+                "",
+                "ex:process_001 a sdata:Process .",
+            ]
+        )
+    elif name in AGENT_OBJECT_CLASSES:
         lines.extend(
             [
                 f"ex:{slug}_001 a sdata:{name} ;",
                 f'  sdata:hasIdentifier "{name.upper()}-001" ;',
-                f'  sdata:hasName "{name} Akteur" ;',
+                f'  sdata:hasName "{name} als materieller Agent" ;',
                 "  sdata:performs ex:process_001 ;",
-                "  sdata:actsOn ex:product_001 .",
+                "  sdata:actsOn ex:asset_001 .",
                 "",
-                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .",
-                "ex:product_001 a sdata:Product .",
+                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .",
+                "ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
+            ]
+        )
+    elif name in AGENT_DATA_CLASSES:
+        lines.extend(
+            [
+                f"ex:{slug}_001 a sdata:{name} ;",
+                f'  sdata:hasIdentifier "{name.upper()}-001" ;',
+                f'  sdata:hasName "{name} als informationeller Agent" ;',
+                "  sdata:performs ex:process_001 ;",
+                "  sdata:describes ex:asset_001 .",
+                "",
+                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .",
+                "ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
+            ]
+        )
+    elif name in AGENT_INSTITUTIONAL_CLASSES:
+        lines.extend(
+            [
+                "ex:organization_001 a sdata:Organization ;",
+                '  sdata:hasIdentifier "ORG-001" ;',
+                '  sdata:hasName "Tier-1 Lieferant Nord" ;',
+                "  sdata:performs ex:process_001 ;",
+                "  sdata:owns ex:asset_001 .",
+                "",
+                "ex:process_001 a sdata:Process .",
+                "ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
+            ]
+        )
+    elif name in AGENT_PROCESS_CLASSES:
+        lines.extend(
+            [
+                "ex:environment_agent_001 a sdata:EnvironmentAgent ;",
+                '  sdata:hasIdentifier "ENV-001" ;',
+                '  sdata:hasName "Feuchte-korrosive Umgebung" ;',
+                "  sdata:influences ex:process_001 ;",
+                "  sdata:actsOn ex:material_001 .",
+                "",
+                "ex:process_001 a sdata:Process .",
+                "ex:material_001 a sdata:Material .",
             ]
         )
     elif name == "Boundary":
@@ -334,18 +387,33 @@ def _industry_ttl(name: str) -> str:
                 "ex:sheet_001 a sdata:Material .",
             ]
         )
+    elif name == "ProductType":
+        lines.extend(
+            [
+                "ex:universalpruefmaschine a sdata:ProductType ;",
+                '  sdata:hasIdentifier "PT-001" ;',
+                '  sdata:hasName "Universalpruefmaschine" .',
+                "",
+                "ex:fe_solver_typ a sdata:ProductType ;",
+                '  sdata:hasIdentifier "PT-002" ;',
+                '  sdata:hasName "FE-Solver" .',
+                "",
+                "ex:zwick_z250 a sdata:Hardware ;",
+                "  sdata:typifiedBy ex:universalpruefmaschine .",
+                "",
+                "ex:ls_dyna_r14 a sdata:Software ;",
+                "  sdata:typifiedBy ex:fe_solver_typ .",
+            ]
+        )
     elif name in TYPUS_CLASSES:
         target_map = {
             "MaterialGrade": "Material",
             "ProcessType": "Process",
-            "ProductType": "Product",
             "DataFormat": "Data",
-            "HardwareType": "Hardware",
-            "SoftwareType": "Software",
             "BoundaryType": "Boundary",
             "ModelType": "Model",
         }
-        target = target_map.get(name, "Product")
+        target = target_map.get(name, "Hardware")
         target_slug = _slug(target)
         lines.extend(
             [
@@ -365,7 +433,7 @@ def _industry_ttl(name: str) -> str:
                 f'  sdata:hasName "{name} zur Prozessauslegung" ;',
                 "  sdata:constrains ex:process_001 .",
                 "",
-                "ex:model_data_001 a sdata:Data ; sdata:encodes ex:model_001 .",
+                f"ex:model_data_001 a sdata:Data ; sdata:encodes ex:{slug}_001 .",
                 "ex:process_001 a sdata:Process .",
             ]
         )
@@ -375,11 +443,12 @@ def _industry_ttl(name: str) -> str:
                 f"ex:{slug}_001 a sdata:{name} ;",
                 f'  sdata:hasIdentifier "{name.upper()}-001" ;',
                 f'  sdata:hasName "{name} 30 Prozent Rezyklat" ;',
-                "  sdata:concerns ex:product_001 ;",
+                "  sdata:concerns ex:asset_001 ;",
                 f"  sdata:alternativeTo ex:{slug}_002 .",
                 "",
-                f"ex:{slug}_002 a sdata:{name} ; sdata:concerns ex:product_001 .",
-                "ex:product_001 a sdata:Product .",
+                f"ex:{slug}_002 a sdata:{name} ; sdata:concerns ex:asset_001 .",
+                "ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .",
+                "ex:product_type_001 a sdata:ProductType .",
             ]
         )
     elif name in {"Norma", "Requirement"}:
@@ -426,11 +495,10 @@ def _industry_ttl(name: str) -> str:
                 "  sdata:describedBy ex:data_001 .",
                 "",
                 "ex:data_001 a sdata:Data ;",
-                "  sdata:describes ex:product_001 ;",
+                f"  sdata:describes ex:{slug}_001 ;",
                 "  sdata:producedBy ex:process_001 .",
                 "",
-                "ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .",
-                "ex:product_001 a sdata:Product .",
+                "ex:process_001 a sdata:Process .",
             ]
         )
     else:
@@ -520,6 +588,12 @@ def main() -> int:
     infos, version = build_class_infos(graph)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
+    generated_paths = {args.out_dir / f"{info.name}.md" for info in infos}
+    generated_paths.add(args.out_dir / "index.md")
+    for path in args.out_dir.glob("*.md"):
+        if path not in generated_paths:
+            path.unlink()
+
     for info in infos:
         write_class_page(args.out_dir / f"{info.name}.md", info)
     write_index(args.out_dir / "index.md", infos, version)

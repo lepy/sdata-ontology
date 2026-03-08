@@ -10,10 +10,7 @@
 - (none)
 ## Comment
 Regulatorisches Rahmenwerk. BÜNDELT atomare
-    Anforderungen (sdata:Requirement) via sdata:comprises.
-    Existiert durch kollektive Anerkennung (EU, nationale
-    Gesetzgeber). Exakt Searles Kriterium.
-    v0.1.0: von Norma nach Institutio verschoben.
+    Anforderungen via sdata:comprises.
 
 ## Examples
 - `ESPR, CBAM, REACH, RoHS, EU-Taxonomie.`

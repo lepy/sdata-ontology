@@ -49,8 +49,6 @@ nav:
               - DigitalTwin: ontologies/sdata-core/classes/DigitalTwin.md
               - EnvironmentAgent: ontologies/sdata-core/classes/EnvironmentAgent.md
               - Hardware: ontologies/sdata-core/classes/Hardware.md
-              - HardwareAgent: ontologies/sdata-core/classes/HardwareAgent.md
-              - HardwareType: ontologies/sdata-core/classes/HardwareType.md
               - Identifier: ontologies/sdata-core/classes/Identifier.md
               - Institutio: ontologies/sdata-core/classes/Institutio.md
               - Law: ontologies/sdata-core/classes/Law.md
@@ -68,7 +66,6 @@ nav:
               - Possibile: ontologies/sdata-core/classes/Possibile.md
               - Process: ontologies/sdata-core/classes/Process.md
               - ProcessType: ontologies/sdata-core/classes/ProcessType.md
-              - Product: ontologies/sdata-core/classes/Product.md
               - ProductPassport: ontologies/sdata-core/classes/ProductPassport.md
               - ProductType: ontologies/sdata-core/classes/ProductType.md
               - Proof: ontologies/sdata-core/classes/Proof.md
@@ -76,12 +73,9 @@ nav:
               - Regulation: ontologies/sdata-core/classes/Regulation.md
               - Requirement: ontologies/sdata-core/classes/Requirement.md
               - Result: ontologies/sdata-core/classes/Result.md
-              - ResultFile: ontologies/sdata-core/classes/ResultFile.md
               - Scenario: ontologies/sdata-core/classes/Scenario.md
               - Site: ontologies/sdata-core/classes/Site.md
               - Software: ontologies/sdata-core/classes/Software.md
-              - SoftwareAgent: ontologies/sdata-core/classes/SoftwareAgent.md
-              - SoftwareType: ontologies/sdata-core/classes/SoftwareType.md
               - Specification: ontologies/sdata-core/classes/Specification.md
               - Specimen: ontologies/sdata-core/classes/Specimen.md
               - Structura: ontologies/sdata-core/classes/Structura.md

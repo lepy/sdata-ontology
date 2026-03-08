@@ -9,8 +9,8 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Stückliste als Data. sdata:describes Product.
-    Rekursiv via sdata:hasComponent. ESPR-Pflichtbestandteil.
+Stückliste als Data. sdata:describes ein physisches Ding.
+    Rekursiv via sdata:hasComponent.
 
 ## Examples
 - `Fahrzeug-BOM, Batterie-BOM, Elektronik-BOM.`
@@ -23,11 +23,12 @@ Stückliste als Data. sdata:describes Product.
 ex:bill_of_materials_001 a sdata:BillOfMaterials ;
   sdata:hasIdentifier "BILLOFMATERIALS-001" ;
   sdata:hasName "BillOfMaterials Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

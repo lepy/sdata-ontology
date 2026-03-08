@@ -10,9 +10,8 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Mensch als handelnder Agent. Co-Typisierung:
-    Agent ∩ Object. Identitätskriterium: materiale
-    Kontinuität.
+Mensch als handelnder Agent. Agent ∩ Object.
+    Identitätskriterium: materiale Kontinuität.
 
 ## Examples
 - `Prüfer, Konstrukteur, Werker, Laborant.`
@@ -24,12 +23,13 @@ Mensch als handelnder Agent. Co-Typisierung:
 # Qualitaetsingenieurin, die einen Pruefbericht fachlich freigibt.
 ex:person_001 a sdata:Person ;
   sdata:hasIdentifier "PERSON-001" ;
-  sdata:hasName "Person Akteur" ;
+  sdata:hasName "Person als materieller Agent" ;
   sdata:performs ex:process_001 ;
-  sdata:actsOn ex:product_001 .
+  sdata:actsOn ex:asset_001 .
 
-ex:process_001 a sdata:Process ; sdata:hasOutput ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:process_001 a sdata:Process ; sdata:hasOutput ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

@@ -9,8 +9,7 @@
 ## Direct Subclasses
 - [`sdata:Model`](./Model.md)
 ## Comment
-Fassade für min:Structura. Das, was die
-    Wirklichkeit formalisiert. Formale Struktur.
+Fassade für min:Structura. Formale Struktur.
 
 ## Examples
 - (none)
@@ -25,7 +24,7 @@ ex:structura_001 a sdata:Structura ;
   sdata:hasName "Structura zur Prozessauslegung" ;
   sdata:constrains ex:process_001 .
 
-ex:model_data_001 a sdata:Data ; sdata:encodes ex:model_001 .
+ex:model_data_001 a sdata:Data ; sdata:encodes ex:structura_001 .
 ex:process_001 a sdata:Process .
 ```
 ## Used As Domain

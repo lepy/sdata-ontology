@@ -9,8 +9,7 @@
 ## Direct Subclasses
 - [`sdata:Scenario`](./Scenario.md)
 ## Comment
-Fassade für min:Possibile. Das, was sein könnte.
-    Möglichkeitsraum.
+Fassade für min:Possibile. Möglichkeitsraum.
 
 ## Examples
 - (none)
@@ -23,11 +22,12 @@ Fassade für min:Possibile. Das, was sein könnte.
 ex:possibile_001 a sdata:Possibile ;
   sdata:hasIdentifier "POSSIBILE-001" ;
   sdata:hasName "Possibile 30 Prozent Rezyklat" ;
-  sdata:concerns ex:product_001 ;
+  sdata:concerns ex:asset_001 ;
   sdata:alternativeTo ex:possibile_002 .
 
-ex:possibile_002 a sdata:Possibile ; sdata:concerns ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:possibile_002 a sdata:Possibile ; sdata:concerns ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)

@@ -31,13 +31,12 @@ def test_extract_contains_expected_bridge_edges():
     assert (str(SDATA.Agent), str(MIN.Agent)) in edges
 
     assert (str(SDATA.Material), str(SDATA.Object)) in edges
-    assert (str(SDATA.Product), str(SDATA.Object)) in edges
     assert (str(SDATA.Hardware), str(SDATA.Object)) in edges
-    assert (str(SDATA.Software), str(SDATA.Object)) in edges
+    assert (str(SDATA.Software), str(SDATA.Data)) in edges
     assert (str(SDATA.Data), str(MIN.Data)) in edges
     assert (str(SDATA.Process), str(MIN.Process)) in edges
     assert (str(SDATA.Person), str(SDATA.Agent)) in edges
-    assert (str(SDATA.HardwareAgent), str(SDATA.Agent)) in edges
-    assert (str(SDATA.SoftwareAgent), str(SDATA.Agent)) in edges
+    assert (str(SDATA.Hardware), str(SDATA.Agent)) in edges
+    assert (str(SDATA.Software), str(SDATA.Agent)) in edges
     assert (str(SDATA.Organization), str(SDATA.Agent)) in edges
     assert (str(SDATA.EnvironmentAgent), str(SDATA.Agent)) in edges

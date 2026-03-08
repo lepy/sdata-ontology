@@ -10,9 +10,7 @@
 - (none)
 ## Comment
 Technische Spezifikation oder Norm. BÜNDELT atomare
-    Anforderungen (sdata:Requirement) via sdata:comprises.
-    Existiert durch Anerkennung der Normungsgemeinschaft.
-    v0.1.0: von Norma nach Institutio verschoben.
+    Anforderungen via sdata:comprises.
 
 ## Examples
 - `EN 10025-2, DIN EN ISO 6892-1, ISO 14040.`

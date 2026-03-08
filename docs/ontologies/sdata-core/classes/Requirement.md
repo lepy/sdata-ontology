@@ -9,10 +9,8 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-ATOMARE Anforderung oder Grenzwert. Jede einzelne
-    Anforderung ist eine eigenständige Norma-Instanz. Bündelung
-    mehrerer Requirements zu einer Specification oder Regulation
-    ist Institutio (via sdata:comprises).
+ATOMARE Anforderung oder Grenzwert. Bündelung
+    zu Specification oder Regulation via sdata:comprises.
 
 ## Examples
 - `Rm ≥ 340 MPa, Ra ≤ 1.6 µm, FU: 1 kg Stahl ab Werk.`

@@ -9,14 +9,12 @@
 ## Direct Subclasses
 - (none)
 ## Comment
-Mathematische/formale Struktur. Deckt beschreibende
-    Strukturen (von-Mises) und berechenbare Verfahren (Newton-Raphson,
-    Ed25519, LSTM) gleichermaßen ab. Typisierung über
-    sdata:ModelType (sdata:typifiedBy).
+Formale Approximation. Kann nützlich sein,
+    muss nicht stimmen. Hat einen Gültigkeitsbereich.
+    Typisierung über sdata:ModelType.
 
 ## Examples
-- `von-Mises, Johnson-Cook, ReCiPe, Ed25519,
-    Newton-Raphson, Gradient Boosting, LSTM, DB-Schema.`
+- `Hooke, von-Mises, Johnson-Cook, Fick, Fourier, ReCiPe, Ed25519, LSTM.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .

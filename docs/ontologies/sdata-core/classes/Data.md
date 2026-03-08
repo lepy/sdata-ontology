@@ -9,21 +9,20 @@
 ## Direct Subclasses
 - [`sdata:BillOfMaterials`](./BillOfMaterials.md)
 - [`sdata:CryptographicKey`](./CryptographicKey.md)
-- [`sdata:DigitalTwin`](./DigitalTwin.md)
 - [`sdata:Identifier`](./Identifier.md)
 - [`sdata:ProductPassport`](./ProductPassport.md)
 - [`sdata:Proof`](./Proof.md)
 - [`sdata:Result`](./Result.md)
-- [`sdata:ResultFile`](./ResultFile.md)
-- [`sdata:SoftwareAgent`](./SoftwareAgent.md)
+- [`sdata:Software`](./Software.md)
 - [`sdata:VerifiableCredential`](./VerifiableCredential.md)
 - [`sdata:VerifiablePresentation`](./VerifiablePresentation.md)
 ## Comment
-Domänenspezifische Daten. Data sdata:encodes Forma.
-    Kausalitätsmodus: mediated — wirkt nur über Agent.
+Domänenspezifische Daten. Wirkt nur über Agent.
+    Persistierungsformat über sdata:typifiedBy → DataFormat.
+    Dokumente, Dateien, Inputdecks — alles Data.
 
 ## Examples
-- `Messdaten, Werkstoffdatenblatt, CAD-Modell.`
+- `Messdaten, Werkstoffdatenblatt, CAD-Modell, LS-DYNA Inputdeck.`
 ## Industriebeispiel (TTL)
 ```turtle
 @prefix sdata: <https://w3id.org/sdata/core/> .
@@ -33,17 +32,17 @@ Domänenspezifische Daten. Data sdata:encodes Forma.
 ex:data_001 a sdata:Data ;
   sdata:hasIdentifier "DATA-001" ;
   sdata:hasName "Data Datensatz" ;
-  sdata:describes ex:product_001 ;
+  sdata:describes ex:asset_001 ;
   sdata:producedBy ex:process_001 .
 
 ex:process_001 a sdata:Process ; sdata:generates ex:data_001 .
-ex:product_001 a sdata:Product .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - `sdata:certifies`
 - `sdata:hasChecksum`
 - `sdata:hasConfidence`
-- `sdata:hasFormat`
 - `sdata:hasSource`
 - `sdata:producedBy`
 - `sdata:revokedAt`

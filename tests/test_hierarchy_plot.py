@@ -19,14 +19,12 @@ def test_extract_contains_expected_core_classes():
     classes = {str(node.iri) for node in model.nodes}
     expected = {
         str(SDATA.Material),
-        str(SDATA.Product),
         str(SDATA.Hardware),
         str(SDATA.Software),
+        str(SDATA.DigitalTwin),
         str(SDATA.Data),
         str(SDATA.Process),
         str(SDATA.Person),
-        str(SDATA.HardwareAgent),
-        str(SDATA.SoftwareAgent),
         str(SDATA.Organization),
         str(SDATA.EnvironmentAgent),
         str(MIN.Object),
@@ -56,14 +54,14 @@ def test_expected_subclass_edges_exist():
     assert (str(SDATA.Object), str(MIN.Object)) in edges
     assert (str(SDATA.Agent), str(MIN.Agent)) in edges
 
-    assert (str(SDATA.Product), str(SDATA.Object)) in edges
+    assert (str(SDATA.Material), str(SDATA.Object)) in edges
     assert (str(SDATA.Hardware), str(SDATA.Object)) in edges
-    assert (str(SDATA.Software), str(SDATA.Object)) in edges
+    assert (str(SDATA.Software), str(SDATA.Data)) in edges
     assert (str(SDATA.Data), str(MIN.Data)) in edges
     assert (str(SDATA.Process), str(MIN.Process)) in edges
 
     assert (str(SDATA.Person), str(SDATA.Agent)) in edges
-    assert (str(SDATA.HardwareAgent), str(SDATA.Agent)) in edges
-    assert (str(SDATA.SoftwareAgent), str(SDATA.Agent)) in edges
+    assert (str(SDATA.Hardware), str(SDATA.Agent)) in edges
+    assert (str(SDATA.Software), str(SDATA.Agent)) in edges
     assert (str(SDATA.Organization), str(SDATA.Agent)) in edges
     assert (str(SDATA.EnvironmentAgent), str(SDATA.Agent)) in edges

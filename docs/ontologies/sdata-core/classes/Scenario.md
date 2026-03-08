@@ -22,11 +22,12 @@
 ex:scenario_001 a sdata:Scenario ;
   sdata:hasIdentifier "SCENARIO-001" ;
   sdata:hasName "Scenario 30 Prozent Rezyklat" ;
-  sdata:concerns ex:product_001 ;
+  sdata:concerns ex:asset_001 ;
   sdata:alternativeTo ex:scenario_002 .
 
-ex:scenario_002 a sdata:Scenario ; sdata:concerns ex:product_001 .
-ex:product_001 a sdata:Product .
+ex:scenario_002 a sdata:Scenario ; sdata:concerns ex:asset_001 .
+ex:asset_001 a sdata:Hardware ; sdata:typifiedBy ex:product_type_001 .
+ex:product_type_001 a sdata:ProductType .
 ```
 ## Used As Domain
 - (none)
